@@ -14,4 +14,3 @@ title: Hello world
 * code here
 		<printf "xxx">
 
-<p>{{ page.date | date_to_string }}</p>
