@@ -4,14 +4,9 @@ layout: nil
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
  
- <title>Tom Preston-Werner</title>
- <link href="http://tom.preston-werner.com/atom.xml" rel="self"/>
- <link href="http://tom.preston-werner.com/"/>
+ <title>新桑渡</title>
  <updated>{{ site.time | date_to_xmlschema }}</updated>
- <id>http://tom.preston-werner.com/</id>
  <author>
-   <name>Tom Preston-Werner</name>
-   <email>tom@mojombo.com</email>
  </author>
 
  {% for post in site.posts %}
