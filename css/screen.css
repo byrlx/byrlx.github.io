@@ -162,7 +162,7 @@ body {
 
 	  .lxpost pre {
 		  border: 1px solid #aaa;
-		  background-color: white;
+		  background-color: #ebf;
 		  padding: 0 .4em;
 	  }
 
@@ -174,16 +174,14 @@ body {
 	  .lxpost code {
 		  text-indent:10px;
 		  border-color:#000;
-		  border-style:dashed;
 		  border-width:1px;
 		  display:block;
 		  font-size:90%;
 		  font-family:Calibri,"微软雅黑", "新宋体", "宋体";
-		  margin:0 0 0 0;
-		  padding:0 0 0 0;
+		  padding:1cm 1cm 1cm 1cm;
 		  -moz-border-radius:5px;
-		  background:#f5f5f5;
-		  color:blue;
+		  background:#fffacd;
+		  color:#2f4f4f;
 	  }
 
 	  /* terminal */
