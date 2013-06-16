@@ -173,6 +173,7 @@ body {
 		  color:blue;
 		  margin:10px auto 20px 20px;
 		  overflow: auto
+		  line-height: 1.5em;
 	  }
 
 	  .lxpost ul,
