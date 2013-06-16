@@ -25,12 +25,12 @@ body {
 	  h1 {
 		  font-size: 180%;
 		  margin-bottom: 1cm;
-		  margin-left: 1.5cm;
+		  margin-left: 4cm;
 	  }
 	  h2{
 		  font-size: 140%;
 		  margin-bottom: 1cm;
-		  margin-left: 1cm;
+		  margin-left: 4cm;
 	  }
 	  h3, h4, h5, h6 {
 		  font-size: 100%;
@@ -168,7 +168,7 @@ body {
 		  display:block;
 		  font-size:90%;
 		  font-family:Calibri,"微软雅黑", "新宋体", "宋体";
-		  padding:30px 30px 30px 30px;
+		  padding:20px 30px 20px 25px;
 		  background:#fffacd;
 		  color:blue;
 		  margin:10px auto 20px 20px;
