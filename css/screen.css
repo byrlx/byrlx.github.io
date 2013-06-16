@@ -174,7 +174,7 @@ body {
 	  .lxpost code {
 		  border-color:#000;
 		  border-width:1px;
-		  display:inline;
+		  display:block;
 		  font-size:100%;
 		  font-family:Calibri,"微软雅黑", "新宋体", "宋体";
 		  padding:20px 5px 10px 30px;
