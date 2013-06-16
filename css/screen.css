@@ -126,13 +126,13 @@ body {
 		  color: red;
 		  border-top: 4px solid #eee;
 		  margin-top: 2em;
-		  margin-left: 5em;
+		  margin-left: 0em;
 		  overflow: hidden;
 	  }
 
 	  .site .footer .contact {
 		  float: left;
-		  margin-right: 3em;
+		  margin-right: 0em;
 	  }
 
 	  .site .footer .contact a {
