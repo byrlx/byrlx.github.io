@@ -162,8 +162,7 @@ body {
 
 	  .lxpost pre {
 		  border: 1px solid #aaa;
-		  background-color: #ebf;
-		  padding: 0 .4em;
+		  margin:1cm 1cm 1cm 1cm;
 	  }
 
 	  .lxpost ul,
@@ -178,10 +177,10 @@ body {
 		  display:block;
 		  font-size:90%;
 		  font-family:Calibri,"微软雅黑", "新宋体", "宋体";
-		  padding:1cm 1cm 1cm 1cm;
+		  padding:30px 30px 30px 30px;
 		  -moz-border-radius:5px;
 		  background:#fffacd;
-		  color:#2f4f4f;
+		  font-color:#2f4f4f;
 	  }
 
 	  /* terminal */
