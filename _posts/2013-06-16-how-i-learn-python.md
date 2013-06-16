@@ -8,6 +8,7 @@ title: how i learn python
 
 
 * Part 1: parse files in a folder. 
+
 As a logger admin, i need a program to analyse the log files, find out how many logs are printed during the time, and which programs print the top ten logs.
 Log format in the files is *"<date> <time> <pid> <tid> <level> <tag> <log string>"*, what i need is <date>, <time>, <tag>, log numbers of every <tag>, percent of every <tag>. And the most important thing: __sort the output by log numbers of each <tag>__.
 
@@ -30,6 +31,7 @@ What to do next is analyse log files under different children dirs. Means suppor
 Bazinga !!!
 
 * Part 2: recursivly parse folder
+
 At part 1, a problem needs resolve: how to parse log files under different children dirs ?
 As other programming languages, you can write recursive programs. 
 
@@ -38,11 +40,12 @@ Use a variable to save the current path before change: `last_dir = os.getcwd()`,
 OK, now, this program is finished, i can parse every folders under the given path.
 
 * Part 3: There are compressed files under folder.
+
 From part 1 and part 2 i can parse the normal files under every folder, but what if the file in folder is uncompressed files? Uncompress them by hand ? Absolutely NOT....
 A new program needed. Written in Python
 As last program, this is also recursive. Because you may uncompress many files in many folder as above.
 
-Module `zipfile` and `rarfile` is used to uncompress zip and rar files. Define a function `lx_extract(dir)`, first use `os.listdir(dir)` to list all the files under dir(include subdirs), use a for loop to parse the list result. If the file is also a dir, call jlx_extract()` to enter the function again. Else, use `zipfile.is_zipfile(file)` to check if its a zip file (rar the same), if so, call `zipfile.ZipFile(file)` to get a zip_object, the call the function of this object `zip_obj.extractall(dst_dir)` to extract the zip/rar file.
+Module `zipfile` and `rarfile` is used to uncompress zip and rar files. Define a function `lx_extract(dir)`, first use `os.listdir(dir)` to list all the files under dir(include subdirs), use a for loop to parse the list result. If the file is also a dir, call `lx_extract()` to enter the function again. Else, use `zipfile.is_zipfile(file)` to check if its a zip file (rar the same), if so, call `zipfile.ZipFile(file)` to get a zip_object, the call the function of this object `zip_obj.extractall(dst_dir)` to extract the zip/rar file.
 
 Aha, the second program done. Can parse every compressed files under the give path, include these in all the subdirs.
 Bazinga !!!
