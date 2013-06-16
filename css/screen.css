@@ -165,10 +165,10 @@ body {
 		  display:block;
 		  font-size:90%;
 		  font-family:Calibri,"微软雅黑", "新宋体", "宋体";
-		  padding:20px 5px 10px 30px;
+		  padding:20px auto 10px 30px;
 		  background:#fffacd;
 		  color:blue;
-		  margin:10px 0 20px 20px;
+		  margin:10px auto 20px 20px;
 	  }
 
 	  .lxpost ul,
