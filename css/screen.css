@@ -24,6 +24,8 @@ body {
 
 	  h1 {
 		  font-size: 180%;
+		  margin-bottom: 3em;
+		  margin-left: 3cm;
 	  }
 	  h2{
 		  font-size: 140%;
@@ -33,7 +35,6 @@ body {
 	  }
 
 	  h1 {
-		  margin-bottom: 1em;
 	  }
 
 	  p {
@@ -165,13 +166,12 @@ body {
 		  border-color:#000;
 		  border-width:1px;
 		  display:block;
-		  font-size:100%;
+		  font-size:90%;
 		  font-family:Calibri,"微软雅黑", "新宋体", "宋体";
 		  padding:20px 5px 10px 30px;
 		  background:#fffacd;
 		  color:blue;
 		  margin:30px 30px 30px 30px;
-		  width:40
 	  }
 
 	  .lxpost ul,
