@@ -180,6 +180,8 @@ body {
 	  }
 
 	  .lxpost code {
+		  color:blue;
+		  background:#fffacd;
 	  }
 
 	  /* terminal */
