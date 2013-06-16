@@ -1,3 +1,11 @@
+---
+layout: default
+title: how to use git
+---
+
+{{page.title}}
+----------------
+
 master=HEAD, stage, workspace, three big parts of git
 
 1. 	git checkout tag : check out a know tag

@@ -1,3 +1,11 @@
+---
+layout: default
+title: Useful adb cmd line
+---
+
+{{page.title}}
+-------------------
+
 1. service call phone 2 s16 "phone num" : call "phone num"
                       1                 : dial, not call
                       5                 : end call
