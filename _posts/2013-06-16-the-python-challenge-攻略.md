@@ -33,13 +33,10 @@ title: The python challenge 攻略
 	#!/usr/bin/python
 	
 	import string
-	
 	fd = open("level2.txt",'r')
-	
 	lx_str = fd.read()
-	
 	table = string.maketrans("abcdefghijklmnopqrstuvwxyz","cdefghijklmnopqrstuvwxyzab")
-	
+
 	print lx_str.translate(table)
 翻译之后的结果是
 >i hope you didnt translate it by hand. thats what computers are for. doing it in by hand is inefficient and that's why this text is so long. using string.maketrans() is recommended. now apply on the url.
