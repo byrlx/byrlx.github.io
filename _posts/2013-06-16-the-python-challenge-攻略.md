@@ -12,7 +12,7 @@ title: The python challenge 攻略
 #### Level One
 
 页面只有一张图片,图片内容是一个电脑,上面显示了一个数字:2\*\*38. OK,求出结果,并将结果替换掉作为url地址.
-下一关的地址就是 http://www.pythonchallenge.com/pc/def/*274877906944*.html
+下一关的地址就是http://www.pythonchallenge.com/pc/def/*274877906944*.html
 
 	#!/usr/bin/python
 	
@@ -22,9 +22,9 @@ title: The python challenge 攻略
 
 第二关还是一张图片,只不过图片下边多了两段文字:
 
->everybody thinks twice before solving this.
+>"everybody thinks twice before solving this."
 
->g fmnc wms bgblr rpylqjyrc gr zw fylb. rfyrq ufyr amknsrcpq ypc dmp. bmgle gr gl zw fylb gq glcddgagclr ylb rfyr'q ufw rfgq rcvr gq qm jmle. sqgle qrpgle.kyicrpylq() gq pcamkkclbcb. lmu ynnjw ml rfc spj.
+>"g fmnc wms bgblr rpylqjyrc gr zw fylb. rfyrq ufyr amknsrcpq ypc dmp. bmgle gr gl zw fylb gq glcddgagclr ylb rfyr'q ufw rfgq rcvr gq qm jmle. sqgle qrpgle.kyicrpylq() gq pcamkkclbcb. lmu ynnjw ml rfc spj."
 
 不难看出,第一行大家应该都能看懂,不过第二行嘛......
 所以第二行肯定就是密文,下一关的线索就在里面,不过要怎么破解密文.回过头来看图片,图片的内容是三个字母*"K O E"*分别对应到另外的三个字母*"M Q G"*,分析一下可以发现,后三个字母和前三个字母的间隔相同,即`M-K=Q-O=G-E=2`,所以破解密文的方法就是把所有字母变成对应后的字母,记住:只改变字母.
