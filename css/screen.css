@@ -41,7 +41,7 @@ body {
 	  }
 
 	  a {
-		  color: #0ff;
+		  color: #0fa;
 	  }
 
 	  a:hover {
@@ -49,7 +49,7 @@ body {
 	  }
 
 	  a:visited {
-		  color: #a0a;
+		  color: #b0f;
 	  }
 
 	  table {
@@ -161,8 +161,8 @@ body {
 	  /* standard */
 
 	  #post pre {
-		  border: 1px solid #ddd;
-		  background-color: #eef;
+		  border: 1px solid #aaa;
+		  background-color: red;
 		  padding: 0 .4em;
 	  }
 
@@ -188,7 +188,7 @@ body {
 
 	  #post pre code {
 		  text-indent:0;
-		  border-color:#000;
+		  border-color:blue;
 		  border-style:dashed;
 		  border-width:1px;
 		  display:block;
@@ -198,7 +198,7 @@ body {
 		  padding:10px 0 10px 5px;
 		  -moz-border-radius:5px;
 		  background:#f5f5f5;
-		  color:#000;
+		  color:#black;
 	  }
 
 	  /* terminal */
