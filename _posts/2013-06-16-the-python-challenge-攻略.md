@@ -10,6 +10,7 @@ title: The python challenge 攻略
 进入[主页](http://www.pythonchallenge.com/),点击*Click here to get challenged*,开始挑战.
 
 * Level One
+
 页面只有一张图片,图片内容是一个电脑,上面显示了一个数字:2\*\*38. OK,求出结果,并将结果替换掉作为url地址.
 下一关的地址就是 http://www.pythonchallenge.com/pc/def/*274877906944*.html
 
@@ -18,7 +19,9 @@ title: The python challenge 攻略
 	print 2**38
 
 * Level Two
+
 第二关还是一张图片,只不过图片下边多了两段文字:
+
 >everybody thinks twice before solving this.
 
 >g fmnc wms bgblr rpylqjyrc gr zw fylb. rfyrq ufyr amknsrcpq ypc dmp. bmgle gr gl zw fylb gq glcddgagclr ylb rfyr'q ufw rfgq rcvr gq qm jmle. sqgle qrpgle.kyicrpylq() gq pcamkkclbcb. lmu ynnjw ml rfc spj.
