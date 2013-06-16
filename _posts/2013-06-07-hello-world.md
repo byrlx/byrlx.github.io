@@ -12,5 +12,5 @@ title: Hello world
 > 区块引用使用">"
 
 * code here
-		<printf "xxx">
+<printf "xxx">
 
