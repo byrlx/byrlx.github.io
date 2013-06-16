@@ -24,11 +24,13 @@ body {
 
 	  h1 {
 		  font-size: 180%;
-		  margin-bottom: 3em;
+		  margin-bottom: 1cm;
 		  margin-left: 3cm;
 	  }
 	  h2{
 		  font-size: 140%;
+		  margin-bottom: 1cm;
+		  margin-left: 2cm;
 	  }
 	  h3, h4, h5, h6 {
 		  font-size: 100%;
@@ -86,12 +88,12 @@ body {
 		  font-size: 110%;
 		  text-align: justify;
 		  width: 40em;
-		  margin: 3em auto 2em auto;
-		  line-height: 1.5em;
+		  margin: 3em auto 1em auto;
+		  line-height: 1.3em;
 	  }
 
 	  .title {
-		  color: #a00;
+		  color: #8b7500;
 		  font-weight: bold;
 		  margin-bottom: 2em;
 	  }
