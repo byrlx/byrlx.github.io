@@ -1,7 +1,7 @@
----------------------------
-layout:default
+---
+layout: default
 title: how i learn python
----------------------------
+---
 
 {{page.title}}
 ---------------------------
