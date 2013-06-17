@@ -43,3 +43,39 @@ title: The python challenge 攻略
 
 所以还要把url按照该方法转换一下,'map'=>'ocr',这就是下一关的地址.
 	
+#### Level Three
+
+第三关仍然是一张图片和一行文字,看文字就知道要找的东西不在图片中,而是在网页源代码中(什么,文字你没看懂???请先去老罗和他的朋友们英语培训报个班吧).
+
+这一关的工作都在源代码的注释里: 从一大堆火星文中找出出现次数比较少的单词.
+
+面对如此多的文字,大体上看了一眼之后,笔者做了一个比较偷懒的尝试:找出所有的字母和数字.
+
+	#!/usr/bin/python
+	
+	lx_file = open("level3.txt","r")
+	lx_str = lx_file.read()
+	
+	lxlist = list(lx_str)
+	lxresult = []
+	for lxchr in lxlist:
+		if lxchr.isdigit():
+			lxresult.append(lxchr)
+			continue
+		if lxchr.isalpha():
+			lxresult.append(lxchr)
+			continue
+	
+	print "".join(lxresult)
+
+懒人有懒福,第一次尝试竟然成功了,结果竟然是正确的,看来前面几关果然还是比较简单的.
+
+不过,笔者刚接触python不久,上面的代码写的很低效,而且有蒙的嫌疑,来看下官方给出的代码:
+	
+	s = ''.join([line.rstrip() for line in open('ocr.txt')])    
+	OCCURRENCES = {}
+	for c in s: OCCURRENCES[c] = OCCURRENCES.get(c, 0) + 1
+	avgOC = len(s) // len(OCCURRENCES)
+		print ''.join([c for c in s if OCCURRENCES[c] < avgOC]) 
+	
+第一行把N行文本结合成了一个大长句,然后通过字典计算每个字符出现的次数,最后打印出现次数小于平均数的字符.
