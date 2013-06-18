@@ -121,9 +121,9 @@ body {
 		  color: #aaa;
 	  }
 
-	  .blockquote p{
-	  	color: red
-		Font-style: italic
+	  blockquote{
+		font: italic;	
+	  	color: red;
 	  }
 
 	  .site .footer {
