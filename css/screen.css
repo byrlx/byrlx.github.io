@@ -121,7 +121,7 @@ body {
 		  color: #aaa;
 	  }
 
-	  .site blockquote{
+	  .blockquote p{
 	  	color: red
 		Font-style: italic
 	  }
