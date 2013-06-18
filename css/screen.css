@@ -122,7 +122,7 @@ body {
 	  }
 
 	  blockquote{
-		font: italic;	
+		font-style: italic;	
 	  	color: red;
 	  }
 
