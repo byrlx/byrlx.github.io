@@ -121,6 +121,11 @@ body {
 		  color: #aaa;
 	  }
 
+	  .site blockquote{
+	  	color: red
+		Font-style: italic
+	  }
+
 	  .site .footer {
 		  font-size: 80%;
 		  color: red;
