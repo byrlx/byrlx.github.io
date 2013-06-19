@@ -95,7 +95,6 @@ title: The python challenge 攻略(1-8)
 	import re
 	
 	lxline = "".join([line.rstrip() for line in open("level4.txt")])
-	
 	pa = re.compile(r'[^A-Z][A-Z]{3}([a-z])[A-Z]{3}[^A-Z]')
 	m  = pa.match(lxline)
 	print m.groups()
@@ -109,6 +108,5 @@ title: The python challenge 攻略(1-8)
 	import re
 	
 	lxline = "".join([line.rstrip() for line in open("level4.txt")])
-	
 	pa = re.compile(r'[^A-Z][A-Z]{3}([a-z])[A-Z]{3}[^A-Z]')
 	print ''.join(pa.findall(lxline))
