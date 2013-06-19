@@ -80,3 +80,33 @@ title: The python challenge 攻略(1-8)
 		print ''.join([c for c in s if OCCURRENCES[c] < avgOC]) 
 	
 第一行把N行文本结合成了一个大长句,然后通过字典计算每个字符出现的次数,最后打印出现次数小于平均数的字符.
+
+#### Level Four
+
+第四关依旧是一张图片,但是迷题在图片的下面:
+>"One small letter, surrounded by EXACTLY three big bodyguards on each of its sides."
+
+翻译成中文就是:找出所有左右有3个大写字母的小写字母.
+
+这一关很明显是在考正则表达式,笔者上网查了一些正则表达式的资料后写出了下面的代码:
+
+	#!/usr/bin/python
+	
+	import re
+	
+	lxline = "".join([line.rstrip() for line in open("level4.txt")])
+	
+	pa = re.compile(r'[^A-Z][A-Z]{3}([a-z])[A-Z]{3}[^A-Z]')
+	m  = pa.match(lxline)
+	print m.groups()
+
+但是,运行后程序程序输出为空.不知道为什么`match()`函数会这样?改用`findall()`就没有问题了.
+
+	#!/usr/bin/python
+	
+	import re
+	
+	lxline = "".join([line.rstrip() for line in open("level4.txt")])
+	
+	pa = re.compile(r'[^A-Z][A-Z]{3}([a-z])[A-Z]{3}[^A-Z]')
+	print ''.join(pa.findall(lxline))
