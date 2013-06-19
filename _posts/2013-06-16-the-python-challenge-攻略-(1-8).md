@@ -100,7 +100,9 @@ title: The python challenge 攻略(1-8)
 	m  = pa.match(lxline)
 	print m.groups()
 
-但是,运行后程序程序输出为空.不知道为什么`match()`函数会这样?改用`findall()`就没有问题了.
+但是,运行后程序程序输出为空.不知道为什么`match()`函数会这样?改用`findall()`就没有问题了.后来查资料发现原因是:
+
+>match() 函数只会检查是否在字符串*开始处*匹配 !!!
 
 	#!/usr/bin/python
 	
