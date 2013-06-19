@@ -1,6 +1,6 @@
 ---
 layout: default
-title: The python challenge 攻略
+title: The python challenge 攻略(1-8)
 ---
 
 {{page.title}}
