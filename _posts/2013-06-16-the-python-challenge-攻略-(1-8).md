@@ -166,4 +166,38 @@ Bazinga!!! You got the answer at last
 
 #### Level Six
 
-欢迎来到第六关
+欢迎来到第六关. 这一关仍然是一张图片,下面一行字:*pronounce it*. 是不是有点蒙,老规矩, 看源码. 代码里有下面两处疑惑的地方
+
+	<peakhell src="banner.p"/>
+	<!-- peak hell sounds familiar ? -->
+
+第一句很明显是个链接,打开之后, 又是一堆火星文, 毫无头绪. 再看第二段话：peak hell读起来像什么??? 鬼知道，没办法，google 一下 python pic, 搜索栏自动补齐：*python pickle*
+
+pickle 是python的一个*序列化/发序列化*的模块, 看来这一关的意思就是将 banner.p 的内容做序列化或者发序列化, 盯着看了一会,觉得这堆火星文像是序列化之后的数据, 于是果断反序列化之.
+	
+	#!/usr/bin/python
+	
+	import pickle
+	
+	lxfile = open('level6.txt')
+	lx = pickle.load(lxfile)
+	print lx
+
+打印纸后发现是这样一群东西
+	[('', 95)]
+	[('', 14), ('#', 5), ('', 70), ('#', 5), ('', 1)]
+	......
+	[('', 6), ('#', 3), ('', 6), ('#', 4), ('', 3), ('#', 3), ('', 9), ('#', 3), ('', 7), ('#', 5), ('', 3), ('#', 3), ('', 4), ('#', 5), ('', 3), ('#', 3), ('', 10), ('#', 3), ('', 7), ('#', 4), ('', 1)]
+	....
+
+这是什么东西, 仍然看不懂,后来观察了一下,发现每个list的成员后面的数字之后相同,就在想会不会把该字符打印value次,于是写成下面的代码:
+	for lxx in lx:
+		lxline=""
+		for (key,value) in lxx:
+			if key == '':
+				lxline = lxline + (' '*value)
+			else:
+				lxline = lxline + (key*value)
+		print  lxline
+	
+运行,OK.结果出来了,就是这么简单.
