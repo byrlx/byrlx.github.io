@@ -110,3 +110,57 @@ title: The python challenge 攻略(1-8)
 	lxline = "".join([line.rstrip() for line in open("level4.txt")])
 	pa = re.compile(r'[^A-Z][A-Z]{3}([a-z])[A-Z]{3}[^A-Z]')
 	print ''.join(pa.findall(lxline))
+
+#### Level Five
+
+输入第五关的地址,结果显示了另一个网址,输入这个网址后,只有一张图片,连解释的字符串都没有了,按照前两关的规律,还是直接看源码吧.源码中有这样一段注释:
+
+>"<!-- urllib may help. DON'T TRY ALL NOTHINGS, since it will never 
+end. 400 times is more than enough. -->"
+
+刚开始没看懂,后来继续看源码发现图片是一张链接,点击图片,转到另一个网址`http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing=12345`, 这个网页上也只有一行字:
+
+>and the next nothing is 44827
+
+把这串数字替换掉网址上的*nothing*后面的数字,又转到另一个网址,又是一行字,又是替掉现在网址的数字........现在你再回头看注释,似乎明白了什么.
+
+迷题就是:找到最后的链接
+
+这个题目是考urllib库的使用,每个页面都会给出下一个网页的链接,当然你可以一个一个点来找到答案......
+程序代码如下:
+
+	#!/usr/bin/python
+	
+	import urllib
+	import re
+	
+	baseurl = "http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing="
+	starturl = baseurl+"12345"
+	
+	print starturl
+	pattern = re.compile(r'[0-9]{1,}')
+	
+	while True:
+		file = urllib.urlopen(starturl)
+		lxstr = ''.join(file.readlines())
+		print lxstr
+		pat = pattern.findall(lxstr)
+		nextnum = ''.join(pat)
+		starturl = baseurl + nextnum
+
+不要以为写完程序,就可以喝茶等结果了,因为这可能是个没有尽头的循环,想想前面的那句话*400times is more than enough*	, 所以这里面肯定有猫腻......
+
+运行一段时间后,会出现下面的话,
+
+>Yes. Divide by two and keep going.
+
+把前面的数字除以二,替换掉程序中的*12345*, 继续运行
+
+过了一段时间,页面又出现下面一句话:
+>There maybe misleading numbers in the text. One example is 82683. Look only for the next nothing and the next nothing is 63579
+
+过了一段时间,又出现了一句话:
+>peak.html
+
+Bazinga!!! You got the answer at last
+
