@@ -33,7 +33,9 @@ body {
 		  margin-left: 4cm;
 	  }
 	  h3, h4, h5, h6 {
-		  font-size: 120%;
+		  font-size: 130%;
+		  margin-bottom: 1.5em;
+		  margin-left: 0;
 	  }
 
 	  p {
