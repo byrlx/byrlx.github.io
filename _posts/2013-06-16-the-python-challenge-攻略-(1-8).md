@@ -115,7 +115,7 @@ title: The python challenge 攻略(1-8)
 
 输入第五关的地址,结果显示了另一个网址,输入这个网址后,只有一张图片,连解释的字符串都没有了,按照前两关的规律,还是直接看源码吧.源码中有这样一段注释:
 
->"<!-- urllib may help. DON'T TRY ALL NOTHINGS, since it will never 
+>"\<!-- urllib may help. DON'T TRY ALL NOTHINGS, since it will never 
 end. 400 times is more than enough. -->"
 
 刚开始没看懂,后来继续看源码发现图片是一张链接,点击图片,转到另一个网址`http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing=12345`, 这个网页上也只有一行字:
