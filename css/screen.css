@@ -37,7 +37,7 @@ body {
 	  }
 
 	  p {
-		  margin: 1em 0;
+		  margin: 10px 0;
 	  }
 
 	  a {
@@ -98,6 +98,9 @@ body {
 		  margin-bottom: 2em;
 	  }
 
+	  .site em{
+	  	color: red;
+	  }
 	  .site .title a {
 		  color: #a00;
 		  text-decoration: none;
@@ -161,12 +164,12 @@ body {
 	  /*****************************************************************************/
 
 	  .lxpost {
-		  line-height: 1.2em;
 	  }
 
 	  /* standard */
 
 	  .lxpost pre {
+		  line-height: 1.2em;
 		  border: 1px solid #aaa;
 		  border-color:#000;
 		  border-width:1px;
