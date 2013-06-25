@@ -207,7 +207,7 @@ pickle 是python的一个*序列化/发序列化*的模块, 看来这一关的�
 仍然是一张图,OK,看源码先. 
 源码有一段注释, 读后发现跟迷题没有任何关系, 是让大家捐款的, 我觉得很好, 大家可以自愿捐助,让 pythonchallenge 更加内容丰富. 不过,迷题到底在哪里???
 
-细看可以发现代码第一行有个注释`<!-- <-- zip -->`, 于是在想可能跟 zip 有关, 尝试把地址的 html 改成 zip. bingo, 果然下载了一个 zip 档案.
+细看可以发现代码第一行有个注释`<!-- <-- zip -->`, 于是在想可能跟 zip 有关, 尝试把地址的 "html" 改成 "zip". bingo, 果然下载了一个 zip 档案.
 
 解压之后大约得到1000多个文件, 发现一个 readme.txt, 打开, 内容如下: 
 
@@ -236,7 +236,9 @@ pickle 是python的一个*序列化/发序列化*的模块, 看来这一关的�
 		lxnum = ''.join(lxre.findall(lxline))
 		print lxline
 	
-最后的结果是`Collect the comments`, "comments"? what's comments ? 想起 readme.txt 里的第二句话. 于是 improt zipfile 来分析刚开始的 zip 档, 尝试读 zipfile 本身的 comment, 但是没得到结果, 后来尝试读所有zip文件的comments. 
+最后的结果是`Collect the comments`
+	
+"comments"? what's comments ? 想起 readme.txt 里的第二句话. 于是 improt zipfile 来分析刚开始的 zip 档, 尝试读 zipfile 本身的 comment, 但是没得到结果, 后来尝试读所有zip文件的comments. 
 
 	#!/usr/bin/python
 	
