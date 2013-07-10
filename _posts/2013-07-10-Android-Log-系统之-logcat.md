@@ -38,7 +38,7 @@ Android 系统提供了一整套的API供Java层和Native层的程序写log,以�
         exit(0);
     }
 
-* test 参数
+#### test 参数
 
 如果logcat只有一个参数"--test",则执行logprint_run_tests()函数,从代码来看,这个函数主要是测试logcat的功能的.
 
