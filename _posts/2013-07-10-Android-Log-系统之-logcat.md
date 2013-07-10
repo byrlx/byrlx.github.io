@@ -9,7 +9,7 @@ title: Android Log 系统之 Logcat
 这篇文章介绍android系统中录log的工具 logcat.
 
 Android 系统提供了一整套的API供Java层和Native层的程序写log,以方便调试及在系统出问题的时候有据可查. 
-而logcat是把这些抓log的工具,可以通过logcat把log显示到标准输出或文件中,同时还可以对log进行过滤. 设定log level及只读取指定module的log. logcat 的详细用法可以在手机中输入"logcat -h" 命令查看.
+而logcat是把这些抓log的工具,可以通过logcat把log显示到标准输出或文件中,同时还可以对log进行过滤. 设定log level及只读取指定module的log. logcat 的详细用法可以在手机中输入"logcat --help" 命令查看.
 
 本文主要对logcat的源码进行分析,从main函数开始.从main函数开始遇到的第一个函数调用是.
 
@@ -149,3 +149,137 @@ Android 系统提供了一整套的API供Java层和Native层的程序写log,以�
 
 android_log_addFilterString()会循环遍历传入的filter string,并将其添加到filter 链表中.
 ok, "--test" 参数到这里就讲完了.
+
+#### "-s" 参数
+
+将全局的log level 设为 ANDROID_LOG_SILENT, 即不输出所有level的log
+
+	android_log_addFilterRule(g_logformat, "*:s");
+
+#### "-c" 参数
+
+该参数可以将log device中的log删除.
+
+	case 'c':
+       clearLog = 1;
+       mode = O_WRONLY;
+    break;
+
+        if (clearLog) {
+            int ret;
+            ret = android::clearLog(dev->fd);
+
+看下clearLog函数
+
+	static int clearLog(int logfd)
+	{
+	    return ioctl(logfd, LOGGER_FLUSH_LOG);
+	}
+
+该函数向driver层下发 LOGGER_FLUSH_LOG 命令,告诉logger device的driver将logger中的log清除,关于logger device的实现在后面会讲到.
+
+#### "-d" "-t N" 参数
+
+这两个参数都会将g_nonblock变量设为true,表示把logger里的log读完就会立刻退出,而不会等待新log的写入. 同时"-t"参数后面还要跟着一个值N,表示只读最近的N条log.
+
+#### "-g" 参数
+
+给driver发送LOGGER_GET_LOG_BUF_SIZE, 获得logger device的大小.
+
+#### "-b device" 参数
+
+指定要从哪个buffer中读log, "-b"可以使用多次,例如" -b main -b radio"
+
+#### "-B" 参数
+
+以二进制方式打印log(目前默认会对log进行解析,以字符串形式打印)
+
+#### "-f file" 参数
+
+将log 输出到指定文件 file
+
+#### "-r size" 参数
+
+设定rotate size大小,rotate size 的含义是每种log 最多只有 size 大小. 录满后旧log会被覆盖
+
+#### "-n num" 参数
+
+设定每种log最大的log file数量,每个file的大小为 rotate_size/num
+
+#### "-v format" 参数
+
+设定输出的log 格式
+
+	err = setLogFormat (optarg);
+	static int setLogFormat(const char * formatString)
+	{
+	    static AndroidLogPrintFormat format;
+	
+	    format = android_log_formatFromString(formatString);
+	    android_log_setPrintFormat(g_logformat, format);
+
+	    return 0;
+	}
+
+	AndroidLogPrintFormat android_log_formatFromString(const char * formatString)
+	{
+	    static AndroidLogPrintFormat format;
+	
+	    if (strcmp(formatString, "brief") == 0) format = FORMAT_BRIEF;
+	    else if (strcmp(formatString, "process") == 0) format = FORMAT_PROCESS;
+	    else if (strcmp(formatString, "tag") == 0) format = FORMAT_TAG;
+	    else if (strcmp(formatString, "thread") == 0) format = FORMAT_THREAD;
+	    else if (strcmp(formatString, "raw") == 0) format = FORMAT_RAW;
+	    else if (strcmp(formatString, "time") == 0) format = FORMAT_TIME;
+	    else if (strcmp(formatString, "threadtime") == 0) format = FORMAT_THREADTIME;
+	    else if (strcmp(formatString, "long") == 0) format = FORMAT_LONG;
+	    else format = FORMAT_OFF;
+	
+	    return format;
+	}
+
+第一个函数把字符串形式的format转换成整形表示,第二个参数把转换后的format设置到全局变量g_logformat中
+	
+
+OK, 到此为止,参数部分就解析完毕.接着执行下面的代码
+
+
+如果没有指定"-b"参数的话,会默认打开 "main" 和 "system" 两个logger device
+
+    if (!devices) {
+        devices = new log_device_t(strdup("/dev/"LOGGER_LOG_MAIN), false, 'm');
+        android::g_devCount = 1;
+        int accessmode =
+                  (mode & O_RDONLY) ? R_OK : 0
+                | (mode & O_WRONLY) ? W_OK : 0;
+        if (0 == access("/dev/"LOGGER_LOG_SYSTEM, accessmode)) {
+            devices->next = new log_device_t(strdup("/dev/"LOGGER_LOG_SYSTEM), false, 's');
+            android::g_devCount++;
+        }
+    }
+
+接下来是设定输出,如果没有指定"-f file"参数,默认输出到标准输出,否则打开file 文件.
+
+	static void setupOutput()
+	{
+	
+	    if (g_outputFileName == NULL) {
+	        g_outFD = STDOUT_FILENO;
+	    } else {
+	        struct stat statbuf;
+	        g_outFD = openLogFile (g_outputFileName);
+	        fstat(g_outFD, &statbuf);
+	        g_outByteCount = statbuf.st_size;
+	    }
+	}
+	
+如果有设定log filter的话,会解析字符串并加入到g_logformat的filter链表中	
+
+	for (int i = optind ; i < argc ; i++) {
+    	err = android_log_addFilterString(g_logformat, argv[i]);
+
+接下来会打开logger device,然后就是读log了.
+
+    android::readLogLines(devices);
+
+#### 读log
