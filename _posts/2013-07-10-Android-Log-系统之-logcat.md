@@ -4,7 +4,7 @@ title: Android Log 系统之 Logcat
 ---
 
 {{page.title}}
-------------------
+==============
 
 这篇文章介绍android系统中录log的工具 logcat.
 
@@ -37,6 +37,8 @@ Android 系统提供了一整套的API供Java层和Native层的程序写log,以�
         logprint_run_tests();
         exit(0);
     }
+
+* test 参数
 
 如果logcat只有一个参数"--test",则执行logprint_run_tests()函数,从代码来看,这个函数主要是测试logcat的功能的.
 
