@@ -283,3 +283,24 @@ OK, 到此为止,参数部分就解析完毕.接着执行下面的代码
     android::readLogLines(devices);
 
 #### 读log
+
+readLogLines()函数通过一个while loop不停的从kernel 层的logger device中读取log
+
+    while (1) {
+        do {
+            timeval timeout = { 0, 5000 /* 5ms */ }; // If we oversleep it's ok, i.e. ignore EINTR.
+            FD_ZERO(&readset);
+            for (dev=devices; dev; dev = dev->next) {
+                FD_SET(dev->fd, &readset);
+            }
+            result = select(max + 1, &readset, NULL, NULL, sleep ? NULL : &timeout);
+        } while (result == -1 && errno == EINTR);
+
+这里有设一个timeout,最开始这个值为false,标志一直等待有log产生. 如果为true, 表示这段时间内没有新的log产生,则会把以及读出来的log全部flush到输出.
+
+如果select()返回,会检查是否有logger device可读,并尝试从device中读取一条log.
+        if (result >= 0) {
+            for (dev=devices; dev; dev = dev->next) {
+                if (FD_ISSET(dev->fd, &readset)) {
+                    queued_entry_t* entry = new queued_entry_t();
+                    ret = read(dev->fd, entry->buf, LOGGER_ENTRY_MAX_LEN);
