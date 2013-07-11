@@ -299,8 +299,66 @@ readLogLines()函数通过一个while loop不停的从kernel 层的logger device
 这里有设一个timeout,最开始这个值为false,标志一直等待有log产生. 如果为true, 表示这段时间内没有新的log产生,则会把以及读出来的log全部flush到输出.
 
 如果select()返回,会检查是否有logger device可读,并尝试从device中读取一条log.
+
         if (result >= 0) {
             for (dev=devices; dev; dev = dev->next) {
                 if (FD_ISSET(dev->fd, &readset)) {
                     queued_entry_t* entry = new queued_entry_t();
                     ret = read(dev->fd, entry->buf, LOGGER_ENTRY_MAX_LEN);
+
+logger device read() 的实现是每次读取一条logger_entry, 并存放到结构体queued_entry_t 的成员变量 buf 中,queued_entry_t 的定义如下:
+
+	struct queued_entry_t {
+	    union {
+	        unsigned char buf[LOGGER_ENTRY_MAX_LEN + 1] __attribute__((aligned(4)));
+	        struct logger_entry entry __attribute__((aligned(4)));
+	    };
+	    queued_entry_t* next;
+	
+	    queued_entry_t() {
+	        next = NULL;
+	    }
+	};
+
+可以看到buf和logger_entry被定义成union结构,所以读到buffer的内容同时是一条logger_entry.	该结构体的定义如下
+	
+	struct logger_entry {
+	    uint16_t    len;    /* length of the payload */
+	    uint16_t    __pad;  /* no matter what, we get 2 bytes of padding */
+	    int32_t     pid;    /* generating process's pid */
+	    int32_t     tid;    /* generating process's tid */
+	    int32_t     sec;    /* seconds since Epoch */
+	    int32_t     nsec;   /* nanoseconds */
+	    char        msg[0]; /* the entry's payload */
+	};
+
+第一个变量len是字符串msg的长度,所以read()函数返回后会对返回值和len的值做比较,如果不相等,表示读的数据有错误.
+
+	else if (entry->entry.len != ret - sizeof(struct logger_entry)) {
+   		fprintf(stderr, "read: unexpected length. Expected %d, got %d\n",
+   		entry->entry.len, ret - sizeof(struct logger_entry));
+   		exit(EXIT_FAILURE);
+   	}
+
+接着会call device变量dev的enqueue()函数把刚读出来的log插入到dev的entry list中,并排序.
+
+    void enqueue(queued_entry_t* entry) {
+        if (this->queue == NULL) {
+            this->queue = entry;
+        } else {
+            queued_entry_t** e = &this->queue;
+            while (*e && cmp(entry, *e) >= 0) {
+                e = &((*e)->next);
+            }
+            entry->next = *e;
+            *e = entry;
+        }
+    }
+	
+	static int cmp(queued_entry_t* a, queued_entry_t* b) {
+	    int n = a->entry.sec - b->entry.sec;
+	    if (n != 0) {
+	        return n;
+	    }
+	    return a->entry.nsec - b->entry.nsec;
+	}
