@@ -1,6 +1,6 @@
 ---
 layout: default
-title: The python challenge 攻略(1-8)
+title: Android Log 系统之 liblog
 ---
 
 {{page.title}}
