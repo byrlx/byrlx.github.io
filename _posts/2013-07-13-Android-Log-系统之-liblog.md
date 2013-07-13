@@ -205,3 +205,98 @@ SLOGX()API族用于生成system log,log被写到system这个logger device中,SLO
 	
 	    return write_to_log(bufID, vec, 3);
 	}
+
+#### Events Log
+
+Events log是一种特殊的log,经常被用来记录系统的一些参数:例如电池的当前状态,剩余电量......等等
+
+Java层写event log的api为 writeEvent(),不过系统有四种该函数的实现.
+
+    public static native int writeEvent(int tag, int value);
+    public static native int writeEvent(int tag, long value);
+    public static native int writeEvent(int tag, String str);
+    public static native int writeEvent(int tag, Object... list);
+
+系统会根据模块中call api时传入的参数对应调用不同的writeEvent()函数.这些函数分别对应到不同的JNI实现.首先看下参数为int/long时的JNI实现.
+
+	static jint android_util_EventLog_writeEvent_Integer(JNIEnv* env, jobject clazz,
+	                                                     jint tag, jint value)
+	{
+	    return android_btWriteLog(tag, EVENT_TYPE_INT, &value, sizeof(value));
+	}
+	
+	static jint android_util_EventLog_writeEvent_Long(JNIEnv* env, jobject clazz,
+	                                                  jint tag, jlong value)
+	{
+	    return android_btWriteLog(tag, EVENT_TYPE_LONG, &value, sizeof(value));
+	}
+	
+	static jint android_util_EventLog_writeEvent_String(JNIEnv* env, jobject clazz,
+	                                                    jint tag, jstring value) {
+	    uint8_t buf[MAX_EVENT_PAYLOAD];
+	
+	    // Don't throw NPE -- I feel like it's sort of mean for a logging function
+	    // to be all crashy if you pass in NULL -- but make the NULL value explicit.
+	    const char *str = value != NULL ? env->GetStringUTFChars(value, NULL) : "NULL";
+	    jint len = strlen(str);
+	    const int max = sizeof(buf) - sizeof(len) - 2;  // Type byte, final newline
+	    if (len > max) len = max;
+	
+	    buf[0] = EVENT_TYPE_STRING;
+	    memcpy(&buf[1], &len, sizeof(len));
+	    memcpy(&buf[1 + sizeof(len)], str, len);
+	    buf[1 + sizeof(len) + len] = '\n';
+	
+	    if (value != NULL) env->ReleaseStringUTFChars(value, str);
+	    return android_bWriteLog(tag, buf, 2 + sizeof(len) + len);
+	}
+	
+	static jint android_util_EventLog_writeEvent_Array(JNIEnv* env, jobject clazz,
+	                                                   jint tag, jobjectArray value) {
+	    if (value == NULL) {
+	        return android_util_EventLog_writeEvent_String(env, clazz, tag, NULL);
+	    }
+	
+	    uint8_t buf[MAX_EVENT_PAYLOAD];
+	    const size_t max = sizeof(buf) - 1;  // leave room for final newline
+	    size_t pos = 2;  // Save room for type tag & array count
+	
+	    jsize copied = 0, num = env->GetArrayLength(value);
+	    for (; copied < num && copied < 255; ++copied) {
+	        jobject item = env->GetObjectArrayElement(value, copied);
+	        if (item == NULL || env->IsInstanceOf(item, gStringClass)) {
+	            if (pos + 1 + sizeof(jint) > max) break;
+	            const char *str = item != NULL ? env->GetStringUTFChars((jstring) item, NULL) : "NULL";
+	            jint len = strlen(str);
+	            if (pos + 1 + sizeof(len) + len > max) len = max - pos - 1 - sizeof(len);
+	            buf[pos++] = EVENT_TYPE_STRING;
+	            memcpy(&buf[pos], &len, sizeof(len));
+	            memcpy(&buf[pos + sizeof(len)], str, len);
+	            pos += sizeof(len) + len;
+	            if (item != NULL) env->ReleaseStringUTFChars((jstring) item, str);
+	        } else if (env->IsInstanceOf(item, gIntegerClass)) {
+	            jint intVal = env->GetIntField(item, gIntegerValueID);
+	            if (pos + 1 + sizeof(intVal) > max) break;
+	            buf[pos++] = EVENT_TYPE_INT;
+	            memcpy(&buf[pos], &intVal, sizeof(intVal));
+	            pos += sizeof(intVal);
+	        } else if (env->IsInstanceOf(item, gLongClass)) {
+	            jlong longVal = env->GetLongField(item, gLongValueID);
+	            if (pos + 1 + sizeof(longVal) > max) break;
+	            buf[pos++] = EVENT_TYPE_LONG;
+	            memcpy(&buf[pos], &longVal, sizeof(longVal));
+	            pos += sizeof(longVal);
+	        } else {
+	            jniThrowException(env,
+	                    "java/lang/IllegalArgumentException",
+	                    "Invalid payload item type");
+	            return -1;
+	        }
+	        env->DeleteLocalRef(item);
+	    }
+	
+	    buf[0] = EVENT_TYPE_LIST;
+	    buf[1] = copied;
+	    buf[pos++] = '\n';
+	    return android_bWriteLog(tag, buf, pos);
+	}
