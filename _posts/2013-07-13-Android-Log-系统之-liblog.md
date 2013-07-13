@@ -158,3 +158,50 @@ write_to_log()是一个指针函数,这里的实现用了一点小伎俩. 最开
 	#define log_writev(filedes, vector, count) writev(filedes, vector, count)
 
 log_writev()就被映射到具体的driver层的writev()函数.这样,一条log就被写入到了kernel层的device中.
+
+#### SLOGX
+
+SLOGX()API族用于生成system log,log被写到system这个logger device中,SLOGX的实现跟main log基本相同,只是默认的log id是system而不是main
+	
+	#define SLOGV(...) ((void)__android_log_buf_print(LOG_ID_SYSTEM, ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__))
+	
+	int __android_log_buf_print(int bufID, int prio, const char *tag, const char *fmt, ...)
+	{
+	    va_list ap;
+	    char buf[LOG_BUF_SIZE];
+	
+	    va_start(ap, fmt);
+	    vsnprintf(buf, LOG_BUF_SIZE, fmt, ap);
+	    va_end(ap);
+	
+	    return __android_log_buf_write(bufID, prio, tag, buf);
+	}
+	
+	int __android_log_buf_write(int bufID, int prio, const char *tag, const char *msg)
+	{
+	    struct iovec vec[3];
+	
+	    if (!tag)
+	        tag = "";
+	
+	    /* XXX: This needs to go! */
+	    if (!strcmp(tag, "HTC_RIL") ||
+	        !strncmp(tag, "RIL", 3) || /* Any log tag with "RIL" as the prefix */
+	        !strncmp(tag, "IMS", 3) || /* Any log tag with "IMS" as the prefix */
+	        !strcmp(tag, "AT") ||
+	        !strcmp(tag, "GSM") ||
+	        !strcmp(tag, "STK") ||
+	        !strcmp(tag, "CDMA") ||
+	        !strcmp(tag, "PHONE") ||
+	        !strcmp(tag, "SMS"))
+	            bufID = LOG_ID_RADIO;
+	
+	    vec[0].iov_base   = (unsigned char *) &prio;
+	    vec[0].iov_len    = 1;
+	    vec[1].iov_base   = (void *) tag;
+	    vec[1].iov_len    = strlen(tag) + 1;
+	    vec[2].iov_base   = (void *) msg;
+	    vec[2].iov_len    = strlen(msg) + 1;
+	
+	    return write_to_log(bufID, vec, 3);
+	}
