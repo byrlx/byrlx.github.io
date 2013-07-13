@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Android Log 系统之 liblog
------
+title: The python challenge 攻略(1-8)
+---
 
 {{page.title}}
-------------------------------
+-----------------------------
 
 在[这篇](http://byrlx.github.io/2013/07/10/Android-Log-%E7%B3%BB%E7%BB%9F%E4%B9%8B-logcat.html)文章介绍了Android系统读log的一个工具logcat. logcat可以很方便的抓取系统中的log,以监控系统的运行状况或进行调试.
 
