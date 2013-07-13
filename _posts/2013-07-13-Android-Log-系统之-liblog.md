@@ -231,12 +231,31 @@ Java层写event log的api为 writeEvent(),不过系统有四种该函数的实�
 	    return android_btWriteLog(tag, EVENT_TYPE_LONG, &value, sizeof(value));
 	}
 	
+这两个函数调用了一个共同的函数 android_btWriteLog()
+
+	#define android_btWriteLog(tag, type, payload, len)  __android_log_btwrite(tag, type, payload, len)
+
+	int __android_log_btwrite(int32_t tag, char type, const void *payload,
+	    size_t len)
+	{
+	    struct iovec vec[3];
+	
+	    vec[0].iov_base = &tag;
+	    vec[0].iov_len = sizeof(tag);
+	    vec[1].iov_base = &type;
+	    vec[1].iov_len = sizeof(type);
+	    vec[2].iov_base = (void*)payload;
+	    vec[2].iov_len = len;
+	
+	    return write_to_log(LOG_ID_EVENTS, vec, 3);
+	}
+
+是不是很熟悉?没错,最后跟main log流程一样,都调用write_to_log(0函数. 下面是参数为string时的JNI实现:
+
 	static jint android_util_EventLog_writeEvent_String(JNIEnv* env, jobject clazz,
 	                                                    jint tag, jstring value) {
 	    uint8_t buf[MAX_EVENT_PAYLOAD];
 	
-	    // Don't throw NPE -- I feel like it's sort of mean for a logging function
-	    // to be all crashy if you pass in NULL -- but make the NULL value explicit.
 	    const char *str = value != NULL ? env->GetStringUTFChars(value, NULL) : "NULL";
 	    jint len = strlen(str);
 	    const int max = sizeof(buf) - sizeof(len) - 2;  // Type byte, final newline
@@ -250,12 +269,27 @@ Java层写event log的api为 writeEvent(),不过系统有四种该函数的实�
 	    if (value != NULL) env->ReleaseStringUTFChars(value, str);
 	    return android_bWriteLog(tag, buf, 2 + sizeof(len) + len);
 	}
+
+该函数把type,string长度,string都放到了同一个buffer中,然后call android_bWriteLog()
+
+	int __android_log_bwrite(int32_t tag, const void *payload, size_t len)
+	{
+	    struct iovec vec[2];
+	
+	    vec[0].iov_base = &tag;
+	    vec[0].iov_len = sizeof(tag);
+	    vec[1].iov_base = (void*)payload;
+	    vec[1].iov_len = len;
+	
+	    return write_to_log(LOG_ID_EVENTS, vec, 2);
+	}
+
+该函数与__android_log_bwrite的不同是后者是把type(int/long)跟payload分开的,而该函数放到了一起.
+
+writeEvent的第四种形式:写入的是int/long/string的组合体,则会循环遍历该组合,转换成格式化字符串放到同一个buffer中.
 	
 	static jint android_util_EventLog_writeEvent_Array(JNIEnv* env, jobject clazz,
 	                                                   jint tag, jobjectArray value) {
-	    if (value == NULL) {
-	        return android_util_EventLog_writeEvent_String(env, clazz, tag, NULL);
-	    }
 	
 	    uint8_t buf[MAX_EVENT_PAYLOAD];
 	    const size_t max = sizeof(buf) - 1;  // leave room for final newline
@@ -300,3 +334,5 @@ Java层写event log的api为 writeEvent(),不过系统有四种该函数的实�
 	    buf[pos++] = '\n';
 	    return android_bWriteLog(tag, buf, pos);
 	}
+
+最后同样是调用函数 android_bWriteLog()
