@@ -646,3 +646,7 @@ android_log_processLogBuffer()的参数有两个,第一个是logger_entry变量,
     }
 
     return ret;
+
+函数返回后,就把最终字符串写到输出. 
+
+OK,logcat的用法及实现流程到这里就基本结束了.
