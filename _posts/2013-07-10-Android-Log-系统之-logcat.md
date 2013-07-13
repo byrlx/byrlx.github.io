@@ -1,10 +1,10 @@
----
+----
 layout: default
 title: Android Log 系统之 Logcat
----
+----
 
 {{page.title}}
-==============
+=================
 
 这篇文章介绍android系统中录log的工具 logcat.
 
