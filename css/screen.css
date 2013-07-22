@@ -133,7 +133,8 @@ body {
 
 	  .site .footer {
 		  border-top: 3px dashed #bdb76b;
-		  margin-top: 1.5em;
+		  margin-top: 2.5em;
+		  margin-bottom: 2.5em;
 		  margin-left: 0em;
 		  overflow: hidden;
 	  }
@@ -144,7 +145,7 @@ body {
 		font: SimHei;	
 	  	margin: 0px 0;
 		margin-top: 0em;
-		margin-left: 1em;
+		margin-left: 0.4em;
 	  }
 
 	  .site .footer .contact {
