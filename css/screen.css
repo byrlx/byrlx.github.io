@@ -132,7 +132,7 @@ body {
 	  }
 
 	  .site .footer {
-		  border-top: 3px solid #8b7d6b;
+		  border-top: 3px dashed #8b7d6b;
 		  margin-top: 1.5em;
 		  margin-left: 0em;
 		  overflow: hidden;
