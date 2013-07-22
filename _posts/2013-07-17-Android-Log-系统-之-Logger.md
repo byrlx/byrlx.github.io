@@ -250,12 +250,6 @@ r_all部分目前还不太理解,以后再补充.....
 		return (struct logger_entry *) (log->buffer + off);
 	}
 
-因为每个logger device的size都是固定大小,而系统中的log量要远远大于该size,故logger device都是采用 ring buffer的方式存放log. 这样就可能出现这个的情况,一条log的一部分在buffer尾部,而另一部分在buffer头部,所以每次从buffer读log都要考虑这总情况.
+因为每个logger device的size都是固定大小,而系统中的log量要远远大于该size,故logger device都是采用 ring buffer的方式存放log. 这样就可能出现这个的情况,一条log的一部分在buffer尾部,而另一部分在buffer头部,所以每次从buffer读log都要考虑这种情况. 获得entry之后,通过entry的变量len就可以知道msg的长度. 调用 do_read_log_to_user()将entry+msg写到user的buf中.
 
-		/* get exactly one entry from the log */
 		ret = do_read_log_to_user(log, reader, buf, ret);
-	
-	out:
-		mutex_unlock(&log->mutex);
-	
-		return ret;
