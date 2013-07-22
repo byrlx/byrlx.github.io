@@ -132,21 +132,19 @@ body {
 	  }
 
 	  .site .footer {
-		  font-size: 80%;
-		  color: green;
-		  border-top: 3px solid #00bfff;
+		  border-top: 3px solid #8b7d6b;
 		  margin-top: 1.5em;
 		  margin-left: 0em;
 		  overflow: hidden;
 	  }
 
-	  .footer {
-		 font: SimHei;	
-	  }
-
 	  .footer p {
+		font-size: 88%;
+		color: #00bfff;
+		font: SimHei;	
 	  	margin: 0px 0;
-		margin-left: 3.5em;
+		margin-top: 1em;
+		margin-left: 1em;
 	  }
 
 	  .site .footer .contact {
