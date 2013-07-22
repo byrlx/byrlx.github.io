@@ -132,7 +132,7 @@ body {
 	  }
 
 	  .site .footer {
-		  border-top: 3px dashed #8b7d6b;
+		  border-top: 3px dashed #bdb76b;
 		  margin-top: 1.5em;
 		  margin-left: 0em;
 		  overflow: hidden;
@@ -140,7 +140,7 @@ body {
 
 	  .footer p {
 		font-size: 88%;
-		color: #00e;
+		color: #8b008b;
 		font: SimHei;	
 	  	margin: 0px 0;
 		margin-top: 0em;
