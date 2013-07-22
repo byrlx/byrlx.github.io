@@ -133,11 +133,15 @@ body {
 
 	  .site .footer {
 		  font-size: 80%;
-		  color: red;
+		  color: green;
 		  border-top: 4px solid #cbe;
 		  margin-top: 1.5em;
 		  margin-left: 0em;
 		  overflow: hidden;
+	  }
+
+	  .footer {
+		 font: SimHei;	
 	  }
 
 	  .footer p {
