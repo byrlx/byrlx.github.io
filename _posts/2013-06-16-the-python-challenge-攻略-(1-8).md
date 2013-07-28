@@ -262,3 +262,70 @@ pickle 是python的一个*序列化/发序列化*的模块, 看来这一关的�
 		lxnum = ''.join(lxre.findall(lxline))
 	
 Bazinga !!! You got the final answer
+
+#### Level Eight
+
+这一关进去之后,只有一张图片,按照老习惯,看网页源码,结果我和我的小伙伴们愣了一下,源码什么线索都没有.
+
+反过头来继续看图片,看能不能找到什么线索,遗憾的是图片上什么文字都没有.继续看图片本身,发现中间有一部分有一条灰色地带,跟整张图片都不搭.
+
+上网找了一下 python 解析图片的模块,发现了 PIL, 看了一下 PIL 的文档,试了几个函数,发现每个坐标可以打印成 RPG 的值的形式.于是在想,对于灰色图片来说, RPG 的值会不会特别一下,上网一搜,果然,灰色的 RPG 值三个数都相等.OK, 规律找到了,剩下的就是写代码了.
+
+首先加载图片的信息及获得图片的 size 值,size 是 (width,height) 的形式.
+
+	lxim = Image.open("oxygen.png")
+	lxpix = lxim.load()
+	lxsize = lxim.size
+	lxwid = lxsize[0]
+	lxhei = lxsize[1]
+
+仔细看图片,发现灰色线条大约在图片中间的位置,于是直接取 height 的一半,然后遍历这一行,检查是否 RPG 的三个值相等.
+
+
+	i = lxhei/2
+	result = []
+	for j in range(lxwid):
+		lxpixx = lxpix[j,i]
+		print lxpixx
+
+果然相等, 不过重复数字很多,所以果断去掉重复,并转成字符
+
+	lxpixx = lxpix[j*7,i]
+	if lxpixx[0] == lxpixx[1] == lxpixx[2]:
+		lxch = chr(lxpixx[0])
+		if lxch != lastchr:
+			result.append(lxch)
+			lastchr = lxch
+	
+打印结果,终于是一段能看懂的话了,不过,只看懂了前半段,后半句还是一段数字,转换成字符打印之,还不是一个单词.崩溃.在想,是不是哪里出了问题.后来有打印所有的 RPG 值,发现大部分的重复像素是7个一组的,但是有的是14个一组,按照我的程序的写法,14个被去重成了一个.于是改了程序,每次循环前进七个像素:
+	
+	import Image
+	import re
+	
+	lxim = Image.open("oxygen.png")
+	lxpix = lxim.load()
+	lxsize = lxim.size
+	lxwid = lxsize[0]
+	lxhei = lxsize[1]
+	
+	i = lxhei/2
+	result = []
+	for j in range(lxwid/7):
+		lxpixx = lxpix[j*7,i]
+		if lxpixx[0] == lxpixx[1] == lxpixx[2]:
+			lxch = chr(lxpixx[0])
+			result.append(lxch)
+	
+	lxstr =  ''.join(result)
+	lxre = re.compile(r"([0-9]{3})")
+	lxresult = []
+	for i in lxre.findall(lxstr):
+		lxresult.append(chr(int(i)))
+	
+	print ''.join(lxresult)
+
+木哈哈哈,结果出来了.
+	
+	
+	
+	
