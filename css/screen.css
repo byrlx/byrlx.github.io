@@ -17,23 +17,23 @@ html, body {
 
 body {
 	background-color: white;
-	font: 15.34px helvetica, arial, clean, sans-serif;
+	font: 10.34px helvetica, arial, clean, sans-serif;
 		  *font-size: small;
 		  text-align: center;
 	  }
 
 	  h1 {
-		  font-size: 180%;
+		  font-size: 120%;
 		  margin-bottom: 1cm;
-		  margin-left: 4cm;
+		  margin-left: 2cm;
 	  }
 	  h2{
-		  font-size: 140%;
+		  font-size: 110%;
 		  margin-bottom: 1cm;
-		  margin-left: 4cm;
+		  margin-left: 2cm;
 	  }
 	  h3, h4, h5, h6 {
-		  font-size: 130%;
+		  font-size: 110%;
 		  margin-top: 1.5em;
 		  margin-left: 0;
 	  }
@@ -185,7 +185,7 @@ body {
 		  border-width:1px;
 		  display:block;
 		  font-size:90%;
-		  font-family:Calibri,"微软雅黑", "新宋体", "宋体";
+		  font-family: "Times New Roman", "Courier New", monospace;
 		  padding:20px 30px 20px 25px;
 		  background:#fffacd;
 		  color:blue;
