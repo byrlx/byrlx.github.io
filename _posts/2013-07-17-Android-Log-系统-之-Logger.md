@@ -6,7 +6,7 @@ title: Android Log 系统之 Logger
 {{page.title}}
 ----------------------------------
 
-中 [logcat](http://byrlx.github.io/2013/07/10/Android-Log-%E7%B3%BB%E7%BB%9F%E4%B9%8B-logcat.html) 和 [liblog](http://byrlx.github.io/2013/07/13/Android-Log-%E7%B3%BB%E7%BB%9F%E4%B9%8B-liblog.html) 这两篇文章,讲到了android系统中如何读log和写log. 那么,log存放的位置在哪里? 本文就介绍一下android 系统中存放log的地方: logger device.
+[logcat](http://byrlx.github.io/2013/07/10/Android-Log-%E7%B3%BB%E7%BB%9F%E4%B9%8B-logcat.html) 和 [liblog](http://byrlx.github.io/2013/07/13/Android-Log-%E7%B3%BB%E7%BB%9F%E4%B9%8B-liblog.html) 这两篇文章,讲到了android系统中如何读log和写log. 那么,log存放的位置在哪里? 本文就介绍一下android 系统中存放log的地方: logger device.
 
 Android 在 kernel 层提供了四个虚拟的device 设备,用于存放log. 可以通过输入 `adb shell ls /dev/log/` 来查看系统的虚拟logger 设备. 这些设备是在系统启动的时候以内核模块的方式初始化.
 
@@ -145,7 +145,7 @@ Android 在 kernel 层提供了四个虚拟的device 设备,用于存放log. 可
 	} else
 		file->private_data = log;
 
-通过传入的inode节点的次设备号从log_list链表中找到对应的logger device的结构体. 接着会判断打开方式,如果打开方式中包含"read"(例如logcat)的话,会分配一个logger_read结构体被赋值给file的private_data变量,否则file的private_data变量直接指向logger.
+通过传入的inode节点的次设备号从log_list链表中找到对应的logger device的结构体. 接着会判断打开方式,如果打开方式中包含"read"(例如logcat)的话,会分配一个logger_read结构体被赋值给file的private_data变量,同时会把reader的读开始位置设为logger buffer的head位置(也就是从头开始读),然后把reader加入到logger的reader链表中.否则file的private_data变量直接指向logger.
 
 #### 读logger
 
@@ -204,7 +204,7 @@ read()函数对应logger_read.
 			goto start;
 		}
 	
-r_all部分目前还不太理解,以后再补充.....
+r_all部分目前还不太理解,以后再补充.....(从代码来看,这个变量应该是与reader的权限有关,通过这个变量可以控制该reader是否有权限去读所有的log, 如果为0,表明reader没有该权限,只能读自己进程euid相等的log)
 
 		/*logger_read()*/
 		ret = get_user_hdr_len(reader->r_ver) +
@@ -253,3 +253,151 @@ r_all部分目前还不太理解,以后再补充.....
 因为每个logger device的size都是固定大小,而系统中的log量要远远大于该size,故logger device都是采用 ring buffer的方式存放log. 这样就可能出现这个的情况,一条log的一部分在buffer尾部,而另一部分在buffer头部,所以每次从buffer读log都要考虑这种情况. 获得entry之后,通过entry的变量len就可以知道msg的长度. 调用 do_read_log_to_user()将entry+msg写到user的buf中.
 
 		ret = do_read_log_to_user(log, reader, buf, ret);
+
+#### Log write
+
+之前有讲,user space在写log的流程最后调用到了write()函数,对应到driver层的实现为 logger_aio_write(). 让我们一段一段的分析这个函数的实现.
+
+	static ssize_t logger_aio_write(struct kiocb *iocb, const struct iovec *iov,
+				 unsigned long nr_segs, loff_t ppos)
+	{
+		struct logger_log *log = file_get_log(iocb->ki_filp);
+		size_t orig = log->w_off;
+		struct logger_entry header;
+		struct timespec now;
+		ssize_t ret = 0;
+
+首先是调用file_get_log()函数获得这个文件结构体对应的logger设备. 在打开设备的代码中有讲,file结构体的private_data变量会存放两个值之一:logger或reader,所以这里会判断文件是否以FMODE_READ的方式打开,如果是,则private_data为reader,需要去reader中找logger,否则直接返回private_data.
+	
+	static inline struct logger_log *file_get_log(struct file *file)
+	{
+		if (file->f_mode & FMODE_READ) {
+			struct logger_reader *reader = file->private_data;
+			return reader->log;
+		} else
+			return file->private_data;
+	}
+	
+下面的代码通过系统参数初始化log entry的header.
+		now = current_kernel_time();
+	
+		header.pid = current->tgid;
+		header.tid = current->pid;
+		header.sec = now.tv_sec;
+		header.nsec = now.tv_nsec;
+		header.euid = current_euid();
+		header.len = min_t(size_t, iocb->ki_left, LOGGER_ENTRY_MAX_PAYLOAD);
+		header.hdr_size = sizeof(struct logger_entry);
+	
+		/* null writes succeed, return zero */
+		if (unlikely(!header.len))
+			return 0;
+	
+		mutex_lock(&log->mutex);
+	
+接下来调用fix_up_readers()函数,通过传入本次log的长度对该logger设备的readers进行修正.
+		/*
+		 * Fix up any readers, pulling them forward to the first readable
+		 * entry after (what will be) the new write offset. We do this now
+		 * because if we partially fail, we can end up with clobbered log
+		 * entries that encroach on readable buffer.
+		 */
+		fix_up_readers(log, sizeof(struct logger_entry) + header.len);
+
+	static void fix_up_readers(struct logger_log *log, size_t len)
+	{
+		size_t old = log->w_off;
+		size_t new = logger_offset(log, old + len);
+		struct logger_reader *reader;
+	
+		if (is_between(old, new, log->head))
+			log->head = get_next_entry(log, log->head, len);
+	
+		list_for_each_entry(reader, &log->readers, list)
+			if (is_between(old, new, reader->r_off))
+				reader->r_off = get_next_entry(log, reader->r_off, len);
+	}
+
+	static size_t get_next_entry(struct logger_log *log, size_t off, size_t len)
+	{
+		size_t count = 0;
+	
+		do {
+			size_t nr = sizeof(struct logger_entry) +
+				get_entry_msg_len(log, off);
+			off = logger_offset(log, off + nr);
+			count += nr;
+		} while (count < len);
+	
+		return off;
+	}
+为什么要对reader进行修正?前面有讲过,logger buffer的size是固定的,系统采用ring buffer的方式写log,那么就会出现这样的情况,最新的logger会有机会覆盖前面的一条log,那么在这种情况下,对于reader来说,r_off这个参数就是无效的,因为下一条log(或者后面几条log)已经不存在了.
+
+get_next_entry()的实现不难理解,因为新加入的log长度为len,即寻找从r_off+len位置之后的第一条有效log.
+
+接下来就是真正把log的内容写入buffer
+	
+		do_write_log(log, &header, sizeof(struct logger_entry));
+	
+		while (nr_segs-- > 0) {
+			size_t len;
+			ssize_t nr;
+	
+			/* figure out how much of this vector we can keep */
+			len = min_t(size_t, iov->iov_len, header.len - ret);
+	
+			/* write out this segment's payload */
+			nr = do_write_log_from_user(log, iov->iov_base, len);
+			if (unlikely(nr < 0)) {
+				log->w_off = orig;
+				mutex_unlock(&log->mutex);
+				return nr;
+			}
+	
+			iov++;
+			ret += nr;
+		}
+	
+		mutex_unlock(&log->mutex);
+	
+		/* wake up any blocked readers */
+		wake_up_interruptible(&log->wq);
+	
+		return ret;
+	}
+
+首先会调用do_write_log()把header先写入buffer,这里直接调用memcpy(),header有可能被写到buffer的尾部和首部(ring buffer). 然后就是把user space传入的iovec数组的内容依次写入buffer. 如果写失败,会直接把logger的w_off位置roll back会之前的值.
+
+#### logger_poll
+
+在logcat的实现中曾讲到,logcat在打开logger设备后,会调用select()函数监控该logger设备,如果函数返回,表明有log可读,接下来就会调用read()读log.这里select对应的driver层函数就是logger_poll()
+	
+	static unsigned int logger_poll(struct file *file, poll_table *wait)
+	{
+		struct logger_reader *reader;
+		struct logger_log *log;
+		unsigned int ret = POLLOUT | POLLWRNORM;
+	
+		if (!(file->f_mode & FMODE_READ))
+			return ret;
+	
+		reader = file->private_data;
+		log = reader->log;
+	
+		poll_wait(file, &log->wq, wait);
+	
+		mutex_lock(&log->mutex);
+		if (!reader->r_all)
+			reader->r_off = get_next_entry_by_uid(log,
+				reader->r_off, current_euid());
+	
+		if (log->w_off != reader->r_off)
+			ret |= POLLIN | POLLRDNORM;
+		mutex_unlock(&log->mutex);
+	
+		return ret;
+	}
+
+函数首先会判断是否以read的方式打开设备,如果不是,直接返回.(因为select()一般对应读操作,如果不读那么select()就没什么意义了).判断log是否可读的唯一条件就是w_off是否等于r_off.
+
+OK,logger设备暂时就写到这里,以后有新的理解会继续补充.
