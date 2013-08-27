@@ -6,7 +6,7 @@ title: LDK笔记:list_head
 {{page.title}}
 -------------
 
-LDK一书全名是<Linux Kernel Development>, 作者是Kernel大婶Robert Love,目前在google工作,同时作者设计了Android系统许多的机制,例如Log机制,Ashmem等机制.本文是该书第三版第六章"内核数据结构"的读书笔记. 主要学习 list_head 的机制和实现.
+LDK一书全名是《Linux Kernel Development》, 作者是Kernel大婶Robert Love,目前在google工作,同时作者设计了Android系统许多的机制,例如Log机制,Ashmem等机制.本文是该书第三版第六章"内核数据结构"的读书笔记. 主要学习 list_head 的机制和实现.
 
 学过数据结构的人对链接肯定是非常熟悉,无论是在大学课程的学习或工作中都有实现链表的经历.在实现基本的结构体时,通常会在结构体中设计一个指向该结构体的指针变量,把该类型的结构体变量串起来,这就是链表.例如下面的code:
 这段代码无需多讲,学过编程的人应该一眼就能看懂.
