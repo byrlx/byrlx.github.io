@@ -1,0 +1,14 @@
+---
+layout: default
+title: LDK笔记:list_head
+---
+
+{{page.title}}
+-------------
+--
+
+layout--
+layout--
+layout--
+layout--
+layout-----
