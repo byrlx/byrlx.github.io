@@ -25,17 +25,17 @@ body {
 	  h1 {
 		  font-size: 120%;
 		  margin-bottom: 0.5cm;
-		  margin-left: 4cm;
+		  text-align: center;
 	  }
 	  h2{
 		  font-size: 110%;
 		  margin-bottom: 1cm;
-		  margin-left: 2cm;
+		  text-align: center;
 	  }
 	  h3, h4, h5, h6 {
 		  font-size: 110%;
 		  margin-top: 0.5em;
-		  margin-left: 0;
+		  text-align: center;
 	  }
 
 	  p {
@@ -89,7 +89,7 @@ body {
 	  .site {
 		  font-size: 110%;
 		  text-align: left;
-		  width: 60em;
+		  width: 50em;
 		  margin: 1em auto 1em auto;
 		  line-height: 1.5em;
 	  }
