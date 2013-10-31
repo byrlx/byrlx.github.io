@@ -1,6 +1,6 @@
 ---
 layout: default
-title: git 代码学习: git clone
+title: git 代码学习 git clone
 ---
 
 {{page.title}}
