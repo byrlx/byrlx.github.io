@@ -18,7 +18,7 @@ title: Vim and the plugins
 写此文，主要记录平常使用的vim插件及使用心得。插件越来越多，总免不了会有一些操作
 或快捷键上的冲突。记下来，将来用的时候省得再去翻文档。
 
-#### [taglist.vim](http://www.vim.org/scripts/script.php?script_id=273)
+#### 1. [taglist.vim](http://www.vim.org/scripts/script.php?script_id=273)
 
 该插件主要用于代码浏览，目前来讲我最常用的一个命令就是“TlistToggle”，我还把F2
 键赋予了这个命令.
@@ -41,9 +41,16 @@ taglist的buffer默认还会存在，如果想让所有源文件都退出后vim�
 可以通过*"let Tlist_WinWidth = x(let Tlist_WinHeight = x)"* 设定
 taglist 窗口的宽度（高度，适用于新窗口以水平方式打开)。
 
-#### [conque_term.vim](http://www.vim.org/scripts/script.php?script_id=2771)
+#### 2. [conque_term.vim](http://www.vim.org/scripts/script.php?script_id=2771)
 
 该插件可以让你在vim里打开一个窗口执行shell命令。对一些简单的shell命令，用起来还
 蛮方便的。
 
 常用命令“ :ConqueTermSplit bash”。
+
+#### 3. [ack.vim](http://www.vim.org/scripts/script.php?script_id=2572)
+
+要使用这个插件，必须先安装“ack”这个工具，笔者在[这篇文章](http://byrlx.github.io/2013/10/31/Welcome-ack-to-my-toolbox.html)中有对这个tool作简单介绍。
+
+安装以后，可以通过“:Ack xx”在命令模式下使用ack命令，命令结果默认会输出到vim底端新开启的“窗口”中，
+通过上下选择不同的结果，可以跳转到相应文件的相应行。
