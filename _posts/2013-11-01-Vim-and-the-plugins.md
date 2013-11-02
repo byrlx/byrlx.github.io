@@ -36,7 +36,14 @@ title: Vim and the plugins
 
 默认情况，打开taglist之后，vim会开启一个单独的buffer，所以如果退出了代码文件的buffer，
 taglist的buffer默认还会存在，如果想让所有源文件都退出后vim自动退出（即taglist的buffer
-自动退出），可以在vimrc中设定*"let Tlist_Exit_OnlyWindow=1"*
+自动退出），可以在vimrc中设定*"let Tlist_Exit_OnlyWindow=1"*。
 
 可以通过*"let Tlist_WinWidth = x(let Tlist_WinHeight = x)"* 设定
-taglist 窗口的宽度（高度，适用于新窗口以水平方式打开）
+taglist 窗口的宽度（高度，适用于新窗口以水平方式打开)。
+
+#### [conque_term.vim](http://www.vim.org/scripts/script.php?script_id=2771)
+
+该插件可以让你在vim里打开一个窗口执行shell命令。对一些简单的shell命令，用起来还
+蛮方便的。
+
+常用命令“ :ConqueTermSplit bash”。
