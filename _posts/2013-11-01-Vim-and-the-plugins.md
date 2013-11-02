@@ -31,6 +31,8 @@ title: Vim and the plugins
 文件相应的定义处。同时，如果在代码文件中不停的跳转，该“窗口”的光标也会跟着自动跳跃
 到相关的函数名处。
 
+![taglist.vim](../images/taglist.png "taglist.vim")
+
 默认情况，进入vim后左边的“窗口”不会启动，可以通过修改vimrc，加入*"let Tlist_Auto_Open=1"*
 将其设为进入vim自动启动。
 
