@@ -18,7 +18,7 @@ title: Vim and the plugins
 写此文，主要记录平常使用的vim插件及使用心得。插件越来越多，总免不了会有一些操作
 或快捷键上的冲突。记下来，将来用的时候省得再去翻文档。
 
-#### taglist.vim
+#### [taglist.vim](http://www.vim.org/scripts/script.php?script_id=273)
 
 该插件主要用于代码浏览，目前来讲我最常用的一个命令就是“TlistToggle”，我还把F2
 键赋予了这个命令.
