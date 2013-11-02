@@ -7,7 +7,7 @@ title: Vim and the plugins
 ---------------------------
 
 学Linux之初，就知道有vim这么个东西，但一直没有深入使用，读研之后，开始写代码，
-开始使用vim，多少也有些装X的成分。那时候对vim了解不深，用的也都是些基本的功能。
+开始使用vim，其中多少也有些装X的成分。那时候对vim了解不深，用的也都是些基本的功能。
 工作之后，刚去公司，就一直用vim学习代码，也开始学习些更复杂的操作，期间也试着
 用了一段时间的UE以及公司买的sourceinlight。不过没多久就又回到vim里了。
 
@@ -22,6 +22,8 @@ title: Vim and the plugins
 
 该插件主要用于代码浏览，目前来讲我最常用的一个命令就是“TlistToggle”，我还把F2
 键赋予了这个命令.
+	
+	nmpa <F2> :TlistToggle <CR>
 
 当在vim输入“:TlistToggle”命令后，默认会在vim左边开启一个“窗口”，该窗口中会按照
 ”varible/class/fuction“等关键字分成几段文字，每一段文字都显示了目前在该代码文件
