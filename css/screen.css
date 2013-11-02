@@ -39,11 +39,17 @@ body {
 		  text-align: left;
 	  }
 
+	  img {
+		  display: block;
+		  margin: 0 auto;
+	  }
+
 	  img.center {
 		  display: block;
 		  margin-left: auto;
 		  margin-right: auto;
 	  }
+
 	  p {
 		  margin: 10px 0;
 	  }
