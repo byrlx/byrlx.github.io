@@ -48,6 +48,8 @@ taglist 窗口的宽度（高度，适用于新窗口以水平方式打开)。
 该插件可以让你在vim里打开一个窗口执行shell命令。对一些简单的shell命令，用起来还
 蛮方便的。
 
+![conque.vim]({{root_url}}/images/conque.png "conque.vim")
+
 常用命令“ :ConqueTermSplit bash”。
 
 #### 3. [ack.vim](http://www.vim.org/scripts/script.php?script_id=2572)
