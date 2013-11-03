@@ -60,3 +60,9 @@ taglist 窗口的宽度（高度，适用于新窗口以水平方式打开)。
 通过上下选择不同的结果，可以跳转到相应文件的相应行。
 
 ![ack.vim]({{root_url}}/images/ack.png "ack.vim")
+
+#### 4. [matrix.vim](http://www.vim.org/scripts/script.php?script_id=1189)
+
+一个很有趣的插件，让vim窗口变成《黑客帝国》。
+
+![matrix.vim]({{root_url}}/images/matrix.png "matrix.vim")
