@@ -66,3 +66,9 @@ taglist 窗口的宽度（高度，适用于新窗口以水平方式打开)。
 一个很有趣的插件，让vim窗口变成《黑客帝国》。
 
 ![matrix.vim]({{root_url}}/images/matrix.png "matrix.vim")
+
+#### 5. [minibufexpl.vim](http://www.vim.org/scripts/script.php?script_id=159)
+
+很实用的插件，如果你打开多个文件，会自动在最上方开一个类似“tab”的窗口，显示每个打开的文件名称，可以使用TAB键在文件名之间移动，按下回车即可以切换到该文件的buffer。
+
+![minibuf.vim]({{root_url}}/images/minibufexpl.png "minibufexpl.vim")
