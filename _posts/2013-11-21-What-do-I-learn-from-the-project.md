@@ -47,10 +47,32 @@ title: What do I learn from the project
       gcc -o helloworld -DHELLO helloword.c
   
       代码实现：
-  
       #ifdefine TEST
         printf("hello world");
       #else
         printf("NO hello world");
       #endif
 
+宏方法主要是指使用宏封装函数或代码，常见的一个场景是log输出，在实际项目中，经常会定义一组通用的宏API代替printf()系列函数。
+例如我们定义了一个函数__lxlog(type, msg)，而且要msg支持format格式，即__lxlog(type, format, str...),
+那我们可以用宏来封装这个函数：
+
+      #define LXLOG(type,format,str...) __lxlog(type, format, str...)
+
+在宏中可以对参数进行简化，用省略号代替，例如上面语句可以写成
+
+      #define LXLOG(type, format, ...)      __lxlog(type, format, __VA_ARGS__)
+      或者
+      #define LXLOG(type, format, ...)      __lxlog(type, format, ##__VAR_ARGS__)
+      
+第二种表示方式的好处是，当可变参数为空，它会自动将__VAR_ARGS__前面的逗号去掉。例如，
+如果使用第一种方法调用LXLOG(ERROR, "err"),则会编译失败，因为展开后函数__lx_log()里多了一个逗号。
+而使用第二种方式会自动将逗号去掉。
+
+如果觉得每次都要输入type麻烦，也可以继续对LXLOG进行封装。
+
+      #define LXERROR(...)    LXLOG(ERROR, ##__VA_ARGS__)
+      #define LXDEBUG(...)    LXLOG(ERROR, ##__VA_ARGS__)
+      ...
+      
+善用宏开关和宏参数，会使代码维护变得简单可靠。
