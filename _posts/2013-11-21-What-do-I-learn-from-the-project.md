@@ -44,13 +44,13 @@ title: What do I learn from the project
 
 宏开关基本就是if else语法，如果定义了这个宏，那么就执行A段代码，否则执行B段代码。可以通过在gcc中使用“-D”定义宏，例如
 
-  gcc -o helloworld -DHELLO helloword.c
+      gcc -o helloworld -DHELLO helloword.c
   
-  代码实现：
+      代码实现：
   
-  #ifdefine TEST
-    printf("hello world");
-  #else
-    printf("NO hello world");
-  #endif
+      #ifdefine TEST
+        printf("hello world");
+      #else
+        printf("NO hello world");
+      #endif
 
