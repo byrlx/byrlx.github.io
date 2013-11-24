@@ -32,4 +32,25 @@ title: What do I learn from the project
 
 基本功能的test case是必须的，你的模块具备什么样的功能，你就要写case测试他有没有这些功能。
 
+另一方面，你可以像老顽童一样，玩“左右互搏”的手段。写一些变态的Test Case对模块进行“狂轰乱炸”，看看你的模块能否抵挡住袭击。
+然后，你就知道哪方面需要改进了。
+
+#### 4. 使用可变参数宏
+
+项目前期，开始写代码之后，总需要在代码中添加一些调试手段。后期需要发布时，需要把这些调试手段关掉，如果通过添/删代码的方式来做，
+那一条条删除的工作量会很大，而且未必能删的干净。
+
+一个常用的方法是使用宏开关和宏方法。
+
+宏开关基本就是if else语法，如果定义了这个宏，那么就执行A段代码，否则执行B段代码。可以通过在gcc中使用“-D”定义宏，例如
+
+  gcc -o helloworld -DHELLO helloword.c
+  
+  代码实现：
+  
+  #ifdefine TEST
+    printf("hello world");
+  #else
+    printf("NO hello world");
+  #endif
 
