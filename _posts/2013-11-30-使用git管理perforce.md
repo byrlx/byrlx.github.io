@@ -23,13 +23,13 @@ title: 使用 git 管理 perforece
 
 创建一个文件，保存如下信息，并在bashrc中引用它
 
-  # p4config
-  export P4PORT=your p4 server address:port
-  export P4USER=account
-  export P4CLIENT=local p4 workspace
-  
-  #bashrc
-  source  p4config
+    # p4config
+    export P4PORT=your p4 server address:port
+    export P4USER=account
+    export P4CLIENT=local p4 workspace
+        
+    #bashrc
+    source  p4config
 
 执行完这一步，你应该就可以用 p4 login 命令登录了 perforce 服务器了。
 
