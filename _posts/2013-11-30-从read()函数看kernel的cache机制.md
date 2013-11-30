@@ -73,4 +73,4 @@ page cache指在内存中存放一些page页面，提高系统访问页面的速
 		}
 
 radix tree 是内核的一个通用数据结构，它的使用方法与list_head很相似，
-在内核中被广泛使用。这里我们就暂且把page cache放到一边，先看一下radix_tree相关的一些知识。
+在内核中被广泛使用。这里我们就看一下radix_tree相关的一些知识。
