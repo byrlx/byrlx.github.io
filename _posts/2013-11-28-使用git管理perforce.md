@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 使用 git 管理 perforece
+title: 使用 git-p4 管理 perforece
 ---
 
 {{page.title}}
