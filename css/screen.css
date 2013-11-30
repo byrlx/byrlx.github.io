@@ -88,7 +88,7 @@ body {
 
 	  ul.posts span {
 		  color: #8B8878;
-		  font-family: "Times New Roman", "宋体", monospace;
+		  font-family: "yahei", monospace;
 		  font-size: 90%;
 	  }
 
@@ -195,7 +195,7 @@ body {
 		  border-width:1px;
 		  display:block;
 		  font-size:90%;
-		  font-family: "Times New Roman", "宋体", monospace;
+		  font-family: "yahei", monospace;
 		  padding:20px 30px 20px 25px;
 		  background:#fffacd;
 		  color:blue;
