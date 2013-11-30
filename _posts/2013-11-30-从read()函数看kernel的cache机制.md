@@ -27,6 +27,50 @@ page cache指在内存中存放一些page页面，提高系统访问页面的速
 
 在read_get_page(mapping, offset)中，mapping是一个struct address_space结构体变量。
 
+	struct address_space {
+		struct inode		*host;		/* owner: inode, block_device */
+		struct radix_tree_root	page_tree;	/* radix tree of all pages */
+		spinlock_t		tree_lock;	/* and lock protecting it */
+		unsigned int		i_mmap_writable;/* count VM_SHARED mappings */
+		struct rb_root		i_mmap;		/* tree of private and shared mappings */
+		struct list_head	i_mmap_nonlinear;/*list VM_NONLINEAR mappings */
+		struct mutex		i_mmap_mutex;	/* protect tree, count, list */
+		/* Protected by tree_lock together with the radix tree */
+		unsigned long		nrpages;	/* number of total pages */
+		pgoff_t			writeback_index;/* writeback starts here */
+		const struct address_space_operations *a_ops;	/* methods */
+		unsigned long		flags;		/* error bits/gfp mask */
+		struct backing_dev_info *backing_dev_info; /* device readahead, etc */
+		spinlock_t		private_lock;	/* for use by the address_space */
+		struct list_head	private_list;	/* ditto */
+		void			*private_data;	/* ditto */
+	} __attribute__((aligned(sizeof(long))));
+
 这里介绍几个成员变量：host指向文件的inode，page_tree指向用于管理page cache的radix tree。
 在do_generic_file_read(file, pos, desc, actor)中，文件是以byte为单位偏移，
 但 file 在page cache中是以page为单位进行管理，所以offset 传到page cache时需要做转换。
+32位机器上，一个page为4K（2×12），所以只需要将byte地址右移12位即可得到page地址。
+
+	index = *ppos >> PAGE_CACHE_SHIFT;
+
+#### radix tree
+
+首先来看下find_get_page()的代码实现,
+	可以看到会调用radix_tree_lookup_slot()去查找给定的offset在radix tree中的位置。
+
+	struct page *find_get_page(struct address_space *mapping, pgoff_t offset)
+	{
+		void **pagep;
+		struct page *page;
+	
+		rcu_read_lock();
+	repeat:
+		page = NULL;
+		pagep = radix_tree_lookup_slot(&mapping->page_tree, offset);
+		if (pagep) {
+			page = radix_tree_deref_slot(pagep);
+			...
+		}
+
+radix tree 是内核的一个通用数据结构，它的使用方法与list_head很相似，
+在内核中被广泛使用。这里我们就暂且把page cache放到一边，先看一下radix_tree相关的一些知识。
