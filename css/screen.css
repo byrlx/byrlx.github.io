@@ -109,6 +109,13 @@ body {
 	  .title {
 		  color: #8b7500;
 		  font-weight: bold;
+		  text-align: justify;
+	  }
+
+	  .resume {
+		  color: #8b7500;
+		  font-weight: bold;
+		  text-align: right;
 	  }
 
 	  .site em{
