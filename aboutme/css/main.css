@@ -215,9 +215,9 @@ a:link:hover, a:visited:hover {
 
 .section h4 {
   font-weight: normal;
-  font-style: normal;
+  font-style: bold;
   margin-bottom: 20px;
-  margin-top: -20px;
+  margin-top: 5px;
 }
 
 .section .date {
