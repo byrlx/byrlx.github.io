@@ -21,5 +21,11 @@ title: Android Log系统外传之logwrapper
 例如，你在adb shell中输入‘logwrapper ls’，
 终端上不会显示任何内容，ls的输出被重定向到了logger中，
 通过logcat命令把logger的内容抓到文件中，可以看到ls的输出。
+如下图。
 
-![ls with logwrapper]({{root_url}}/images/ls.png "lslogwrapper"))
+使用logwrapper后，ls的结果没有输出到标准输出。
+![ls with logwrapper]({{root_url}}/images/ls.png "lslogwrapper")
+
+在logcat抓的log中发现了上面ls命令的结果。
+![logcat with logwrapper]({{root_url}}/images/logwrapper.png "logwrapper")
+
