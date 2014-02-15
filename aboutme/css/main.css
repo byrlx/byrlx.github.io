@@ -18,7 +18,7 @@ body.grid {
 }
 
 h1 {
-  font-size: 41px;
+  font-size: 35px;
   line-height: 50px;
   font-weight: normal;
   font-style: normal;
@@ -140,8 +140,8 @@ a:link:hover, a:visited:hover {
 /* --- */
 
 #story {
-  font-size: 18px;
-  line-height: 30px;
+  font-size: 16px;
+  line-height: 27px;
   width: 390px;
   float: left;
   padding-right: 90px;
