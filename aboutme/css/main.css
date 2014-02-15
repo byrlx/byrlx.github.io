@@ -34,8 +34,8 @@ h2 {
 }
 
 h3 {
-  font-size: 24px;
-  line-height: 30px;
+  font-size: 22px;
+  line-height: 25px;
   font-weight: normal;
   font-style: normal;
   color: #3c3c3c;
@@ -209,7 +209,7 @@ a:link:hover, a:visited:hover {
 
 .section h3 {
   line-height: 22px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   font-style: italic;
 }
 
