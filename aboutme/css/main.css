@@ -42,7 +42,7 @@ h3 {
 }
 
 p {
-  margin-bottom: 18px;
+  margin-bottom: 13px;
 }
 
 a:link, a:visited {
@@ -209,7 +209,7 @@ a:link:hover, a:visited:hover {
 
 .section h3 {
   line-height: 22px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   font-style: italic;
 }
 
@@ -217,7 +217,7 @@ a:link:hover, a:visited:hover {
   font-size: 17px;
   font-weight: normal;
   font-style: normal;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
   margin-top: -10px;
   color: #0b0b61;
 }
