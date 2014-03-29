@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Android 新功能 logd 介绍
+title: Android logd功能
 ---
 
 {{page.title}}
