@@ -60,7 +60,7 @@ logd的全部代码可以看[这里](https://android.googlesource.com/platform/s
         exit(1);
     }
     
-#### 使用的libsysutil基类
+#### 三，使用的libsysutil基类
 
 ##### 1. SocketListener
 
@@ -97,7 +97,7 @@ Socket相关的组件，其中最重要的部分就是SocketListener，
 - runOnEachSocket(),接收一个SocektClientCommand的对象,通过该对象对
    mClients的每个项运行runSocketCommand()命令.
 
-##### SocketClient
+##### 2，SocketClient
 
 - 构造函数:接收的参数一般为socketfd,owned(在SocketListener中,连接到
    listen socket的client的owned都为true,而mListen为false时,用当前
@@ -112,7 +112,7 @@ Socket相关的组件，其中最重要的部分就是SocketListener，
 - incRef()/decRef():增加/减少引用计数,如果减少到0,调用delete this删除
    当前对象.
 
-##### FrameworkListener
+##### 3，FrameworkListener
 
 - 继承自SocketListener，有一个FrameworkCommand类型的list作为成员变量。
 - 构造函数会将mListener设为true，表示会监听这个socket。
@@ -123,7 +123,7 @@ Socket相关的组件，其中最重要的部分就是SocketListener，
 - dispatchCommand(cli,data):解析命令行data，查找当前的mCommands是否有
    对应的命令（argv\[0\]),如果有,则执行runCommand()函数.
 
-##### FrameworkCommand
+##### 4，FrameworkCommand
 
 - 该类用来存放一个具体的command对象,runCommand()是一个纯虚函数,因此应
    该被所有子类实现.
