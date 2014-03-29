@@ -6,7 +6,7 @@ title: Android 新功能 logd 介绍
 {{page.title}}
 ======================
 
-#### 介绍
+#### 一，简介
 
 logd是目前Android在L版本新增的一个log相关的功能,代码的相关位置在
 system/core/logd目录.在Android代码的git提交记录上,关于logd的信息
@@ -20,7 +20,7 @@ system/core/logd目录.在Android代码的git提交记录上,关于logd的信息
 会取代目前Android现有的kernel层的Logger机制。
 logd的全部代码可以看[这里](https://android.googlesource.com/platform/system/core/+/882f856668331488d9bbaec429de7aac5d7978c9/logd)
 
-#### 架构简单介绍
+#### 二，基本架构
 
 在 rootdir/init.rc 文件中，增加了如下开启logd service的相关代码。
 这段代码说明logd服务是开机启动，并且会在启动该服务时创建三个相关的socket
@@ -60,7 +60,7 @@ logd的全部代码可以看[这里](https://android.googlesource.com/platform/s
         exit(1);
     }
     
-#### logd继承的基类介绍
+#### 使用的libsysutil基类
 
 ##### 1. SocketListener
 
@@ -96,3 +96,34 @@ Socket相关的组件，其中最重要的部分就是SocketListener，
 - sendBroadcaset()函数:向mClients里的每个项发广播.
 - runOnEachSocket(),接收一个SocektClientCommand的对象,通过该对象对
    mClients的每个项运行runSocketCommand()命令.
+
+##### SocketClient
+
+- 构造函数:接收的参数一般为socketfd,owned(在SocketListener中,连接到
+   listen socket的client的owned都为true,而mListen为false时,用当前
+   socket创建的对象owned为false),然后调用init()函数.
+- init()函数工作:
+   a,根据参数初始化类的成员变量.
+   b,使用getsockopt()获取客户端进程的权限属性,这些属性包括:pid,uid,gid
+   等.
+- sendMsg/Data()函数集:这些函数最后都会调到sendDataLockedv().
+- sendDataLockedv():先将SIGPIPE设成SIG_IGN,然后向socket成员写入vector
+   变量.
+- incRef()/decRef():增加/减少引用计数,如果减少到0,调用delete this删除
+   当前对象.
+
+##### FrameworkListener
+
+- 继承自SocketListener，有一个FrameworkCommand类型的list作为成员变量。
+- 构造函数会将mListener设为true，表示会监听这个socket。
+- registerCmd(cmd):将一个FrameworkCommand对象插入到list中.
+- onDataAvailable(cli):从client中读取数据,读取的数据可能有多条,每一条
+   以'\0'结尾,但是,实际上这些数据组成一条完整的命令(数据可能是命令+参
+   数),对每一条调用dispatchCommand()命令.
+- dispatchCommand(cli,data):解析命令行data，查找当前的mCommands是否有
+   对应的命令（argv\[0\]),如果有,则执行runCommand()函数.
+
+##### FrameworkCommand
+
+- 该类用来存放一个具体的command对象,runCommand()是一个纯虚函数,因此应
+   该被所有子类实现.
