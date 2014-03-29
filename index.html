@@ -7,14 +7,14 @@ title: 新桑渡
 
 
 <div class="lxpost">
+<ul class="posts">
+	<a href="_post/running.html"> 跑步日记 </a>
+</ul>
   <ul class="posts">
     {% for post in site.posts %}
       <li><span>{{ post.date | date_to_string }}</span>  &raquo;  <a href="{{ post.url }}">{{ post.title }}</a></li>
     {% endfor %}
   </ul>
 
-	<ul class="posts">
-		<a href="_post/running.html"> 跑步日记 </a>
-	</ul>
 </div>
 
