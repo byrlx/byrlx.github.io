@@ -22,7 +22,7 @@ logd的全部代码可以看[这里](https://android.googlesource.com/platform/s
 
 #### 架构简单介绍
 
-1. 在 rootdir/init.rc 文件中，增加了如下开启logd service的相关代码。
+在 rootdir/init.rc 文件中，增加了如下开启logd service的相关代码。
 这段代码说明logd服务是开机启动，并且会在启动该服务时创建三个相关的socket
 “logd”，“logdr”，“logdw”。
 
@@ -31,30 +31,30 @@ logd的全部代码可以看[这里](https://android.googlesource.com/platform/s
         socket logd stream 0666 logd logd 
         socket logdr seqpacket 0666 logd logd 
         socket logdw dgram 0222 logd logd 
-        
-2. 在logd的main()函数中，通过启动三个相应的线程来“读”、“写”，“控制”上面的三个socekt。
+            
+在logd的main()函数中，通过启动三个相应的线程来“读”、“写”，“控制”上面的三个socekt。
 这就是logd机制的一个核心框架。具体代码如下。
-
+    
     // LogReader listens on /dev/socket/logdr. When a client
     // connects, log entries in the LogBuffer are written to the client.
-
+    
     LogReader *reader = new LogReader(logBuf);
     if (reader->startListener()) {
         exit(1);
     }
-
+    
     // LogListener listens on /dev/socket/logdw for client
     // initiated log messages. New log entries are added to LogBuffer
     // and LogReader is notified to send updates to connected clients.
-
+    
     LogListener *swl = new LogListener(logBuf, reader);
     if (swl->startListener()) {
         exit(1);
     }
-
+    
     // Command listener listens on /dev/socket/logd for incoming logd
     // administrative commands.
-
+    
     CommandListener *cl = new CommandListener(logBuf, reader, swl);
     if (cl->startListener()) {
         exit(1);
@@ -68,7 +68,6 @@ logd的全部代码可以看[这里](https://android.googlesource.com/platform/s
 这三个线程都是通过调用类的startListener()函数实现的。这里就用到了libsysutil的
 Socket相关的组件，其中最重要的部分就是SocketListener，
 因为上述logd实现的类都直接或间接继承自SocketListener类。
-
 
 - 该类主要用于监听socket,可以通过传入"类名"或fd来初始化一个该类对象,
    用于监控相应的socket.该类是一个抽象基类,因为其成员函数
