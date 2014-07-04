@@ -8,29 +8,34 @@ title: Android logd功能
 
 #### 一，简介
 
-logd是目前Android在L版本新增的一个log相关的功能,代码的相关位置在
+Android Log系统在 L 版本有了很大的改动。通过在user space引入以叫做logd的机制来代替目前KitKat及之前版本Kernel 层的Logger 设备的实现。Logd代码的相关位置在
 system/core/logd目录.在Android代码的git提交记录上,关于logd的信息
-只有一句话.
+有一句话.
 
     logd: initial checkin.
 
     * Create a new userspace log daemon for handling logging messages.
 
-目前还不能确定它的具体作用和在log系统的位置,笔者只是凭借对代码的阅读猜测这个feature或许
-会取代目前Android现有的kernel层的Logger机制。
 logd的全部代码可以看[这里](https://android.googlesource.com/platform/system/core/+/882f856668331488d9bbaec429de7aac5d7978c9/logd)
 
-#### 二，基本架构
+#### 二，在系统中的位置
 
-在 rootdir/init.rc 文件中，增加了如下开启logd service的相关代码。
-这段代码说明logd服务是开机启动，并且会在启动该服务时创建三个相关的socket
-“logd”，“logdr”，“logdw”。
+在 rootdir/init.rc 文件中，增加了开启logd service的相关代码。
+从这段代码可以看到，系统启动时，init会启动一个叫做logd的service，
+同时会建立三个socket。有趣的是，建立的这三个socket分别使用了三种
+不同类型的type，我猜测作者之所以要这么做，是跟这三个socket在logd中
+的不同作用有关，后面的内容会介绍。
+
+最后一段代码猜测跟selinux机制相关。（待补充）
 
     service logd /system/bin/logd
         class main
         socket logd stream 0666 logd logd 
         socket logdr seqpacket 0666 logd logd 
         socket logdw dgram 0222 logd logd 
+        seclabel u:r:logd:s0
+        
+在Kitkat
             
 在logd的main()函数中，通过启动三个相应的线程来“读”、“写”，“控制”上面的三个socekt。
 这就是logd机制的一个核心框架。具体代码如下。
