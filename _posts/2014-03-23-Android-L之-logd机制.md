@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Android logd功能
+title: Android L版本logd机制
 ---
 
 {{page.title}}
@@ -20,6 +20,17 @@ logd的全部代码可以看[这里](https://android.googlesource.com/platform/s
 
 #### 二，在系统中的位置
 
+前面的几篇文章讲过，在Kitkat及之前的版本，系统中的log都是存放到kernel层的
+android logger虚拟设备中，log api及logcat都是通过liblig来对操作这些logger 
+device。
+
+logd的引入，将log的存放从kernel层‘搬到’了user层（截止到目前，logger机制在
+L版本的代码中仍然保留，Android提供了一个feature option 'TARGET_USES_LOGD'
+来决定使用哪种机制，默认是使用logd）。目前还无法完全理解作者这样做的意图，
+不过感觉android log机制本身是google自己开发，如果不是必须设计成内核模块，
+将其移动到user space实现可以减轻kernel层负担。
+
+
 在 rootdir/init.rc 文件中，增加了开启logd service的相关代码。
 从这段代码可以看到，系统启动时，init会启动一个叫做logd的service，
 同时会建立三个socket。有趣的是，建立的这三个socket分别使用了三种
@@ -35,10 +46,15 @@ logd的全部代码可以看[这里](https://android.googlesource.com/platform/s
         socket logdw dgram 0222 logd logd 
         seclabel u:r:logd:s0
         
-在Kitkat
+logdw：所有的使用android log api生成的log都会通过该socket写入到logd
+的buffer中；
+logdr：logcat通过这个socket将logd buffer中的log读出；
+logd：对logd buffer的控制命令，主要对log buffer做一些操作或者获取相关配置。
+
+#### 三，代码分析
             
-在logd的main()函数中，通过启动三个相应的线程来“读”、“写”，“控制”上面的三个socekt。
-这就是logd机制的一个核心框架。具体代码如下。
+在logd的main()函数中，默认会启动四个线程：前三个线程分别监听上面提到的
+与logd相关的三个socket，第四个进程与/dev/kmsg有关。
     
     // LogReader listens on /dev/socket/logdr. When a client
     // connects, log entries in the LogBuffer are written to the client.
@@ -65,7 +81,7 @@ logd的全部代码可以看[这里](https://android.googlesource.com/platform/s
         exit(1);
     }
     
-#### 三，使用的libsysutil基类
+#### 参考：使用的libsysutil基类
 
 ##### 1. SocketListener
 
