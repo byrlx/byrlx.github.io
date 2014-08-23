@@ -239,13 +239,24 @@ body {
 		  margin-bottom: 1em;
 	  }
 
+	  table 
+	  {
+	  	border-collapse:collapse;
+		width:100%;
+	  }
 	  table, td, th
 	  {
-		  border:1px solid green;
+		  border:1px solid black;
 	  }
 
 	  th
 	  {
 		  background-color:green;
 		  color:white;
+		  height:40px;
+	  }
+	  
+	  td
+	  {
+	  	text-align: center;
 	  }
