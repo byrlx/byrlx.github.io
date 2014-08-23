@@ -24,4 +24,4 @@ L版本Log系统相关代码:
 
 1. [logd](https://android.googlesource.com/platform/system/core/+/master/logd/)
 2. [liblog](https://android.googlesource.com/platform/system/core/+/master/liblog/)
-3. [liblog](https://android.googlesource.com/platform/system/core/+/master/logcat/)
+3. [logcat](https://android.googlesource.com/platform/system/core/+/master/logcat/)
