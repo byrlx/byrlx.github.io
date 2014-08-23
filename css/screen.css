@@ -16,7 +16,7 @@ html, body {
 }
 
 body.grid {
-  background-image: url(aboutme/images/grid.png);
+	background-image: url(aboutme/images/grid.png);
 }
 
 body {
@@ -237,4 +237,15 @@ body {
 
 	  .related h2 {
 		  margin-bottom: 1em;
+	  }
+
+	  table, td, th
+	  {
+		  border:1px solid green;
+	  }
+
+	  th
+	  {
+		  background-color:green;
+		  color:white;
 	  }
