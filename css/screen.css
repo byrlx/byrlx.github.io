@@ -244,7 +244,7 @@ body {
 	  	border-collapse:collapse;
 		width:100%;
 	  }
-	  table, td, th
+	  table, td, tr
 	  {
 		  border:1px solid black;
 	  }
@@ -253,7 +253,6 @@ body {
 	  {
 		  background-color:green;
 		  color:white;
-		  height:40px;
 	  }
 	  
 	  td
