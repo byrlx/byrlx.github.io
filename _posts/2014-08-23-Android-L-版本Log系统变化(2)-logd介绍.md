@@ -244,4 +244,4 @@ Socket相关的组件，其中最重要的部分就是SocketListener，
 ##### 4，FrameworkCommand
 
 - 该类用来存放一个具体的command对象,runCommand()是一个纯虚函数,因此应
-   该被所有子类实现.
+   该被所有子类实现..
