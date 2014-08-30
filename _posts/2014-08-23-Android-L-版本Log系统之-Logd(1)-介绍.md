@@ -1,6 +1,6 @@
 ---
 layout: default
-title: 2014-08-23-Android-L-版本Log系统变化(2)-logd介绍
+title: Android-L-版本Log系统变化(2)-logd介绍
 ---
 
 {{page.title}}
