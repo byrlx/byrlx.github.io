@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Android L 版本Log系统变化(1):概述
+title: Android L 版本Log系统之 概述
 ---
 
 {{page.title}}

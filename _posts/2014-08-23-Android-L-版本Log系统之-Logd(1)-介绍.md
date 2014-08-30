@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Android-L-版本Log系统变化(2)-logd介绍
+title: Android L 版本Log系统之 Logd(1):介绍
 ---
 
 {{page.title}}
