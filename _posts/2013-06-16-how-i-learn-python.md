@@ -1,11 +1,9 @@
 ---
-layout: default
+layout: post
 title: how i learn python
+tag: [Python]
+description: [Some funny thought during python learing]
 ---
-
-{{page.title}}
----------------------------
-
 
 * Part 1: parse files in a folder. 
 

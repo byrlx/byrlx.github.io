@@ -1,0 +1,28 @@
+#+OPTIONS: ^:nil
+#+OPTIONS: toc:nil
+#+AUTHOR: Luis404
+#+EMAIL: luisxu404@gmail.com
+
+#+BEGIN_HTML
+---
+layout: post
+title: Org mode 相关笔记
+tag: [Emacs, TBD]
+description: [Record the common tips and usefull plugings of Emacs] 
+---
+#+END_HTML
+
+本文主要记录org mode使用过程中的笔记.
+
+* Short Keys
+1. M-S-UP/DOWN: move the title
+2. Add link: [[link]\[desc\]]
+3. 转成 html 保留下划线(默认会转成 下标): #+OPTIONS: ^:nil
+4. c-c a a: check calendar
+5. c-c c-x c-i: start timing; 
+   c-c c-x c-o: end timing.
+6. calendar:
+   c-c .: set time.
+7. c-c c-s: schedule
+   c-c c-d; end schedule
+8. 在表格下面加上 *#+tblfm: $1=@#-1*, 可以自动实现行号.

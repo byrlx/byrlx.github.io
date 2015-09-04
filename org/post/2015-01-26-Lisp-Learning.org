@@ -1,0 +1,92 @@
+#+OPTIONS: ^:nil
+#+OPTIONS: toc:nil
+#+AUTHOR: Luis404
+#+EMAIL: luisxu404@gmail.com
+
+#+BEGIN_HTML
+---
+layout: post
+title: Lisp Learning
+tag: [Lisp]
+description: [Yeh. From today. I begin my black magic learning]
+---
+#+END_HTML
+
+Since I use *eshell* for daily work, maybe it's a good time to learn
+lisp coding, because eshell can parse it!!!
+
+* 1. BigBang
+Invoke lisp interpreter in Emacs: M-X ielm.
+
+* 2. Basic
+** 2.1 create a list
+1. use ' before bracket.
+2. use *list* function.
+3. cons
+
+#+BEGIN_SRC lisp
+
+ELISP> (list "helo" (+ 1 1) "wold")
+("helo" 2 "wold")
+
+ELISP> '("helo" (+ 1 1) "wold")
+("helo"
+ (+ 1 1)
+ "wold")
+
+ELISP> (cons 'a (cons (cons (+ 1 1) 'b) 'c))
+(a
+ (2 . b)
+ . c)
+#+END_SRC 
+** 2.2 operate a list
+
+#+BEGIN_SRC lisp
+ELISP> (third (cons 'a (cons (cons (+ 1 1) 'b) '(c d e))))
+a
+ELISP> (cdr (cons 'a (cons (cons (+ 1 1) 'b) '(c d e))))
+((2 . b)
+ c d e)
+
+ELISP> (third (cons 'a (cons (cons (+ 1 1) 'b) '(c d e))))
+c
+#+END_SRC
+** 2.3 if/else
+
+#+BEGIN_SRC lisp
+ELISP> (if (listp (list 1)) (+ 11 1) (- 1 1))
+#+END_SRC
+** 2.4 and/or
+
+#+BEGIN_SRC lisp
+ELISP> (and (+ 1 1) 27 "a" (/ 3.0 2))
+1.5
+ELISP> (or nil 2 nil 1)
+2 (#o2, #x2, ?\C-b)
+#+END_SRC
+** 2.5 define function
+#+BEGIN_SRC lisp
+ELISP> (defun lxcomp (a b)
+	    (> a b))
+lxcomp
+ELISP> (lxcomp 2 3)
+t
+ELISP> (lxcomp 2 3)
+nil
+ELISP> 
+#+END_SRC
+
+recursive function
+#+BEGIN_SRC lisp
+
+ELISP> (defun in_list (obj lst)
+	 (if (null lst)
+	     nil
+	   (if (eql obj (car lst))
+	       lst
+	     (in_list obj (cdr lst)))))
+in_list
+ELISP> (in_list 'y '(a b c x y z))
+(y z)
+
+#+END_SRC

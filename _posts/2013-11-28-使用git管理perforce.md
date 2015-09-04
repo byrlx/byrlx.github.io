@@ -1,10 +1,9 @@
 ---
-layout: default
+layout: post
 title: 使用 git-p4 管理 perforece
+tag: [Python, Git]
+description: [Use git-p4 to manage perforce repo as git repo]
 ---
-
-{{page.title}}
--------------------------
 
 本文主要介绍怎样使用 git-p4 这个脚本，实现用 git 管理 perforce 服务器的代码。
 

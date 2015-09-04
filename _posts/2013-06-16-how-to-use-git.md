@@ -1,10 +1,7 @@
 ---
-layout: default
+layout: post
 title: how to use git
 ---
-
-{{page.title}}
-----------------
 	
 	master=HEAD, stage, workspace, three big parts of git
 	

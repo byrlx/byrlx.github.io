@@ -1,11 +1,7 @@
 ---
-layout: default
+layout: post
 title: git 代码学习 git clone
 ---
-
-{{page.title}}
--------------------
-
 代码版本：1.8.3
 
 最近一直使用git进行代码开发（公司用的管理工具为perforce，不管用git p4可以实现用git对perforce的对接），深感git的实用和伟大。故抽时间学习一下git的代码，提高功力。

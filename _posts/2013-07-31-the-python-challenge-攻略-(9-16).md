@@ -1,10 +1,9 @@
 ---
-layout: default
+layout: post
 title: The python challenge 攻略(9-16)
+tag: [Python]
+description: [Answers about python challenge, part 2]
 ---
-
-{{page.title}}
---------------------------------------
 
 [上篇文章](http://byrlx.github.io/2013/06/16/the-python-challenge-%E6%94%BB%E7%95%A5-%281-8%29.html)介绍了[The python challenge](http://www.pythonchallenge.com/) 这个网站前面几关的攻略, 这篇文章继续讲解后面各关的攻略.
 

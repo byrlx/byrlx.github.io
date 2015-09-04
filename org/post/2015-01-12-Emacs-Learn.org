@@ -1,0 +1,138 @@
+#+OPTIONS: ^:nil
+#+OPTIONS: toc:nil
+#+AUTHOR: Luis404
+#+EMAIL: luisxu404@gmail.com
+
+#+BEGIN_HTML
+---
+layout: post
+title: My Emacs Notes
+tag: [Emacs, TBD]
+description: [Record the common tips and usefull plugings of Emacs] 
+---
+#+END_HTML
+
+* Basic
+** eshell
+eshell is a very cool shell. 
+1. can write lisp in it, like *(/ 3 2)*
+2. customize the eshell prompt by [[http://liangzan.net/blog/blog/2012/12/12/customizing-your-emacs-eshell-prompt/][this]] article
+** Short Keys:
+1. show line num: M-x linum-mode.
+2. file
+   1. c-x c-r: read only text.
+   2. c-x c-w: save as.
+   3. c-x i: insert file.
+   4. c-j: a new line.
+   5. c-x c-x: put region.
+   6. c-v, m-v: many move.
+   7. c-w: kill marked region.
+   8. c-x 4 f: open file in another window.
+3. c-x c-b: show buffer list
+   1. d: set buffer to delete.
+   2. s: set buffer for saving.
+   3. x: perform the set.
+   4. u: remove all the flags.
+   5. f: select the buffer for this window.
+   6. q: quit.
+4. m-n: repeat n times for the next command.
+5. m c-v: scroll the other window.
+6. book mark:
+   1. c-x r m: set mark
+   2. c-x r b: jump mark
+   3. c-x r l: list all marks
+      + subcommands: d/x/r/s/f
+7. Dir: c-x d
+   1. C: copy
+   2. d: delete
+   3. D: delete immediately
+   4. x: perform delete
+   5. f: open
+   6. g: fresh
+   7. o or c-o: open new window
+   8. R: rename
+   9. u: remove flag
+   10. v: show file content
+   11. s: switch sort mode
+   12. < or >: prev/next dir
+   13. +: create dir
+   14. c-x c-q: writable mode
+** Commands M-X
+1. shrink-window: shrink window
+2. m-x rename-buffer: rename buffer.
+3. 
+** Install theme: 
+   + Download the color-theme.el from [[http://download.savannah.gnu.org/releases/color-theme/][Here]].
+   + Unzip it, put the el and theme file to your load path.
+   + add this code to the .emacs
+
+     #+BEGIN_SRC lisp
+(require 'color-theme)
+(color-theme-initialize)
+;; the default theme you want to use
+(color-theme-xemacs) 
+     #+END_SRC
+* Plugins and ~/.emacs
+** orgmode
+*** Short Keys
+1. 转成 html 保留下划线(默认会转成 下标): #+OPTIONS: ^:nil
+2. M-S-UP/DOWN: move the title
+3. Add link: [[link]\[desc\]]
+** magit
+*** Install magit: The emacs git mode
+1. add these code to "~/.emacs":
+
+ #+BEGIN_SRC lisp
+   (require 'package) ;; You might already have this line
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+ #+END_SRC
+
+2. run "package-refresh-content"
+3. run "package-install RET magit RET"
+** Use ERC to do IRC talk
+open ERC: M-X: erc; Then it will give you some promptions to logging 
+irc.freenode.net with nickname and passwords.
+1. register the nickname: /msg NickServ REGISTER password youremail@example.com.
+   Then you will receive a confirm email.
+2. join some group: /join Name. e.g /join #emacs
+** Gnus 
+1. B DEL: delete mail.
+2. g: sync with web operation.
+** Enable markdown mode 
+1. Download markdown-mode.el from [here](http://jblevins.org/projects/markdown-mode/markdown-mode.el)
+2. 		(autoload 'markdown-mode "markdown-mode"
+			"Major mode for editing Markdown files" t)
+		(add-to-list 'auto-mode-alist '("\\.text\\'" . markdown-mode))
+		(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
+		(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+* Elisp
+** Read documents
+c-h i m Elisp ret
+** 在emacs中写elisp代码片段
+1. 进入到 *scratch* buffer, 写代码, 在结尾处按 *C-j* 看结果.
+2. 或者在eshell里写.
+** Buffer相关函数
+|                      |                          |
+|----------------------+--------------------------|
+| bufferp              | 检查参数是否为buffer类型 |
+| current-buffer       | 获得当前buffer           |
+| set-buffer           | 设置当前buffer           |
+| buffer-name          | 获得buffername           |
+| rename-buffer        | 重命名buffer             |
+| get-buffer           | 获取buffer               |
+| buffer-file-name     | 获取对应文件名           |
+| buffer-file-number   | 获取文件/目录描述符      |
+| get-file-buffer      | 获取文件对应buf          |
+| buffer-modified-p    | 检查buffer是否修改       |
+| buffer-modified-tick | buf被修改的次数        |
+
+* Orgmode
+** short keys
+1. c-c a a: check calendar
+2. c-c c-x c-i: start timing; 
+   c-c c-x c-o: end timing.
+3. calendar:
+   c-c .: set time.
+4. c-c c-s: schedule
+   c-c c-d; end schedule

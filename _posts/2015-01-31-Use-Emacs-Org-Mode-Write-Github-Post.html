@@ -1,0 +1,218 @@
+---
+layout: post
+title: Use Emacs OrgMode Write Github Post
+tag: [Emacs, Orgmode]
+description: [A brief description about how to write post with orgmode]
+---
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Emacs 24.4.1 + org mode 8.2.10(Mac)</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+换了mac后,又下载了最新的24.4.1版本, 发现之前的脚本不能用了.
+现在是写了一个publish 工程, 然后再emacs里执行org-publish命令完成.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">;; =============== Org Publish =====================
+(setq org-publish-project-alist
+      '(("github-blog"
+	 :base-directory "/Users/douhua/lx/github/blog/org/post/"
+	 :publishing-directory "/Users/douhua/lx/github/blog/_posts/"
+	 ;;:base-directory "/Users/douhua/lx/org/post/"
+	 ;;:publishing-directory "/Users/douhua/lx/org/_posts/"
+	 :prepare-function nil
+	 :completion-function nil
+	 :exclude "*.html"
+	 :recursive nil
+	 :base-extension "org"
+	 :publishing-function org-html-publish-to-html
+	 :body-only t
+	 )))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Not working on Emacs 24.4.1 (Mac)</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Why do I do this???</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+  Before I decided to learn emacs and lisp, I used markdown and jeklly to write
+github post, as many people do.
+</p>
+
+<p>
+Now, it's the year of 2015, "<b>Learning Emacs and Lisp</b>" is one of my plans of 
+this year, so I decide to do all the things in emacs, including writing github
+post.
+</p>
+
+<p>
+Then I thought, since I decided to write things, why not use orgmode to do this?
+I had been using it for a while as a <b>GTD</b> tool, and I think orgmode is much more 
+cooler than mardown.
+</p>
+
+<p>
+But I am such a newbie on Emacs and OrgMode, I don't know how to do this at all,
+so I do some researches on google and read some douments.
+</p>
+
+<p>
+Thanks to these guys who share their experience about this, finally, I made it.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Things I do:</h3>
+<div class="outline-text-3" id="text-2-2">
+</div><div id="outline-container-sec-2-2-1" class="outline-4">
+<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> 1. My original github blog arch</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<p>
+As methioned before, I used <b>markdown+jekyll</b> to write post before transfer 
+to orgmode, these are the import contents of my blog folder then:
+</p>
+<ul class="org-ul">
+<li>index.html
+</li>
+<li>_layouts/
+</li>
+<li>_posts/
+</li>
+<li>assets/
+</li>
+</ul>
+
+<p>
+If you write blog with jekyll, you must know what these contents mean.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-2" class="outline-4">
+<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> 2. Makefile</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<p>
+I found this cool <b>Makefile</b> and <b>public-config.el</b> on the web, so only
+need to use command <b>make</b> to generate all the org files to html.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-makefile">EMACS=emacs
+ORG_CONFIG_FILE=publish-config.el
+EMACS_OPTS=--batch --eval "(load-file \"$(ORG_CONFIG_FILE)\")" -f myweb-publish
+
+all: html 
+
+html:
+	@echo "Generating HTML..."
+	@$(EMACS) $(EMACS_OPTS)
+	@echo "HTML generation done"
+
+clean: clean_bak
+
+clean_bak:
+	@find . | grep ~$$ | while read l; do rm $$l; done
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2-3" class="outline-4">
+<h4 id="sec-2-2-3"><span class="section-number-4">2.2.3</span> 3. publish-config.el</h4>
+<div class="outline-text-4" id="text-2-2-3">
+<p>
+The core file that Makefile uses is public-config.el, it defines some
+configurations for the orgmode <b>publish</b> command.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-lisp">;;;(load-file "./ox-html.el")  
+;;;(load-file "./ox-rss.el")  
+;;; orgblog-publisher nothing
+
+(add-to-list 'load-path "~/.emacs.d/")
+(require 'org-jekyll-mode)
+
+(require 'org-publish)
+;;;(require 'ox-rss)
+
+(setq org-publish-project-alist
+      '(
+	;; These are the main web files
+	("org-notes"
+	 :base-directory "./org/post" ;; Change this to your local dir
+	 :base-extension "org"
+	 :publishing-directory "./_posts"
+	 :body-only t
+	 :recursive nil
+	 :publishing-function org-publish-org-to-html
+	 :headline-levels 4       ; Just the default for this project.
+	 :section-numbers nil
+	 :auto-preamble t
+	 :table-of-contents nil
+	 )
+      ))
+
+(defun myweb-publish nil
+  "Publish myweb."
+  (interactive)
+  (org-publish-all))
+
+(myweb-publish)
+</pre>
+</div>
+
+<p>
+The lisp code above doing these things:
+</p>
+<ul class="org-ul">
+<li>1. Load org-jekyll-mode.el, it's a minor mode to export org file to 
+jekyll-formatted html. Download it from <a href="https://github.com/jsuper/org-jekyll-mode/blob/master/org-jekyll-mode.el">here</a>.
+</li>
+<li>2. org-publish-project-alist defines the org file folder and the dest 
+html folder. Here I only export body as I have a default css format.
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-2-2-4" class="outline-4">
+<h4 id="sec-2-2-4"><span class="section-number-4">2.2.4</span> 4. jekyll format in org file</h4>
+<div class="outline-text-4" id="text-2-2-4">
+<p>
+As jekyll has its own format, such as <b>layout/title/tag/..</b>, so add this
+format to the org file and treat it as HTML.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-org">#+OPTIONS: ^:nil
+#+AUTHOR: Luis404
+#+EMAIL: luisxu404@gmail.com
+
+#+BEGIN_HTML
+---
+layout: post
+title: Use Emacs OrgMode Write Github Post
+tag: [Emacs, Orgmode]
+description: [A brief description about how to write post with orgmode]
+___
+#+END_HTML
+</pre>
+</div>
+
+<p>
+OK, that's all, so you just run <b>make</b>, and all the org files become 
+jekyll html file.
+</p>
+</div>
+</div>
+</div>
+</div>

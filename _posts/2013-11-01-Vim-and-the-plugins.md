@@ -1,10 +1,9 @@
 ---
-layout: default
+layout: post
 title: Vim and the plugins
+tag: [Vim]
+description: [The vim plugins I use]
 ---
-
-{{page.title}}
----------------------------
 
 学Linux之初，就知道有vim这么个东西，但一直没有深入使用，读研之后，开始写代码，
 开始使用vim，其中多少也有些装X的成分。那时候对vim了解不深，用的也都是些基本的功能。

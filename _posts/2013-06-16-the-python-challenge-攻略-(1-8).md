@@ -1,10 +1,9 @@
 ---
-layout: default
+layout: post
 title: The python challenge 攻略(1-8)
+tag: [Python]
+description: [Answers about the python challenge]
 ---
-
-{{page.title}}
------------------------------
 
 [The python challenge](http://www.pythonchallenge.com/) 是一个网站,里面的每一个网页都是一个迷题,把迷题解开后可以找到下一关的网址.当然,这些迷题的代码要用python写哦.
 进入[主页](http://www.pythonchallenge.com/),点击*Click here to get challenged*,开始挑战.

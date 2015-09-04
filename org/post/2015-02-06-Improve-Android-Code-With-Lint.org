@@ -1,0 +1,40 @@
+#+SEQ_TODO: TODO(t!) DONE(d@/!)
+#+OPTIONS: toc:nil
+#+OPTIONS: ^:nil
+
+#+BEGIN_HTML
+---
+layout: post
+title: Improve android code with lint
+tag: [Android, Performance]
+description: [The Android lint tool is a static code analysis tool 
+that checks your Android project source files for potential bugs 
+and optimization improvements for correctness. security. 
+performance. usability. accessibility. and internationalization.]
+---
+#+END_HTML
+
+Lint is under the *tool* folder of your sdk, If you are using 
+Android Studio, you can also use *./gradlew :project:lint* to 
+scan the project code.
+
+If you are using gradlew, the lint result will in the 
+*project/build/outputs/*, there are usually two files:
+lint-result.html, lint-result.xml.
+* Common lint issues
+** 1. Useless xml files
+1. Sometimes you delete a customized view file, but forget to delete
+   the related xml code where use it.
+** 2. InconsistentLayout: Inconsistent Layouts
+   Contents of two same name files but different folders are different.
+** 3. Calling new methods on older versions
+Your min sdk is A, but the funtions are only in higher sdks.
+** 4. Memory allocations within drawing code
+   You should avoid allocating objects during a drawing or layout operation. 
+   These are called frequently, so a smooth UI can be interrupted by garbage 
+   collection pauses caused by the object allocations.
+
+** 5. Use sparseArray instead of hashmap.
+* References
+[[http://developer.android.com/tools/debugging/improving-w-lint.html]]
+

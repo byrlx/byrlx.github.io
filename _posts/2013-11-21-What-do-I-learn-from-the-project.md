@@ -1,10 +1,9 @@
 ---
-layout: default
+layout: post
 title: What do I learn from the project
+tag: [Tech]
+description: [Thought about my recent project]
 ---
-
-{{page.title}}
-------------------------
 
 今年做过的一个项目的总结，记下有用的经验。
 

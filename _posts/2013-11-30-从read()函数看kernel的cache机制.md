@@ -1,10 +1,9 @@
 ---
-layout: default
+layout: post
 title: 从 read() 函数看kernel的cache机制
+tag: [C, Linux]
+description: [Cache memchanism of linux kernel]
 ---
-
-{{page.title}}
------------------------------
 
 本文主要分析Linux kernel的read()流程，从该流程看一下内核中cache机制的原理和实现。
 

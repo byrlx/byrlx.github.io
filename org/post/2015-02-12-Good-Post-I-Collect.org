@@ -1,0 +1,20 @@
+#+SEQ_TODO: TODO(t!) DONE(d@/!)
+#+OPTIONS: toc:nil
+#+OPTIONS: ^:nil
+
+#+BEGIN_HTML
+---
+layout: post
+title: Good Post I Collect
+tag: [Post]
+description: [These are some posts that I think very helpful me]
+---
+#+END_HTML
+
+1. [[http://www.moolenaar.net/habits.html][Seven habits of effective text editing]] by Bram Moolenaar, author of Vim.
+2. [[http://www.ruanyifeng.com/blog/2010/10/why_lisp_is_superior.html][为什么Lisp语言如此先进]] by [[http://www.ruanyifeng.com/blog/][阮一峰]] 翻译<<黑客与画家>>
+3. [[http://www.amazon.com/review/R403HR4VL71K8/ref=cm_cr_dp_title?ie=UTF8&ASIN=0262510871&channel=detail-glance&nodeID=283155&store=books][Comments on SICP]] by Peter Norvig
+4. [[http://www.curious-creature.com/docs/android-performance-case-study-1.html][Android Performance Case Study]] by [[http://www.curious-creature.com/][Romain Guy]]
+5. [[http://www.ibm.com/developerworks/cn/linux/l-cn-gpb/][Protocol buffer]]介绍
+6. [[http://coolshell.cn/articles/8990.html][Linus: 二级指针删除单链表]]
+7. [[http://blog.akquinet.de/2011/02/25/android-activities-and-tasks-series-%E2%80%93-activity%C2%A0attributes/][Activity启动模式和Task详解]]
