@@ -67,8 +67,8 @@ Layout包含两个过程:measure和layout.
 |                                   |                                     |
 |-----------------------------------+-------------------------------------|
 | 分辨率                            | px, 横纵向上的像素点数, 如1920x1080 |
-| 像素密度(density)                 | dpi, 每英寸上的像素点数             |
-| dp                                | dp, 1dp=(dpi/160)px                 |
+| 像素密度(density)                 | dpi, 每英寸上的像素点数, 等于"对角线像素/尺寸" |
+| dp                                | 逻辑密度计算单位, px=(dpi/160) * dp |
 | mdpi                              | 120dpi-160dpi                       |
 | hdpi                              | 160-240                             |
 | xhdpi                             | 240-320                             |
@@ -76,5 +76,5 @@ Layout包含两个过程:measure和layout.
 | getResource().getDisplayMetrics() |                                     |
 | metrics.heightPixels              | 屏幕高 px                           |
 | metrics.widthPixels               | 屏幕宽 px                           |
-| metrics.densityDpi                | 密度                                |
-| metrics.density                   | densityDpi/160                      |
+| metrics.densityDpi                | 密度(dpi)                           |
+| metrics.density                   | densityDpi/160 = dpi/160            |

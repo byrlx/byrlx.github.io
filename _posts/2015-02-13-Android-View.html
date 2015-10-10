@@ -180,12 +180,12 @@ Layout包含两个过程:measure和layout.
 
 <tr>
 <td class="left">像素密度(density)</td>
-<td class="left">dpi, 每英寸上的像素点数</td>
+<td class="left">dpi, 每英寸上的像素点数, 等于"对角线像素/尺寸"</td>
 </tr>
 
 <tr>
 <td class="left">dp</td>
-<td class="left">dp, 1dp=(dpi/160)px</td>
+<td class="left">逻辑密度计算单位, px=(dpi/160) * dp</td>
 </tr>
 
 <tr>
@@ -225,12 +225,12 @@ Layout包含两个过程:measure和layout.
 
 <tr>
 <td class="left">metrics.densityDpi</td>
-<td class="left">密度</td>
+<td class="left">密度(dpi)</td>
 </tr>
 
 <tr>
 <td class="left">metrics.density</td>
-<td class="left">densityDpi/160</td>
+<td class="left">densityDpi/160 = dpi/160</td>
 </tr>
 </tbody>
 </table>
