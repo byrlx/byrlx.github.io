@@ -18,3 +18,4 @@ description: [These are some posts that I think very helpful me]
 5. [[http://www.ibm.com/developerworks/cn/linux/l-cn-gpb/][Protocol buffer]]介绍
 6. [[http://coolshell.cn/articles/8990.html][Linus: 二级指针删除单链表]]
 7. [[http://blog.akquinet.de/2011/02/25/android-activities-and-tasks-series-%E2%80%93-activity%C2%A0attributes/][Activity启动模式和Task详解]]
+8. [[https://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/][深入分析 Java 中的中文编码问题]]
