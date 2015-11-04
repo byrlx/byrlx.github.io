@@ -149,7 +149,7 @@ h3 {
 .page-content .post-footer {
     clear: both;
     font-size: 15px;
-    line-height: 20px;
+    line-height: 27.2px;
     margin-bottom: 35px;
 }
 .page-footer {
@@ -185,7 +185,7 @@ h3 {
 .page-list ul li span {
     color: #555;
     font-weight: 500;
-    line-height: 1.2em;
+    line-height: 1.4em;
 }
 .page-list ul li span:after {
     content: "»";
