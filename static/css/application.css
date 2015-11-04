@@ -27,6 +27,7 @@ h1,
 h2,
 h3 {
   font-family: "PT Serif", Georgia, "Microsoft YaHei", Arial, sans-serif;
+  background: #c3e99e;
 }
 .page-container {
   max-width: 1000px;
