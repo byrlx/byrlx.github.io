@@ -271,7 +271,7 @@ html {
 body {
   font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Sans GB', sans-serif, Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif;
   font-size: 16px;
-  line-height: 1.428571429;
+  line-height: 1.61429;
   color: #333333;
   background-color: #ffffff;
 }
@@ -310,7 +310,7 @@ img {
 }
 .img-thumbnail {
   padding: 4px;
-  line-height: 1.428571429;
+  line-height: 1.61429;
   background-color: #ffffff;
   border: 1px solid #dddddd;
   border-radius: 4px;
@@ -538,7 +538,7 @@ dl {
 }
 dt,
 dd {
-  line-height: 1.428571429;
+  line-height: 1.61429;
 }
 dt {
   font-weight: bold;
@@ -601,7 +601,7 @@ blockquote p:last-child {
 blockquote small,
 blockquote .small {
   display: block;
-  line-height: 1.428571429;
+  line-height: 1.61429;
   color: #999999;
 }
 blockquote small:before,
@@ -634,7 +634,7 @@ blockquote:after {
 address {
   margin-bottom: 20px;
   font-style: normal;
-  line-height: 1.428571429;
+  line-height: 1.61429;
 }
 code,
 kbd,
@@ -655,7 +655,7 @@ pre {
   padding: 9.5px;
   margin: 0 0 10px;
   font-size: 13px;
-  line-height: 1.428571429;
+  line-height: 1.61429;
   word-break: break-all;
   word-wrap: break-word;
   color: #333333;
@@ -1397,7 +1397,7 @@ border-width: 1px;
 .table > tbody > tr > td,
 .table > tfoot > tr > td {
   padding: 8px;
-  line-height: 1.428571429;
+  line-height: 1.61429;
   vertical-align: top;
   border-top: 1px solid #dddddd;
 }
@@ -1631,7 +1631,7 @@ output {
   display: block;
   padding-top: 7px;
   font-size: 14px;
-  line-height: 1.428571429;
+  line-height: 1.61429;
   color: #555555;
   vertical-align: middle;
 }
@@ -1641,7 +1641,7 @@ output {
   height: 34px;
   padding: 6px 12px;
   font-size: 14px;
-  line-height: 1.428571429;
+  line-height: 1.61429;
   color: #555555;
   vertical-align: middle;
   background-color: #ffffff;
@@ -1923,7 +1923,7 @@ textarea.input-lg {
   white-space: nowrap;
   padding: 6px 12px;
   font-size: 14px;
-  line-height: 1.428571429;
+  line-height: 1.61429;
   border-radius: 4px;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -2341,7 +2341,7 @@ input[type="button"].btn-block {
   padding: 3px 20px;
   clear: both;
   font-weight: normal;
-  line-height: 1.428571429;
+  line-height: 1.61429;
   color: #333333;
   white-space: nowrap;
 }
@@ -2382,7 +2382,7 @@ input[type="button"].btn-block {
   display: block;
   padding: 3px 20px;
   font-size: 12px;
-  line-height: 1.428571429;
+  line-height: 1.61429;
   color: #999999;
 }
 .dropdown-backdrop {
@@ -2833,7 +2833,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 .nav-tabs > li > a {
   margin-right: 2px;
-  line-height: 1.428571429;
+  line-height: 1.61429;
   border: 1px solid transparent;
   border-radius: 4px 4px 0 0;
 }
@@ -3508,7 +3508,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   position: relative;
   float: left;
   padding: 6px 12px;
-  line-height: 1.428571429;
+  line-height: 1.61429;
   text-decoration: none;
   background-color: #ffffff;
   border: 1px solid #dddddd;
@@ -3781,7 +3781,7 @@ a.list-group-item.active > .badge,
   display: block;
   padding: 4px;
   margin-bottom: 20px;
-  line-height: 1.428571429;
+  line-height: 1.61429;
   background-color: #ffffff;
   border: 1px solid #dddddd;
   border-radius: 4px;
@@ -4399,7 +4399,7 @@ button.close {
 }
 .modal-title {
   margin: 0;
-  line-height: 1.428571429;
+  line-height: 1.61429;
 }
 .modal-body {
   position: relative;
