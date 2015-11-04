@@ -4,7 +4,7 @@
  * http://hushaw.github.io
  */
 body {
-  font-family: "PT Serif", Georgia, "Microsoft YaHei", Arial, sans-serif;
+  font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Sans GB', sans-serif, Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif;
 }
 li.L4 {
   list-style-type: none;
@@ -26,7 +26,7 @@ pre {
 h1,
 h2,
 h3 {
-  font-family: "PT Serif", Georgia, "Microsoft YaHei", Arial, sans-serif;
+  font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Sans GB', sans-serif, Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif;
   color: #000000
 }
 .page-container {
@@ -50,7 +50,7 @@ h3 {
 .page-brand h1 a {
   font-size: 28px;
   font-weight: bold;
-  font-family: Consolas, Monaco, 'Courier New', Courier, 'Andale Mono', 'DejaVu Sans Mono', monospace !important;
+  font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Sans GB', sans-serif, Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif;
   line-height: 32px;
   text-decoration: none;
 }
@@ -99,7 +99,7 @@ h3 {
 }
 .page-header h2 {
   font-weight: 500;
-  font-family: Georgia, "Times New Roman", Times, "Kai", "Kaiti SC", "KaiTi", "BiauKai", "楷体", "楷体_GB2312", serif;
+  font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Sans GB', sans-serif, Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif;
 }
 .page-content {
   border-bottom: 1px dashed #aaa;
@@ -116,7 +116,7 @@ h3 {
   line-height: 1.15em;
   padding-bottom: .5em;
   padding-top: 12px;
-  font-family: Georgia, "Times New Roman", Times, "Kai", "Kaiti SC", "KaiTi", "BiauKai", "楷体", "楷体_GB2312", serif;
+  font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Sans GB', sans-serif, Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif;
 }
 .page-content .post-heading a {
   color: #222;
@@ -170,7 +170,7 @@ h3 {
 }
 .page-list h3 {
   color: #428bca;
-  font-family: Georgia, "Times New Roman", Times, "Kai", "Kaiti SC", "KaiTi", "BiauKai", "楷体", "楷体_GB2312", serif;
+  font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Sans GB', sans-serif, Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif;
 }
 .page-list ul {
   font-size: 15px;

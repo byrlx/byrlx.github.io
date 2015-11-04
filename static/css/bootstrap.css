@@ -269,7 +269,7 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 body {
-  font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Sans GB', sans-serif, Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif;
   font-size: 16px;
   line-height: 1.428571429;
   color: #333333;
@@ -351,7 +351,7 @@ h6,
 .h4,
 .h5,
 .h6 {
-  font-family: "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Sans GB', sans-serif, Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif;
   font-weight: 500;
   line-height: 1.1;
   color: #999999;
@@ -639,7 +639,7 @@ code,
 kbd,
 pre,
 samp {
-  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Sans GB', sans-serif, Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif;
 }
 code {
   padding: 2px 4px;
