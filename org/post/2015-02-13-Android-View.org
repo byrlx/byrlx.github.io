@@ -4,7 +4,7 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: Android View
+title: Android View笔记
 tag: [Android, TBD]
 description: [Do some learnings/records/tips about android view]
 ---

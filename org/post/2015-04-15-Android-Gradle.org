@@ -5,7 +5,7 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: Android Gradle Plugin User Guide 文档翻译 (/*未完待续*/)
+title: Android Gradle Plugin User Guide 文档翻译 
 tag: [Android, Gradle, Translate, TBD]
 description: [Android Gradle插件用户文档中文翻译]
 ---
