@@ -1,0 +1,317 @@
+---
+layout: post
+title: Square开源系列(1) Retrofit 项目 
+tag: [Java, Android, Square]
+description: [retrofit源码阅读笔记]
+---
+
+<p>
+未完成!!!
+</p>
+
+<p>
+该项目官网 <a href="http://square.github.io/retrofit/">http://square.github.io/retrofit/</a>, github地址: <a href="https://github.com/square/retrofit">https://github.com/square/retrofit</a>
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 项目介绍</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+官网对retrofit介绍是这是一个"类型安全(type-safe)"的Android/Java http客户端. 
+目前retrofit的最新正式版本为1.9.0. 2.0版本预计2015年底发布, 相较于之前版本, 
+2.0版本在架构上做了很大改变, 本文代码相关的内容都是基于retrofit2.0.
+</p>
+
+<p>
+<i>注: 在编程语言的语法中, type-safe通常指编译器在编译时检查变量的类型, 如果试图向</i>
+<i>变量分配一个错误的类型,编译器就会报错.</i>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 在项目中使用retrofit</h2>
+<div class="outline-text-2" id="text-2">
+<ul class="org-ul">
+<li>Maven
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;dependency&gt;
+  &lt;groupId&gt;com.squareup.retrofit&lt;/groupId&gt;
+  &lt;artifactId&gt;retrofit&lt;/artifactId&gt;
+  &lt;version&gt;2.0.0-beta2&lt;/version&gt;
+&lt;/dependency&gt;
+</pre>
+</div>
+</li>
+<li>Gradle
+<pre class="example">
+compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+</pre>
+</li>
+<li>混淆配置
+如果项目中使用混淆的话, 需要在混淆文件中假如如下配置
+<pre class="example">
+-dontwarn retrofit.**
+-keep class retrofit.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+</pre>
+</li>
+</ul>
+</div>
+<div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 示例</h3>
+<div class="outline-text-3" id="text-2-1">
+<ol class="org-ol">
+<li>先定义一个接口
+<div class="org-src-container">
+
+<pre class="src src-java">public interface GitHubService {
+  @GET("/users/{user}/repos")
+  Call&lt;List&lt;Repo&gt;&gt; listRepos(@Path("user") String user);
+}
+</pre>
+</div>
+
+<p>
+上边的代码定义了一个名为GitHubService的接口, 该接口使用了 @GET 这个注解,
+并可以通过@PATH替换掉 @GET中定义的 user 变量.
+</p>
+</li>
+<li>创建一个Retrofit对象, 并调用对象的create()方法来生成接口的一个实现.
+
+<div class="org-src-container">
+
+<pre class="src src-java">Retrofit retrofit = new Retrofit.Builder()
+    .baseUrl("https://api.github.com")
+    .build();
+
+GitHubService service = retrofit.create(GitHubService.class);
+</pre>
+</div>
+
+<p>
+Retrofit对象通过Builder来实现, 并设置了根url.
+</p>
+</li>
+<li>通过调用2中创建的service的函数, 会产生一个同步或异步的HTTP请求.
+</li>
+</ol>
+
+<p>
+上面的例子阐明了Retrofit的一些特性:
+</p>
+<ul class="org-ul">
+<li>支持URL的参数替换
+</li>
+<li>对象转化为请求的body
+</li>
+<li>请求body的多样性及文件上传.
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> API简介</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+通过上面的示例可以看出Retrofit如何通过注解的方式来处理一个请求
+</p>
+<ol class="org-ol">
+<li>请求方法
+Retrofit内置了5种请求注解: GET, POST, PUT, DELETE, HEAD. 可以
+在注解里设置URL的相对地址. 例如: @GET("/users/list") 或 
+@GET("/users/list?sort=desc")
+</li>
+<li>URL高级用法
+<ul class="org-ul">
+<li>动态替换相对路径中的值. 通过在相对URL中用"{}"来设置变量, 并
+通过注解的方式来在后面的代码中讲变量替换为真实的值. 
+变量参数前面必须使用注解 @Path.例如
+
+<div class="org-src-container">
+
+<pre class="src src-java">@GET("/group/{id}/users")
+List&lt;User&gt; groupList(@Path("id") int groupId);
+</pre>
+</div>
+</li>
+<li>添加Query变量. 例如
+<div class="org-src-container">
+
+<pre class="src src-java">@GET("/group/{id}/users")
+List&lt;User&gt; groupList(@Path("id") int groupId, @Query("sort") String sort);
+</pre>
+</div>
+<p>
+对于更复杂的query,可以使用 @QueryMap 注解
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java">@GET("/group/{id}/users")
+List&lt;User&gt; groupList(@Path("id") int groupId, @QueryMap Map&lt;String, String&gt; options);
+</pre>
+</div>
+</li>
+</ul>
+</li>
+<li>请求体, 通过 @Body注解可以将一个对象设置为请求体
+<div class="org-src-container">
+
+<pre class="src src-java">@POST("/users/new")
+Call&lt;User&gt; createUser(@Body User user);
+</pre>
+</div>
+</li>
+<li>表单和多个请求体
+<ul class="org-ul">
+<li>通过在注解前面加上 @FormUrlEncoded 来发送"表单"数据. key-value值
+使用注解 @Field修饰.
+<div class="org-src-container">
+
+<pre class="src src-java">@FormUrlEncoded
+@POST("/user/edit")
+Call&lt;User&gt; updateUser(@Field("first_name") String first, @Field("last_name") String last);
+</pre>
+</div>
+</li>
+<li>多个请求体体可以使用 @Multipart 注解修饰函数,每个部分(函数参数)使用
+@Part 修饰
+<div class="org-src-container">
+
+<pre class="src src-java">     @Multipart
+@PUT("/user/photo")
+Call&lt;User&gt; updateUser(@Part("photo") RequestBody photo, @Part("description") RequestBody description);
+</pre>
+</div>
+</li>
+</ul>
+</li>
+<li>表头
+<ul class="org-ul">
+<li>使用 @Headers来表示静态请求头部, 用法如示例:
+<div class="org-src-container">
+
+<pre class="src src-java">     @Headers("Cache-Control: max-age=640000")
+@GET("/widget/list")
+Call&lt;List&lt;Widget&gt;&gt; widgetList();
+
+//Method 2
+@Headers({
+    "Accept: application/vnd.github.v3.full+json",
+    "User-Agent: Retrofit-Sample-App"
+})
+@GET("/users/{username}")
+Call&lt;User&gt; getUser(@Path("username") String username);
+</pre>
+</div>
+</li>
+<li>动态使用表头可以用 @Header. 这需要提供一个参数:
+<div class="org-src-container">
+
+<pre class="src src-java">     @GET("/user")
+Call&lt;User&gt; getUser(@Header("Authorization") String authorization)
+</pre>
+</div>
+</li>
+</ul>
+</li>
+<li>同步/异步
+Call实例(前面的函数都是call实例)可以以同步或异步的方式执行, 每个实例只能使用一次,
+但是可以通过调用clone()函数来产生一个新的实例.
+Android中回调会在主线程中执行, JVM则使用当前执行HTTP请求的线程.
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 程序示例</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+这部分从一个简单的程序开始, 展示retrofit的使用,并通过对这个程序的进一步介绍retrofit的各种功能.
+</p>
+</div>
+<div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 一个简单的retrofit程序</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+   场景:通过GET请求向服务器返回用户信息, 服务器通过Json格式返回一个或多个用户的信息.基于这个例子
+介绍一下retrofit的使用步骤:
+</p>
+<ol class="org-ol">
+<li>用户代码
+<div class="org-src-container">
+
+<pre class="src src-java">public class User {
+    private int id;
+    private String name;
+    private int age;
+}
+</pre>
+</div>
+<p>
+这段代码定义了用户类User, 每个用户包含三个基本信息:id, name, age;
+</p>
+</li>
+<li>定义Client和GET请求接口
+<div class="org-src-container">
+
+<pre class="src src-java">public interface Client {
+    @GET("users")
+    Call&lt;List&lt;User&gt;&gt;  getUsers();
+}
+</pre>
+</div>
+<p>
+这段代码定义了一个接口Client, 并定义了一个GET函数getUsers(), 该函数用户向服务器发送get请求获取所有的
+用户信息. 定义GET请求需要用GET注解来修饰函数, 注解的参数为uri的相对路径, 下一部分会定义URL的地址, 在
+发送GET请求时, retrofit会将GET的参数和服务器拼接.
+后面会在该接口中实现其他的POST和GET函数.
+</p>
+
+<p>
+*注:在retrofit2.0中,要注意GET和POST注解的参数,如果参数以"/"开头,那么在跟base地址拼接时,会将base地址中
+的相对地址全部覆盖掉. 举例: base地址为"<a href="http://a/b">http://a/b</a>", GET参数为"/c/d", 那么最后的请求地址为"<a href="http://a/c/d">http://a/c/d</a>",
+因此,如果base地址本身已经是相对地址, 那么GET/POST的参数不能以"/"开头.*
+</p>
+</li>
+
+<li>主程序中实现get请求
+<pre class="example">
+public class MainActivity {
+    ....
+    public static final String SERVER_URL = "http://10.10.10.10/account";
+    private OkHttpClient okHttpClient = new OkHttpClient();
+    private Retrofit.Builder builder = new Retrofit.Builder()
+	.base_url(SERVER_URL)
+	.client(okHttpClient)
+	.addConvertFactory(GsonConvertFactory.create());
+
+    Retrofit retrofit = builder.build();
+    Client client = retrofit.create(Client.class);
+    Client call = client.getUsers();
+    List&lt;Users&gt; result = call.execute().body();
+    ....
+}
+</pre>
+<p>
+上述代码用来做实际的请求动作, 首先通过Retrofit Builder来基于各种参数(服务器地址, httpclient, converter)
+生成一个builder对象, 让后调用builder的build()函数生成一个retrofit对象.
+</p>
+
+<p>
+接着,调用retrofit的create()函数,传入上一步中定义的接口作为参数来实例化一个具体的接口对象, 然后调用
+该对象的具体http请求函数(这里为getUsers())来实现http请求. 请求的结果是Json数据,会通过GsonConverter转化为具体的
+对象(即User). 由于是多个对象,所以需要放到一个List中.
+</p>
+</li>
+</ol>
+
+<p>
+上述三步即为retrofit的基本使用方法.
+</p>
+</div>
+</div>
+</div>

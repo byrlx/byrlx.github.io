@@ -1,7 +1,7 @@
 #+OPTIONS: ^nil
 #+OPTIONS: toc:nil
-#+AUTHOR: Luis404
-#+EMAIL: luisxu404@gmail.com
+#+AUTHOR: Zhengchao Xu
+#+EMAIL: xuzhengchaojob@gmail.com
 
 #+BEGIN_HTML
 ---
