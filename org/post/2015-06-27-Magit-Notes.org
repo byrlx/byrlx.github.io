@@ -37,6 +37,8 @@ v2.1.0于2015年7月1日发布, 该版本的主要更新: [[https://raw.githubus
 (evil-set-initial-state 'magit-popup-mode 'emacs)
 (evil-set-initial-state 'magit-mode 'emacs)
    #+END_SRC
+** 快捷键:
++ 删除branch: b -> v -> k, 输入要删除的branch名.
 * v1.4
 Magit 1.4版本文档地址 [[http://magit.vc/manual/1.4/magit/index.html#Top]]
 
