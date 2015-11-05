@@ -6,7 +6,7 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: Square开源系列(1) Retrofit 项目 
+title: Square开源系列(2) Retrofit 项目 
 tag: [Java, Android, Square]
 description: [retrofit源码阅读笔记]
 ---
