@@ -46,104 +46,6 @@ description: [retrofit源码阅读笔记]
 -keepattributes Exceptions
   
   #+END_SRC
-** 示例
-
-1. 先定义一个接口
- #+BEGIN_SRC java
-public interface GitHubService {
-  @GET("/users/{user}/repos")
-  Call<List<Repo>> listRepos(@Path("user") String user);
-}
-#+END_SRC
-
-   上边的代码定义了一个名为GitHubService的接口, 该接口使用了 @GET 这个注解,
-   并可以通过@PATH替换掉 @GET中定义的 user 变量.
-2. 创建一个Retrofit对象, 并调用对象的create()方法来生成接口的一个实现.
-   
- #+BEGIN_SRC java
-Retrofit retrofit = new Retrofit.Builder()
-    .baseUrl("https://api.github.com")
-    .build();
-
-GitHubService service = retrofit.create(GitHubService.class);
-#+END_SRC
-   
-   Retrofit对象通过Builder来实现, 并设置了根url.
-3. 通过调用2中创建的service的函数, 会产生一个同步或异步的HTTP请求.
-
-上面的例子阐明了Retrofit的一些特性:
-+ 支持URL的参数替换
-+ 对象转化为请求的body
-+ 请求body的多样性及文件上传.
-** API简介
-通过上面的示例可以看出Retrofit如何通过注解的方式来处理一个请求
-1. 请求方法
-   Retrofit内置了5种请求注解: GET, POST, PUT, DELETE, HEAD. 可以
-   在注解里设置URL的相对地址. 例如: @GET("/users/list") 或 
-   @GET("/users/list?sort=desc")
-2. URL高级用法
-   + 动态替换相对路径中的值. 通过在相对URL中用"{}"来设置变量, 并
-     通过注解的方式来在后面的代码中讲变量替换为真实的值. 
-     变量参数前面必须使用注解 @Path.例如
-
-     #+BEGIN_SRC java
-@GET("/group/{id}/users")
-List<User> groupList(@Path("id") int groupId);
-     #+END_SRC
-   + 添加Query变量. 例如
-     #+BEGIN_SRC java
-@GET("/group/{id}/users")
-List<User> groupList(@Path("id") int groupId, @Query("sort") String sort);
-     #+END_SRC
-     对于更复杂的query,可以使用 @QueryMap 注解
-     #+BEGIN_SRC java
-@GET("/group/{id}/users")
-List<User> groupList(@Path("id") int groupId, @QueryMap Map<String, String> options);
-     #+END_SRC
-3. 请求体, 通过 @Body注解可以将一个对象设置为请求体
-     #+BEGIN_SRC java
-@POST("/users/new")
-Call<User> createUser(@Body User user);
-     #+END_SRC
-4. 表单和多个请求体
-   + 通过在注解前面加上 @FormUrlEncoded 来发送"表单"数据. key-value值
-     使用注解 @Field修饰.
-     #+BEGIN_SRC java
-@FormUrlEncoded
-@POST("/user/edit")
-Call<User> updateUser(@Field("first_name") String first, @Field("last_name") String last);
-#+END_SRC
-   + 多个请求体体可以使用 @Multipart 注解修饰函数,每个部分(函数参数)使用
-     @Part 修饰
-     #+BEGIN_SRC java
-     @Multipart
-@PUT("/user/photo")
-Call<User> updateUser(@Part("photo") RequestBody photo, @Part("description") RequestBody description);
-     #+END_SRC
-5. 表头
-   + 使用 @Headers来表示静态请求头部, 用法如示例:
-     #+BEGIN_SRC java
-     @Headers("Cache-Control: max-age=640000")
-@GET("/widget/list")
-Call<List<Widget>> widgetList();
-
-//Method 2
-@Headers({
-    "Accept: application/vnd.github.v3.full+json",
-    "User-Agent: Retrofit-Sample-App"
-})
-@GET("/users/{username}")
-Call<User> getUser(@Path("username") String username);
-     #+END_SRC
-   + 动态使用表头可以用 @Header. 这需要提供一个参数:
-     #+BEGIN_SRC java
-     @GET("/user")
-Call<User> getUser(@Header("Authorization") String authorization)
-     #+END_SRC
-6. 同步/异步
-   Call实例(前面的函数都是call实例)可以以同步或异步的方式执行, 每个实例只能使用一次,
-   但是可以通过调用clone()函数来产生一个新的实例.
-   Android中回调会在主线程中执行, JVM则使用当前执行HTTP请求的线程.
 * 程序示例
 这部分从一个简单的程序开始, 展示retrofit的使用,并通过对这个程序的进一步介绍retrofit的各种功能.
 ** 一个简单的retrofit程序
@@ -201,3 +103,4 @@ public class MainActivity {
    对象(即User). 由于是多个对象,所以需要放到一个List中.
 
 上述三步即为retrofit的基本使用方法.
+* test
