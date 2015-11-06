@@ -1,3 +1,4 @@
+#+OPTIONS: num:nil
 #+OPTIONS: ^nil
 #+OPTIONS: toc:nil
 #+AUTHOR: Zhengchao Xu

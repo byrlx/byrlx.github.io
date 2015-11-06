@@ -10,7 +10,7 @@ description: [Okio源码阅读笔记]
 </p>
 
 <div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 简介</h2>
+<h2 id="sec-1">简介</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 Okio是Square公司推出的Java IO库, 这个库本来Square公司的著名开源项目OkHttp的一部分,
@@ -23,7 +23,7 @@ Okio是Square公司推出的Java IO库, 这个库本来Square公司的著名开�
 </div>
 </div>
 <div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> 核心数据结构</h2>
+<h2 id="sec-2">核心数据结构</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 常言道 "程序=数据结构+算法", Okio的核心之一就是数据结构的设计. 这部分主要"片段式"的介绍
@@ -31,7 +31,7 @@ Okio的各数据结构的实现.
 </p>
 </div>
 <div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Source and Sink</h3>
+<h3 id="sec-2-1">Source and Sink</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 IO系统就是读写系统, 更直接的说就是二进制流的流动, 所以需要一个"流"的源头和目的. Source即代表Okio
@@ -40,7 +40,7 @@ IO系统就是读写系统, 更直接的说就是二进制流的流动, 所以�
 </div>
 
 <div id="outline-container-sec-2-1-1" class="outline-4">
-<h4 id="sec-2-1-1"><span class="section-number-4">2.1.1</span> Source源码</h4>
+<h4 id="sec-2-1-1">Source源码</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 Source的实现比较简单, 就是一个继承了Closeable的接口, 只定义了 read()/timeout()/close()
@@ -76,7 +76,7 @@ Buffer也是Okio的核心数据结构, 后面会讲到.
 </div>
 </div>
 <div id="outline-container-sec-2-1-2" class="outline-4">
-<h4 id="sec-2-1-2"><span class="section-number-4">2.1.2</span> Sink源码</h4>
+<h4 id="sec-2-1-2">Sink源码</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <p>
 Sink与Source类似, 也是一个接口, 继承了Closeable和Flushable两个接口, 同时定义(重写)了
@@ -113,7 +113,7 @@ write()也接受一个Buffer参数, 与Source的read()不同的是: 在read()中
 </div>
 </div>
 <div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2"><span class="section-number-3">2.2</span> BufferedSource and BufferedSink</h3>
+<h3 id="sec-2-2">BufferedSource and BufferedSink</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 在Okio的官方文档中,并不建议直接使用Source和Sink,而是建议使用他们的子类
@@ -124,7 +124,7 @@ BufferedSource和BufferedSink, 后者都封装了一个Buffer对象作为数据�
 </div>
 </div>
 <div id="outline-container-sec-2-3" class="outline-3">
-<h3 id="sec-2-3"><span class="section-number-3">2.3</span> Segment</h3>
+<h3 id="sec-2-3">Segment</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 前面介绍的类InputStream/OutputStream的Source和Sink及其子类都使用了Buffer作为操作对象,
@@ -208,7 +208,7 @@ segment.
 </ol>
 </div>
 <div id="outline-container-sec-2-3-1" class="outline-4">
-<h4 id="sec-2-3-1"><span class="section-number-4">2.3.1</span> SegmentPool</h4>
+<h4 id="sec-2-3-1">SegmentPool</h4>
 <div class="outline-text-4" id="text-2-3-1">
 <p>
 Okio实现了一个segment池, 用于segment的获取和回收, 该segment pool通过"单链表"的方式
@@ -230,10 +230,10 @@ Okio实现了一个segment池, 用于segment的获取和回收, 该segment pool�
 </div>
 </div>
 <div id="outline-container-sec-2-4" class="outline-3">
-<h3 id="sec-2-4"><span class="section-number-3">2.4</span> Buffer</h3>
+<h3 id="sec-2-4">Buffer</h3>
 <div class="outline-text-3" id="text-2-4">
 </div><div id="outline-container-sec-2-4-1" class="outline-4">
-<h4 id="sec-2-4-1"><span class="section-number-4">2.4.1</span> 介绍</h4>
+<h4 id="sec-2-4-1">介绍</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <p>
 Buffer是Okio的存储数据的结构, 它的灵活性非常强, 官方文档里介绍了它的三个优点:
@@ -256,7 +256,7 @@ Buffer类继承自前面介绍的BufferSource和BufferSink类, 所以它既可�
 </div>
 
 <div id="outline-container-sec-2-4-2" class="outline-4">
-<h4 id="sec-2-4-2"><span class="section-number-4">2.4.2</span> 成员变量</h4>
+<h4 id="sec-2-4-2">成员变量</h4>
 <div class="outline-text-4" id="text-2-4-2">
 <p>
 buffer只有两个成员变量: head, size. head是一个Segment类型的变量, 由此来看buffe的内部数据
@@ -265,7 +265,7 @@ buffer只有两个成员变量: head, size. head是一个Segment类型的变量,
 </div>
 </div>
 <div id="outline-container-sec-2-4-3" class="outline-4">
-<h4 id="sec-2-4-3"><span class="section-number-4">2.4.3</span> API分析</h4>
+<h4 id="sec-2-4-3">API分析</h4>
 <div class="outline-text-4" id="text-2-4-3">
 <ol class="org-ol">
 <li>write()/read()系列函数

@@ -1,3 +1,4 @@
+#+OPTIONS: num:nil
 #+SEQ_TODO: TODO(t!) DONE(d@/!)
 #+OPTIONS: toc:nil
 #+OPTIONS: ^:nil

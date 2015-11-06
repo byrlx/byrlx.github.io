@@ -1,3 +1,4 @@
+#+OPTIONS: num:nil
 #+OPTIONS: ^:nil
 #+OPTIONS: H:nil
 #+OPTIONS: toc:nil

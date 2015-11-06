@@ -6,7 +6,7 @@ description: [I am a git fan. I am trying to hack the source code]
 ---
 
 <div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 1. First step</h2>
+<h2 id="sec-1">1. First step</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 get git code : git clone <a href="https://github.com/git/git">https://github.com/git/git</a>;
@@ -15,14 +15,14 @@ checkout to version 1.0: git checkout v1.0.0
 </div>
 </div>
 <div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> 2. 2015/01/14</h2>
+<h2 id="sec-2">2. 2015/01/14</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 checkout to the oldest commit, just wanna see the linus-code-style
 </p>
 </div>
 <div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 2.1 cache.h</h3>
+<h3 id="sec-2-1">2.1 cache.h</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 defines the cache_header, cache_time, and cache_entry.
@@ -38,7 +38,7 @@ defines the cache_header, cache_time, and cache_entry.
 </div>
 </div>
 <div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 2.2 Makefile</h3>
+<h3 id="sec-2-2">2.2 Makefile</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 I don't find the <b>git</b> prog in the makefile, only some small programs.
@@ -47,7 +47,7 @@ These programs will be installed to bin after build.
 </div>
 </div>
 <div id="outline-container-sec-2-3" class="outline-3">
-<h3 id="sec-2-3"><span class="section-number-3">2.3</span> 2.3 read-cache.c</h3>
+<h3 id="sec-2-3">2.3 read-cache.c</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 这个文件其他大多文件使用, 该文件定义了很多基本的函数:
@@ -108,7 +108,7 @@ SHA1值,最后调用 write_sha1_buffer() 将压缩内容写入 SHA1表示的文�
 </div>
 
 <div id="outline-container-sec-2-4" class="outline-3">
-<h3 id="sec-2-4"><span class="section-number-3">2.4</span> 2.4 init-db.c</h3>
+<h3 id="sec-2-4">2.4 init-db.c</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 该文件只有一个 main()函数,做的主要工作:
@@ -122,7 +122,7 @@ SHA1值,最后调用 write_sha1_buffer() 将压缩内容写入 SHA1表示的文�
 </div>
 </div>
 <div id="outline-container-sec-2-5" class="outline-3">
-<h3 id="sec-2-5"><span class="section-number-3">2.5</span> 2.5 show-diff.c</h3>
+<h3 id="sec-2-5">2.5 show-diff.c</h3>
 <div class="outline-text-3" id="text-2-5">
 <p>
 该文件会编译为 show-diff 命令,文件主要包含三个函数:
@@ -141,7 +141,7 @@ stat 信息做对比,如果有变化,则表示文件有变化.
 </div>
 </div>
 <div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> 3. Git tips</h2>
+<h2 id="sec-3">3. Git tips</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 master=HEAD, stage, workspace, three big parts of git
