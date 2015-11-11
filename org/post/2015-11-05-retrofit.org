@@ -9,7 +9,7 @@
 ---
 layout: post
 title: Square开源系列(2) Retrofit 项目 
-tag: [Java, Android, Square]
+tag: [Java, Android, Square, OpenSource]
 description: [retrofit源码阅读笔记]
 ---
 #+END_HTML
@@ -49,7 +49,7 @@ description: [retrofit源码阅读笔记]
   
   #+END_SRC
 * 程序示例
-这部分从一个简单的程序开始, 展示retrofit的使用,并通过对这个程序的进一步介绍retrofit的各种功能.
+  这部分从一个简单的程序开始, 展示retrofit的使用,并通过对这个程序的进一步介绍retrofit的各种功能.
 ** 一个简单的retrofit程序
    场景:通过GET请求向服务器返回用户信息, 服务器通过Json格式返回一个或多个用户的信息.基于这个例子
 介绍一下retrofit的使用步骤:
@@ -77,7 +77,7 @@ public interface Client {
    *注:在retrofit2.0中,要注意GET和POST注解的参数,如果参数以"/"开头,那么在跟base地址拼接时,会将base地址中
    的相对地址全部覆盖掉. 举例: base地址为"http://a/b", GET参数为"/c/d", 那么最后的请求地址为"http://a/c/d",
    因此,如果base地址本身已经是相对地址, 那么GET/POST的参数不能以"/"开头.*
-
+   
 3. 主程序中实现get请求
    #+BEGIN_SRC 
 public class MainActivity {
@@ -104,4 +104,90 @@ public class MainActivity {
    该对象的具体http请求函数(这里为getUsers())来实现http请求. 请求的结果是Json数据,会通过GsonConverter转化为具体的
    对象(即User). 由于是多个对象,所以需要放到一个List中.
 
-上述三步即为retrofit的基本使用方法.
+上述三步即为retrofit的基本使用方法.(htt
+** 创建一个Service generator类
+参考自 [[https://futurestud.io/blog/retrofit-getting-started-and-android-client/]].
+
+如果项目中*针对同一个server地址*需要创建多个Retrofit Interface service,那么可以创建一个通用的ServiceGenerator类
+来生成service实例.
+
+#+BEGIN_SRC java
+public class ServiceGenerator {
+    public static final String BASE_URL = "";
+
+    private static OkHttpClient httpClient = new OkHttpClient();
+    private static Retrofit.Builder builder =
+	new Retrofit.Builder()
+	.baseUrl(BASE_URL)
+	.addConverterFactory(GsonConverterFactory.create());
+
+    public static <T> T createService(Class<T> serviceClass){
+        //把设置client放到这里是因为后续有对client进行配置的需求
+	Retrofit retrofit = builder.client(httpClient).build(); 
+	return retrofit.create(serviceClass);
+    }
+				      
+}
+
+#+END_SRC
+
+这样在上一节的MainActivity中,可以直接使用ServiceGenerator来创建Client实例
+
+#+BEGIN_SRC java
+
+    Client client = ServiceGenerator.create(Client.class);
+    Client call = client.getUsers();
+    List<Users> result = call.execute().body();
+
+#+END_SRC
+** 扩展ServiceGenerator类
+上一节创建了一个基本的ServiceGenerator类, 因为Http请求的丰富多样性, 
+可以通过扩展该类加入更多的Http请求功能.
+
+*** 帐号密码认证
+帐号密码是一种常见的认证方式, 通常将其加密后以放入到http头部的Authorization中
+进行请求认证.通过对OkHttpClient进行配置可以在retrofit中实现该方式. 
+
+#+BEGIN_SRC java
+    public static <T> T createService(Class<T> serviceClass){
+	createService(serviceClass, null, null);
+    }
+
+    pubic static <T> T createService(Class<T> serviceCls, String userName, String passWord)  {
+	if (userName != null && passWord != null) {
+	    //对用户名和密码进行加密(不同的需求加密方式不一样, 这里只提供参考)
+	    String credentials = userName + ":" + passWord;
+	    final String base64Str = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+
+	    httpClient.interceptors().clear();
+	    httpClient.interceptors().add(new Interceptor() {
+		    @Override
+		    public Response intercept(Interceptor.Chain chain) throws IOException {
+			Request original = chain.request();
+
+			Request.Builder requestBuilder = original.newBuilder()
+			    .header("Authorization", basic);
+                        .header("Accept", "applicaton/json");
+                        .method(original.method(), original.body());
+
+			Request request = requestBuilder.build();
+			return chain.proceed(request);
+		    }
+		});
+	}
+
+	Retrofit retrofit = builder.client(httpClient).build();
+	return retrofit.create(serverClass);
+    }
+#+END_SRC
+
+上述代码通过修改OkHttpClient的相关参数来修改API请求的头部, 讲加密后的帐号和密码放入到
+Authorization中实现验证.
+
+注: Interceptors是属于OkHttp的相关内容, 这部分在后面学习OkHttp时会介绍.
+
+*** OAuth认证接口
+整合过第三方API的同学肯定对OAuth接口不陌生, 大部分情况下你都需要去第三方开发者
+平台注册你的app去获取一个id和secret, 这样才可以访问第三方的接口.
+
+注: 关于oauth的介绍可以参考阮一峰老师的文章 [[http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html][理解OAuth2.0]].
