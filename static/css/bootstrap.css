@@ -652,7 +652,7 @@ code {
 }
 pre {
   display: block;
-  padding: 9.5px;
+  padding: 4px 4px 4px 4px;
   margin: 0 0 10px;
   font-size: 15px;
   line-height: 1.61429;
