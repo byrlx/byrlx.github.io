@@ -9,11 +9,11 @@
 ---
 layout: post
 title: 使用开源项目Robolectric测试Android代码
-tag: [Java, Android, OpenSource]
+tag: [Android]
 ---
 #+END_HTML
 
-(未完) 
+(持续更新) 
 
 该项目官网 [[http://robolectric.org/]]. github地址: [[https://github.com/robolectric/robolectric]].
 

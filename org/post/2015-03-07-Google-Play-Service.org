@@ -9,9 +9,11 @@
 layout: post
 title: Android项目使用Google Play Service
 description: [Notes about how to use google play service]
-tag: [Android, Google]
+tag: [Android]
 ---
 #+END_HTML
+
+(持续更新)
 
 * 在 Android Studio 中使用 Google Play Service
 在 Module 下的 build.gradle 的dependencies 中加入下面的代码.

@@ -8,10 +8,12 @@
 ---
 layout: post
 title: Lisp Learning
-tag: [Lisp]
+tag: [Emacs, Lisp]
 description: [Yeh. From today. I begin my black magic learning]
 ---
 #+END_HTML
+
+(持续更新)
 
 Since I use *eshell* for daily work, maybe it's a good time to learn
 lisp coding, because eshell can parse it!!!

@@ -7,10 +7,12 @@
 ---
 layout: post
 title: Android Gradle Plugin User Guide 文档翻译 
-tag: [Android, Gradle, Translate, TBD]
+tag: [Android, Translate]
 description: [Android Gradle插件用户文档中文翻译]
 ---
 #+END_HTML
+
+(持续更新)
 
 原文地址 [[http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Introduction]].
 

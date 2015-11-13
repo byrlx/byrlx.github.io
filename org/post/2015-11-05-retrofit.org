@@ -9,7 +9,7 @@
 ---
 layout: post
 title: Square开源系列(2) Retrofit 项目 
-tag: [Java, Android, Square, OpenSource]
+tag: [Java, Android, Square]
 description: [retrofit源码阅读笔记]
 ---
 #+END_HTML

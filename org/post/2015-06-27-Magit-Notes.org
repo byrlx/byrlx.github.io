@@ -9,9 +9,11 @@
 layout: post
 title: Magit文档笔记
 description: [阅读Magit文档的笔记, 记录常用的magit使用方法]
-tag: [Emacs, Magit]
+tag: [Emacs]
 ---
 #+END_HTML
+
+(持续更新)
 
 * v2.1.0
 v2.1.0于2015年7月1日发布, 该版本的主要更新: [[https://raw.githubusercontent.com/magit/magit/master/Documentation/RelNotes/2.1.0.txt]]

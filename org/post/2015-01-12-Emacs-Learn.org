@@ -7,11 +7,13 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: My Emacs Notes
-tag: [Emacs, TBD]
+title: Emacs日常笔记
+tag: [Emacs]
 description: [Record the common tips and usefull plugings of Emacs] 
 ---
 #+END_HTML
+
+(持续更新)
 
 * Basic
 ** eshell

@@ -8,10 +8,12 @@
 ---
 layout: post
 title: Git Source Code Learn
-tag: [Git]
+tag: [C, Git]
 description: [I am a git fan. I am trying to hack the source code]
 ---
 #+END_HTML
+
+(持续更新)
 
 * 1. First step
 get git code : git clone https://github.com/git/git;
