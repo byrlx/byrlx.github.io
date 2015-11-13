@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Android Logger
-tags: [Android, Log]
+tags: [Android]
 ---
 
 [logcat](../Android-logcat/) 和 [liblog](../Android-liblog/) 这两篇文章,讲到了android系统中如何读log和写log. 那么,log存放的位置在哪里? 本文就介绍一下android 系统中存放log的地方: logger device.

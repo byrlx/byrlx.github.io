@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Android Studio Tips
-tag: [Android, Tool]
+tag: [Android]
 ---
 
 记录 Android Studio 里的技巧和方法.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Android liblog
-tags: [Android, Log]
+tags: [Android]
 ---
 
 Androi系统提供了一套完整的API供其他程序调用输出log,这套API分为Java 层和 native 层,不过两个API最终都是通过file system将log写入kernel 层的logger device.

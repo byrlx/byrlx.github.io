@@ -1,6 +1,7 @@
 ---
 layout: post
 title: how to use git
+tag: [Git]
 ---
 	
 	master=HEAD, stage, workspace, three big parts of git
