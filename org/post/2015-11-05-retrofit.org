@@ -143,7 +143,6 @@ public class ServiceGenerator {
 ** 扩展ServiceGenerator类
 上一节创建了一个基本的ServiceGenerator类, 因为Http请求的丰富多样性, 
 可以通过扩展该类加入更多的Http请求功能.
-
 *** 帐号密码认证
 帐号密码是一种常见的认证方式, 通常将其加密后以放入到http头部的Authorization中
 进行请求认证.通过对OkHttpClient进行配置可以在retrofit中实现该方式. 
@@ -191,3 +190,131 @@ Authorization中实现验证.
 平台注册你的app去获取一个id和secret, 这样才可以访问第三方的接口.
 
 注: 关于oauth的介绍可以参考阮一峰老师的文章 [[http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html][理解OAuth2.0]].
+
+基于前面的代码, 重新写一个OAuth相关的createService()函数.
+#+BEGIN_SRC java
+public static <T> T createService(Class<T> serviceClass, AccessToken token) {
+    if (token != null) {
+	httpClient.interceptors().clear();
+	httpClient.interceptors().add(new Interceptor() {
+		@Override
+		public Response intercept(Interceptor.Chain chain) throws IOException {
+		    Request original = chain.request();
+		    Request.Builder builder2 = original.newBuilder()
+			.header("Accept", "application/json")
+			.header("Authorization", token.getTokenType()+ " " + token.getAccessToken())
+			.method(original.method(), original.body());
+		    Request request = builder2.build();
+		    return chain.proceed(request);
+		}
+	    });
+
+	Retrofit retrofit = builder.client(httpClient).build();
+	return retrofit.create(serverClass);
+    }
+}
+#+END_SRC
+
+上面的代码通过创建一个定制的 *RequestInterceptor* 对象来配置httpClient, 在定制的对象中讲token信息
+添加到Http表头的Authorization域. 不过一般情况下, Access Token并不是直接可以从服务器获取的, 
+下面就会讲解一下获取Access Token的常用方法. 
+
+场景: 假设你已经在第三方网站注册了你的app, 获取了一个clientId 和 secret, 你使用这个帐号来想注册服务器获取
+授权码(一般是跳转到一个网页, 点击允许操作), 然后再通过授权码获取Access Token, 下面是主要流程.
+
+1. 获取授权码
+   授权码的获取一般需要跳转到第三方api的一个相关的网页,网页中会询问用户是否允许用户
+   app获取其在该网站的信息.如果用户点击允许, 第三方服务器就会生成一个授权码返回给用户.
+   第一步先创建程序主界面:
+   #+BEGIN_SRC java
+public class LoginActivity extends Activity {
+    //在第三方平台注册应用获取的clientId和secret
+    private final String clientId = "your-client-id";
+    private final String clientSecret = "your-client-secret";
+    //获取跳转码后的跳转url, 在申请授权码时需要一并传给第三方服务器
+    private final String redirectUri = "your://redirecturi";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        Button loginButton (Button) findViewById(R.id.loginbutton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(ServiceGenerator.API_BASE_URL + "/login" + "?client_id=" + clientId + "&redirect_uri=" + redirectUri));
+                startActivity(intent);
+            }
+        });
+    }
+}
+   #+END_SRC
+
+   上述代码定义了一个基本的Android界面, 界面只有一个按钮, 点击按钮会请求授权码(一般会跳转到一个授权界面).
+   在请求中传入一个了回调地址, 如果用户授权一般第三方服务器带着授权码会跳到这个地址, 所以必须在请求授权码
+   时传入回调地址. 这在Android中会表现发送回调Uri的广播,并将授权码通过intent传递出去.
+   所以app中需要在注册一个可以接受该intent的界面,这里还是使用主界面. 在AndroidMainfest.xml中设置intent-filter
+   #+BEGIN_SRC xml
+<activity  
+    android:name="com.futurestudio.oauthexample.LoginActivity"
+    android:label="@string/app_name"
+    android:configChanges="keyboard|orientation|screenSize">
+    <intent-filter>
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+        <data
+            android:host="redirecturi"
+            android:scheme="your" />
+    </intent-filter>
+</activity>  
+   #+END_SRC
+
+   在onResume处理接受到的Intent.
+   这里假设授权码在intent中传递并且key值为code(第三方平台的回调方式需要参考他们的文档).
+   #+BEGIN_SRC java
+@Override
+protected void onResume() {  
+    super.onResume();
+
+    Uri uri = getIntent().getData();
+    if (uri != null && uri.toString().startsWith(redirectUri)) {
+        String code = uri.getQueryParameter("code");
+        if (code != null) {
+            //处理授权码
+        } else if (uri.getQueryParameter("error") != null) {
+            //处理错误
+        }
+    }
+} 
+   #+END_SRC
+
+   好, 到此为止,我们就已经获取到了授权码,下一步就是通过授权码获取Access Token. 
+2. 获取Access Token
+   上一步获取到授权码后, 就可以向第三方的Access Token服务器发送请求获取token. 我们可以写一个retrofit服务
+   来实现这个功能. 
+   #+BEGIN_SRC java
+public interface LoginService {  
+    @POST("/token")
+    Call<AccessToken> getAccessToken(
+            @Query("code") String code,
+            @Query("grant_type") String grantType);
+}
+   #+END_SRC
+
+   这里的code就是上一步获取的授权码, grantType是授权类型. 然后用下面的代码加入到onResume获取成功的代码段中
+   #+BEGIN_SRC java
+   if (code != null) {
+            // get access token
+            LoginService loginService = 
+                ServiceGenerator.createService(LoginService.class, clientId, clientSecret);
+            Call<AccessToken> call = loginService.getAccessToken(code, "authorization_code");
+            AccessToken accessToken = call.execute().body();
+   } 
+   #+END_SRC
+
+以上都是示例, 代码具体写法请参考相关第三方文档.
+   
