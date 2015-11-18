@@ -1,0 +1,493 @@
+---
+layout: post
+title: Square开源系列(3) Retrofit 源码解读 
+tag: [Java, Android, Square]
+description: [retrofit源码阅读笔记]
+---
+
+<p>
+(持续更新)
+</p>
+
+<p>
+不了解Retrofit的人可以先参考这篇介绍文章 <a href="http://byrlx.github.io/2015-11/retrofit/">http://byrlx.github.io/2015-11/retrofit/</a>
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">使用Retrofit的一般步骤.</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+在<a href="http://byrlx.github.io/2015-11/retrofit/">这篇</a> 文章里我们创建了一个最简单的Retrofit程序, 定义了一个用户GET请求的Service Client, 
+并通过Retrofit来创建一个Client实例, 来实现具体的HTTP请求, 并将请求的结果转化为User对象.
+所以一般来说, 使用retrofit的通常步骤为:
+</p>
+<ol class="org-ol">
+<li>创建一个Retrofit实例.
+</li>
+<li>调用retrofit的create()函数创建一个接口的具体对象.
+接口为用户自定义的HTTP接口类, 并将其作为参数传递给create().
+</li>
+<li>用2生成的对象调用其定义的http请求函数.该函数返回一个Call对象.
+</li>
+<li>执行上一步返回的call对象的execute().body()获取http结果, 该结果返回的是对象.
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">从示例代码入手追溯底层实现</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">Retrofit类</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Retrofit的一个超好用的特点就是高度封装性:我们只需定义一个抽象接口和一系列抽象的请求函数, 
+retrofit就可以为我们生成一个该接口的具体类, 然后我们就可以用自己定义的接口函数实现具体的
+Http请求, 而无需关心具体http的实现, 这些retrofit都帮我们做了. 下面看一下这个类的代码:
+</p>
+<ol class="org-ol">
+<li>内部Builder类
+Retrofit使用了Builder设计模式, 不能直接通过 "new Retrofit()" 来创建一个
+retrofit对象, 而是需要调用其内部类Builder的build函数.
+<div class="org-src-container">
+
+<pre class="src src-java">public static final class Builder {
+  private OkHttpClient client;
+  private BaseUrl baseUrl;
+  private List&lt;Converter.Factory&gt; converterFactories = new ArrayList&lt;&gt;();
+  private List&lt;CallAdapter.Factory&gt; adapterFactories = new ArrayList&lt;&gt;();
+  private Executor callbackExecutor;
+  private boolean validateEagerly;
+
+  public Builder() {
+    // Add the built-in converter factory first. This prevents overriding its behavior but also
+    // ensures correct behavior when using converters that consume all types.
+    converterFactories.add(new BuiltInConverters());
+  }
+
+  /** The HTTP client used for requests. */
+  public Builder client(OkHttpClient client) {
+    this.client = checkNotNull(client, "client == null");
+    return this;
+  }
+
+  /** API base URL. */
+  public Builder baseUrl(String baseUrl) {
+    checkNotNull(baseUrl, "baseUrl == null");
+    HttpUrl httpUrl = HttpUrl.parse(baseUrl);
+    if (httpUrl == null) {
+      throw new IllegalArgumentException("Illegal URL: " + baseUrl);
+    }
+    return baseUrl(httpUrl);
+  }
+
+  /** API base URL. */
+  public Builder baseUrl(final HttpUrl baseUrl) {
+    checkNotNull(baseUrl, "baseUrl == null");
+    return baseUrl(new BaseUrl() {
+      @Override public HttpUrl url() {
+	return baseUrl;
+      }
+    });
+  }
+
+  /** API base URL. */
+  public Builder baseUrl(BaseUrl baseUrl) {
+    this.baseUrl = checkNotNull(baseUrl, "baseUrl == null");
+    return this;
+  }
+
+  /** Add converter factory for serialization and deserialization of objects. */
+  public Builder addConverterFactory(Converter.Factory converterFactory) {
+    converterFactories.add(checkNotNull(converterFactory, "converterFactory == null"));
+    return this;
+  }
+
+  /**
+   * TODO
+   */
+  public Builder addCallAdapterFactory(CallAdapter.Factory factory) {
+    adapterFactories.add(checkNotNull(factory, "factory == null"));
+    return this;
+  }
+
+  /**
+   * The executor on which {@link Callback} methods are invoked when returning {@link Call} from
+   * your service method.
+   */
+  public Builder callbackExecutor(Executor callbackExecutor) {
+    this.callbackExecutor = checkNotNull(callbackExecutor, "callbackExecutor == null");
+    return this;
+  }
+
+  /**
+   * When calling {@link #create} on the resulting {@link Retrofit} instance, eagerly validate
+   * the configuration of all methods in the supplied interface.
+   */
+  public Builder validateEagerly() {
+    validateEagerly = true;
+    return this;
+  }
+
+  /** Create the {@link Retrofit} instances. */
+  public Retrofit build() {
+    if (baseUrl == null) {
+      throw new IllegalStateException("Base URL required.");
+    }
+
+    OkHttpClient client = this.client;
+    if (client == null) {
+      client = new OkHttpClient();
+    }
+
+    // Make a defensive copy of the adapters and add the default Call adapter.
+    List&lt;CallAdapter.Factory&gt; adapterFactories = new ArrayList&lt;&gt;(this.adapterFactories);
+    adapterFactories.add(Platform.get().defaultCallAdapterFactory(callbackExecutor));
+
+    // Make a defensive copy of the converters.
+    List&lt;Converter.Factory&gt; converterFactories = new ArrayList&lt;&gt;(this.converterFactories);
+
+    return new Retrofit(client, baseUrl, converterFactories, adapterFactories, callbackExecutor,
+	validateEagerly);
+  }
+}
+</pre>
+</div>
+<p>
+这是一个典型的Builder模式, Builder类内部定义和Retrofit相同的变量, 
+并且其每一个setter()函数都会返回this. 最后通过build()函数new一个Retrofit
+对象并返回.
+</p>
+
+<p>
+<b>注</b>: 从代码中可以看到, 如果在builder中没有主动传入OkHttpClient的话,
+Builder会创建一个默认的OkHttpClient.
+</p>
+</li>
+<li>create()函数
+该函数是Retrofit的 <b>精华</b>, 通过它, 我们可以将自定义的接口转化为一个具体的
+该接口的对象.
+<div class="org-src-container">
+
+<pre class="src src-java">public &lt;T&gt; T create(final Class&lt;T&gt; service) {
+  Utils.validateServiceInterface(service);
+  if (validateEagerly) {
+    eagerlyValidateMethods(service);
+  }
+  return (T) Proxy.newProxyInstance(service.getClassLoader(), new Class&lt;?&gt;[] { service },
+      new InvocationHandler() {
+	private final Platform platform = Platform.get();
+
+	@Override public Object invoke(Object proxy, Method method, Object... args)
+	    throws Throwable {
+	  // If the method is a method from Object then defer to normal invocation.
+	  if (method.getDeclaringClass() == Object.class) {
+	    return method.invoke(this, args);
+	  }
+	  if (platform.isDefaultMethod(method)) {
+	    return platform.invokeDefaultMethod(method, service, proxy, args);
+	  }
+	  return loadMethodHandler(method).invoke(args);
+	}
+      });
+}
+</pre>
+</div>
+<p>
+上面的代码就是retrofit的实现, 代码比较短, 首先是调用validateServiceInterface()
+来检查传入的类变量是否合法:
+</p>
+<pre class="example">
+static &lt;T&gt; void validateServiceInterface(Class&lt;T&gt; service) {
+  if (!service.isInterface()) {
+    throw new IllegalArgumentException("API declarations must be interfaces.");
+  }
+  // Prevent API interfaces from extending other interfaces. This not only avoids a bug in
+  // Android (http://b.android.com/58753) but it forces composition of API declarations which is
+  // the recommended pattern.
+  if (service.getInterfaces().length &gt; 0) {
+    throw new IllegalArgumentException("API interfaces must not extend other interfaces.");
+  }
+}
+</pre>
+<p>
+这里检查的地方有两个: 1, 传入的参数必须为一个interface类型. 2, 传入的参数
+没有实现其他interface.
+</p>
+
+<p>
+参数合法性检查完之后, 会条件性的执行eagerlyValidateMethods(), 这里先略过.
+接下来是调用Proxy的newProxyInstance()函数为传入的参数生成动态代理. 
+动态代理机制是Java的一个高级特性, 其主要功能就是可以为委托类对象生成代理类,
+代理类可以将所有的方法调用分派到委托对象上反射执行. 动态代理的相关知识可参考
+相关的Java书籍. 这里传入newProxyInstance()有三个参数: 1, 接口的classLoader. 2, 
+只包含接口的class数组. 3, 自定义的InvocationHandler()对象, 该对象实现了invoke()
+函数, 通常在该函数中实现对委托类函数的访问. 所以从create函数可以看出, *其实该函数
+返回的是一个动态代理类对象(被转化成了我们自定义的接口), 当我们调用该接口的自定义
+函数时, 我们调用的实际是invoke()函数.* 而要执行的方法被当作参数传给了invoke.
+</p>
+
+<p>
+下面看下invoke()函数的具体实现:
+</p>
+<ul class="org-ul">
+<li>判断要调用的方法是否是object类的方法(每个类都有), 如果是则直接在当前
+类上调用.
+</li>
+<li>如果是平台的默认方法, 调用platform的相关函数(目前这段代码不会走到)
+</li>
+<li>否则, 调用loadMethodHandler()函数返回值的的invoke()方法实现函数调用.
+这个方法就是retrofit替我们实现Http请求的地方.
+</li>
+</ul>
+</li>
+<li>loadMethodHandler()函数
+<div class="org-src-container">
+
+<pre class="src src-java">MethodHandler&lt;?&gt; loadMethodHandler(Method method) {
+  MethodHandler&lt;?&gt; handler;
+  synchronized (methodHandlerCache) {
+    handler = methodHandlerCache.get(method);
+    if (handler == null) {
+      handler = MethodHandler.create(this, method);
+      methodHandlerCache.put(method, handler);
+    }
+  }
+  return handler;
+}
+</pre>
+</div>
+<p>
+这个函数的实现比较简单, 就是从cache中寻找调用函数的MethodHandler, 如果找到就
+返回, 否则创建一个新的返回. 下面就看下这个类的实现.
+</p>
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">MethodHandler类</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+在上一小节说过, 我们通过retrofit.create()创造出一个自定义接口的实例,
+然后调用实例方法实际上最后是对MethodHandler的invoke()函数的调用, 这一节
+就具体看一下这个类及相关方法的具体实现.
+</p>
+<ol class="org-ol">
+<li>对象创建
+该类的构造函数为私有函数, 所以只能通过静态函数create()来创造一个Methodhandler
+对象.
+<div class="org-src-container">
+
+<pre class="src src-java">final class MethodHandler&lt;T&gt; {
+  @SuppressWarnings("unchecked")
+  static MethodHandler&lt;?&gt; create(Retrofit retrofit, Method method) {
+    CallAdapter&lt;Object&gt; callAdapter = (CallAdapter&lt;Object&gt;) createCallAdapter(method, retrofit);
+    Type responseType = callAdapter.responseType();
+    Converter&lt;ResponseBody, Object&gt; responseConverter =
+	(Converter&lt;ResponseBody, Object&gt;) createResponseConverter(method, retrofit, responseType);
+    RequestFactory requestFactory = RequestFactoryParser.parse(method, responseType, retrofit);
+    return new MethodHandler&lt;&gt;(retrofit, requestFactory, callAdapter, responseConverter);
+  }
+  ...
+</pre>
+</div>
+<p>
+该函数首先基于mothod和retrofit创建一个CallAdapter的对象, 然后基于该对象
+创建一个Converter对象, 接着生成一个RequestFactory对象, 然后把这些对象作为
+参数传递给构造函数生成一个MethodHandler实例.
+</p>
+</li>
+<li>创建CallAdapter实例
+<div class="org-src-container">
+
+<pre class="src src-java">private static CallAdapter&lt;?&gt; createCallAdapter(Method method, Retrofit retrofit) {
+  Type returnType = method.getGenericReturnType();
+  if (Utils.hasUnresolvableType(returnType)) {
+    throw Utils.methodError(method,
+	"Method return type must not include a type variable or wildcard: %s", returnType);
+  }
+  if (returnType == void.class) {
+    throw Utils.methodError(method, "Service methods cannot return void.");
+  }
+  Annotation[] annotations = method.getAnnotations();
+  try {
+    return retrofit.callAdapter(returnType, annotations);
+  } catch (RuntimeException e) { // Wide exception range because factories are user code.
+    throw Utils.methodError(e, method, "Unable to create call adapter for %s", returnType);
+  }
+}
+</pre>
+</div>
+<p>
+首先调用method的getGenericReturnType()获取该函数的返回类型, 如果该类型不能
+被解析或为void, 报错. 然后通过getAnnotations()函数获取我们在定义函数时使用的注解(GET/POST..)
+最后基于返回值和注解调用retrofit的callAdapter()生成对象.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java">//retrofit.java
+public CallAdapter&lt;?&gt; callAdapter(Type returnType, Annotation[] annotations) {
+   return nextCallAdapter(null, returnType, annotations);
+ }
+
+ /**
+  * Returns the {@link CallAdapter} for {@code returnType} from the available {@linkplain
+  * #callAdapterFactories() factories} except {@code skipPast}.
+  */
+ public CallAdapter&lt;?&gt; nextCallAdapter(CallAdapter.Factory skipPast, Type returnType,
+     Annotation[] annotations) {
+   checkNotNull(returnType, "returnType == null");
+   checkNotNull(annotations, "annotations == null");
+
+   int start = adapterFactories.indexOf(skipPast) + 1;
+   for (int i = start, count = adapterFactories.size(); i &lt; count; i++) {
+     CallAdapter&lt;?&gt; adapter = adapterFactories.get(i).get(returnType, annotations, this);
+     if (adapter != null) {
+       return adapter;
+     }
+   }
+
+    ....
+ }
+</pre>
+</div>
+<p>
+callAdapter函数就是从retrofit的adapterFactories变量中找到与该函数和返回值相关的
+adapter, 如果找不到则报错. 从前面Retrofit的builder代码可以看到, 如果用户没用显示声明
+Adapter的话, 默认会创建一个defaultAdapterFactory的实例加入到adapterFactories中.
+</p>
+</li>
+<li>invoke()函数
+invoke()函数是MethodHandler/对象/的唯一函数, 该函数实际是调用了callAdapter.adapt()
+函数, 该函数的参数为一个OkHttpCall对象, 从这里就可以看成该函数是Http请求的
+实际函数, 后面在看CallAdapter代码会再详细介绍其功能.
+<div class="org-src-container">
+
+<pre class="src src-java">Object invoke(Object... args) {
+  return callAdapter.adapt(new OkHttpCall&lt;&gt;(retrofit, requestFactory, responseConverter, args));
+}
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">CallAdapter和DefaultCallAdapter</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+前面的小节讲过, 当我们在程序中定义了一个retrofit接口, 然后通过retrofit.create()
+生成一个实例, 并调用该实例的函数时, 会得到一个Call类型的返回值(因此用户自定义的
+接口中的函数返回值应该都为Call类型). 对实例函数的调用最终是调用到了retrofit的
+callAdapter的adapt()函数. 这个函数(返回Call)是在DefaultCallAdapter中实现的.
+</p>
+<ol class="org-ol">
+<li>DefaultCallAdapter
+<div class="org-src-container">
+
+<pre class="src src-java">final class DefaultCallAdapter implements CallAdapter&lt;Call&lt;?&gt;&gt; {
+  static final Factory FACTORY = new Factory() {
+    @Override
+    public CallAdapter&lt;?&gt; get(Type returnType, Annotation[] annotations, Retrofit retrofit) {
+      if (Utils.getRawType(returnType) != Call.class) {
+	return null;
+      }
+      Type responseType = Utils.getCallResponseType(returnType);
+      return new DefaultCallAdapter(responseType);
+    }
+  };
+
+  private final Type responseType;
+
+  DefaultCallAdapter(Type responseType) {
+    this.responseType = responseType;
+  }
+
+  @Override public Type responseType() {
+    return responseType;
+  }
+
+  @Override public &lt;R&gt; Call&lt;R&gt; adapt(Call&lt;R&gt; call) {
+    return call;
+  }
+}
+</pre>
+</div>
+<p>
+可以看到该函数返回了一个Call类型的结果, 跟我们在例子中定义的一样.
+</p>
+</li>
+
+<li>CallAdapter
+该类是DefaultCallAdapter的父类, 
+<div class="org-src-container">
+
+<pre class="src src-java">public interface CallAdapter&lt;T&gt; {
+  Type responseType();
+
+  &lt;R&gt; T adapt(Call&lt;R&gt; call);
+
+  interface Factory {
+    CallAdapter&lt;?&gt; get(Type returnType, Annotation[] annotations, Retrofit retrofit);
+  }
+}
+</pre>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4">Call和OkHttpCall</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+在MethodHandler一节可以看到invoke中调用adapt()函数时传入了一个OkHttpCall类型, 
+所以实例中用户调用自定义函数返回的也是一个OkHttpCall类型的结果.
+</p>
+
+<ol class="org-ol">
+<li>Call接口定义
+<div class="org-src-container">
+
+<pre class="src src-java">   /**
+ * An invocation of a Retrofit method that sends a request to a webserver and returns a response.
+ * Each call yields its own HTTP request and response pair. Use {@link #clone} to make multiple
+ * calls with the same parameters to the same webserver; this may be used to implement polling or
+ * to retry a failed call.
+ *
+ * &lt;p&gt;Calls may be executed synchronously with {@link #execute}, or asynchronously with {@link
+ * #enqueue}. In either case the call can be canceled at any time with {@link #cancel}. A call that
+ * is busy writing its request or reading its response may receive a {@link IOException}; this is
+ * working as designed.
+ */
+public interface Call&lt;T&gt; extends Cloneable {
+  Response&lt;T&gt; execute() throws IOException;
+  void enqueue(Callback&lt;T&gt; callback);
+  void cancel();
+  Call&lt;T&gt; clone();
+}
+</pre>
+</div>
+<p>
+Call是retrofit定义的一个接口规范, 该类主要用于进行Http请求.
+代码注释阐明了该接口的几个功能和约束:
+</p>
+<ul class="org-ul">
+<li>使用execute()进行同步调用.
+</li>
+<li>使用enqueue()进行异步调用.
+</li>
+<li>无论同步还是异步, 都可以在任何时候使用cancel取消.
+</li>
+<li>使用clone()进行一个功能的多次请求.(例如失败后的轮询).
+</li>
+</ul>
+</li>
+<li>OkHttpCall     
+</li>
+</ol>
+</div>
+</div>
+</div>

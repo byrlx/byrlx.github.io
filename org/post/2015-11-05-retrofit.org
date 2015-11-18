@@ -50,6 +50,7 @@ description: [retrofit源码阅读笔记]
   #+END_SRC
 * 程序示例
   这部分从一个简单的程序开始, 展示retrofit的使用,并通过对这个程序的进一步介绍retrofit的各种功能.
+这部分内容大多参考自 [[https://futurestud.io/blog/retrofit-getting-started-and-android-client/]].
 ** 一个简单的retrofit程序
    场景:通过GET请求向服务器返回用户信息, 服务器通过Json格式返回一个或多个用户的信息.基于这个例子
 介绍一下retrofit的使用步骤:
@@ -91,7 +92,7 @@ public class MainActivity {
 
     Retrofit retrofit = builder.build();
     Client client = retrofit.create(Client.class);
-    Client call = client.getUsers();
+    Call<List<Users>> call = client.getUsers();
     List<Users> result = call.execute().body();
     ....
 }
@@ -106,7 +107,6 @@ public class MainActivity {
 
 上述三步即为retrofit的基本使用方法.(htt
 ** 创建一个Service generator类
-参考自 [[https://futurestud.io/blog/retrofit-getting-started-and-android-client/]].
 
 如果项目中*针对同一个server地址*需要创建多个Retrofit Interface service,那么可以创建一个通用的ServiceGenerator类
 来生成service实例.
@@ -318,3 +318,12 @@ public interface LoginService {
 
 以上都是示例, 代码具体写法请参考相关第三方文档.
    
+** 同步请求 vs 异步请求
+Retrofit支持同步和异步请求, 不过Retrofit2的同步/异步架构功能与1有
+很大不同, 具体请参考相关文档.
+1. 同步请求
+   直接调用execute()函数, 本文中的实例就是同步请求的例子.
+   *注:* 不要在Android的主线程中调用execute(),有可能报错或导致ANR.
+2. 异步请求
+   异步请求的话调用enque()函数, 并向enque()传入一个Callback的参数.
+   并需要要实现Callback的onSuccess和onFailure函数.
