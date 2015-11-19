@@ -386,3 +386,99 @@ public interface Call<T> extends Cloneable {
    + 无论同步还是异步, 都可以在任何时候使用cancel取消.
    + 使用clone()进行一个功能的多次请求.(例如失败后的轮询).
 2. OkHttpCall     
+   OkHttpCall是基于OkHttp的Call接口的一个实现, 可以通过这个类看一下具体它是怎样
+   遵循Call接口的规范的. 下面是其几个主要函数的实现:
+   + execute()
+     #+BEGIN_SRC java
+  public Response<T> execute() throws IOException {
+    synchronized (this) {
+      if (executed) throw new IllegalStateException("Already executed");
+      executed = true;
+    }
+
+    com.squareup.okhttp.Call rawCall = createRawCall();
+    if (canceled) {
+      rawCall.cancel();
+    }
+    this.rawCall = rawCall;
+
+    return parseResponse(rawCall.execute());
+  }     
+     #+END_SRC
+     前面讲过该函数是Call的同步请求函数, 直接返回请求结果. 从代码中可以看出.
+     由于executed变量被设为true后其值一直不变, 所以execute的"请求"代码只会
+     执行一次. 该函数使用了OkHttp的Call类来执行具体的执行动作. 最后调用
+     parseResponse()处理请求结果.
+   + enqueue()
+     异步请求函数, 需要向该函数传递一个Callback类型的参数.Callback是一个
+     接口, 提供了两个函数onResponse()表示成功, onFailure()表示失败.
+     在Android中,这两个函数需要在UI线程中执行.
+     #+BEGIN_SRC java
+public interface Callback<T> {
+  /** Successful HTTP response. */
+  void onResponse(Response<T> response, Retrofit retrofit);
+
+  /** Invoked when a network or unexpected exception occurred during the HTTP request. */
+  void onFailure(Throwable t);
+}
+     #+END_SRC
+     在enqueue()中创建了一个com.squareup.okhttp.Call实例,
+     http请求动作实际是有这个实例的enqueue()函数来执行的.
+     #+BEGIN_SRC java
+@Override public void enqueue(final Callback<T> callback) {
+    synchronized (this) {
+      if (executed) throw new IllegalStateException("Already executed");
+      executed = true;
+    }
+
+    com.squareup.okhttp.Call rawCall;
+    try {
+      rawCall = createRawCall();
+    } catch (Throwable t) {
+      callback.onFailure(t);
+      return;
+    }
+    if (canceled) {
+      rawCall.cancel();
+    }
+    this.rawCall = rawCall;
+
+    rawCall.enqueue(new com.squareup.okhttp.Callback() {
+      private void callFailure(Throwable e) {
+        try {
+          callback.onFailure(e);
+        } catch (Throwable t) {
+          t.printStackTrace();
+        }
+      }
+
+      private void callSuccess(Response<T> response) {
+        try {
+          callback.onResponse(response, retrofit);
+        } catch (Throwable t) {
+          t.printStackTrace();
+        }
+      }
+
+      @Override public void onFailure(Request request, IOException e) {
+        callFailure(e);
+      }
+
+      @Override public void onResponse(com.squareup.okhttp.Response rawResponse) {
+        Response<T> response;
+        try {
+          response = parseResponse(rawResponse);
+        } catch (Throwable e) {
+          callFailure(e);
+          return;
+        }
+        callSuccess(response);
+      }
+    });
+} 
+     #+END_SRC
+   + cancel() 
+     取消请求, 实际是调用com.squareup.okhttp.Call的cancel()函数.
+   + clone()
+     由于一个对象只能执行一次请求, 所以同一请求的多次执行, 需要通过clone()来
+     复制, 该函数实际上是创建了一个新的OkHttpCall对象.
