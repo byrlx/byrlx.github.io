@@ -643,8 +643,9 @@ samp {
   font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Sans GB', sans-serif, Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif;
 }
 code {
-  padding: 4px 4px 4px 4px;
-  font-size: 110%;
+  padding: 0px;
+  font-size: 100%;
+  line-height: 95%;
   color: #c7254e;
   background-color: #f9f2f4;
   white-space: nowrap;
