@@ -643,11 +643,10 @@ samp {
   font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Sans GB', sans-serif, Arial, Verdana, 'BitStream vera Sans', Tahoma, Helvetica, sans-serif;
 }
 code {
-  padding: 0px;
-  font-size: 100%;
-  line-height: 95%;
+  padding: 4px 4px 4px 4px;
+  font-size: 110%;
   color: #c7254e;
-  background-color: #f0f2f4;
+  background-color: #f9f2f4;
   white-space: nowrap;
   border-radius: 4px;
 }
@@ -664,7 +663,7 @@ pre {
   border: 1px solid #cccccc;
   border-radius: 4px;
 }
-pre {
+pre code {
   font-size: inherit;
   color: inherit;
   white-space: pre-wrap;
