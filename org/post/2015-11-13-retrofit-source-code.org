@@ -33,87 +33,28 @@ Retrofit的一个超好用的特点就是高度封装性:我们只需定义一�
 retrofit就可以为我们生成一个该接口的具体类, 然后我们就可以用自己定义的接口函数实现具体的
 Http请求, 而无需关心具体http的实现, 这些retrofit都帮我们做了. 下面看一下这个类的代码:
 1. 内部Builder类
+
    Retrofit使用了Builder设计模式, 不能直接通过 "new Retrofit()" 来创建一个
    retrofit对象, 而是需要调用其内部类Builder的build函数.
-   #+BEGIN_SRC java
-   
-  public static final class Builder {
-    private OkHttpClient client;
-    private BaseUrl baseUrl;
-    private List<Converter.Factory> converterFactories = new ArrayList<>();
-    private List<CallAdapter.Factory> adapterFactories = new ArrayList<>();
-    private Executor callbackExecutor;
-    private boolean validateEagerly;
+   从下面的代码看(实现细节省略), 这是一个典型的Builder模式, Builder类内部定义和Retrofit相同的变量, 
+   并且其每一个setter()函数都会返回this. 最后通过build()函数new一个Retrofit
+   对象并返回.
 
+   *注*: 从代码中可以看到, 如果在builder中没有主动传入OkHttpClient的话,
+   Builder会创建一个默认的OkHttpClient.
+   #+BEGIN_SRC java
+  public static final class Builder {
     public Builder() {
-      // Add the built-in converter factory first. This prevents overriding its behavior but also
-      // ensures correct behavior when using converters that consume all types.
       converterFactories.add(new BuiltInConverters());
     }
 
-    /** The HTTP client used for requests. */
-    public Builder client(OkHttpClient client) {
-      this.client = checkNotNull(client, "client == null");
-      return this;
-    }
-
-    /** API base URL. */
-    public Builder baseUrl(String baseUrl) {
-      checkNotNull(baseUrl, "baseUrl == null");
-      HttpUrl httpUrl = HttpUrl.parse(baseUrl);
-      if (httpUrl == null) {
-        throw new IllegalArgumentException("Illegal URL: " + baseUrl);
-      }
-      return baseUrl(httpUrl);
-    }
-
-    /** API base URL. */
-    public Builder baseUrl(final HttpUrl baseUrl) {
-      checkNotNull(baseUrl, "baseUrl == null");
-      return baseUrl(new BaseUrl() {
-        @Override public HttpUrl url() {
-          return baseUrl;
-        }
-      });
-    }
-
-    /** API base URL. */
-    public Builder baseUrl(BaseUrl baseUrl) {
-      this.baseUrl = checkNotNull(baseUrl, "baseUrl == null");
-      return this;
-    }
-
-    /** Add converter factory for serialization and deserialization of objects. */
-    public Builder addConverterFactory(Converter.Factory converterFactory) {
-      converterFactories.add(checkNotNull(converterFactory, "converterFactory == null"));
-      return this;
-    }
-
-    /**
-     * TODO
-     */
-    public Builder addCallAdapterFactory(CallAdapter.Factory factory) {
-      adapterFactories.add(checkNotNull(factory, "factory == null"));
-      return this;
-    }
-
-    /**
-     * The executor on which {@link Callback} methods are invoked when returning {@link Call} from
-     * your service method.
-     */
-    public Builder callbackExecutor(Executor callbackExecutor) {
-      this.callbackExecutor = checkNotNull(callbackExecutor, "callbackExecutor == null");
-      return this;
-    }
-
-    /**
-     * When calling {@link #create} on the resulting {@link Retrofit} instance, eagerly validate
-     * the configuration of all methods in the supplied interface.
-     */
-    public Builder validateEagerly() {
-      validateEagerly = true;
-      return this;
-    }
+    public Builder client(OkHttpClient client) {...}
+    public Builder baseUrl(String baseUrl) {...}
+    ...
+    public Builder addConverterFactory(Converter.Factory converterFactory) {}
+    public Builder addCallAdapterFactory(CallAdapter.Factory factory) {}
+    public Builder callbackExecutor(Executor callbackExecutor) {}
+    public Builder validateEagerly() {}
 
     /** Create the {@link Retrofit} instances. */
     public Retrofit build() {
@@ -138,12 +79,6 @@ Http请求, 而无需关心具体http的实现, 这些retrofit都帮我们做了
     }
   }
    #+END_SRC
-   这是一个典型的Builder模式, Builder类内部定义和Retrofit相同的变量, 
-   并且其每一个setter()函数都会返回this. 最后通过build()函数new一个Retrofit
-   对象并返回.
-
-   *注*: 从代码中可以看到, 如果在builder中没有主动传入OkHttpClient的话,
-   Builder会创建一个默认的OkHttpClient.
 2. create()函数
    该函数是Retrofit的 *精华*, 通过它, 我们可以将自定义的接口转化为一个具体的
    该接口的对象.
@@ -178,9 +113,6 @@ Http请求, 而无需关心具体http的实现, 这些retrofit都帮我们做了
     if (!service.isInterface()) {
       throw new IllegalArgumentException("API declarations must be interfaces.");
     }
-    // Prevent API interfaces from extending other interfaces. This not only avoids a bug in
-    // Android (http://b.android.com/58753) but it forces composition of API declarations which is
-    // the recommended pattern.
     if (service.getInterfaces().length > 0) {
       throw new IllegalArgumentException("API interfaces must not extend other interfaces.");
     }
@@ -225,9 +157,7 @@ Http请求, 而无需关心具体http的实现, 这些retrofit都帮我们做了
 在上一小节说过, 我们通过retrofit.create()创造出一个自定义接口的实例,
 然后调用实例方法实际上最后是对MethodHandler的invoke()函数的调用, 这一节
 就具体看一下这个类及相关方法的具体实现.
-1. 对象创建
-   该类的构造函数为私有函数, 所以只能通过静态函数create()来创造一个Methodhandler
-   对象.
+1. 对象创建.
    #+BEGIN_SRC java
 final class MethodHandler<T> {
   @SuppressWarnings("unchecked")
@@ -241,7 +171,8 @@ final class MethodHandler<T> {
   }
   ...
    #+END_SRC
-   该函数首先基于mothod和retrofit创建一个CallAdapter的对象, 然后基于该对象
+   该类的构造函数为私有函数, 所以只能通过静态函数create()来创造一个Methodhandler
+   对象.该函数首先基于mothod和retrofit创建一个CallAdapter的对象, 然后基于该对象
    创建一个Converter对象, 接着生成一个RequestFactory对象, 然后把这些对象作为
    参数传递给构造函数生成一个MethodHandler实例.
 2. 创建CallAdapter实例
@@ -272,10 +203,6 @@ final class MethodHandler<T> {
     return nextCallAdapter(null, returnType, annotations);
   }
 
-  /**
-   * Returns the {@link CallAdapter} for {@code returnType} from the available {@linkplain
-   * #callAdapterFactories() factories} except {@code skipPast}.
-   */
   public CallAdapter<?> nextCallAdapter(CallAdapter.Factory skipPast, Type returnType,
       Annotation[] annotations) {
     checkNotNull(returnType, "returnType == null");
@@ -339,38 +266,21 @@ final class DefaultCallAdapter implements CallAdapter<Call<?>> {
   }
 }   
    #+END_SRC
-   可以看到该函数返回了一个Call类型的结果, 跟我们在例子中定义的一样.
-   
-2. CallAdapter
-   该类是DefaultCallAdapter的父类, 
-   #+BEGIN_SRC java
-public interface CallAdapter<T> {
-  Type responseType();
-
-  <R> T adapt(Call<R> call);
-
-  interface Factory {
-    CallAdapter<?> get(Type returnType, Annotation[] annotations, Retrofit retrofit);
-  }
-}   
-   #+END_SRC
+   可以看到adapt()函数返回了一个Call类型的结果, 跟我们在例子中定义的一样.
+   DefaultCallAdapter的父类是CallAdapter. 所以如果要实现自己的Adapter, 同样
+   需要继承此类.
 ** Call和OkHttpCall
 在MethodHandler一节可以看到invoke中调用adapt()函数时传入了一个OkHttpCall类型, 
 所以实例中用户调用自定义函数返回的也是一个OkHttpCall类型的结果.
 
-1. Call接口定义
+1. Call接口定义.
+   Call是retrofit定义的一个接口规范, 该类主要用于进行Http请求.
+   代码注释阐明了该接口的几个功能和约束:
+   + 使用execute()进行同步调用.
+   + 使用enqueue()进行异步调用.
+   + 无论同步还是异步, 都可以在任何时候使用cancel取消.
+   + 使用clone()进行一个功能的多次请求.(例如失败后的轮询).
    #+BEGIN_SRC java
-   /**
- * An invocation of a Retrofit method that sends a request to a webserver and returns a response.
- * Each call yields its own HTTP request and response pair. Use {@link #clone} to make multiple
- * calls with the same parameters to the same webserver; this may be used to implement polling or
- * to retry a failed call.
- *
- * <p>Calls may be executed synchronously with {@link #execute}, or asynchronously with {@link
- * #enqueue}. In either case the call can be canceled at any time with {@link #cancel}. A call that
- * is busy writing its request or reading its response may receive a {@link IOException}; this is
- * working as designed.
- */
 public interface Call<T> extends Cloneable {
   Response<T> execute() throws IOException;
   void enqueue(Callback<T> callback);
@@ -378,16 +288,10 @@ public interface Call<T> extends Cloneable {
   Call<T> clone();
 }
    #+END_SRC
-   Call是retrofit定义的一个接口规范, 该类主要用于进行Http请求.
-   代码注释阐明了该接口的几个功能和约束:
-   + 使用execute()进行同步调用.
-   + 使用enqueue()进行异步调用.
-   + 无论同步还是异步, 都可以在任何时候使用cancel取消.
-   + 使用clone()进行一个功能的多次请求.(例如失败后的轮询).
-2. OkHttpCall     
+2. OkHttpCall.    
    OkHttpCall是基于OkHttp的Call接口的一个实现, 可以通过这个类看一下具体它是怎样
    遵循Call接口的规范的. 下面是其几个主要函数的实现:
-   + execute()
+   + execute().
      #+BEGIN_SRC java
   public Response<T> execute() throws IOException {
     synchronized (this) {
@@ -408,8 +312,8 @@ public interface Call<T> extends Cloneable {
      由于executed变量被设为true后其值一直不变, 所以execute的"请求"代码只会
      执行一次. 该函数使用了OkHttp的Call类来执行具体的执行动作. 最后调用
      parseResponse()处理请求结果.
-   + enqueue()
-     异步请求函数, 需要向该函数传递一个Callback类型的参数.Callback是一个
+   + enqueue().
+     该函数是Call的异步请求函数, 需要向该函数传递一个Callback类型的参数.Callback是一个
      接口, 提供了两个函数onResponse()表示成功, onFailure()表示失败.
      在Android中,这两个函数需要在UI线程中执行.
      #+BEGIN_SRC java
@@ -421,8 +325,9 @@ public interface Callback<T> {
   void onFailure(Throwable t);
 }
      #+END_SRC
+
      在enqueue()中创建了一个com.squareup.okhttp.Call实例,
-     http请求动作实际是有这个实例的enqueue()函数来执行的.
+     http请求动作实际是这个实例的enqueue()函数来执行的.
      #+BEGIN_SRC java
 @Override public void enqueue(final Callback<T> callback) {
     synchronized (this) {
@@ -437,11 +342,7 @@ public interface Callback<T> {
       callback.onFailure(t);
       return;
     }
-    if (canceled) {
-      rawCall.cancel();
-    }
-    this.rawCall = rawCall;
-
+    ...
     rawCall.enqueue(new com.squareup.okhttp.Callback() {
       private void callFailure(Throwable e) {
         try {
