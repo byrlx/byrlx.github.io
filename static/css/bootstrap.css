@@ -647,7 +647,7 @@ code {
   font-size: 100%;
   line-height: 95%;
   color: #c7254e;
-  background-color: #f9f2f4;
+  background-color: #f0f2f4;
   white-space: nowrap;
   border-radius: 4px;
 }
@@ -664,7 +664,7 @@ pre {
   border: 1px solid #cccccc;
   border-radius: 4px;
 }
-pre code {
+pre {
   font-size: inherit;
   color: inherit;
   white-space: pre-wrap;
