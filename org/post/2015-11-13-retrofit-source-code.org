@@ -28,7 +28,7 @@ description: [retrofit源码阅读笔记]
 3. 用2生成的对象调用其定义的http请求函数.该函数返回一个Call对象.
 4. 执行上一步返回的call对象的execute().body()获取http结果, 该结果返回的是对象.
 * 从示例代码入手追溯底层实现
-** Retrofit类
+** Retrofit类使用动态代理创建接口代理
 Retrofit的一个超好用的特点就是高度封装性:我们只需定义一个抽象接口和一系列抽象的请求函数, 
 retrofit就可以为我们生成一个该接口的具体类, 然后我们就可以用自己定义的接口函数实现具体的
 Http请求, 而无需关心具体http的实现, 这些retrofit都帮我们做了. 下面看一下这个类的代码:
@@ -153,7 +153,7 @@ Http请求, 而无需关心具体http的实现, 这些retrofit都帮我们做了
    #+END_SRC
    这个函数的实现比较简单, 就是从cache中寻找调用函数的MethodHandler, 如果找到就
    返回, 否则创建一个新的返回. 下面就看下这个类的实现.
-** MethodHandler类
+** MethodHandler类实现接口函数调用
 在上一小节说过, 我们通过retrofit.create()创造出一个自定义接口的实例,
 然后调用实例方法实际上最后是对MethodHandler的invoke()函数的调用, 这一节
 就具体看一下这个类及相关方法的具体实现.
@@ -269,7 +269,7 @@ final class DefaultCallAdapter implements CallAdapter<Call<?>> {
    可以看到adapt()函数返回了一个Call类型的结果, 跟我们在例子中定义的一样.
    DefaultCallAdapter的父类是CallAdapter. 所以如果要实现自己的Adapter, 同样
    需要继承此类.
-** Call和OkHttpCall
+** Call和OkHttpCall 实现真正请求
 在MethodHandler一节可以看到invoke中调用adapt()函数时传入了一个OkHttpCall类型, 
 所以实例中用户调用自定义函数返回的也是一个OkHttpCall类型的结果.
 
@@ -377,8 +377,135 @@ public interface Callback<T> {
     });
 } 
      #+END_SRC
-   + cancel() 
+   + cancel(). 
      取消请求, 实际是调用com.squareup.okhttp.Call的cancel()函数.
-   + clone()
+   + clone().
      由于一个对象只能执行一次请求, 所以同一请求的多次执行, 需要通过clone()来
      复制, 该函数实际上是创建了一个新的OkHttpCall对象.
+   + parseResponse().
+     该函数用来将execute()或enqueue()返回的结果转换为一个Response对象并返回, 前面讲到
+     实际的请求是由OkHttp完成的, OkHttp请求也是返回一个com.squareup.okhttp.Response的对象, 
+     这个函数就是将该对象转换为一个retrofit的Response对象.
+
+     看一下这个函数的代码. 首先调用response的body()函数获取一个ResponseBody类型,
+     然后基于response的contentType和length生成一个新的rawResponse. 
+     #+BEGIN_SRC java
+     ResponseBody rawBody = rawResponse.body();
+
+    // Remove the body's source (the only stateful object) so we can pass the response along.
+    rawResponse = rawResponse.newBuilder()
+        .body(new NoContentResponseBody(rawBody.contentType(), rawBody.contentLength()))
+        .build();
+
+    int code = rawResponse.code();
+    if (code < 200 || code >= 300) {
+      try {
+        // Buffer the entire body to avoid future I/O.
+        ResponseBody bufferedBody = Utils.readBodyToBytesIfNecessary(rawBody);
+        return Response.error(bufferedBody, rawResponse);
+      } finally {
+        closeQuietly(rawBody);
+      }
+    }
+
+     #+END_SRC
+
+     接着处理"错误"返回和无内容的成功返回. 对于小于200或大于300的"错误码", 会先
+     尝试生成一个errBody, 然后返回一个"携带错误内容"的Response. 204或205的状态码
+     表示请求成功但无返回内容, 会简单调用success函数返回一个成功的Response.
+     Response是retrofit的请求结果类, 后面会介绍.
+     #+BEGIN_SRC java
+    int code = rawResponse.code();
+    if (code < 200 || code >= 300) {
+      try {
+        // Buffer the entire body to avoid future I/O.
+        ResponseBody bufferedBody = Utils.readBodyToBytesIfNecessary(rawBody);
+        return Response.error(bufferedBody, rawResponse);
+      } finally {
+        closeQuietly(rawBody);
+      }
+    }
+
+    if (code == 204 || code == 205) {
+      return Response.success(null, rawResponse);
+    }
+
+//error和success的代码
+  public static <T> Response<T> success(T body, com.squareup.okhttp.Response rawResponse) {
+    return new Response<>(rawResponse, body, null);
+  }
+
+  public static <T> Response<T> error(ResponseBody body, com.squareup.okhttp.Response rawResponse) {
+    return new Response<>(rawResponse, null, body);
+  }     
+     #+END_SRC
+
+     如果状态码不在这两个范围, 则尝试处理body并将其转化为最终我们需要的类型.
+     代码中的responseConverter就是我们在示例中构建retrofit时通过调用
+     addConverterFactory()传入的converter. 
+     所以如果我们传回的结果为一个类的json表示, 就可以通过这个函数传入一个GsonConverter.
+     它就会自动将返回内容转换为结果类型对象并存放到Response的body中.
+     我们直接调用body()函数就可有获得这个结果.
+     #+BEGIN_SRC java
+    ExceptionCatchingRequestBody catchingBody = new ExceptionCatchingRequestBody(rawBody);
+    try {
+      T body = responseConverter.convert(catchingBody);
+      return Response.success(body, rawResponse);
+    } catch (RuntimeException e) {
+      catchingBody.throwIfCaught();
+      throw e;
+    }
+     #+END_SRC
+** Request相关类处理请求
+在retrofit示例中讲到,使用retrofit一般首先要定义了一个接口,
+并在接口里用retrofit提供的注解定义了一系列请求函数. 下面的
+代码展示一个基本的接口和函数定义, 通过注解可以看出, 该函数
+是一个POST请求, 并使用了表单, 定义了属性user和pass,
+这两个属性的值通过函数参数传进来. 
+#+BEGIN_SRC java
+public interface CHHttpService {
+    @FormUrlEncoded
+    @POST("/p/checkState.do")
+    Call<CHIMEI>  checkState(@Field("user") String user, @Field("pass") String pass);
+}
+#+END_SRC
+
+这一部分的内容就是讲解retrofit如何通过解析注解来生成一个完整的
+OkHttp请求(request). 这一切的入口就是MethodHandler的create()函数中的
+一行代码. 
+#+BEGIN_SRC 
+  static MethodHandler<?> create(Retrofit retrofit, Method method) {
+    CallAdapter<Object> callAdapter = (CallAdapter<Object>) createCallAdapter(method, retrofit);
+    Type responseType = callAdapter.responseType();
+    Converter<ResponseBody, Object> responseConverter =
+        (Converter<ResponseBody, Object>) createResponseConverter(method, retrofit, responseType);
+    *RequestFactory requestFactory = RequestFactoryParser.parse(method, responseType, retrofit);*
+    return new MethodHandler<>(retrofit, requestFactory, callAdapter, responseConverter);
+  }
+#+END_SRC
+** Response处理返回结果
+   Response是execute和enqueue函数的返回值, Reponse的实现思想是:
+   如果请求成功并有结果返回, 则尝试将结果转化为最终的类, 
+   否则保存OkHttp请求的返回结果(rawResponse)并交给使用者处理.
+   Response的实现比较简单, 只有100行代码, 主要的两个函数为success()和
+   error(), 这两个函数会生成一个包含请求结果的Response对象, 然后是一系列
+   的getter()函数, 用来获取请求结果(头, 状态码, body等...).
+   #+BEGIN_SRC java
+public final class Response<T> {
+  private final com.squareup.okhttp.Response rawResponse;
+  private final T body;
+  private final ResponseBody errorBody;
+  private Response(com.squareup.okhttp.Response rawResponse, T body, ResponseBody errorBody) { ... }
+
+  public static <T> Response<T> success(T body, com.squareup.okhttp.Response rawResponse) {return new Response<>(rawResponse, body, null);}
+  public static <T> Response<T> error(ResponseBody body, com.squareup.okhttp.Response rawResponse) {return new Response<>(rawResponse, null, body);}
+
+  public com.squareup.okhttp.Response raw() {return rawResponse;}
+  public int code() {return rawResponse.code();}
+  public String message() {return rawResponse.message();}
+  public Headers headers() {return rawResponse.headers();}
+  public boolean isSuccess() {return rawResponse.isSuccessful();}
+  public T body() {return body;}
+  public ResponseBody errorBody() {return errorBody;}
+}
+   #+END_SRC
