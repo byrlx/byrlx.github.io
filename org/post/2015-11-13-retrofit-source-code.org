@@ -475,12 +475,84 @@ OkHttp请求(request). 这一切的入口就是MethodHandler的create()函数中
 一行代码. 
 #+BEGIN_SRC 
   static MethodHandler<?> create(Retrofit retrofit, Method method) {
-    CallAdapter<Object> callAdapter = (CallAdapter<Object>) createCallAdapter(method, retrofit);
-    Type responseType = callAdapter.responseType();
-    Converter<ResponseBody, Object> responseConverter =
-        (Converter<ResponseBody, Object>) createResponseConverter(method, retrofit, responseType);
-    *RequestFactory requestFactory = RequestFactoryParser.parse(method, responseType, retrofit);*
+    ...
+    RequestFactory requestFactory = RequestFactoryParser.parse(method, responseType, retrofit);  //<====here
     return new MethodHandler<>(retrofit, requestFactory, callAdapter, responseConverter);
+  }
+#+END_SRC
+
+*** RequestFactoryParser & RequestFactory
+在MethodHandler的create()函数中调用RequestFactoryParser的parse()函数
+生成了一个RequestFactory实例, 下面看下这个函数的主要功能.
+#+BEGIN_SRC java
+  static RequestFactory parse(Method method, Type responseType, Retrofit retrofit) {
+    RequestFactoryParser parser = new RequestFactoryParser(method);
+    parser.parseMethodAnnotations(responseType);
+    parser.parseParameters(retrofit);
+    return parser.toRequestFactory(retrofit.baseUrl());
+  }
+#+END_SRC
+该函数先创建一个RequestFactoryParser的实例, 然后调用parseMethodAnnotations()
+和parseParameters()两个函数, 从这两个函数的名称上可以看出它们的功能,分别是
+处理*接口函数*的注解和参数的注解.最后调用toRequestFactory()生成一个
+RequestFactory实例返回. 下面是这两个函数的实现:
++ parseMethodAnnotations().
+  该函数通过Method类的getAnnotations()函数返回要解析的函数的所有注解, 然后
+  遍历这些注解. 大部分请求相关的注解都调用了parseHttpMethodAndPath()这个函数
+  *Headers* 注解调用了parseHeaders()函数. 其他的注解则设置了相关的标志位.
+  #+BEGIN_SRC java
+   private void parseMethodAnnotations(Type responseType) {
+    for (Annotation annotation : method.getAnnotations()) {
+      if (annotation instanceof POST) { //同样适用于GET/DELET/HEAD/PATCH/, 第三个参数可能不同
+        parseHttpMethodAndPath("POST", ((POST) annotation).value(), true);
+      } else if (annotation instanceof Headers) {
+        String[] headersToParse = ((Headers) annotation).value();
+        if (headersToParse.length == 0) {throw methodError(method, "@Headers annotation is empty.");}
+        headers = parseHeaders(headersToParse);
+      } else if (annotation instanceof Multipart) {
+        if (isFormEncoded) {throw methodError(method, "Only one encoding annotation is allowed.");}
+        isMultipart = true;
+      } else if (annotation instanceof FormUrlEncoded) {
+        if (isMultipart) {throw methodError(method, "Only one encoding annotation is allowed.");}
+        isFormEncoded = true;
+      }
+    }
+    ...
+  } 
+  #+END_SRC
++ parseParameters
+  该函数先调用Method的函数geGenericParameterTypes()获取每个参数的类型, 然后
+  调用getParameterAnnotations()获取每个参数的注解.然后解析每个注解, 并将解析的
+  结果存放到requestBuilderActions变量中.
+*** RequestBuilder & RequestBuilderAction
+在OkHttpCall类中, 创建一个OkHttp的call实例会传入一个OkHttp的
+Request的参数, 这个Request变量是通过调用ReqeustFactory的create()
+函数生成的. create()函数首先通过已经处理完成的所有请求参数生成一个
+RequestBuilder实例, 然后再进一步处理上一部分还未完成的参数处理, 即
+将参数和注解结果结合起来.这个是通过调用RequestBuilderAction的perform()
+函数完成的.
+#+BEGIN_SRC java
+  public Response<T> execute() throws IOException {
+    com.squareup.okhttp.Call rawCall = createRawCall();
+    return parseResponse(rawCall.execute());
+  }
+  private com.squareup.okhttp.Call createRawCall() {
+    return retrofit.client().newCall(requestFactory.create(args));
+  }
+
+  Request create(Object... args) {
+    RequestBuilder requestBuilder =
+        new RequestBuilder(method, baseUrl.url(), relativeUrl, headers, contentType, hasBody,
+            isFormEncoded, isMultipart);
+
+    if (args != null) {
+      RequestBuilderAction[] actions = requestBuilderActions;
+      if (actions.length != args.length) {throw new IllegalArgumentException("Argument count (" + args.length + ") doesn't match action count (" + actions.length + ")");}
+      for (int i = 0, count = args.length; i < count; i++) {
+        actions[i].perform(requestBuilder, args[i]);
+      }
+    }
+    return requestBuilder.build();
   }
 #+END_SRC
 ** Response处理返回结果
