@@ -15,8 +15,8 @@ description: [Run code in org mode]
 
 orgmode 的一个强大的功能就是可以在文件里运行代码, 例如下面的代码,
 直接在代码出按 C-c C-c, 就会在代码下面显示运行结果, 结果开头用#+RESULTS修饰.
-#NAME test
-#+BEGIN_SRC elisp
+#+NAME test
+#+BEGIN_SRC elisp :export both
   (+ 1 1)
   (message "hllo world")
 #+END_SRC
