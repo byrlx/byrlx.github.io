@@ -1,8 +1,6 @@
 #+OPTIONS: num:nil
 #+OPTIONS: ^:nil
 #+OPTIONS: toc:nil
-#+AUTHOR: Luis404
-#+EMAIL: luisxu404@gmail.com
 
 #+BEGIN_HTML
 ---

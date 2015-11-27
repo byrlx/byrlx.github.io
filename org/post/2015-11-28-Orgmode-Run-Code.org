@@ -1,0 +1,38 @@
+#+OPTIONS: num:nil
+#+OPTIONS: ^:nil
+#+OPTIONS: toc:nil
+
+#+BEGIN_HTML
+---
+layout: post
+title: 在org mode文件运行代码
+tag: [Emacs]
+description: [Run code in org mode]
+---
+#+END_HTML
+
+orgmode 的一个强大的功能就是可以在文件里运行代码, 例如下面的代码,
+直接在代码出按 C-c C-c, 就会在代码下面显示运行结果, 结果开头用#+RESULTS修饰.
+#+BEGIN_SRC elisp
+(message "hello world")
+#+END_SRC
+
+#+RESULTS:
+: hello world
+
+下面是[[http://orgmode.org/manual/Working-with-source-code.html#Working-with-source-code][官方网站]] 关于在orgmode里插入代码的文档, 这个功能是 Eric Schulte 和 Dan Davison
+贡献的, 曾经叫做org babel.
+#+BEGIN_QUOTE 
+This functionality was contributed by Eric Schulte and Dan Davison, and was originally named Org-babel.
+#+END_QUOTE
+
+* 代码模块格式
+在orgmode中插入的代码格式为:
+#+BEGIN_EXAMPLE
+#+NAME: <name>
+#+BEGIN_SRC <language> <switches> <header arguments>
+<body>
+#+END_SRC
+#+END_EXAMPLE
+"#+NAME"这一行是可选的, 这个主要用于给代码块命名. 
+"switches"和"header arguments"也是可选的,
