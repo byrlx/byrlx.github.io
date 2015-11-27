@@ -11,14 +11,21 @@ description: [Run code in org mode]
 ---
 #+END_HTML
 
+(持续更新)
+
 orgmode 的一个强大的功能就是可以在文件里运行代码, 例如下面的代码,
 直接在代码出按 C-c C-c, 就会在代码下面显示运行结果, 结果开头用#+RESULTS修饰.
+#NAME test
 #+BEGIN_SRC elisp
-(message "hello world")
+  (+ 1 1)
+  (message "hllo world")
 #+END_SRC
 
 #+RESULTS:
 : hello world
+
+#+CALL: test
+
 
 下面是[[http://orgmode.org/manual/Working-with-source-code.html#Working-with-source-code][官方网站]] 关于在orgmode里插入代码的文档, 这个功能是 Eric Schulte 和 Dan Davison
 贡献的, 曾经叫做org babel.
@@ -29,10 +36,16 @@ This functionality was contributed by Eric Schulte and Dan Davison, and was orig
 * 代码模块格式
 在orgmode中插入的代码格式为:
 #+BEGIN_EXAMPLE
-#+NAME: <name>
-#+BEGIN_SRC <language> <switches> <header arguments>
+"#+NAME: <name>
+"#+BEGIN_SRC <language> <switches> <header arguments>
 <body>
-#+END_SRC
+"#+END_SRC
 #+END_EXAMPLE
 "#+NAME"这一行是可选的, 这个主要用于给代码块命名. 
 "switches"和"header arguments"也是可选的,
+* 代码编辑
+使用 C-c '快捷键编辑当前代码. 这会打开一个包含代码段的"该语言模式"的缓冲区进行
+编辑, 编辑完成继续按 C-c ' 保存, 也可以 *C-c C-k* 退出.
+* 代码运行
+除了像示例那样直接在代码出按C-c C-c运行代码外, 还可以在任何位置
+调用 #+CALL: <函数名> ([参数])的方式调用函数. 

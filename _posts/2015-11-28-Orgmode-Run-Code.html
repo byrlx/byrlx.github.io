@@ -6,12 +6,18 @@ description: [Run code in org mode]
 ---
 
 <p>
+(持续更新)
+</p>
+
+<p>
 orgmode 的一个强大的功能就是可以在文件里运行代码, 例如下面的代码,
 直接在代码出按 C-c C-c, 就会在代码下面显示运行结果, 结果开头用#+RESULTS修饰.
+#NAME test
 </p>
 <div class="org-src-container">
 
-<pre class="src src-elisp">(message "hello world")
+<pre class="src src-elisp">(+ 1 1)
+(message "hllo world")
 </pre>
 </div>
 
@@ -31,16 +37,33 @@ This functionality was contributed by Eric Schulte and Dan Davison, and was orig
 <p>
 在orgmode中插入的代码格式为:
 </p>
-<blockquote>
-<div class="org-src-container">
-
-<pre class="src src-<language>" id="name">&lt;body&gt;
+<pre class="example">
+"#+NAME: &lt;name&gt;
+"#+BEGIN_SRC &lt;language&gt; &lt;switches&gt; &lt;header arguments&gt;
+&lt;body&gt;
+"#+END_SRC
 </pre>
-</div>
-</blockquote>
 <p>
 "#+NAME"这一行是可选的, 这个主要用于给代码块命名. 
 "switches"和"header arguments"也是可选的,
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">代码编辑</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+使用 C-c '快捷键编辑当前代码. 这会打开一个包含代码段的"该语言模式"的缓冲区进行
+编辑, 编辑完成继续按 C-c ' 保存, 也可以 <b>C-c C-k</b> 退出.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">代码运行</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+除了像示例那样直接在代码出按C-c C-c运行代码外, 还可以在任何位置
+调用 #+CALL: &lt;函数名&gt; ([参数])的方式调用函数. 
 </p>
 </div>
 </div>
