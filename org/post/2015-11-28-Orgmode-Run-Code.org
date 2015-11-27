@@ -17,10 +17,13 @@ orgmode 的一个强大的功能就是可以在文件里运行代码, 例如下�
 直接在代码出按 C-c C-c, 就会在代码下面显示运行结果, 结果开头用#+RESULTS修饰.
 
 #+NAME test
-#+BEGIN_SRC elisp :exports both
+#+BEGIN_SRC elisp -n :exports both
   (+ 1 1)
   (message "hllo world")
 #+END_SRC
+
+#+RESULTS:
+: hello world
 
 #+CALL: test
 
