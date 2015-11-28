@@ -44,12 +44,13 @@ This functionality was contributed by Eric Schulte and Dan Davison, and was orig
 <p>
 在orgmode中插入的代码格式为:
 </p>
-<pre class="example">
-"#+NAME: &lt;name&gt;
-"#+BEGIN_SRC &lt;language&gt; &lt;switches&gt; &lt;header arguments&gt;
-&lt;body&gt;
-"#+END_SRC
+<blockquote>
+<div class="org-src-container">
+
+<pre class="src src-<language>" id="name">&lt;body&gt;
 </pre>
+</div>
+</blockquote>
 <p>
 "#+NAME"这一行是可选的, 这个主要用于给代码块命名. 
 "switches"和"header arguments"也是可选的,

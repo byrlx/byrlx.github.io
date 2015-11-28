@@ -36,12 +36,12 @@ This functionality was contributed by Eric Schulte and Dan Davison, and was orig
 
 * 代码模块格式
 在orgmode中插入的代码格式为:
-#+BEGIN_EXAMPLE
-"#+NAME: <name>
-"#+BEGIN_SRC <language> <switches> <header arguments>
+#+BEGIN_QUOTE
+#+NAME: <name>
+#+BEGIN_SRC <language> <switches> <header arguments>
 <body>
-"#+END_SRC
-#+END_EXAMPLE
+#+END_SRC
+#+END_QUOTE
 "#+NAME"这一行是可选的, 这个主要用于给代码块命名. 
 "switches"和"header arguments"也是可选的,
 * 代码编辑
