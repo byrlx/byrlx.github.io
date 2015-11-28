@@ -4,6 +4,7 @@
 #+TITLE: Org mode 官方文档阅读笔记
 #+OPTIONS: toc:3
 #+STARTUP: content
+#+STARTUP: hideblocks
 
 based on Org version 8.2.10 (release_8.2.10-41-g42228a). Emacs version 24.4.1
 
@@ -84,9 +85,7 @@ org-catch-invisible-edits的更多参数可以参考 C-h v org-catch-invisible-e
 Org mode的另一个功能就可以只展现你想要的内容, 称之为"稀疏树"展示.
 使用快捷键"C-c /"可以调出稀疏树功能, 它会询问你想要显示的内容, 
 如下图所示.
-
 file:../../static/img/sparsetree.png 
-
 选择 '/' 或 "r" 会显示正则表达式搜索, 输入搜索内容即可以稀疏树方式展示结果, 如果
 结果只在标题, 则显示标题, 如果在内容则显示内容, 搜索关键字会高亮. 按 "C-c C-c"会
 取消高亮. 如果 C-u N之后输入C-c / r, 之前的N此搜索都会显示.
@@ -95,9 +94,47 @@ file:../../static/img/sparsetree.png
 *** 列表
 org mode可以显示列表, 以下列字符开头的文本都为列表" - + 1. 1) *",
 标题的大部分快捷键都可以用于列表, 其他的快捷键包括:
-|              |                  |
-|--------------+------------------|
 | C-c -        | 改变列表展示方式 |
-| S-left/right | 同上               |
+| S-left/right | 同上             |
+*** 脚注
+org mode支持脚注功能, 脚注通常用 =[fn:数字]= 表示, 然后在其他地方写上
+脚注说明[fn:1]:
+#+BEGIN_EXAMPLE
+     The Org homepage[fn:1] now looks a lot better than it used to.
+     ...
+     [fn:1] The link is: http://orgmode.org
+#+END_EXAMPLE
+[fn:1]脚注示例.
+
+* 表格
+orgmode提供了ascii形式表示的表格, 任何以"|"字符开头的内容都会认为是
+表格的一部分. 在表格当前行按TAB或C-c C-c会格式化表格.按RET键会自动创建
+下一行. 同时任何以"|-"开头的行都被认为是表格分隔符.
+** 表格快捷键
+ "C-c |"可以创建表格或将选中区域转化为表格, 会询问你创建的表格大小.
+如果要转化的区域都含有TAB字符, 会将TAB作为分隔符. 如果为逗号, 会认为是逗号.
+否则为空白字符.可以通过前缀强制选择"分隔符":
++ C-u 强制认为是CSV格式(逗号分割)
++ C-u C-u 强制TAB
+
+| 快捷键               | 功能                   |
+|----------------------+------------------------|
+| C-c C-c              | 对齐表格               |
+| TAB                  | 对齐表格, 移到下一格   |
+| S-TAB                | 对齐表格, 移到上一格   |
+| RET                  | 对齐表格, 移到下一行   |
+| M-a/e                | 移到这一格开始/结尾    |
+| M-left/right/up/down | 左/右/上/下移动该行    |
+| M-S-left/up/         | 删除当前列/行          |
+| M-S-right/down       | 添加新列/行            |
+| C-c -/C-c RET        | 添加新分割行           |
+| C-c ^                | 排序                   |
+| C-c C-x M-w/C-w/C-y  | 粘贴/剪切/复制当前区域 |
+| C-c +                | 计算当前列的和         |
+| S-RET                | 复制                   |
+| C-c `                | 新窗口编辑当前区域.    |
+| M-x org-table-import | 导入文件作为表格       |
+| C-c                  | 将选中区域表示为表格   |
+| M-x org-table-export | 到处表格                   |
 
 * 导出功能
