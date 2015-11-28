@@ -1,7 +1,7 @@
 #+AUTHOR: Zhengchao Xu
 #+EMAIL: xuzhengchaojob@gmail.com
 #+DESCRIPTION: Org mode [[http://orgmode.org/manual/index.html#Top][官方文档]] 阅读笔记
-#+TITLE: Org mode manual notes
-
+#+TITLE: Org mode 官方文档阅读笔记
+#+OPTIONS: toc:3
 
 * 导出功能
