@@ -1,0 +1,103 @@
+#+AUTHOR: Zhengchao Xu
+#+EMAIL: xuzhengchaojob@gmail.com
+#+DESCRIPTION: Org mode [[http://orgmode.org/manual/index.html#Top][官方文档]] 阅读笔记
+#+TITLE: Org mode 官方文档阅读笔记
+#+OPTIONS: toc:3
+#+STARTUP: content
+
+based on Org version 8.2.10 (release_8.2.10-41-g42228a). Emacs version 24.4.1
+
+* 文档结构
+** 大纲模式
+org mode是建立在大纲视图(outline mode). 大纲可以使笔记和灵感按照层级结构
+进行组织, 这种结构有两个好处:
+1. 实现对文档的概括性浏览(只看大纲).
+2. 只显示当前正在工作的部分.
+org mode提供了一个"org-cycle"命令来实现大纲的显示/隐藏功能, 这个命令默认
+被绑定到了<TAB>键.
+** 标题
+org mode采用标题的形势来实现大纲结构, 标题的写法很简单, 在文本的最开始加上1到多个
+星号即表示标题.
+*** 标题显示快捷键
+
+| 快捷键            | 功能                              | 对应命令                    |
+|-------------------+-----------------------------------+-----------------------------|
+| TAB               | 循环打开关闭当前标题              | org-cycle                   |
+| S-TAB/C-u TAB     | 循环打开关闭所有标题              | org-global-cycle            |
+| C-u C-u TAB       | 恢复到最初视图                    | org-set-startup-visibility  |
+| C-u C-u C-u TAB   | 显示所有                          | show-all                    |
+| C-c C-r           |                                   | org-reveal                  |
+| C-c C-k           | 显示当前标题的所有子树标题        | show-branches               |
+| (C-u N) C-c TAB   | 显示当前标题的(N层)子树           | show-children               |
+| (C-u N) C-c C-x b | 在新buffer显示(从第N层开始的)子树 | org-tree-to-indirect-buffer |
+| C-c C-x v         | 复制当前区域内容                  | org-copy-visible            |
+
+*** 初始化"可见性"
+Emacs打开org文件默认只显示顶层标题, 可以通过 "#+STARTUP" 选项来配置
+第一次打开要显示的内容. #+STARTUP的参数包括
+| overview       | 只显示顶层标题 |
+| content        | 显示所有标题   |
+| showall        | 显示所有内容   |
+| showeverything |                |
+
+*** 编辑"不可见区域"报错
+有时候会不小心编辑到"不可见区域", 编辑器默认不会报错, 所以如果想组织这个
+行为, 可以在配置文件中设置org-catch-invisible-edits的值为非nil.例如下面
+的代码, 这样就可以阻止编辑非可见区域.
+#+BEGIN_SRC elisp
+(setq-default org-catch-invisible-edits 'error)
+#+END_SRC
+
+org-catch-invisible-edits的更多参数可以参考 C-h v org-catch-invisible-edits 
+*** 标题快捷键
+| 快捷键         | 功能                       | Note                     |
+|----------------+----------------------------+--------------------------|
+| C-c C-n        | 下个可见标题         |                          |
+| C-c C-p        | 上个可见标题               |                          |
+| C-c C-f        | 上个同级标题               |                          |
+| C-c C-b        | 下个同级标题               |                          |
+| C-c C-u        | 上级标题                   |                          |
+| C-c C-j        | 跳到指定位置               |                          |
+|                |                            |                          |
+| M-RET          | 创建同级标题               | 可能会"割断"当前标题内容 |
+| C-u C-u M-RET  | 在当前树的最后创建同级标题 |                          |
+| C-RET          | 当前标题后面创建同级标题   | 不会"割断"               |
+| M-S-RET        | 创建TODO标题               | 同M-RET                  |
+| C-S-RET        | 创建TODO标题               | C-RET                    |
+|                |                            |                          |
+| TAB            | 改变空标题的level          |                          |
+| M-left/M-right | 升级/降级                  |                          |
+| M-S-left/right | 所有子树升级/降级          |                          |
+| M-S-up/down    | 上移/下移                  |                          |
+|                |                            |                          |
+| M-h            | 标记当前内容               | 连击会标记更多           |
+| C-c @          | 标记当前标题及内容         |                          |
+| C-c C-x C-w    | 剪切当前子树               |                          |
+| C-c C-x M-w    | 复制当前子树               |                          |
+| C-y            | 粘贴                       |                          |
+| C-c C-x c      | 复制多次                   |                          |
+| C-c ^          | 排序标题                   |                          |
+| C-x n s        | 让buffer只显示当前子树     |                          |
+| C-x n w        | 恢复buffer显示             |                          |
+| C-c *          | 添加/去掉星星              |                          |
+*** 稀疏树显示
+Org mode的另一个功能就可以只展现你想要的内容, 称之为"稀疏树"展示.
+使用快捷键"C-c /"可以调出稀疏树功能, 它会询问你想要显示的内容, 
+如下图所示.
+
+file:/static/img/sparsetree.png 
+
+选择 '/' 或 "r" 会显示正则表达式搜索, 输入搜索内容即可以稀疏树方式展示结果, 如果
+结果只在标题, 则显示标题, 如果在内容则显示内容, 搜索关键字会高亮. 按 "C-c C-c"会
+取消高亮. 如果 C-u N之后输入C-c / r, 之前的N此搜索都会显示.
+快捷键 "M-g n/p"用于在搜索结果之间跳转. 命令 "ps-print-buffer-with-faces"用于
+打印机打印搜索结果.
+*** 列表
+org mode可以显示列表, 以下列字符开头的文本都为列表" - + 1. 1) *",
+标题的大部分快捷键都可以用于列表, 其他的快捷键包括:
+|              |                  |
+|--------------+------------------|
+| C-c -        | 改变列表展示方式 |
+| S-left/right | 同上               |
+
+* 导出功能
