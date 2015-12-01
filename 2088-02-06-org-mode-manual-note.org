@@ -1,12 +1,14 @@
 #+AUTHOR: Zhengchao Xu
 #+EMAIL: xuzhengchaojob@gmail.com
 #+DESCRIPTION: Org mode [[http://orgmode.org/manual/index.html#Top][官方文档]] 阅读笔记
-#+OPTIONS: toc:5 ^:nil
+#+OPTIONS: toc:nil ^:nil
 #+STARTUP: content hideblocks align
+#+CONSTANTS: lx="Zhengchao Xu" pi=3.14
 #+TITLE: Org mode 官方文档阅读笔记
 
 based on Org version 8.2.10 (release_8.2.10-41-g42228a). Emacs version 24.4.1
 
+#+TOC: headlines 1 
 * 文档结构
 ** 大纲模式
 org mode是建立在大纲视图(outline mode). 大纲可以使笔记和灵感按照层级结构
@@ -153,4 +155,99 @@ Org导出表格时, 默认是以行为单位, 也可以按列为单位来处理�
 这需要添加一个特殊行: 该行的第一个区域只包含"/", 其他以"<"表示的区域
 表示是一个组的开始, 以">"结束表示组的结束.
 
+** Orgtbl 模式
+如果想在其他的mode下使用org mode的table功能, 可以输入命令 "orgtbl-mode".
+** 数据表(Spreadsheet)
+org mode提供了强大的表格计算能力, 通过使用emacs的"calc"或者直接运行
+lisp程序, 可以对表格的域进行计算.
+*** 引用表中数据
+如果要在公式或其他地方使用表格中的数据, 必须要有一种方法可以表示表格中的
+一个或一块区域. Org中区域可以通过名称/坐标/相对地址等方式引用. 可以在
+单元格上面使用快捷键"C-c ?"来查看该单元格的坐标. 或使用 "C-c }"来显示一块区域.
+1. 引用表格的几种方法
+ | 格式          | 含义             | 补充                     |
+ |---------------+------------------+--------------------------|
+ | letter/number | 某一格           | B3表示第三行第二列       |
+ | @N            | 某一行           |                          |
+ | $N            | 某一列           |                          |
+ | @M$N          | 某一格           |                          |
+ | $+/-N         | 当前列的相对列   | 同样适用于行             |
+ | $< $>         | 第一列和最后一列 | $<<<倒数第三列, 适用于行 |
+ | @I            | high line        | 例如本例第二行           |
+ | @0 $0         | 当前行/列        |                          |
+2. 使用".."来表示一个区域, 例如 $1..$3表示第一列到第三列
+3. 使用 @# $# 来表示当前行/列的值.
+4. 命名. org table支持命名方式, 可以通过 "org-table-formula-constants"来设置一个
+   全局的名字, 或通过 "#+CONSTANTS"单独为一个文件设置名称变量. 也可以在表格中
+   使用emacs的properties功能来使用property变量.
+5. 远程引用. 可以通过远程引用的方式引用其他文件或该文件其他表格的内容.
+   远程引用的语法为: remote(NAME-OR-ID, REF). 第一个参数可以是本文件中
+   用 #+NAME 来命名的表格, 或其他文件中的一个entry ID. REF是当前表格的一个区域.
+*** 表格处理计算
+表格计算可以在表格底部用"#+TBLFM:"关键字, 后面接计算公式, 目前
+表格支持 "Calc" 和 lisp计算公式.
+**** 公式语法. "公式"是指可以被"Calc"包识别的任何代数公式.
+   注: Calc中"/"的优先级低于"*". 
+**** 附加模式. org支持公式后面添加任意数量的附加模式, 公式和
+   附加模式之间用";"隔开. 目前支持的附加模式包括:
+   | 表示        | 意义                              |   |
+   |-------------+-----------------------------------+---|
+   | pN          | 计算精度                          |   |
+   | nN,sN,eN,fN | 普通/科学/工程/固定表示           |   |
+   | D/R         | 度/弧度模式                       |   |
+   | F/S         | 小数模式                          |   |
+   | T/t         | 时间计算模式                      |   |
+   | E           | 控制怎样表示空白格                |   |
+   | N           | 把所有表格表示为数字, 非数字0代替 |   |
+   | L           |                                   |   |
+
+   下面是一些实例程序
+    #+BEGIN_EXAMPLE
+     $1+$2                Sum of first and second field
+     $1+$2;%.2f           Same, format result to two decimals
+     exp($2)+exp($1)      Math functions can be used
+     tan($1);Dp3s1        Compute in degrees, precision 3, display SCI 1
+#+END_EXAMPLE
+**** lisp代码处理表格.
+   org支持用lisp代码处理表格. 以 '( 开头的表达式会被解析为lisp代码,
+   默认情况下, 表格的内容会被引用为字符串, 如果需要将其处理为数字,
+   需要将其转化为N模式(后面加";N"). 也可以用使用双引号将其表示为字符串.
+   "范围(..)"会被解析为空格分开的域. 下面是一些例子:
+   #+BEGIN_EXAMPLE
+'(concat (substring $1 1 2) (substring $1 0 1) (substring $1 2))
+    Swap the first two characters of the content of column 1.
+'(+ $1 $2);N   Add columns 1 and 2, equivalent to Calc's `$1+$2'.
+'(apply '+ '($1..$4));N   Compute the sum of columns 1 to 4, like Calc's `vsum($1..$4)'.
+   #+END_EXAMPLE
+**** 时间计算.
+   前面讲过表格支持时间计算.表格支持的时间格式为 HH:MM[:SS], 
+   其中SS是可选, 如果公式后面接";T", 计算结果会展示为 HH:MM:SS.
+   如果为";t", 计算结果为小时的小数表示. 下面的例子展示了这一点:
+   #+BEGIN_EXAMPLE
+       |  Task 1 |   Task 2 |    Total |
+       |---------+----------+----------|
+       |    2:12 |     1:47 | 03:59:00 |
+       | 3:02:20 | -2:07:00 |     0.92 |
+       #+TBLFM: @2$3=$1+$2;T::@3$3=$1+$2;t
+   #+END_EXAMPLE
+**** 直接在域中输入公式. 
+   可以直接在域中输入公式. 在域中输入":="并后面接公式. 也可以
+   在当前域中输入 "C-u C-c ="命令在提示框中输入公式.
+**** 查找功能
 * 导出功能
+  
+* example
+|   |     |    |     |
+|---+-----+----+-----|
+| 2 |   6 |  4 |   4 |
+| 5 |   5 |    |   8 |
+| 1 |   | 85 | 850 |
+|---+-----+----+-----|
+| 1 |   2 |  3 |   4 |
+#+TBLFM: $2=$1+$3::$3=if($1 < $2, $2/2, $2*3)::@2$4=$2
+#+TBLFM: $3 = '(+ $1 $2);N
+#+TBLFM: $4='(apply '+ '($1..$3));N
+#+TBLFM: $1='(concat (substring $4 1 2) (substring $4 0 1) (substring $4 2))
+#+TBLFM: $4=vsum($2..$3)
+#+TBLFM: @4$4 = @4$1+@4$2+@4$3;t
+#+TBLFM: $3=$4
