@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>Org mode 官方文档阅读笔记</title>
-<!-- 2015-11-30 Mon 10:00 -->
+<!-- 2015-12-01 Tue 19:32 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Zhengchao Xu" />
@@ -140,46 +140,21 @@ for the JavaScript code in this tag.
 <body>
 <div id="content">
 <h1 class="title">Org mode 官方文档阅读笔记</h1>
-<div id="table-of-contents">
-<h2>Table of Contents</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#sec-1">1. 文档结构</a>
-<ul>
-<li><a href="#sec-1-1">1.1. 大纲模式</a></li>
-<li><a href="#sec-1-2">1.2. 标题</a>
-<ul>
-<li><a href="#sec-1-2-1">1.2.1. 标题显示快捷键</a></li>
-<li><a href="#sec-1-2-2">1.2.2. 初始化"可见性"</a></li>
-<li><a href="#sec-1-2-3">1.2.3. 编辑"不可见区域"报错</a></li>
-<li><a href="#sec-1-2-4">1.2.4. 标题快捷键</a></li>
-<li><a href="#sec-1-2-5">1.2.5. 稀疏树显示</a></li>
-<li><a href="#sec-1-2-6">1.2.6. 列表</a></li>
-<li><a href="#sec-1-2-7">1.2.7. 脚注</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#sec-2">2. 表格</a>
-<ul>
-<li><a href="#sec-2-1">2.1. 表格快捷键</a></li>
-<li><a href="#sec-2-2">2.2. 表格宽度和对齐</a>
-<ul>
-<li><a href="#sec-2-2-1">2.2.1. 设置列宽度</a></li>
-<li><a href="#sec-2-2-2">2.2.2. 设置左右对齐</a></li>
-</ul>
-</li>
-<li><a href="#sec-2-3">2.3. 列组</a></li>
-</ul>
-</li>
-<li><a href="#sec-3">3. 导出功能</a></li>
-</ul>
-</div>
-</div>
 <p>
 based on Org version 8.2.10 (release_8.2.10-41-g42228a). Emacs version 24.4.1
 </p>
 
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1. 文档结构</a></li>
+<li><a href="#sec-2">2. 表格</a></li>
+<li><a href="#sec-3">3. 导出功能</a></li>
+<li><a href="#sec-4">4. example</a></li>
+</ul>
+</div>
+</div>
 <div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> 文档结构</h2>
 <div class="outline-text-2" id="text-1">
@@ -768,10 +743,313 @@ Org导出表格时, 默认是以行为单位, 也可以按列为单位来处理�
 </p>
 </div>
 </div>
-</div>
 
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="section-number-3">2.4</span> Orgtbl 模式</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+如果想在其他的mode下使用org mode的table功能, 可以输入命令 "orgtbl-mode".
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5"><span class="section-number-3">2.5</span> 数据表(Spreadsheet)</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+org mode提供了强大的表格计算能力, 通过使用emacs的"calc"或者直接运行
+lisp程序, 可以对表格的域进行计算.
+</p>
+</div>
+<div id="outline-container-sec-2-5-1" class="outline-4">
+<h4 id="sec-2-5-1"><span class="section-number-4">2.5.1</span> 引用表中数据</h4>
+<div class="outline-text-4" id="text-2-5-1">
+<p>
+如果要在公式或其他地方使用表格中的数据, 必须要有一种方法可以表示表格中的
+一个或一块区域. Org中区域可以通过名称/坐标/相对地址等方式引用. 可以在
+单元格上面使用快捷键"C-c ?"来查看该单元格的坐标. 或使用 "C-c }"来显示一块区域.
+</p>
+<ol class="org-ol">
+<li>引用表格的几种方法
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">格式</th>
+<th scope="col" class="left">含义</th>
+<th scope="col" class="left">补充</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">letter/number</td>
+<td class="left">某一格</td>
+<td class="left">B3表示第三行第二列</td>
+</tr>
+
+<tr>
+<td class="left">@N</td>
+<td class="left">某一行</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">$N</td>
+<td class="left">某一列</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">@M$N</td>
+<td class="left">某一格</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">$+/-N</td>
+<td class="left">当前列的相对列</td>
+<td class="left">同样适用于行</td>
+</tr>
+
+<tr>
+<td class="left">$&lt; $&gt;</td>
+<td class="left">第一列和最后一列</td>
+<td class="left">$&lt;&lt;&lt;倒数第三列, 适用于行</td>
+</tr>
+
+<tr>
+<td class="left">@I</td>
+<td class="left">high line</td>
+<td class="left">例如本例第二行</td>
+</tr>
+
+<tr>
+<td class="left">@0 $0</td>
+<td class="left">当前行/列</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>使用".."来表示一个区域, 例如 $1..$3表示第一列到第三列
+</li>
+<li>使用 @# $# 来表示当前行/列的值.
+</li>
+<li>命名. org table支持命名方式, 可以通过 "org-table-formula-constants"来设置一个
+全局的名字, 或通过 "#+CONSTANTS"单独为一个文件设置名称变量. 也可以在表格中
+使用emacs的properties功能来使用property变量.
+</li>
+<li>远程引用. 可以通过远程引用的方式引用其他文件或该文件其他表格的内容.
+远程引用的语法为: remote(NAME-OR-ID, REF). 第一个参数可以是本文件中
+用 #+NAME 来命名的表格, 或其他文件中的一个entry ID. REF是当前表格的一个区域.
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-sec-2-5-2" class="outline-4">
+<h4 id="sec-2-5-2"><span class="section-number-4">2.5.2</span> 表格处理计算</h4>
+<div class="outline-text-4" id="text-2-5-2">
+<p>
+表格计算可以在表格底部用"#+TBLFM:"关键字, 后面接计算公式, 目前
+表格支持 "Calc" 和 lisp计算公式.
+</p>
+</div>
+<ol class="org-ol"><li><a id="sec-2-5-2-1" name="sec-2-5-2-1"></a>公式语法. "公式"是指可以被"Calc"包识别的任何代数公式.<br  /><div class="outline-text-5" id="text-2-5-2-1">
+<p>
+注: Calc中"/"的优先级低于"*". 
+</p>
+</div>
+</li>
+<li><a id="sec-2-5-2-2" name="sec-2-5-2-2"></a>附加模式. org支持公式后面添加任意数量的附加模式, 公式和<br  /><div class="outline-text-5" id="text-2-5-2-2">
+<p>
+附加模式之间用";"隔开. 目前支持的附加模式包括:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">表示</th>
+<th scope="col" class="left">意义</th>
+<th scope="col" class="left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">pN</td>
+<td class="left">计算精度</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">nN,sN,eN,fN</td>
+<td class="left">普通/科学/工程/固定表示</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">D/R</td>
+<td class="left">度/弧度模式</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">F/S</td>
+<td class="left">小数模式</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">T/t</td>
+<td class="left">时间计算模式</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">E</td>
+<td class="left">控制怎样表示空白格</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">N</td>
+<td class="left">把所有表格表示为数字, 非数字0代替</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">L</td>
+<td class="left">&#xa0;</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+下面是一些实例程序
+</p>
+<pre class="example">
+$1+$2                Sum of first and second field
+$1+$2;%.2f           Same, format result to two decimals
+exp($2)+exp($1)      Math functions can be used
+tan($1);Dp3s1        Compute in degrees, precision 3, display SCI 1
+</pre>
+</div>
+</li>
+<li><a id="sec-2-5-2-3" name="sec-2-5-2-3"></a>lisp代码处理表格.<br  /><div class="outline-text-5" id="text-2-5-2-3">
+<p>
+org支持用lisp代码处理表格. 以 '( 开头的表达式会被解析为lisp代码,
+默认情况下, 表格的内容会被引用为字符串, 如果需要将其处理为数字,
+需要将其转化为N模式(后面加";N"). 也可以用使用双引号将其表示为字符串.
+"范围(..)"会被解析为空格分开的域. 下面是一些例子:
+</p>
+<pre class="example">
+'(concat (substring $1 1 2) (substring $1 0 1) (substring $1 2))
+    Swap the first two characters of the content of column 1.
+'(+ $1 $2);N   Add columns 1 and 2, equivalent to Calc's `$1+$2'.
+'(apply '+ '($1..$4));N   Compute the sum of columns 1 to 4, like Calc's `vsum($1..$4)'.
+</pre>
+</div>
+</li>
+<li><a id="sec-2-5-2-4" name="sec-2-5-2-4"></a>时间计算.<br  /><div class="outline-text-5" id="text-2-5-2-4">
+<p>
+前面讲过表格支持时间计算.表格支持的时间格式为 HH:MM[:SS], 
+其中SS是可选, 如果公式后面接";T", 计算结果会展示为 HH:MM:SS.
+如果为";t", 计算结果为小时的小数表示. 下面的例子展示了这一点:
+</p>
+<pre class="example">
+|  Task 1 |   Task 2 |    Total |
+|---------+----------+----------|
+|    2:12 |     1:47 | 03:59:00 |
+| 3:02:20 | -2:07:00 |     0.92 |
+#+TBLFM: @2$3=$1+$2;T::@3$3=$1+$2;t
+</pre>
+</div>
+</li>
+<li><a id="sec-2-5-2-5" name="sec-2-5-2-5"></a>直接在域中输入公式.<br  /><div class="outline-text-5" id="text-2-5-2-5">
+<p>
+可以直接在域中输入公式. 在域中输入":="并后面接公式. 也可以
+在当前域中输入 "C-u C-c ="命令在提示框中输入公式.
+</p>
+</div>
+</li>
+<li><a id="sec-2-5-2-6" name="sec-2-5-2-6"></a>查找功能<br  /></li></ol>
+</div>
+</div>
+</div>
 <div id="outline-container-sec-3" class="outline-2">
 <h2 id="sec-3"><span class="section-number-2">3</span> 导出功能</h2>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> example</h2>
+<div class="outline-text-2" id="text-4">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="right" />
+
+<col  class="right" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="right">&#xa0;</th>
+<th scope="col" class="right">&#xa0;</th>
+<th scope="col" class="right">&#xa0;</th>
+<th scope="col" class="right">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="right">2</td>
+<td class="right">6</td>
+<td class="right">4</td>
+<td class="right">4</td>
+</tr>
+
+<tr>
+<td class="right">5</td>
+<td class="right">5</td>
+<td class="right">&#xa0;</td>
+<td class="right">8</td>
+</tr>
+
+<tr>
+<td class="right">1</td>
+<td class="right">&#xa0;</td>
+<td class="right">85</td>
+<td class="right">850</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="right">1</td>
+<td class="right">2</td>
+<td class="right">3</td>
+<td class="right">4</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="footnotes">
 <h2 class="footnotes">Footnotes: </h2>
@@ -786,7 +1064,7 @@ Org导出表格时, 默认是以行为单位, 也可以按列为单位来处理�
 </div></div>
 <div id="postamble" class="status">
 <p class="author">Author: Zhengchao Xu</p>
-<p class="date">Created: 2015-11-30 Mon 10:00</p>
+<p class="date">Created: 2015-12-01 Tue 19:32</p>
 <p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.4.1 (<a href="http://orgmode.org">Org</a> mode 8.2.10)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
