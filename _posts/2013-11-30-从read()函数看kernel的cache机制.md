@@ -1,6 +1,7 @@
 ---
 layout: post
 title: 从 read() 函数看kernel的cache机制
+category: Others
 tag: [C, Linux]
 description: [Cache memchanism of linux kernel]
 ---

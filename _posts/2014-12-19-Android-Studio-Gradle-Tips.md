@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Android Studio Gradle Tips
+category: Android
 tags: [Android, Gradle]
 categories: [Tools]
 ---

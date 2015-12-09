@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Android Logger
+category: Android
 tags: [Android]
 ---
 

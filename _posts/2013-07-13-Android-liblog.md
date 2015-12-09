@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Android liblog
+category: Android
 tags: [Android]
 ---
 

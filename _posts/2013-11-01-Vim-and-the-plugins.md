@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Vim and the plugins
+category: Others
 tag: [Vim]
 description: [The vim plugins I use]
 ---

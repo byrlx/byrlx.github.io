@@ -1,6 +1,7 @@
 ---
 layout: post
 title: What do I learn from the project
+category: Others
 tag: [Life]
 description: [Thought about my recent project]
 ---
