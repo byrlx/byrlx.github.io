@@ -11,7 +11,7 @@ author:
   music: http://book.douban.com/people/134104578
 
 # 站点信息
-title: Zhengchao Xu's Writings
+title: Zhengchao Xu Writings
 description: Things a code monkey do at spare time
 url: http://xuzhengchao.com
 rss_url: /pages/atom.xml
@@ -30,7 +30,7 @@ disqus:
   shortname: xuzhengchao
 
 # 主题设置，自动激活某个标签
-active: Emacs
+active: emacs
 
 # 首页除了最新文章外显示分类
 cates: 
