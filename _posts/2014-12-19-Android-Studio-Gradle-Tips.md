@@ -1,9 +1,8 @@
 ---
 layout: post
 title: Android Studio Gradle Tips
-category: Android
+category: [Android]
 tags: [Android, Gradle]
-categories: [Tools]
 ---
 
 Record some gradle command tips for android studio project.

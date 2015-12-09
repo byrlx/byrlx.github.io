@@ -2478,18 +2478,26 @@ pre code {
     }
 }
 
+table, td, th {
+    border: 1px solid black;
+}
 table {
     background-color: transparent
+	width:100%;
+	margin:15px 0;
+	border:0;
 }
 
 th {
-    text-align: left
+    text-align: center
 }
 
-.table {
-    width: 100%;
-    max-width: 100%;
-    margin-bottom: 20px
+tr td {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-top: 1px solid #ddd
+   
 }
 
 .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td,

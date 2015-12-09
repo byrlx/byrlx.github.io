@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Welcome 'ack' be the new member of my toolbox
-category: Others
+category: [技术]
 tag: [Linux]
 description: [Introduce to a fast search tool: ack-grep]
 ---

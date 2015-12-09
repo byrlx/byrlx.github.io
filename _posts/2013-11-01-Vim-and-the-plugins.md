@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Vim and the plugins
-category: Others
+category: [技术]
 tag: [Vim]
 description: [The vim plugins I use]
 ---

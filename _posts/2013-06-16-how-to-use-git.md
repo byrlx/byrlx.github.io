@@ -1,7 +1,7 @@
 ---
 layout: post
 title: how to use git
-category: Others
+category: [技术]
 tag: [Git]
 ---
 	
