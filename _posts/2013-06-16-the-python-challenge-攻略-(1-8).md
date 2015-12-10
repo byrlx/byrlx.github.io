@@ -1,7 +1,6 @@
 ---
 layout: post
 title: The python challenge 攻略(1-8)
-category: [技术]
 tag: [Python]
 description: [Answers about the python challenge]
 ---

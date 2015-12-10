@@ -1,7 +1,6 @@
 ---
 layout: post
 title: how i learn python
-category: [技术]
 tag: [Python]
 description: [Some funny thought during python learing]
 ---
