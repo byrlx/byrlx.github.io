@@ -1,5 +1,549 @@
 ---
 layout: post
-title: org-mode-outline
+title: Org mode手册(1):文档组织结构
 categories: [OrgMode]
 ---
+
+<p>
+这是Org mode手册系列的第一篇, 内容主要为阅读Org Manual的笔记, 
+对内容做了一些注解, 方便查阅. 
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">大纲模式(outline mode)</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+Org mode是建立在大纲视图(outline mode)之上的. 
+大纲将笔记按照层级结构进行组织, 这种结构有两个好处:
+</p>
+<ol class="org-ol">
+<li>实现对文档的概括性浏览(只看大纲).
+</li>
+<li>只显示当前正在工作的部分,非工作部分可以隐藏. 
+</li>
+</ol>
+
+<p>
+大纲模式在Org mode中具体实现方式为标题, 标题的写法很简单, 
+在这一行的最开始加上1到多个星号即表示标题. 
+"*"的数量表示这是个N级标题, N级标题为N-1级标题的子标题.
+下图为一个标题的示例:
+</p>
+
+
+<div class="figure">
+<p><img src="../../../../public/img/org-outline.png" alt="org-outline.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">创建标题</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+前面介绍过, 创建标题很简单, 一行的最前面写N个"*"即可,
+同时org mode提供了一些快捷键来实现标题操作. 
+标题中"树(tree"即为该标题和其所有子标题. 
+表格中"割断"的意思是如果你在当前标题上使用快捷键来创建新标题,
+有些快捷键可能会将该标题一分为二, 后半部分即为新标题的内容.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">快捷键</th>
+<th scope="col" class="left">功能</th>
+<th scope="col" class="left">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">M-RET</td>
+<td class="left">创建同级标题</td>
+<td class="left">可能会"割断"当前标题内容</td>
+</tr>
+
+<tr>
+<td class="left">C-u C-u M-RET</td>
+<td class="left">在当前树的最后创建同级标题</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-RET</td>
+<td class="left">当前标题后面创建同级标题</td>
+<td class="left">不会"割断"</td>
+</tr>
+
+<tr>
+<td class="left">M-S-RET</td>
+<td class="left">创建TODO标题</td>
+<td class="left">同M-RET</td>
+</tr>
+
+<tr>
+<td class="left">C-S-RET</td>
+<td class="left">创建TODO标题</td>
+<td class="left">C-RET</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">标题显示</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+前面说过, 大纲模式的一个好处就是可以折叠/显示标题, 这样可以方便你整体浏览大纲内容, 
+或关注于当前的工作内容, 例如前面的例子折叠后变为下图, 这样就可以只关注
+打开标题的内容.
+</p>
+
+
+<div class="figure">
+<p><img src="../../../../public/img/org-outline2.png" alt="org-outline2.png" />
+</p>
+</div>
+
+<p>
+这里是标题显示标题操作的一些快捷键
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">快捷键</th>
+<th scope="col" class="left">功能</th>
+<th scope="col" class="left">对应命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">TAB</td>
+<td class="left">循环打开关闭当前标题</td>
+<td class="left">org-cycle</td>
+</tr>
+
+<tr>
+<td class="left">S-TAB/C-u TAB</td>
+<td class="left">循环打开关闭所有标题</td>
+<td class="left">org-global-cycle</td>
+</tr>
+
+<tr>
+<td class="left">C-u C-u TAB</td>
+<td class="left">恢复到最初视图</td>
+<td class="left">org-set-startup-visibility</td>
+</tr>
+
+<tr>
+<td class="left">C-u C-u C-u TAB</td>
+<td class="left">显示所有</td>
+<td class="left">show-all</td>
+</tr>
+
+<tr>
+<td class="left">C-c C-r</td>
+<td class="left">&#xa0;</td>
+<td class="left">org-reveal</td>
+</tr>
+
+<tr>
+<td class="left">C-c C-k</td>
+<td class="left">显示当前标题的所有子树标题</td>
+<td class="left">show-branches</td>
+</tr>
+
+<tr>
+<td class="left">(C-u N) C-c TAB</td>
+<td class="left">显示当前标题的(N层)子树</td>
+<td class="left">show-children</td>
+</tr>
+
+<tr>
+<td class="left">(C-u N) C-c C-x b</td>
+<td class="left">在新buffer显示(从第N层开始的)子树</td>
+<td class="left">org-tree-to-indirect-buffer</td>
+</tr>
+
+<tr>
+<td class="left">C-c C-x v</td>
+<td class="left">复制当前区域内容</td>
+<td class="left">org-copy-visible</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">标题间移动</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+org mode也提供了很多快捷键用来进行标题间的移动, 这样可以很方便的实现
+章节的跳动.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">快捷键</th>
+<th scope="col" class="left">功能</th>
+<th scope="col" class="left">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">C-c C-n</td>
+<td class="left">移动到下个可见标题</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-c C-p</td>
+<td class="left">移动到上个可见标题</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-c C-f</td>
+<td class="left">移动到上个同级标题</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-c C-b</td>
+<td class="left">移动到下个同级标题</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-c C-u</td>
+<td class="left">移动到上级标题</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-c C-j</td>
+<td class="left">跳到指定位置</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-c &amp;</td>
+<td class="left">跳回之前位置</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">改变标题级别</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+万能快捷键, 减少打字.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">快捷键</th>
+<th scope="col" class="left">功能</th>
+<th scope="col" class="left">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">TAB</td>
+<td class="left">改变空标题的level</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">M-left/M-right</td>
+<td class="left">升级/降级</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">M-S-left/right</td>
+<td class="left">所有子树升级/降级</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">M-S-up/down</td>
+<td class="left">上移/下移</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6">操作标题内容</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+下面的快捷键可以很方便的对标题下的内容进行操作, 勤加练习.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="left">快捷键</th>
+<th scope="col" class="left">功能</th>
+<th scope="col" class="left">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="left">M-h</td>
+<td class="left">标记当前内容</td>
+<td class="left">连击会标记更多</td>
+</tr>
+
+<tr>
+<td class="left">C-c @</td>
+<td class="left">标记当前标题及内容</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-c C-x C-w</td>
+<td class="left">剪切当前子树</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-c C-x M-w</td>
+<td class="left">复制当前子树</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-y</td>
+<td class="left">粘贴</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-c C-x c</td>
+<td class="left">复制多次</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-c ^</td>
+<td class="left">排序标题</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-x n s</td>
+<td class="left">让buffer只显示当前子树</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-x n w</td>
+<td class="left">恢复buffer显示</td>
+<td class="left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="left">C-c *</td>
+<td class="left">添加/去掉星星</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7">其他高级操作</h2>
+<div class="outline-text-2" id="text-7">
+</div><div id="outline-container-sec-7-1" class="outline-3">
+<h3 id="sec-7-1">初始化"可见性"</h3>
+<div class="outline-text-3" id="text-7-1">
+<p>
+Emacs打开org文件默认只显示顶层标题, 可以通过 "#+STARTUP" 选项来配置
+第一次打开要显示的内容. #+STARTUP的参数包括
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">overview</td>
+<td class="left">只显示顶层标题</td>
+</tr>
+
+<tr>
+<td class="left">content</td>
+<td class="left">显示所有标题</td>
+</tr>
+
+<tr>
+<td class="left">showall</td>
+<td class="left">显示所有内容</td>
+</tr>
+
+<tr>
+<td class="left">showeverything</td>
+<td class="left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="outline-container-sec-7-1-0-1" class="outline-5">
+<h5 id="sec-7-1-0-1">编辑"不可见区域"报错</h5>
+<div class="outline-text-5" id="text-7-1-0-1">
+<p>
+有时候会不小心编辑到"不可见区域", 编辑器默认不会报错, 所以如果想组织这个
+行为, 可以在配置文件中设置org-catch-invisible-edits的值为非nil.例如下面
+的代码, 这样就可以阻止编辑非可见区域.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(setq-default org-catch-invisible-edits 'error)
+</pre>
+</div>
+
+<p>
+org-catch-invisible-edits的更多参数可以参考 C-h v org-catch-invisible-edits 
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-7-2" class="outline-3">
+<h3 id="sec-7-2">稀疏树显示</h3>
+<div class="outline-text-3" id="text-7-2">
+<p>
+Org mode的另一个功能就可以只展现你想要的内容, 称之为"稀疏树"展示.
+使用快捷键"C-c /"可以调出稀疏树功能, 它会询问你想要显示的内容, 
+如下图所示.
+</p>
+
+
+<div class="figure">
+<p><img src="../../../../public/img/org-outline3.png" alt="org-outline3.png" />
+</p>
+</div>
+
+<p>
+选择 '/' 或 "r" 会显示正则表达式搜索, 输入搜索内容即可以稀疏树方式展示结果, 如果
+结果只在标题, 则显示标题, 如果在内容则显示内容, 搜索关键字会高亮. 按 "C-c C-c"会
+取消高亮. 如果 C-u N之后输入C-c / r, 之前的N此搜索都会显示.
+快捷键 "M-g n/p"用于在搜索结果之间跳转. 命令 "ps-print-buffer-with-faces"用于
+打印机打印搜索结果.
+</p>
+
+<p>
+稀疏树是org mode的很强大的搜索展示功能.后面的文章还会有更多介绍.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-7-3" class="outline-3">
+<h3 id="sec-7-3">列表</h3>
+<div class="outline-text-3" id="text-7-3">
+<p>
+org mode可以显示列表, 以下列字符开头的文本都为列表" - + 1. 1) *",
+<b>标题的大部分快捷键都可以用于列表</b>, 其他的快捷键包括:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="left" />
+
+<col  class="left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="left">C-c -</td>
+<td class="left">改变列表展示方式</td>
+</tr>
+
+<tr>
+<td class="left">S-left/right</td>
+<td class="left">同上</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-sec-7-4" class="outline-3">
+<h3 id="sec-7-4">脚注</h3>
+<div class="outline-text-3" id="text-7-4">
+<p>
+org mode支持脚注功能, 脚注通常用 <code>[fn:数字]</code> 表示, 然后在其他地方写上
+脚注说明<sup><a id="fnr.1" name="fnr.1" class="footref" href="#fn.1">1</a></sup>:
+</p>
+<pre class="example">
+The Org homepage[fn:1] now looks a lot better than it used to.
+...
+[fn:1] The link is: http://orgmode.org
+</pre>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" name="fn.1" class="footnum" href="#fnr.1">1</a></sup> <p class="footpara">
+脚注示例.
+</p></div>
+
+
+</div>
+</div>
