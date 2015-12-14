@@ -10,14 +10,11 @@ org mode另一个牛X闪闪的功能就是导出功能,
 这篇文章就先来看一下这些标记规则.
 </p>
 <div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">标记</h2>
+<h2 id="sec-1">结构化标记元素</h2>
 <div class="outline-text-2" id="text-1">
 </div><div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1">结构化标记元素</h3>
+<h3 id="sec-1-1">标题.</h3>
 <div class="outline-text-3" id="text-1-1">
-</div><div id="outline-container-sec-1-1-1" class="outline-4">
-<h4 id="sec-1-1-1">标题.</h4>
-<div class="outline-text-4" id="text-1-1-1">
 <p>
 使用关键字 <b>#+TITLE</b> 来设置导出文本的标题, 如果没有设置, 会以文件名
 作为标题. 如果只是到处一个子树, 则使用子树的标题作为导出文本的标题.
@@ -25,9 +22,9 @@ org mode另一个牛X闪闪的功能就是导出功能,
 </p>
 </div>
 </div>
-<div id="outline-container-sec-1-1-2" class="outline-4">
-<h4 id="sec-1-1-2">修改导出层级.</h4>
-<div class="outline-text-4" id="text-1-1-2">
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">修改导出层级.</h3>
+<div class="outline-text-3" id="text-1-2">
 <p>
 org mode默认只导出三层标题, 举例来说, 导出为HTML时, 只会导出到H3, 而
 四层及以下的标题都生成为列表. 如果想要修改导出的层级, 可以设置全局变量
@@ -38,9 +35,9 @@ org mode默认只导出三层标题, 举例来说, 导出为HTML时, 只会导�
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-1-1-3" class="outline-4">
-<h4 id="sec-1-1-3">目录.</h4>
-<div class="outline-text-4" id="text-1-1-3">
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">目录.</h3>
+<div class="outline-text-3" id="text-1-3">
 <p>
 org mode默认会导出目录, 将其放在第一个标题的前面,目录深度与标题层级相同,
 不过可以通过设置 <b>org-export-with-toc</b> 或修改OPTIONS的 <b>toc</b> 来修改目录
@@ -70,9 +67,9 @@ org mode默认会导出目录, 将其放在第一个标题的前面,目录深度
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-1-1-4" class="outline-4">
-<h4 id="sec-1-1-4">换行, 引用</h4>
-<div class="outline-text-4" id="text-1-1-4">
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">换行, 引用</h3>
+<div class="outline-text-3" id="text-1-4">
 <p>
 orgmode中,段落之间用空白行来分割,如果需要段落内换行, 在该行结尾使用 <b>\\</b> 关键字.
 </p>
@@ -112,9 +109,9 @@ Keep me in the center!!!!
 </div>
 </div>
 
-<div id="outline-container-sec-1-1-5" class="outline-4">
-<h4 id="sec-1-1-5">修饰符</h4>
-<div class="outline-text-4" id="text-1-1-5">
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5">修饰符</h3>
+<div class="outline-text-3" id="text-1-5">
 <p>
 org mode提供了一些字符串的修饰符号, 这些修饰符都是成对出现, 
 用于修饰其包含的内容.<br  />
@@ -134,9 +131,9 @@ org mode提供了一些字符串的修饰符号, 这些修饰符都是成对出�
 </p>
 </div>
 </div>
-<div id="outline-container-sec-1-1-6" class="outline-4">
-<h4 id="sec-1-1-6">注释</h4>
-<div class="outline-text-4" id="text-1-1-6">
+<div id="outline-container-sec-1-6" class="outline-3">
+<h3 id="sec-1-6">注释</h3>
+<div class="outline-text-3" id="text-1-6">
 <p>
 注释可以用三中方式表示, 注释永远不会被导出.
 </p>
@@ -166,9 +163,9 @@ org mode提供了一些字符串的修饰符号, 这些修饰符都是成对出�
 </div>
 </div>
 </div>
-<div id="outline-container-sec-1-2" class="outline-3">
-<h3 id="sec-1-2">"字面"内容</h3>
-<div class="outline-text-3" id="text-1-2">
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">"字面"内容</h2>
+<div class="outline-text-2" id="text-2">
 <p>
 Orgmode提供了几种方式, 可以使位子内容不受org mode的处理, 即使文字中
 有org mode的特殊字符, 主要的方式包括:
@@ -214,9 +211,9 @@ This is an example, *nothing works*
 </p>
 </div>
 </div>
-<div id="outline-container-sec-1-3" class="outline-3">
-<h3 id="sec-1-3">引用其他文件</h3>
-<div class="outline-text-3" id="text-1-3">
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">引用其他文件</h2>
+<div class="outline-text-2" id="text-3">
 <p>
 使用 <b>#+INCLUDE:</b> 来在org文件中引用其他文件, 被引用文件的内容会被放在当前
 部分 如果被引用文件也有标题的话, 这些标题会被设置为当前章节的子标题. 
@@ -242,9 +239,9 @@ src或example结构.
 </div>
 </div>
 
-<div id="outline-container-sec-1-4" class="outline-3">
-<h3 id="sec-1-4">宏</h3>
-<div class="outline-text-3" id="text-1-4">
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4">宏</h2>
+<div class="outline-text-2" id="text-4">
 <div class="center">
 <p>
 MACRO is everywhere.
@@ -266,13 +263,12 @@ orgmode同样支持宏定义, 使用关键字 <b>#+MACRO</b> 来定义你自己�
 </p>
 </div>
 </div>
-<div id="outline-container-sec-1-5" class="outline-3">
-<h3 id="sec-1-5">LaTex</h3>
-<div class="outline-text-3" id="text-1-5">
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5">LaTex</h2>
+<div class="outline-text-2" id="text-5">
 <p>
 As i never use LaTex, I dont read this part. <br  />
 It will be catched up when I have some experience with LaTex someday.
 </p>
-</div>
 </div>
 </div>
