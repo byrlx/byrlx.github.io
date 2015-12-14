@@ -54,6 +54,15 @@ b, strong {
     font-weight: bold
 }
 
+.verse {
+    font-style: italic;
+    font-size: 80%;
+    background: #f3e2a9;
+    margin-left: 3em;
+    margin-right: 3em;
+    padding: 10px
+}
+
 dfn {
     font-style: italic
 }
