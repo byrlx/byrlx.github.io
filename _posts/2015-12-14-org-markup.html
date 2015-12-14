@@ -249,17 +249,18 @@ MACRO is everywhere.
 </div>
 
 <p>
-orgmode同样支持宏定义, 使用关键字 <b>#+MACRO</b> 来定义你自己的宏, 然后以
-<b>{{{}}}</b> 的方式调用宏, 可以在宏定义中使用 "$N" 定义多个参数. 
+orgmode同样支持宏定义, 使用关键字 <b>#+MACRO name body</b> 来定义你自己的宏, 然后以
+<b>{% raw %}{{{}}}{% endraw %}</b> 的方式调用宏, 可以在宏定义中使用 "$N" 定义多个参数. 
 </p>
+
 <pre class="example">
 #+MACRO: awesome Hi, $, you are an awesome guy.
 
-{{{awesome(Jake Wharton)}}}
+{% raw %}{{{awesome(Jake Wharton)}}}{% endraw %}
 </pre>
 <p>
-系统也提供了一些预定义的宏, 同样可以调用, 例如 <code>{{{title}}}</code> , <code>{{{author}}}</code> ,
-<code>{{{time(FORMAT)}}}</code> 等.
+系统也提供了一些预定义的宏, 同样可以调用, 例如 <code>{% raw %}{{{title}}}{% endraw %}</code> , <code>{% raw %}{{{author}}}{% endraw %}</code> ,
+<code>{% raw %}{{{time(FORMAT)}}}{% endraw %}</code> 等.
 </p>
 </div>
 </div>
