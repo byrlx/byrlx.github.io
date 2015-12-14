@@ -1,0 +1,283 @@
+---
+layout: post
+title: Orgmode手册6:富文本标记
+categories: [OrgMode]
+---
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">富文本标记</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+org mode另一个牛X闪闪的功能就是导出功能, 
+可以将org文件导出为计算机领域主流的文件格式, 例如HTML/PDF/LaTex/Markdown等等, 
+为了支持这些文本丰富的格式要求, org mode定义了一系列的标记, <br  />
+这篇文章就先来看一下这些标记规则.
+</p>
+</div>
+<div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">标记</h3>
+<div class="outline-text-3" id="text-1-1">
+</div><div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1">结构化标记元素</h4>
+<div class="outline-text-4" id="text-1-1-1">
+</div><div id="outline-container-sec-1-1-1-1" class="outline-5">
+<h5 id="sec-1-1-1-1">标题.</h5>
+<div class="outline-text-5" id="text-1-1-1-1">
+<p>
+使用关键字 <b>#+TITLE</b> 来设置导出文本的标题, 如果没有设置, 会以文件名
+作为标题. 如果只是到处一个子树, 则使用子树的标题作为导出文本的标题.
+或者也可以在子树中设置属性 <b>EXPORT_TITLE</b>.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-1-2" class="outline-5">
+<h5 id="sec-1-1-1-2">修改导出层级.</h5>
+<div class="outline-text-5" id="text-1-1-1-2">
+<p>
+org mode默认只导出三层标题, 举例来说, 导出为HTML时, 只会导出到H3, 而
+四层及以下的标题都生成为列表. 如果想要修改导出的层级, 可以设置全局变量
+<b>org-export-headline-levels</b>, 或者在文本内设置OPTIONS设置 <b>H</b> 配置: 
+</p>
+<pre class="example">
+#+OPTIONS: H:4
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-1-1-3" class="outline-5">
+<h5 id="sec-1-1-1-3">目录.</h5>
+<div class="outline-text-5" id="text-1-1-1-3">
+<p>
+org mode默认会导出目录, 将其放在第一个标题的前面,目录深度与标题层级相同,
+不过可以通过设置 <b>org-export-with-toc</b> 或修改OPTIONS的 <b>toc</b> 来修改目录
+深度或将其关闭. 例如
+</p>
+<pre class="example">
+#+OPTIONS: toc:2 (两层目录)
+#+OPTIONS: toc:nil (关掉目录)
+</pre>
+
+<p>
+如果想改变目录的导出位置, 先将默认导出关闭, 然后使用 <b>#+TOC: headlines N</b>
+配置到想插入的地方. 例如:
+</p>
+<pre class="example">
+#+OPTIONS: toc:nil        (no default TOC)
+...
+#+TOC: headlines 2        (insert TOC here, with two headline levels)
+</pre>
+
+<p>
+同时, org mode还支持列表和表格的导出.
+</p>
+<pre class="example">
+#+TOC: listings           (build a list of listings)
+#+TOC: tables             (build a list of tables)
+</pre>
+</div>
+</div>
+<div id="outline-container-sec-1-1-1-4" class="outline-5">
+<h5 id="sec-1-1-1-4">换行, 引用</h5>
+<div class="outline-text-5" id="text-1-1-1-4">
+<p>
+orgmode中,段落之间用空白行来分割,如果需要段落内换行, 在该行结尾使用 <b>\\</b> 关键字.
+</p>
+
+<p>
+如果想在该段落部分内容保持换行, 可以使用 <code>#+BEGIN_VERSE</code> 关键字, 写诗的人肯定需要这个功能, 
+例如:
+</p>
+<pre class="example">
+#+BEGIN_VERSE
+      Great clouds overhead
+      Tiny black birds rise and fall
+      Snow covers Emacs
+
+          -- AlexSchroeder
+#+END_VERSE
+</pre>
+
+<p>
+引用他人内容可以使用 <code>#+BEGIN_QUOTE</code>, 这样可以保持缩进
+</p>
+<pre class="example">
+#+BEGIN_QUOTE
+     Everything should be made as simple as possible,
+     but not any simpler -- Albert Einstein
+#+END_QUOTE
+</pre>
+
+<p>
+想要内容居中可以使用 <code>#+BEGIN_CENTER</code>
+</p>
+<pre class="example">
+#+BEGIN_CENTER
+Keep me in the center!!!!
+#+END_CENTER
+</pre>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-1-5" class="outline-5">
+<h5 id="sec-1-1-1-5">修饰符</h5>
+<div class="outline-text-5" id="text-1-1-1-5">
+<p>
+org mode提供了一些字符串的修饰符号, 这些修饰符都是成对出现, 
+用于修饰其包含的内容.<br  />
+包括以下几种:
+</p>
+<pre class="example">
+*粗体*, /斜体/, _下划线_, =原文=, ~代码~, +删除线+.
+</pre>
+
+<p>
+其中==常用于org mode的特殊字符, 比如 <code>=#+OPTIONS:=</code> 就可以保证
+在导出时不解析#+OPTIONS, 只是原文输出.
+</p>
+
+<p>
+如果一行只包含且包含5个以上 "-" 那么会被导出为横线.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-1-6" class="outline-5">
+<h5 id="sec-1-1-1-6">注释</h5>
+<div class="outline-text-5" id="text-1-1-1-6">
+<p>
+注释可以用三中方式表示, 注释永远不会被导出.
+</p>
+<ul class="org-ul">
+<li>以零个或多个空格开始, 并跟着#号, 然后后面在接一个空格的行被认为是
+注释行, 该行永远不会被导出. 
+</li>
+<li>以 <b>COMMENT</b> 开始的整个子树
+</li>
+<li>被 <code>#+BEGIN_COMMENT</code> 和 <code>#+END_COMMENT</code> 包裹的内容.
+</li>
+</ul>
+
+<p>
+下面是示例, 下面的内容不会被导出
+</p>
+<pre class="example">
+# 注释
+
+* COMMENT 注释子树
+** 二级目录
+
+#+BEGIN_COMMENT
+ test
+#+END_COMMENT
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2">"字面"内容</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+Orgmode提供了几种方式, 可以使位子内容不受org mode的处理, 即使文字中
+有org mode的特殊字符, 主要的方式包括:
+</p>
+<ul class="org-ul">
+<li>#+BEGIN_EXAMPLE..#+END_EXAMPLE <br  />
+  例如:
+<pre class="example">
+#+BEGIN_EXAMPLE 
+This is an example, *nothing works* 
+`#+END_EXAMPLE
+</pre>
+<p>
+如果内容特别短, 也可以使用"空格:空格"字符串修饰
+</p>
+</li>
+<li>#+BEGIN_SRC..#+END_SRC <br  />
+  如果示例是一段程序, 可以使用这对关键字, 例如
+<pre class="example">
+<span class="linenr">1: </span>#+BEGIN_SRC elisp
+<span class="linenr">2: </span>(+ 1 1)
+<span id="coderef-lxxtest" class="coderef-off"><span class="linenr">3: </span>(concat "helo" "wold")</span>
+<span class="linenr">4: </span>#+END_SRC
+</pre>
+</li>
+</ul>
+
+<p>
+上面两种方式都可以添加一些配置:
+</p>
+<ul class="org-ul">
+<li>"-n/+n" 显示行号, "+n"会接着前面的block行号继续.
+</li>
+<li>(ref:name) 定义block内的引用.可以在block之外引用block里面的内容.
+例如可以使用<a href="#coderef-lxxtest"class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-lxxtest');" onmouseout="CodeHighlightOff(this, 'coderef-lxxtest');">代码块链接</a>来引用代码内容.
+</li>
+<li>"-r", 在导出的文件中移除引用.
+</li>
+</ul>
+
+<p>
+可以使用快捷键 "C-c '"打开一个buffer编辑block中的内容.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3">引用其他文件</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+使用 <b>#+INCLUDE:</b> 来在org文件中引用其他文件, 被引用文件的内容会被放在当前
+部分 如果被引用文件也有标题的话, 这些标题会被设置为当前章节的子标题. 
+如果你想修改这种设置, 修改被引用文件的标题级别, 可以通过设置 minlevel参数.
+</p>
+<pre class="example">
+#+INCLUDE: file :minlevel N
+</pre>
+
+<p>
+也可以通过 <b>:lines</b> 来引用该文件的一部分, 例如:
+</p>
+<pre class="example">
+#+INCLUDE: file :minlevel N :lines "5-10" ;; 5到10行
+#+INCLUDE: file :minlevel N :lines "5-" ;; 5到结尾
+#+INCLUDE: file :minlevel N :lines "-10" ;; 1到9行
+</pre>
+
+<p>
+也可以通过在后面使用 <b>src language</b> 或 <b>example</b> 来将被引用内容转化为
+src或example结构. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-4" class="outline-4">
+<h4 id="sec-1-1-4">宏</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<div class="center">
+<p>
+MACRO is everywhere.
+</p>
+</div>
+
+<p>
+orgmode同样支持宏定义, 使用关键字 <b>#+MACRO</b> 来定义你自己的宏, 然后以
+<b>{{{}}}</b> 的方式调用宏, 可以在宏定义中使用 "$N" 定义多个参数. 
+</p>
+<pre class="example">
+#+MACRO: awesome Hi, $, you are an awesome guy.
+
+{{{awesome(Jake Wharton)}}}
+</pre>
+<p>
+系统也提供了一些预定义的宏, 同样可以调用, 例如 <code>{{{title}}}</code> , <code>{{{author}}}</code> ,
+<code>{{{time(FORMAT)}}}</code> 等.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-1-1-5" class="outline-4">
+<h4 id="sec-1-1-5">LaTex</h4>
+<div class="outline-text-4" id="text-1-1-5">
+<p>
+As i never use LaTex, I dont read this part. <br  />
+It will be catched up when I have some experience with LaTex someday.
+</p>
+</div>
+</div>
+</div>
+</div>
