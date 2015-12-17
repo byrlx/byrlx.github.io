@@ -1,0 +1,107 @@
+#+OPTIONS: num:nil
+#+OPTIONS: ^:nil
+#+OPTIONS: toc:nil
+#+AUTHOR: Luis404
+
+#+BEGIN_HTML
+---
+layout: post
+title: Magit文档笔记
+description: [阅读Magit文档的笔记, 记录常用的magit使用方法]
+category: [Emacs]
+---
+#+END_HTML
+
+(持续更新)
+
+* v2.1.0
+v2.1.0于2015年7月1日发布, 该版本的主要更新: [[https://raw.githubusercontent.com/magit/magit/master/Documentation/RelNotes/2.1.0.txt]]
+** 升级
+1. 该版本依赖的其他软件的最小版本: >=Emacs24.4, >=git1.9.4.
+2. 由于改动较大, 所以建议先删除旧版本.
+3. 由于不在依赖git-commit-mode和git-rebase-mode, 所以建议删除这两个package.
+4. 操作完成后, 重启安装新包.
+#+BEGIN_SRC
+    Archive: n/a
+    Version: 20150806.1658
+   Requires: emacs-24.4, dash-2.10.0, with-editor-2.1.0, git-commit-2.1.0,
+               magit-popup-2.1.0
+    Summary: A Git porcelain inside Emacs
+   Homepage: https://github.com/magit/magit
+   Keywords: git tools vc 
+    Other versions: 20150806.1658 (melpa).
+#+END_SRC
+** note
+1. 在magit中disable evil-mode
+   #+BEGIN_SRC lisp
+(require 'evil)
+(evil-mode 1)
+(evil-set-initial-state 'magit-popup-mode 'emacs)
+(evil-set-initial-state 'magit-mode 'emacs)
+   #+END_SRC
+** 快捷键:
++ 删除branch: b -> v -> k, 输入要删除的branch名.
+* v1.4
+Magit 1.4版本文档地址 [[http://magit.vc/manual/1.4/magit/index.html#Top]]
+
+* Magit功能学习
+** Sections
+所有的Magit buffer都是通过 sections 的形式组织的, 每个section还可以包含子section.在一个magit buffer中, 这些
+sections可以独立的被显示和隐藏.当一个section被隐藏的时候,只会显示该section的
+第一行.
+
+section操作的快捷键:
+| Short Keys | Notes                                                                                               |
+|------------+-----------------------------------------------------------------------------------------------------|
+| TAB        | 快速显示/隐藏当前 section                                                                           |
+| S-TAB      | 快速显示/隐藏当前 section 的 *子* section                                                           |
+| 1/2/3/4    | 显示 <=N 的section, 例如按2,会显示 *当前* level 1和 level 2的section,隐藏level 3, level 4 的section |
+| M-1/2/3/4  | 同上, 但是显示所有相关section                                                                       |
+| M-h        | 隐藏(有些buffer功能跟2相同, 有些不一定)                                                                  |
+| M-H        | 隐藏 *所有* (同上)                                                                        |
+| M-s        | 显示(有些buffer功能跟4相同, 有些不一定)                                                                                     |
+| M-S        | 显示所有(同上)
+
+** 其他快捷键/配置
+
+注: /当快捷键操作于section头部时, 会影响所有的文件./
+
+| Buffer  | Short Keys      | Note                                                              |
+|---------+-----------------+-------------------------------------------------------------------|
+| Status  |                 |                                                                   |
+|         | magit-repo-dirs | 可以在.emacs文件中配置此变量, 设置调用magit-status命令打开的git库 |
+|         | g               | refresh buffer                                                    |
+|         | s/S             | 把文件加入到stage area/只把所有changes加入到stage area            |
+|         | C-u S           | 把所有文件加入到stage area                                        |
+|         | i               | 添加该文件到 .gitignore                                           |
+|         | C-u i           | 手写添加到 .gitignore的文件名                                     |
+|         | k               | discard                                                           |
+|         | u/U             | unstage file/all file                                             |
+|         | c c + C-c C-c   | 提交                                                              |
+|         | C-c C-k         | 放弃提交                                                          |
+|         | l l             | show history                                                      |
+|         | l r l           | 显示范围                                                          |
+|         | t t             | create tag                                                        |
+|         | x/X             | 重置head/重置head(清空working area和stage area)                   |
+|         | z + z/a/A       | 创建/应用/弹出 stash                                              |
+|         | z -k z          | 创建stash,但是保留working area和stage area                        |
+|         | b               | branch related                                                    |
+|         | w               | 显示所有branch和当前branch的关系                                  |
+|         | m               | merge                                                             |
+|         | R               | Rebase                                                            |
+|         | P               | push                                                              |
+|         | f               | fetch                                                             |
+| history |                 |                                                                   |
+|         | RET/SPC/DEL     | show commit detail in new buffer(commit buffer)                   |
+|         | a               | 将当前提交应用到当前branch, 需手动提交                            |
+|         | A               | ...自动提交                                                       |
+|         | v               | revert commit                                                     |
+|         | .               | mark a commit                                                     |
+|         | =               | show diff from current commit to marked                           |
+|         | l h             | reflog                                                            |
+| commit  |                 |                                                                   |
+|         | a               | 把当前section应用到当前branch                                     |
+|         | v               | reverse the patch                                                 |
+| diff    |                 |                                                                   |
+|         | e               |                                                                   |
+|         |                 |                                                                   |
