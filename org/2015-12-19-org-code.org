@@ -266,5 +266,3 @@ orgmode可以设置各种范围的header参数, 下面会逐一介绍, 一般来
       '((emacs-lisp . nil)
         (R . t)))
 #+END_EXAMPLE
-
-sfasfas
