@@ -1,0 +1,123 @@
+---
+layout: post
+title: Emacs读取Gmail邮件
+categories: [Emacs]
+---
+
+<p>
+主要架构: offlineimap同步邮件, gnus读邮件
+</p>
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">offlineimap配置</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<ol class="org-ol">
+<li>mac安装:  brew install offlineimap</li>
+<li>配置 ~/.offlineimaprc</li>
+</ol>
+<pre class="example">
+[general]
+ui = ttyui
+accounts = Gmail
+
+[Account Gmail]
+localrepository = Gmail-Local
+remoterepository = Gmail-Remote
+
+[Repository Gmail-Local]
+type = Maildir
+localfolders = ~/lx/Gmail
+
+[Repository Gmail-Remote]
+type = Gmail
+remoteuser = 邮箱
+remotepass = 密码
+realdelete = no
+maxconnections = 3
+# 下面这行使用与OS X系统
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+</pre>
+<ol class="org-ol">
+<li>同步命令: offlineimap -o
+第一次运行这个命令有可能会报错, 显示 "Gmail SMTP debug: error “please log in via your web browser" 这样的内容,
+可以去<a href="https://www.google.com/settings/security/lesssecureapps">https://www.google.com/settings/security/lesssecureapps</a> 打开enable on这个选项, 就可以了.
+第一次同步可能很长时间, 尤其是对国人来说. 耐心等候啦.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">gnus</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<ol class="org-ol">
+<li><p>
+配置, 在lx.el中加入
+</p>
+<pre class="example">
+  ;; Gnus配置
+(setq gnus-select-method
+   '(nnmaildir "Gmail" (directory "~/lx/Gmail")))
+</pre></li>
+<li>快捷键</li>
+</ol>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C-u N ret</td>
+<td class="org-left">在目录上使用,显示目录(N封)所有邮件</td>
+</tr>
+
+<tr>
+<td class="org-left">c</td>
+<td class="org-left">标记未读为已读</td>
+</tr>
+
+<tr>
+<td class="org-left">C</td>
+<td class="org-left">标记所有为已读</td>
+</tr>
+
+<tr>
+<td class="org-left">l</td>
+<td class="org-left">只显示有未读邮件的group</td>
+</tr>
+
+<tr>
+<td class="org-left">L</td>
+<td class="org-left">显示所有group</td>
+</tr>
+
+<tr>
+<td class="org-left">B DEL</td>
+<td class="org-left">永久删除</td>
+</tr>
+
+<tr>
+<td class="org-left">B m</td>
+<td class="org-left">移动邮件</td>
+</tr>
+
+<tr>
+<td class="org-left">E</td>
+<td class="org-left">设置邮件为Expirable</td>
+</tr>
+
+<tr>
+<td class="org-left">u</td>
+<td class="org-left">标记重要邮件</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>

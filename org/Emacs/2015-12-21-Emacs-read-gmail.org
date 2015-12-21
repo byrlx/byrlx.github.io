@@ -1,0 +1,65 @@
+#+OPTIONS: num:nil
+#+OPTIONS: ^:nil
+#+OPTIONS: H:nil
+#+OPTIONS: toc:nil
+#+AUTHOR: Zhengchao Xu
+#+EMAIL: xuzhengchaojob@gmail.com
+
+#+BEGIN_HTML
+---
+layout: post
+title: Emacs读取Gmail邮件
+categories: [Emacs]
+---
+#+END_HTML
+
+主要架构: offlineimap同步邮件, gnus读邮件
+* offlineimap配置
+1. mac安装:  brew install offlineimap
+2. 配置 ~/.offlineimaprc
+#+BEGIN_EXAMPLE
+[general]
+ui = ttyui
+accounts = Gmail
+
+[Account Gmail]
+localrepository = Gmail-Local
+remoterepository = Gmail-Remote
+
+[Repository Gmail-Local]
+type = Maildir
+localfolders = ~/lx/Gmail
+
+[Repository Gmail-Remote]
+type = Gmail
+remoteuser = 邮箱
+remotepass = 密码
+realdelete = no
+maxconnections = 3
+# 下面这行使用与OS X系统
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+#+END_EXAMPLE
+3. 同步命令: offlineimap -o
+   第一次运行这个命令有可能会报错, 显示 "Gmail SMTP debug: error “please log in via your web browser" 这样的内容,
+   可以去https://www.google.com/settings/security/lesssecureapps 打开enable on这个选项, 就可以了.
+   第一次同步可能很长时间, 尤其是对国人来说. 耐心等候啦.
+* gnus
+1. 配置, 在lx.el中加入
+   #+BEGIN_EXAMPLE
+   ;; Gnus配置
+ (setq gnus-select-method
+    '(nnmaildir "Gmail" (directory "~/lx/Gmail")))
+   #+END_EXAMPLE
+2. 快捷键
+|           | 说明                               |
+|-----------+------------------------------------|
+| C-u N ret | 在目录上使用,显示目录(N封)所有邮件 |
+| c         | 标记未读为已读                     |
+| C         | 标记所有为已读                     |
+| l         | 只显示有未读邮件的group            |
+| L         | 显示所有group                      |
+| B DEL     | 永久删除                           |
+| B m       | 移动邮件                           |
+| E         | 设置邮件为Expirable                |
+| u         | 标记重要邮件                       |
+
