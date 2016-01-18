@@ -14,9 +14,9 @@ categories: [Lisp, Reading]
 #+END_HTML
 
 #+BEGIN_VERSE
-"The only way to learn a new programming language is by writing programs in it."
+Lisp is worth learning for the profound enlightenment experience you will have when you finally get it; that experience will make you a better programmer for the rest of your days, even if you never actually use Lisp itself a lot.
 
-- Kernighan and Ritchie
+- Eric Raymond
 #+END_VERSE
 
 最近在阅读Paul Graham的Lisp相关系列文章,并做了一些笔记, 
