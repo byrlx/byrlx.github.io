@@ -39,11 +39,9 @@ Paul Graham通过Common Lisp代码来讲解John McCarthy的Lisp<a href="http://w
 <li>atom: atom为一系列的字符, 例如foo.</li>
 <li>表达式(expression): 表达式或者为一个atom, 或者为零个或多个
 表达式的集合, 多个表达式之间用空格分开, 并用括号包住.
-(这里使用了递归定义, 一个或多个表达式被称为list).</li>
+(这里使用了递归定义, 一个或多个表达式被称为list). 
+就像数学表达式 "1+1=2"一样, 这里定义的表达式同样可以表示一个值.</li>
 </ul>
-<p>
-就像数学表达式 "1+1=2"一样, 这里定义的表达式同样可以表示一个值. 
-</p>
 </div>
 </div>
 <div id="outline-container-orgheadline2" class="outline-3">
@@ -147,7 +145,7 @@ a1-an会替换表达式中的p1-pn, 然后计算表达式的结果并返回.
 </p>
 </div>
 <div id="outline-container-orgheadline6" class="outline-3">
-<h3 id="orgheadline6">cXr函数簇</h3>
+<h3 id="orgheadline6">3.1 cXr函数簇</h3>
 <div class="outline-text-3" id="text-orgheadline6">
 <p>
 cXr不是一个函数, 而是一系列函数的缩写. X由
@@ -158,7 +156,7 @@ cXr不是一个函数, 而是一系列函数的缩写. X由
 </div>
 </div>
 <div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="orgheadline7">list函数</h3>
+<h3 id="orgheadline7">3.2 list函数</h3>
 <div class="outline-text-3" id="text-orgheadline7">
 <p>
 还函数用于生成list, 其定义为 (list e1..en) = (cons e1 ..(cons en '())).
@@ -167,7 +165,7 @@ cXr不是一个函数, 而是一系列函数的缩写. X由
 </div>
 </div>
 <div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8">其他函数</h3>
+<h3 id="orgheadline8">3.3 其他函数</h3>
 <div class="outline-text-3" id="text-orgheadline8">
 <ul class="org-ul">
 <li>null. 判断参数是否为空list, 是返回true.</li>
