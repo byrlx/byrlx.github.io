@@ -16,7 +16,7 @@ categories: [Lisp, Reading]
 #+BEGIN_VERSE
 "The only way to learn a new programming language is by writing programs in it."
 
-                                        - Kernighan and Ritchie
+- Kernighan and Ritchie
 #+END_VERSE
 
 最近在阅读Paul Graham的Lisp相关系列文章,并做了一些笔记, 
@@ -147,7 +147,8 @@ On these occasions, use the eval function.
 作者首先给出了eval的实现代码. eval函数接受两个参数:a, e. 
 参数e为一个list, 代表需要被执行的表达式. 
 参数a为pair生成的list, 代表参数1的"执行上下文".
-file://../../../../public/img/eval.png
+
+file:../../../../public/img/eval.png
 
 代码主体由主要四个cond条件组成, 代表e的四种表现形式:
 1. e为atom, 则调用assoc查找a中是否有相应的e对, 
