@@ -1,8 +1,14 @@
 ---
 layout: post
-title: \<The Roots of Lisp\> 阅读笔记
+title: The Roots of Lisp 阅读笔记
 categories: [Lisp, Reading]
 ---
+
+<p class="verse">
+"The only way to learn a new programming language is by writing programs in it."<br  />
+<br  />
+&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;- Kernighan and Ritchie<br  />
+</p>
 
 <p>
 最近在阅读Paul Graham的Lisp相关系列文章,并做了一些笔记, 
@@ -11,7 +17,7 @@ categories: [Lisp, Reading]
 
 <p>
 本文为 <a href="http://www.paulgraham.com/rootsoflisp.html">The Roots of Lisp</a> 的阅读笔记, 在这篇文章里, 
-Paul Graham通过Common Lisp代码来讲解John McCarthy的Lisp论文,
+Paul Graham通过Common Lisp代码来讲解John McCarthy的Lisp<a href="http://www-formal.stanford.edu/jmc/recursive.ps">论文</a>,
 通过对论文循序渐进的阐述, 来展现Lisp的魅力.
 </p>
 
@@ -19,6 +25,7 @@ Paul Graham通过Common Lisp代码来讲解John McCarthy的Lisp论文,
 笔者对Common Lisp的语法并不熟悉, 故使用Elisp实验了本文中的
 所有Common Lisp代码, Elisp跟Common Lisp的差异部分会标注出来.
 </p>
+
 <div id="outline-container-orgheadline3" class="outline-2">
 <h2 id="orgheadline3">1. 基本概念和运算符</h2>
 <div class="outline-text-2" id="text-orgheadline3">
@@ -182,5 +189,113 @@ list中第一个元素为atom的元素.
 </pre></li>
 </ul>
 </div>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9">4. eval大杀器</h2>
+<div class="outline-text-2" id="text-orgheadline9">
+<p>
+通过前三节的内容, 已经可以写出常用的lisp程序了, 在这一节作者
+给出了eval的实现, eval可以作为程序解释器了执行传入的参数. 
+可以看下Emacs文档中对eval的定义.
+从上面的引用可以看出eval的一个很强大的功能, 运行时插入代码, 我们可以
+在程序中生成另一个程序, 然后通过eval来这行这个程序, 这也是Lisp的强大
+功能之一.
+</p>
+<blockquote>
+<p>
+Most often, forms are evaluated automatically, 
+by virtue of their occurrence in a program being run. 
+On rare occasions, you may need to write code that evaluates 
+a form that is computed at run time, such as after reading 
+a form from text being edited or getting one from a property list. 
+On these occasions, use the eval function. 
+</p>
+</blockquote>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12">4.1 eval实现</h3>
+<div class="outline-text-3" id="text-orgheadline12">
+<p>
+作者首先给出了eval的实现代码. eval函数接受两个参数:a, e. 
+参数e为一个list, 代表需要被执行的表达式. 
+参数a为pair生成的list, 代表参数1的"执行上下文".
+<img src="file://../../../../public/img/eval.png" alt="eval.png" />
+</p>
+
+<p>
+代码主体由主要四个cond条件组成, 代表e的四种表现形式:
+</p>
+<ol class="org-ol">
+<li>e为atom, 则调用assoc查找a中是否有相应的e对, 
+即查找环境变量e的值.</li>
+<li>(car e)为atom, 则判断(car e)的值:
+<ol class="org-ol">
+<li>为quote: 表示e为(quote e1), 直接返回(cadr e).即第二个元素.</li>
+<li>atom: 说明这是个atom表达式, 则将其转化为(atom (eval (cadr e) a))的
+形式, 即继续递归解析atom的参数.</li>
+<li>eq: eq表达式, 递归解析eq的两个参数.</li>
+<li>car/cdr/cons: 同前面一样, 都转化为相应的基本运算符表达式.并
+递归对参数进行解析.</li>
+<li>cond: 代表cond表达式, 调用函数自定义函数(<a href="#orgheadline10">evcon</a> (cdr e) a)</li>
+<li>如果上述都不满足, 即表示表达式的第一个元素不是基本的操作符, 
+那么就去"上下文"a中查找(car e)的值, 并尝试继续解析.</li>
+</ol></li>
+<li>如果(caar e)的值为lambda, 标志这是一个函数, 
+会先执行(caddar e)取出函数的执行体, 然后将lambda的参数
+生成为pair化然后添加到上下文a中. 这里用到了自定义函数
+<a href="#orgheadline11">evlis</a>.</li>
+<li>(caar e)为label, 代表一个命名函数, 会先通过(caddar e)将
+lambda函数主体解析出来, 再将lambda的形参和实参添加到
+上下文中, 最后再递归解析lambda表达式(第三步).</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">4.2 evcon</h3>
+<div class="outline-text-3" id="text-orgheadline10">
+<p>
+evcon是自定义函数, 在解析cond表达式中使用, 其代码实现如下.
+首先会解析表达式的第一个list的第一个元素, 如果为真, 则
+执行其第二个元素. 否则继续递归解析剩下的元素.
+</p>
+<pre class="example">
+(defun evcon (c a)
+  (cond ((eval (caar c) a)
+         (eval (cadar c) a))
+         ('t (evcon (cdr c) a))))
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11">4.3 evlis</h3>
+<div class="outline-text-3" id="text-orgheadline11">
+<p>
+在本文中,该函数接受两个参数: m是lambda函数的实参, a是上下文.
+首先判断m是否为null,如果是返回nil. 依次调用eval解析实参,
+并将其生成一个cons.
+</p>
+<pre class="example">
+(defun evlis (m a)
+  (cond ((null m) '())
+        ('t (cons (eval (car m) a)
+                  (evlis (cdr m) a)))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline13" class="outline-2">
+<h2 id="orgheadline13">关于eval</h2>
+<div class="outline-text-2" id="text-orgheadline13">
+<p>
+本文通过几个有限的操作符, 定义出了eval这个函数, 通过eval, 我们可以
+写出任意的函数, 甚至可以在运行时将生成的数据作为代码来执行.
+</p>
+
+<p>
+Paul Graham说理解了McCarthy的eval, 你就理解了Lisp. 
+嗯, 我还在尝试.
+</p>
 </div>
 </div>
