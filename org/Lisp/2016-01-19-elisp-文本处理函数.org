@@ -8,7 +8,7 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: elisp-文本处理函数
+title: Emacs Lisp 文本处理函数
 categories: [Lisp]
 ---
 #+END_HTML
