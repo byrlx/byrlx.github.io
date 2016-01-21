@@ -90,7 +90,7 @@ file:../../../public/img/header.png
 
 ** lx-create-post-head (title category)
 该函数用于插入和修改head模板
-#+BEGIN_SRC 
+#+BEGIN_SRC  elisp
 ;; 根据title和category生成头部
 (defun lx-create-post-head (title category)
   ;;读取头部文件内容并插入到文件开始
