@@ -8,7 +8,7 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: Emacs Lisp 中的宏
+title: Elisp 中的宏
 categories: [Lisp]
 tag: [Emacs, Lisp]
 ---
