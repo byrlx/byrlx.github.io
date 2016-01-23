@@ -13,3 +13,6 @@ categories: [Emacs]
 tag: [Emacs]
 ---
 #+END_HTML
+
+* Tips
+1. 绑定快捷键 (global-set-key (kbd "<f9>") '函数名) 
