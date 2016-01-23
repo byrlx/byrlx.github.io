@@ -2,6 +2,7 @@
 layout: post
 title: Orgmode手册2:表格
 categories: [OrgMode]
+tag: [OrgMode, Translate]
 ---
 
 <p>
@@ -9,9 +10,9 @@ Org mode提供了强大到"令人发指"的表格处理功能, 与excel不同,
 纯文本下编辑表格是另外一种美好的体验.
 </p>
 
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">创建表格</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">创建表格</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
 在org中任何以"|"字符开头的内容都会认为是
 表格的一部分. 在表格当前行按TAB或C-c C-c会格式化表格.
@@ -25,10 +26,8 @@ Org mode提供了强大到"令人发指"的表格处理功能, 与excel不同,
 否则为空白字符.可以通过前缀强制选择"分隔符":
 </p>
 <ul class="org-ul">
-<li>C-u 强制认为是CSV格式(逗号分割), 对于经常处理csv格式的人很有用. 
-</li>
-<li>C-u C-u 强制TAB
-</li>
+<li>C-u 强制认为是CSV格式(逗号分割), 对于经常处理csv格式的人很有用.</li>
+<li>C-u C-u 强制TAB</li>
 </ul>
 
 <p>
@@ -38,112 +37,112 @@ Org mode提供了强大到"令人发指"的表格处理功能, 与excel不同,
 
 
 <colgroup>
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 </colgroup>
 <thead>
 <tr>
-<th scope="col" class="left">快捷键</th>
-<th scope="col" class="left">功能</th>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">功能</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="left">C-c C-c</td>
-<td class="left">对齐表格</td>
+<td class="org-left">C-c C-c</td>
+<td class="org-left">对齐表格</td>
 </tr>
 
 <tr>
-<td class="left">TAB</td>
-<td class="left">对齐表格, 移到下一格</td>
+<td class="org-left">TAB</td>
+<td class="org-left">对齐表格, 移到下一格</td>
 </tr>
 
 <tr>
-<td class="left">S-TAB</td>
-<td class="left">对齐表格, 移到上一格</td>
+<td class="org-left">S-TAB</td>
+<td class="org-left">对齐表格, 移到上一格</td>
 </tr>
 
 <tr>
-<td class="left">RET</td>
-<td class="left">对齐表格, 移到下一行</td>
+<td class="org-left">RET</td>
+<td class="org-left">对齐表格, 移到下一行</td>
 </tr>
 
 <tr>
-<td class="left">M-a/e</td>
-<td class="left">移到这一格开始/结尾</td>
+<td class="org-left">M-a/e</td>
+<td class="org-left">移到这一格开始/结尾</td>
 </tr>
 
 <tr>
-<td class="left">M-left/right/up/down</td>
-<td class="left">左/右/上/下移动该行</td>
+<td class="org-left">M-left/right/up/down</td>
+<td class="org-left">左/右/上/下移动该行</td>
 </tr>
 
 <tr>
-<td class="left">M-S-left/up/</td>
-<td class="left">删除当前列/行</td>
+<td class="org-left">M-S-left/up/</td>
+<td class="org-left">删除当前列/行</td>
 </tr>
 
 <tr>
-<td class="left">M-S-right/down</td>
-<td class="left">添加新列/行</td>
+<td class="org-left">M-S-right/down</td>
+<td class="org-left">添加新列/行</td>
 </tr>
 
 <tr>
-<td class="left">C-c -/C-c RET</td>
-<td class="left">添加新分割行</td>
+<td class="org-left">C-c -/C-c RET</td>
+<td class="org-left">添加新分割行</td>
 </tr>
 
 <tr>
-<td class="left">C-c ^</td>
-<td class="left">排序</td>
+<td class="org-left">C-c ^</td>
+<td class="org-left">排序</td>
 </tr>
 
 <tr>
-<td class="left">C-c C-x M-w/C-w/C-y</td>
-<td class="left">粘贴/剪切/复制当前区域</td>
+<td class="org-left">C-c C-x M-w/C-w/C-y</td>
+<td class="org-left">粘贴/剪切/复制当前区域</td>
 </tr>
 
 <tr>
-<td class="left">C-c +</td>
-<td class="left">计算当前列的和</td>
+<td class="org-left">C-c +</td>
+<td class="org-left">计算当前列的和</td>
 </tr>
 
 <tr>
-<td class="left">S-RET</td>
-<td class="left">复制</td>
+<td class="org-left">S-RET</td>
+<td class="org-left">复制</td>
 </tr>
 
 <tr>
-<td class="left">C-c `</td>
-<td class="left">新窗口编辑当前区域.</td>
+<td class="org-left">C-c `</td>
+<td class="org-left">新窗口编辑当前区域.</td>
 </tr>
 
 <tr>
-<td class="left">M-x org-table-import</td>
-<td class="left">导入文件作为表格</td>
+<td class="org-left">M-x org-table-import</td>
+<td class="org-left">导入文件作为表格</td>
 </tr>
 
 <tr>
-<td class="left">C-c</td>
-<td class="left">将选中区域表示为表格</td>
+<td class="org-left">C-c</td>
+<td class="org-left">将选中区域表示为表格</td>
 </tr>
 
 <tr>
-<td class="left">M-x org-table-export</td>
-<td class="left">到处表格</td>
+<td class="org-left">M-x org-table-export</td>
+<td class="org-left">到处表格</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">表格宽度和对齐</h2>
-<div class="outline-text-2" id="text-2">
-</div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1">设置列宽度</h3>
-<div class="outline-text-3" id="text-2-1">
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">表格宽度和对齐</h2>
+<div class="outline-text-2" id="text-orgheadline4">
+</div><div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">设置列宽度</h3>
+<div class="outline-text-3" id="text-orgheadline2">
 <p>
 如果某一列的内容太长, 看上去会比较不美观, 可以通过设置列的宽度来隐藏
 一部分内容. 
@@ -169,111 +168,108 @@ Org mode提供了强大到"令人发指"的表格处理功能, 与excel不同,
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2">设置左右对齐</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">设置左右对齐</h3>
+<div class="outline-text-3" id="text-orgheadline3">
 <p>
 跟设置宽度一样, 在某一空白区域添加 &lt;r&gt; 或 &lt;l&gt;. 宽度和对齐也可以结合使用:&lt;r10&gt;.
 </p>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3">引用表中数据</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">引用表中数据</h2>
+<div class="outline-text-2" id="text-orgheadline5">
 <p>
 如果要在公式或其他地方使用表格中的数据, 必须要有一种方法可以表示表格中的
 一个或一块区域. Org中区域可以通过名称/坐标/相对地址等方式引用. 可以在
 单元格上面使用快捷键"C-c ?"来查看该单元格的坐标. 或使用 "C-c }"来显示一块区域.
 </p>
 <ol class="org-ol">
-<li>引用表格的几种方法
+<li><p>
+引用表格的几种方法
+</p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 </colgroup>
 <thead>
 <tr>
-<th scope="col" class="left">格式</th>
-<th scope="col" class="left">含义</th>
-<th scope="col" class="left">补充</th>
+<th scope="col" class="org-left">格式</th>
+<th scope="col" class="org-left">含义</th>
+<th scope="col" class="org-left">补充</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="left">letter/number</td>
-<td class="left">某一格</td>
-<td class="left">B3表示第三行第二列</td>
+<td class="org-left">letter/number</td>
+<td class="org-left">某一格</td>
+<td class="org-left">B3表示第三行第二列</td>
 </tr>
 
 <tr>
-<td class="left">@N</td>
-<td class="left">某一行</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">@N</td>
+<td class="org-left">某一行</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="left">$N</td>
-<td class="left">某一列</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">$N</td>
+<td class="org-left">某一列</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="left">@M$N</td>
-<td class="left">某一格</td>
-<td class="left">@3$2 第三行第二列</td>
+<td class="org-left">@M$N</td>
+<td class="org-left">某一格</td>
+<td class="org-left">@3$2 第三行第二列</td>
 </tr>
 
 <tr>
-<td class="left">$+/-N</td>
-<td class="left">当前列的相对列</td>
-<td class="left">同样适用于行</td>
+<td class="org-left">$+/-N</td>
+<td class="org-left">当前列的相对列</td>
+<td class="org-left">同样适用于行</td>
 </tr>
 
 <tr>
-<td class="left">$&lt; $&gt;</td>
-<td class="left">第一列和最后一列</td>
-<td class="left">$&lt;&lt;&lt;倒数第三列, 适用于行</td>
+<td class="org-left">$&lt; $&gt;</td>
+<td class="org-left">第一列和最后一列</td>
+<td class="org-left">$&lt;&lt;&lt;倒数第三列, 适用于行</td>
 </tr>
 
 <tr>
-<td class="left">@I</td>
-<td class="left">high line</td>
-<td class="left">例如本例第二行</td>
+<td class="org-left">@I</td>
+<td class="org-left">high line</td>
+<td class="org-left">例如本例第二行</td>
 </tr>
 
 <tr>
-<td class="left">@0 $0</td>
-<td class="left">当前行/列</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">@0 $0</td>
+<td class="org-left">当前行/列</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 </tbody>
-</table>
-</li>
-<li>使用".."来表示一个区域, 例如 $1..$3表示第一列到第三列
-</li>
-<li>使用 @# $# 来表示当前行/列的值.
-</li>
+</table></li>
+<li>使用".."来表示一个区域, 例如 $1..$3表示第一列到第三列</li>
+<li>使用 @# $# 来表示当前行/列的值.</li>
 <li>命名. org table支持命名方式, 可以通过 "org-table-formula-constants"来设置一个
 全局的名字, 或通过 "#+CONSTANTS"单独为一个文件设置名称变量. 也可以在表格中
-使用emacs的properties功能来使用property变量.
-</li>
+使用emacs的properties功能来使用property变量.</li>
 <li>远程引用. 可以通过远程引用的方式引用其他文件或该文件其他表格的内容.
 远程引用的语法为: remote(NAME-OR-ID, REF). 第一个参数可以是本文件中
-用 #+NAME 来命名的表格, 或其他文件中的一个entry ID. REF是当前表格的一个区域.
-</li>
+用 #+NAME 来命名的表格, 或其他文件中的一个entry ID. REF是当前表格的一个区域.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4">表格处理计算</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">表格处理计算</h2>
+<div class="outline-text-2" id="text-orgheadline6">
 <p>
 文章开始说过, org mode提供了各种表格计算功能, 下面就看一下具体的操作,
 </p>
@@ -295,9 +291,9 @@ Org mode提供了强大到"令人发指"的表格处理功能, 与excel不同,
 <b>$4=$1/($2*$3)</b>.
 </p>
 </div>
-<div id="outline-container-sec-4-1" class="outline-3">
-<h3 id="sec-4-1">附加模式.</h3>
-<div class="outline-text-3" id="text-4-1">
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">附加模式.</h3>
+<div class="outline-text-3" id="text-orgheadline7">
 <p>
 附件模式可以用于计算特定格式的内容, 或者格式化数据.
 org支持公式后面添加任意数量的附加模式, 公式和
@@ -307,66 +303,66 @@ org支持公式后面添加任意数量的附加模式, 公式和
 
 
 <colgroup>
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 </colgroup>
 <thead>
 <tr>
-<th scope="col" class="left">表示</th>
-<th scope="col" class="left">意义</th>
-<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="org-left">表示</th>
+<th scope="col" class="org-left">意义</th>
+<th scope="col" class="org-left">&#xa0;</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="left">pN</td>
-<td class="left">计算精度</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">pN</td>
+<td class="org-left">计算精度</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="left">nN,sN,eN,fN</td>
-<td class="left">普通/科学/工程/固定表示</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">nN,sN,eN,fN</td>
+<td class="org-left">普通/科学/工程/固定表示</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="left">D/R</td>
-<td class="left">度/弧度模式</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">D/R</td>
+<td class="org-left">度/弧度模式</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="left">F/S</td>
-<td class="left">小数模式</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">F/S</td>
+<td class="org-left">小数模式</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="left">T/t</td>
-<td class="left">时间计算模式</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">T/t</td>
+<td class="org-left">时间计算模式</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="left">E</td>
-<td class="left">控制怎样表示空白格</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">E</td>
+<td class="org-left">控制怎样表示空白格</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="left">N</td>
-<td class="left">把所有表格表示为数字, 非数字0代替</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">N</td>
+<td class="org-left">把所有表格表示为数字, 非数字0代替</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="left">L</td>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">L</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 </tbody>
 </table>
@@ -382,9 +378,9 @@ tan($1);Dp3s1        计算度数, 精度为3, 展示为科学计数
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-4-2" class="outline-3">
-<h3 id="sec-4-2">lisp代码处理表格.</h3>
-<div class="outline-text-3" id="text-4-2">
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">lisp代码处理表格.</h3>
+<div class="outline-text-3" id="text-orgheadline8">
 <p>
 org支持用lisp代码处理表格. 以 '( 开头的表达式会被解析为lisp代码,
 默认情况下, 表格的内容会被引用为字符串, 如果需要将其处理为数字,
@@ -400,9 +396,9 @@ org支持用lisp代码处理表格. 以 '( 开头的表达式会被解析为lisp
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-4-3" class="outline-3">
-<h3 id="sec-4-3">时间计算.</h3>
-<div class="outline-text-3" id="text-4-3">
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">时间计算.</h3>
+<div class="outline-text-3" id="text-orgheadline9">
 <p>
 前面讲过表格支持时间计算.表格支持的时间格式为 HH:MM[:SS], 
 其中SS是可选, 如果公式后面接";T", 计算结果会展示为 HH:MM:SS.
@@ -417,32 +413,29 @@ org支持用lisp代码处理表格. 以 '( 开头的表达式会被解析为lisp
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-4-4" class="outline-3">
-<h3 id="sec-4-4">直接在某一格中输入公式.</h3>
-<div class="outline-text-3" id="text-4-4">
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">直接在某一格中输入公式.</h3>
+<div class="outline-text-3" id="text-orgheadline10">
 <p>
 可以直接在域中输入公式. 在域中输入":="并后面接公式. 也可以
 在当前域中输入 "C-u C-c ="命令在提示框中输入公式.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-4-5" class="outline-3">
-<h3 id="sec-4-5">查找功能</h3>
-<div class="outline-text-3" id="text-4-5">
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11">查找功能</h3>
+<div class="outline-text-3" id="text-orgheadline11">
 <p>
 orgmode提供了三个查找函数用于在表中进行查找:
 </p>
 <ul class="org-ul">
 <li>(org-lookup-first VAL S-LIST R-LIST &amp;optional PREDICATE)
 在S-LIST中查找第一个 (PREDICATE VAL S)值为t的S. 并返回R-LIST与S位置相同的
-值. PREDICATE的默认值为 equal, 如果R-LIST为nil, 则返回S.
-</li>
+值. PREDICATE的默认值为 equal, 如果R-LIST为nil, 则返回S.</li>
 <li>(org-lookup-first VAL S-LIST R-LIST &amp;optional PREDICATE)
-与上一个函数意义相同, 不过是先查找最后一个.
-</li>
+与上一个函数意义相同, 不过是先查找最后一个.</li>
 <li>(org-lookup-first VAL S-LIST R-LIST &amp;optional PREDICATE)
-相似函数. 不过返回的是一个列表.
-</li>
+相似函数. 不过返回的是一个列表.</li>
 </ul>
 
 <p>
@@ -473,9 +466,9 @@ rates表的第三列填充到cost表的第五列, 然后计算第六列的值.
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-4-6" class="outline-3">
-<h3 id="sec-4-6">调试公式</h3>
-<div class="outline-text-3" id="text-4-6">
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12">调试公式</h3>
+<div class="outline-text-3" id="text-orgheadline12">
 <p>
 org mode提供了下列用于调试公式的快捷键:
 </p>
@@ -483,62 +476,62 @@ org mode提供了下列用于调试公式的快捷键:
 
 
 <colgroup>
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 </colgroup>
 <thead>
 <tr>
-<th scope="col" class="left">快捷键</th>
-<th scope="col" class="left">功能</th>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">功能</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="left">C-c = / C-u C-c =</td>
-<td class="left">在当前格写入公式</td>
+<td class="org-left">C-c = / C-u C-c =</td>
+<td class="org-left">在当前格写入公式</td>
 </tr>
 
 <tr>
-<td class="left">C-u C-u C-c =</td>
-<td class="left">重新插入公式</td>
+<td class="org-left">C-u C-u C-c =</td>
+<td class="org-left">重新插入公式</td>
 </tr>
 
 <tr>
-<td class="left">C-c ?</td>
-<td class="left">当前格信息</td>
+<td class="org-left">C-c ?</td>
+<td class="org-left">当前格信息</td>
 </tr>
 
 <tr>
-<td class="left">C-c }</td>
-<td class="left">表信息</td>
+<td class="org-left">C-c }</td>
+<td class="org-left">表信息</td>
 </tr>
 
 <tr>
-<td class="left">C-c {</td>
-<td class="left">打开/关闭调试</td>
+<td class="org-left">C-c {</td>
+<td class="org-left">打开/关闭调试</td>
 </tr>
 
 <tr>
-<td class="left">C-c '</td>
-<td class="left">在buffer中编辑所有公式</td>
+<td class="org-left">C-c '</td>
+<td class="org-left">在buffer中编辑所有公式</td>
 </tr>
 
 <tr>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5">其他特性</h2>
-<div class="outline-text-2" id="text-5">
-</div><div id="outline-container-sec-5-1" class="outline-3">
-<h3 id="sec-5-1">列组</h3>
-<div class="outline-text-3" id="text-5-1">
+<div id="outline-container-orgheadline15" class="outline-2">
+<h2 id="orgheadline15">其他特性</h2>
+<div class="outline-text-2" id="text-orgheadline15">
+</div><div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">列组</h3>
+<div class="outline-text-3" id="text-orgheadline13">
 <p>
 Org导出表格时, 默认是以行为单位, 也可以按列为单位来处理数据.
 这需要添加一个特殊行: 该行的第一个区域只包含"/", 其他以"&lt;"表示的区域
@@ -546,9 +539,9 @@ Org导出表格时, 默认是以行为单位, 也可以按列为单位来处理�
 </p>
 </div>
 </div>
-<div id="outline-container-sec-5-2" class="outline-3">
-<h3 id="sec-5-2">Orgtbl 模式</h3>
-<div class="outline-text-3" id="text-5-2">
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14">Orgtbl 模式</h3>
+<div class="outline-text-3" id="text-orgheadline14">
 <p>
 如果想在其他的mode下使用org mode的table功能, 可以输入命令 "orgtbl-mode".
 </p>

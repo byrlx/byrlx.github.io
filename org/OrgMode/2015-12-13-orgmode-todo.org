@@ -10,7 +10,7 @@
 layout: post
 title: Orgmode手册4:任务功能
 categories: [OrgMode]
-tag: [OrgMode]
+tag: [OrgMode, Translate]
 ---
 #+END_HTML
 
@@ -156,9 +156,9 @@ WAIT需要note, 其他的属性使用STARTUP的默认值.
 * 优先级
 Org支持TODO项目的优先级, 默认支持的优先级有三个:A, B, C. A最高.
 如下所示, 无优先级表示的项目优先级是B.
-#+BEGIN_SRC 
+#+BEGIN_EXAMPLE 
   ** TODO [#A] 
-#+END_SRC
+#+END_EXAMPLE
 * 显示任务完成比
 可以在标题中加入 "[/]" 或 "[%]" 来显示子任务的完成数.
 默认只显示子标题, 如果要递归显示整个树, 需要设置

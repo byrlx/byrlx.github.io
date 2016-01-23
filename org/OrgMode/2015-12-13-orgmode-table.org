@@ -10,7 +10,7 @@
 layout: post
 title: Orgmode手册2:表格
 categories: [OrgMode]
-tag: [OrgMode]
+tag: [OrgMode, Translate]
 ---
 #+END_HTML
 

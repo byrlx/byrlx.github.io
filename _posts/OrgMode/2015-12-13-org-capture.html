@@ -2,6 +2,7 @@
 layout: post
 title: Orgmode手册5:"捕获"
 categories: [OrgMode]
+tag: [OrgMode, Translate]
 ---
 
 <p>
@@ -13,11 +14,9 @@ categories: [OrgMode]
 "先把它记下来"是个很好的议题, 怎么才能以最快的速度记下来? 
 </p>
 <ul class="org-ul">
-<li>随手记到纸上? 纸张没有提醒功能, 很可能一会就忘记了.
-</li>
+<li>随手记到纸上? 纸张没有提醒功能, 很可能一会就忘记了.</li>
 <li>记到提醒软件上. 可能要先离开IDE, 打开提醒软件, 写完再回来.  
-有时候提醒软件的归类功能还不好. 
-</li>
+有时候提醒软件的归类功能还不好.</li>
 </ul>
 
 <p>
@@ -26,9 +25,9 @@ So, 如果你凑巧用Emacs写代码, Emacs凑巧又装了Org mode, 那恭喜,
 这个功能最大的特性就是在尽量不打搅你现有工作的情况下记录其他的事情.
 </p>
 
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">设置capture</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">设置capture</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
 在emacs配置文件中加入如下代码, 
 </p>
@@ -42,9 +41,9 @@ So, 如果你凑巧用Emacs写代码, Emacs凑巧又装了Org mode, 那恭喜,
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">客制化Capture模板</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">客制化Capture模板</h2>
+<div class="outline-text-2" id="text-orgheadline2">
 <p>
 org capture默认会将所有任务都放到notes.org这个文件, 这可能不满足你的
 需求, 比如你可能希望将工作和生活的笔记分开, 或者不同的工作笔记放到
@@ -56,10 +55,8 @@ org capture默认会将所有任务都放到notes.org这个文件, 这可能不�
 在emacs配置中加入下面代码, 这样当使用快捷键(C-c c)进入到capture窗口时, 会显示"t"和"j"两个选项,
 </p>
 <ul class="org-ul">
-<li>按下t会打开buffer让你输入任务, C-c C-c则会将任务分配到gtd.org下的Tasks标题里.
-</li>
-<li>按下j会将任务分配到journal.org文件中.
-</li>
+<li>按下t会打开buffer让你输入任务, C-c C-c则会将任务分配到gtd.org下的Tasks标题里.</li>
+<li>按下j会将任务分配到journal.org文件中.</li>
 </ul>
 <pre class="example">
 (setq org-capture-templates
@@ -75,54 +72,55 @@ caputre模板主要有下面几部分组成:
 <ol class="org-ol">
 <li>KEYS. 
 选择模板的快捷键. 如"t"和"j". 只能为字符, 也可以为多个字符.
-实现二级目录.
-</li>
-<li>DESCRIPTION. 模板描述.
-</li>
-<li>目录类型. 目前支持的目录类型包括:
+实现二级目录.</li>
+<li>DESCRIPTION. 模板描述.</li>
+<li><p>
+目录类型. 目前支持的目录类型包括:
+</p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 </colgroup>
 <thead>
 <tr>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">功能</th>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">功能</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="left">entry</td>
-<td class="left">一个org mode节点, 会被放在指定标题下面(或成为一级标题), 目标文件是org文件</td>
+<td class="org-left">entry</td>
+<td class="org-left">一个org mode节点, 会被放在指定标题下面(或成为一级标题), 目标文件是org文件</td>
 </tr>
 
 <tr>
-<td class="left">item</td>
-<td class="left">同上, 但是为list节点</td>
+<td class="org-left">item</td>
+<td class="org-left">同上, 但是为list节点</td>
 </tr>
 
 <tr>
-<td class="left">checkbox</td>
-<td class="left">checkbox节点</td>
+<td class="org-left">checkbox</td>
+<td class="org-left">checkbox节点</td>
 </tr>
 
 <tr>
-<td class="left">table-line</td>
-<td class="left">表行</td>
+<td class="org-left">table-line</td>
+<td class="org-left">表行</td>
 </tr>
 
 <tr>
-<td class="left">plain</td>
-<td class="left">文本文字</td>
+<td class="org-left">plain</td>
+<td class="org-left">文本文字</td>
 </tr>
 </tbody>
-</table>
-</li>
-<li>条目格式.
+</table></li>
+<li><p>
+条目格式.
+</p>
 <pre class="example">
 %[FILE]     Insert the contents of the file given by FILE.
 %(SEXP)     Evaluate Elisp SEXP and replace with the result.
@@ -161,10 +159,8 @@ caputre模板主要有下面几部分组成:
 %\\n        Insert the text entered at the nth %^{PROMPT}, where `n' is
             a number, starting from 1.
 %?          After completing the template, position cursor here.(输入完后,光标定位到这里)
-</pre>
-</li>
-<li>属性
-</li>
+</pre></li>
+<li>属性</li>
 </ol>
 </div>
 </div>

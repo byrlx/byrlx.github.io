@@ -10,7 +10,7 @@
 layout: post
 title: Orgmode手册6:富文本标记(导出前准备)
 categories: [OrgMode]
-tag: [OrgMode]
+tag: [OrgMode, Translate]
 ---
 #+END_HTML
 org mode另一个牛X闪闪的功能就是导出功能, 
@@ -26,31 +26,31 @@ org mode另一个牛X闪闪的功能就是导出功能,
   org mode默认只导出三层标题, 举例来说, 导出为HTML时, 只会导出到H3, 而
   四层及以下的标题都生成为列表. 如果想要修改导出的层级, 可以设置全局变量
   *org-export-headline-levels*, 或者在文本内设置OPTIONS设置 *H* 配置: 
-  #+BEGIN_SRC 
+  #+BEGIN_EXAMPLE 
     #+OPTIONS: H:4
-  #+END_SRC
+  #+END_EXAMPLE
 ** 目录.
   org mode默认会导出目录, 将其放在第一个标题的前面,目录深度与标题层级相同,
   不过可以通过设置 *org-export-with-toc* 或修改OPTIONS的 *toc* 来修改目录
   深度或将其关闭. 例如
-  #+BEGIN_SRC
+  #+BEGIN_EXAMPLE
     #+OPTIONS: toc:2 (两层目录)
     #+OPTIONS: toc:nil (关掉目录)
-  #+END_SRC
+  #+END_EXAMPLE
   
   如果想改变目录的导出位置, 先将默认导出关闭, 然后使用 *#+TOC: headlines N*
   配置到想插入的地方. 例如:
-  #+BEGIN_SRC
+  #+BEGIN_EXAMPLE
     #+OPTIONS: toc:nil        (no default TOC)
     ...
     #+TOC: headlines 2        (insert TOC here, with two headline levels)
-  #+END_SRC
+  #+END_EXAMPLE
   
   同时, org mode还支持列表和表格的导出.
-  #+BEGIN_SRC 
+  #+BEGIN_EXAMPLE 
     #+TOC: listings           (build a list of listings)
     #+TOC: tables             (build a list of tables)
-  #+END_SRC
+  #+END_EXAMPLE
 ** 换行, 引用
 orgmode中,段落之间用空白行来分割,如果需要段落内换行, 在该行结尾使用 *\\* 关键字.
 
@@ -122,13 +122,13 @@ Orgmode提供了几种方式, 可以使位子内容不受org mode的处理, 即�
   `#+END_EXAMPLE 
   #+END_EXAMPLE 
   如果内容特别短, 也可以使用"空格:空格"字符串修饰
-+ #+BEGIN_SRC..#+END_SRC \\
++ #+BEGIN_EXAMPLE..#+END_EXAMPLE \\
   如果示例是一段程序, 可以使用这对关键字, 例如
   #+BEGIN_EXAMPLE  -r -n
-    ,#+BEGIN_SRC elisp
+    ,#+BEGIN_EXAMPLE elisp
     (+ 1 1)
     (concat "helo" "wold") (ref:lxxtest)
-    ,#+END_SRC
+    ,#+END_EXAMPLE
   #+END_EXAMPLE
 
 上面两种方式都可以添加一些配置:

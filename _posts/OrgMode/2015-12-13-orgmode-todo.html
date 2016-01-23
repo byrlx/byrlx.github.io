@@ -2,6 +2,7 @@
 layout: post
 title: Orgmode手册4:任务功能
 categories: [OrgMode]
+tag: [OrgMode, Translate]
 ---
 
 <p>
@@ -31,9 +32,9 @@ categories: [OrgMode]
 通过该图相信你已经了解了org mode的TODO的概念, 下面是具体的实现文档.
 </p>
 
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">创建TODO项目</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">创建TODO项目</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
 在标题的星号后面加上 <b>TODO</b> 即可将该标题设置为一个TODO任务, 也可以使用
 快捷键来创建, 快捷键可以参考这篇文章 <a href="http://xuzhengchao.com/2015/12/12/org-mode-outline.html">org mode手册(1): 文档结构</a>
@@ -45,18 +46,18 @@ categories: [OrgMode]
 </div>
 </div>
 
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">拓展关键字</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">拓展关键字</h2>
+<div class="outline-text-2" id="text-orgheadline2">
 <p>
 在真实的使用场景中, 一个任务可能不仅仅只有TODO和DONE两个状态, 可能会有一些
 中间状态, 或者你觉得TODO和DONE不是符合你风格的两个关键字, 针对这种情况, org mode
 提供了一些功能来对TODO关键字进行扩展.
 </p>
 </div>
-<div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1">设置关键字</h3>
-<div class="outline-text-3" id="text-2-1">
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">设置关键字</h3>
+<div class="outline-text-3" id="text-orgheadline3">
 <p>
 通过在emacs配置文件中设置 <b>org-mode-keywords</b> 来自定义TODO关键字, 如下例, 
 这里设置了TODO/FEEDBACK/VERIFY和DONE/DELEGATED两组关键字,
@@ -70,9 +71,9 @@ categories: [OrgMode]
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2">设置多组关键字</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">设置多组关键字</h3>
+<div class="outline-text-3" id="text-orgheadline4">
 <p>
 有时候你想将任务划分的更细, 例如状态未"TODO"的任务只能将状态改为"DONE",
 状态未"BUG"的任务只能改为"FIXED"(不能设成DONE), 那么可以通过 <b>sequence</b>
@@ -87,9 +88,9 @@ categories: [OrgMode]
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-2-3" class="outline-3">
-<h3 id="sec-2-3">使用type.</h3>
-<div class="outline-text-3" id="text-2-3">
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">使用type.</h3>
+<div class="outline-text-3" id="text-orgheadline5">
 <p>
 该变量可以将TODO设置为不同的类型, 如下例, 这样可以实现将任务分配给不同的人,
 分配完成后, C-c C-t修改状态时不会在这三个type之间滚动.而是直接设为done
@@ -99,9 +100,9 @@ categories: [OrgMode]
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-2-4" class="outline-3">
-<h3 id="sec-2-4">在当前文件设置关键字</h3>
-<div class="outline-text-3" id="text-2-4">
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">在当前文件设置关键字</h3>
+<div class="outline-text-3" id="text-orgheadline6">
 <p>
 上面几节讲到都是在全局配置文件中配置关键字, 
 如果想只把配置限制在当前文件, 可以在文件开头配置相关关键字, 如下例:
@@ -118,9 +119,9 @@ categories: [OrgMode]
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-2-5" class="outline-3">
-<h3 id="sec-2-5">关键字主题</h3>
-<div class="outline-text-3" id="text-2-5">
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">关键字主题</h3>
+<div class="outline-text-3" id="text-orgheadline7">
 <p>
 如果嫌弃官方的关键字颜色不好看, 可以通过设置"org-todo-keyword-faces"变量可以设置不同关键字的表现形式,例如:
 </p>
@@ -131,24 +132,27 @@ categories: [OrgMode]
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-2-6" class="outline-3">
-<h3 id="sec-2-6">设置依赖</h3>
-<div class="outline-text-3" id="text-2-6">
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">设置依赖</h3>
+<div class="outline-text-3" id="text-orgheadline8">
 <p>
 有时候一个TODO可能依赖其他的TODO, 例如一个系列项目, 可能前面的项目完成
 之前, 后面的项目都不能将状态改成DONE, 或者子项目完成之前, 父项目不能将
 状态改成DONE.
 </p>
 <ol class="org-ol">
-<li>org-enforce-todo-dependencies.
+<li><p>
+org-enforce-todo-dependencies.
 通过设置该变量, 可以设置在所有的子标题都完成之前, 父标题不能将状态设置为DONE.
+</p>
 <pre class="example">
 (setq org-enforce-todo-dependencies t)
-</pre>
-</li>
-<li>按顺序修改状态.
+</pre></li>
+<li><p>
+按顺序修改状态.
 通过设置属性"ORDERED"来控制同级标题之前按顺序修改状态, 在前面的标题完成之前
 后面的标题不能将属性设为DONE.
+</p>
 <pre class="example">
 * Parent
   :PROPERTIES:
@@ -157,24 +161,23 @@ categories: [OrgMode]
 ** TODO a
 ** TODO b, needs to wait for (a)
 ** TODO c, needs to wait for (a) and (b)
-</pre>
-</li>
+</pre></li>
 </ol>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3">时间戳</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9">时间戳</h2>
+<div class="outline-text-2" id="text-orgheadline9">
 <p>
 对于时间管理来说, 时间戳是必不可少的东西, 可以通过为项目设置
 "排期(SCHEDULED)"或"最后期限(DEADLINE)"来更合理的规划工程. 
 更详细的日期功能会在下一篇文章讲述.
 </p>
 </div>
-<div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1">设置完成时间</h3>
-<div class="outline-text-3" id="text-3-1">
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">设置完成时间</h3>
+<div class="outline-text-3" id="text-orgheadline10">
 <p>
 可以加入设置下面两个配置之一来自动在状态改成DONE的时候加入当前时间戳:
 其中第二个配置还会要求你写一段完成的note.
@@ -185,20 +188,17 @@ categories: [OrgMode]
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2">记录状态变化</h3>
-<div class="outline-text-3" id="text-3-2">
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11">记录状态变化</h3>
+<div class="outline-text-3" id="text-orgheadline11">
 <p>
 下面的配置用于记录状态之间的变化, 可以通过设置带"附加属性"的keywords来实现
 这一个. 在keyword后面的括号中与状态记录相关字符为:
 </p>
 <ul class="org-ul">
-<li>"!" 表示记录时间
-</li>
-<li>"@" 表示带时间的note
-</li>
-<li>"/!" 当跳转到一个没有附加属性的状态时, 记录时间或note
-</li>
+<li>"!" 表示记录时间</li>
+<li>"@" 表示带时间的note</li>
+<li>"/!" 当跳转到一个没有附加属性的状态时, 记录时间或note</li>
 </ul>
 <pre class="example">
 (setq org-todo-keywords
@@ -219,9 +219,9 @@ WAIT需要note, 其他的属性使用STARTUP的默认值.
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-3-3" class="outline-3">
-<h3 id="sec-3-3">追踪行为</h3>
-<div class="outline-text-3" id="text-3-3">
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12">追踪行为</h3>
+<div class="outline-text-3" id="text-orgheadline12">
 <p>
 使用属性STYLE habit来设置持久性行为, 如下例, 表示至少4天或至多2天
 <b>刮一次胡子</b>.
@@ -236,9 +236,9 @@ WAIT需要note, 其他的属性使用STARTUP的默认值.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4">优先级</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-orgheadline13" class="outline-2">
+<h2 id="orgheadline13">优先级</h2>
+<div class="outline-text-2" id="text-orgheadline13">
 <p>
 Org支持TODO项目的优先级, 默认支持的优先级有三个:A, B, C. A最高.
 如下所示, 无优先级表示的项目优先级是B.
@@ -248,9 +248,9 @@ Org支持TODO项目的优先级, 默认支持的优先级有三个:A, B, C. A最
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5">显示任务完成比</h2>
-<div class="outline-text-2" id="text-5">
+<div id="outline-container-orgheadline14" class="outline-2">
+<h2 id="orgheadline14">显示任务完成比</h2>
+<div class="outline-text-2" id="text-orgheadline14">
 <p>
 可以在标题中加入 "<code>[/]</code>" 或 "<code>[%]</code>" 来显示子任务的完成数.
 默认只显示子标题, 如果要递归显示整个树, 需要设置
@@ -277,82 +277,82 @@ Org支持TODO项目的优先级, 默认支持的优先级有三个:A, B, C. A最
 </pre>
 </div>
 </div>
-<div id="outline-container-sec-6" class="outline-2">
-<h2 id="sec-6">附录: "TODO"快捷键&#xa0;&#xa0;&#xa0;<span class="tag"><span class="shortkey">shortkey</span></span></h2>
-<div class="outline-text-2" id="text-6">
+<div id="outline-container-orgheadline15" class="outline-2">
+<h2 id="orgheadline15">附录: "TODO"快捷键&#xa0;&#xa0;&#xa0;<span class="tag"><span class="shortkey">shortkey</span></span></h2>
+<div class="outline-text-2" id="text-orgheadline15">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 </colgroup>
 <thead>
 <tr>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">说明</th>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="left">C-c C-t</td>
-<td class="left">修改项目状态</td>
+<td class="org-left">C-c C-t</td>
+<td class="org-left">修改项目状态</td>
 </tr>
 
 <tr>
-<td class="left">S-right/left</td>
-<td class="left">同上</td>
+<td class="org-left">S-right/left</td>
+<td class="org-left">同上</td>
 </tr>
 
 <tr>
-<td class="left">C-u C-c C-t</td>
-<td class="left">选择状态</td>
+<td class="org-left">C-u C-c C-t</td>
+<td class="org-left">选择状态</td>
 </tr>
 
 <tr>
-<td class="left">C-c / t(T)</td>
-<td class="left">显示todo 树</td>
+<td class="org-left">C-c / t(T)</td>
+<td class="org-left">显示todo 树</td>
 </tr>
 
 <tr>
-<td class="left">C-c a t</td>
-<td class="left">显示全局todo</td>
+<td class="org-left">C-c a t</td>
+<td class="org-left">显示全局todo</td>
 </tr>
 
 <tr>
-<td class="left">S-M-RET</td>
-<td class="left">插入TODO</td>
+<td class="org-left">S-M-RET</td>
+<td class="org-left">插入TODO</td>
 </tr>
 
 <tr>
-<td class="left">C-c C-x o</td>
-<td class="left">打开ORDERED属性</td>
+<td class="org-left">C-c C-x o</td>
+<td class="org-left">打开ORDERED属性</td>
 </tr>
 
 <tr>
-<td class="left">C-u C-u C-u C-c C-t</td>
-<td class="left">强制修改状态</td>
+<td class="org-left">C-u C-u C-u C-c C-t</td>
+<td class="org-left">强制修改状态</td>
 </tr>
 
 <tr>
-<td class="left">C-c ,</td>
-<td class="left">设置优先级</td>
+<td class="org-left">C-c ,</td>
+<td class="org-left">设置优先级</td>
 </tr>
 
 <tr>
-<td class="left">S-up/down</td>
-<td class="left">更改优先级</td>
+<td class="org-left">S-up/down</td>
+<td class="org-left">更改优先级</td>
 </tr>
 
 <tr>
-<td class="left">C-c #</td>
-<td class="left">更新当前标题完成率</td>
+<td class="org-left">C-c #</td>
+<td class="org-left">更新当前标题完成率</td>
 </tr>
 
 <tr>
-<td class="left">&#xa0;</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 </tbody>
 </table>

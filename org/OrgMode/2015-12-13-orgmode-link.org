@@ -10,7 +10,7 @@
 layout: post
 title: Orgmode手册3:链接
 categories: [OrgMode]
-tag: [OrgMode]
+tag: [OrgMode, Translate]
 ---
 #+END_HTML
 
@@ -18,11 +18,11 @@ tag: [OrgMode]
 目前Org 支持如下链接方式: 文件内部, 外部文件, Usenet文章, 邮件及其他.
 
 ** 链接格式
-Org的链接格式为:
+   Org的链接格式为:
 #+BEGIN_EXAMPLE
 [[链接地址][描述]] 或 [[链接地址]]
 #+END_EXAMPLE
-当最后一个"]"写完时, org会将该链接显示为"[[%E5%8F%8C%E4%B8%B0%E6%94%B6][描述]]"(带下划线的"描述", 该显示格式对应face "org-link"),
+当最后一个"]"写完时, org会将该链接显示为(带下划线的"描述", 该显示格式对应face "org-link"),
 如果想要编辑链接, 可以在链接上使用快捷键 "C-c C-l", 在显示内容前后使用"delete"键
 会破坏链接的语法(也可以这样编辑链接). 
 
