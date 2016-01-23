@@ -1,15 +1,18 @@
 ---
 layout: post
-title: Emacs读取Gmail邮件
+title: Emacs gnus 的日常使用
 categories: [Emacs]
 ---
-
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">读取Gmail邮件</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
 主要架构: offlineimap同步邮件, gnus读邮件
 </p>
-<div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">offlineimap配置</h2>
-<div class="outline-text-2" id="text-orgheadline1">
+</div>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">offlineimap配置</h3>
+<div class="outline-text-3" id="text-orgheadline2">
 <ol class="org-ol">
 <li>mac安装:  brew install offlineimap</li>
 <li>配置 ~/.offlineimaprc</li>
@@ -44,20 +47,66 @@ sslcacertfile = /usr/local/etc/openssl/cert.pem
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2">gnus</h2>
-<div class="outline-text-2" id="text-orgheadline2">
-<ol class="org-ol">
-<li><p>
-配置, 在lx.el中加入
-</p>
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">配置</h3>
+<div class="outline-text-3" id="text-orgheadline3">
 <pre class="example">
   ;; Gnus配置
 (setq gnus-select-method
    '(nnmaildir "Gmail" (directory "~/lx/Gmail")))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">订阅RSS</h2>
+<div class="outline-text-2" id="text-orgheadline4">
+<p>
+在Gnus页面可以使用快捷键"G R"来订阅RSS.通过"u"取消订阅.
+</p>
+</div>
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">订阅atom文件</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+<p>
+gnus对于atom类型的RSS支持不好, 可以通过在以下方式解决
+</p>
+<ol class="org-ol">
+<li>Install xsltproc (Debian: apt-get install xsltproc)</li>
+<li>Get the file atom2rss.xsl from <a href="http://atom.geekhood.net/">http://atom.geekhood.net/</a> and save it.</li>
+<li><p>
+Put the following code into your .gnus:
+</p>
+<pre class="example">
+(require 'mm-url)
+(defadvice mm-url-insert 
+   (after DE-convert-atom-to-rss () )  
+   "Converts atom to RSS by calling xsltproc."  
+   (when 
+      (re-search-forward
+         "xmlns=\"http://www.w3.org/.*/Atom\"" 
+          nil t)
+      (goto-char (point-min))    
+      (message "Converting Atom to RSS... ")    
+      (call-process-region 
+         (point-min) 
+         (point-max) 
+         "xsltproc" 
+         t t nil 
+         (expand-file-name 
+            "~/.emacs.d/atom2rss.xsl") "-")    
+      (goto-char (point-min))    
+      (message 
+         "Converting Atom to RSS... done")))
+(ad-activate 'mm-url-insert)
 </pre></li>
-<li>快捷键</li>
 </ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">gnus 快捷键</h2>
+<div class="outline-text-2" id="text-orgheadline6">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
