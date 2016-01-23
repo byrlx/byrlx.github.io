@@ -3,7 +3,7 @@ layout: post
 title: Android Performance Patterns 视频笔记
 description: [新年伊始. Google 就在 Youtube 的开发者频道发布了一系列关于 Android 性能
 的小视频. 这篇文章是对这些视频的学习笔记.]
-tag: [Android, Performance]
+tag: [Android]
 category: [Android]
 ---
 
@@ -15,9 +15,9 @@ category: [Android]
 视频地址为 <a href="https://www.youtube.com/playlist?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE"><a href="https://www.youtube.com/playlist?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE">https://www.youtube.com/playlist?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE</a></a>.
 </p>
 
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><a href="https://www.youtube.com/watch?v=HXQhu6qfTVU&list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE">Rendering Performance</a></h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><a href="https://www.youtube.com/watch?v=HXQhu6qfTVU&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE">Rendering Performance</a></h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
 该视频主要讨论 UI 的流畅度问题,如果用户在使用 App 发现有卡顿或不流畅的现象,这一般都是
 <b>渲染</b> 问题.
@@ -32,14 +32,15 @@ Android 系统一般每16ms 重绘一下应用界面,所以一秒能画60帧. �
 </p>
 </div>
 
-<div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1">a) 产生这个问题的一些主要原因:</h3>
-<div class="outline-text-3" id="text-1-1">
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">a) 产生这个问题的一些主要原因:</h3>
+<div class="outline-text-3" id="text-orgheadline2">
 <ol class="org-ol">
-<li>重绘 view 花费太多 CPU 周期,尤其是重绘一个结构复杂的 view.
-</li>
-<li><b>OverDraw</b>. 对于重叠的 layout, 对用户来说, 被 <b>遮挡</b> 住的对象是不可见的. 所以如果将整个层次都
+<li>重绘 view 花费太多 CPU 周期,尤其是重绘一个结构复杂的 view.</li>
+<li><p>
+<b>OverDraw</b>. 对于重叠的 layout, 对用户来说, 被 <b>遮挡</b> 住的对象是不可见的. 所以如果将整个层次都
 绘制完成后才呈现给用户, 会浪费很多的时间在用户看不到的像素上.
+</p>
 
 <p>
 打开 <b>Show GPU Overdraw</b>, 就可以观察应用的 overdraw 现象, Android 系统透过不同的颜色表示 overdraw 程度,
@@ -49,31 +50,26 @@ Android 系统一般每16ms 重绘一下应用界面,所以一秒能画60帧. �
 <p>
 一个常见的产生 overdraw 的情景就是大量使用 background,例如整个 activity 有一个 background,然后
 里面的 view 控件也有自己的 background.
-</p>
-</li>
-<li>动画太多.使用大量的 CPU 和 GPU 资源.
-</li>
+</p></li>
+<li>动画太多.使用大量的 CPU 和 GPU 资源.</li>
 </ol>
 </div>
 </div>
 
-<div id="outline-container-sec-1-2" class="outline-3">
-<h3 id="sec-1-2">b) 渲染性能分析的常用方法</h3>
-<div class="outline-text-3" id="text-1-2">
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">b) 渲染性能分析的常用方法</h3>
+<div class="outline-text-3" id="text-orgheadline3">
 <ol class="org-ol">
-<li>使用 HIerarchy Viewer 分析 layout 结构,如果 layout 结构过于复杂,重绘时间会过长.
-</li>
+<li>使用 HIerarchy Viewer 分析 layout 结构,如果 layout 结构过于复杂,重绘时间会过长.</li>
 <li>使用手机上的 <b>Developer Option</b> 中带的一些 debug 选项来查看应用是否有 <b>overdraw</b> 的问题.
-包括: Profile GPU Rendering/Show GPU Overdraw/GPU View Updates.
-</li>
-<li>使用 traceview 分析绘制过程的 cpu 使用情况.
-</li>
+包括: Profile GPU Rendering/Show GPU Overdraw/GPU View Updates.</li>
+<li>使用 traceview 分析绘制过程的 cpu 使用情况.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-sec-1-3" class="outline-3">
-<h3 id="sec-1-3">c) 关于VSYNC</h3>
-<div class="outline-text-3" id="text-1-3">
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">c) 关于VSYNC</h3>
+<div class="outline-text-3" id="text-orgheadline4">
 <p>
 刷新率: 屏幕每秒更新的次数, 用 HZ 表示; 帧率: GPU 每秒生成帧的数量, fps.
 </p>
@@ -108,9 +104,9 @@ VSYNC 就是协调这种 copy 过程的机制. 理想情况下,帧率一般大�
 </p>
 </div>
 </div>
-<div id="outline-container-sec-1-4" class="outline-3">
-<h3 id="sec-1-4">d) GPU 渲染分析</h3>
-<div class="outline-text-3" id="text-1-4">
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">d) GPU 渲染分析</h3>
+<div class="outline-text-3" id="text-orgheadline5">
 <p>
 打开 <b>开发者选项</b> 的 <b>GPU 呈现模式分析</b>, 选择在屏幕上显示. 选好后, 会在屏幕上显示一些颜色
 条.  这些颜色条显示了三部分的渲染效果:1, 最底层代表导航栏; 2, 最上层代表通知栏; 3, 中间
@@ -130,22 +126,19 @@ VSYNC 就是协调这种 copy 过程的机制. 理想情况下,帧率一般大�
 <li>蓝色表示绘画时间; 在一个 view 被渲染之前,首先要被转化成 GPU 可以处理的格式,这种转换可能知识
 简单的几个绘图命令,也可能是很复杂的Canvas 数据.一旦转换完成,结果就会被系统当成存储为
 <b>display list</b>. 蓝色条即表示转换和 cache 该帧的所有 view 花费的时间. 时间长的原因可能是
-需要绘制的 view 过多, 或者某个 view 的onDraw()逻辑太复杂.
-</li>
+需要绘制的 view 过多, 或者某个 view 的onDraw()逻辑太复杂.</li>
 <li>红条代表执行时间. 即 Android 的2D 渲染器执行上一步的 <b>display list</b> 的过程.Android 系统
 通过与 OpenGL ES API 交互来将 display list绘制到屏幕,该过程首先将数据传给 GPU,然后在将
 像素绘制到屏幕上. 当 view 约复杂(自定义 view),可能就需要更复杂的 OpenGL 绘图命令.重绘更多
-的 view 同样会导致该问题.
-</li>
+的 view 同样会导致该问题.</li>
 <li>橙色代表处理时间.也可表示 CPU 的等待时间.如果该条过长,说明 GPU 的工作太多.
-<i>About Execute: if Execute takes a long time, it means you are running ahead of the graphics pipeline. Android can have up to 3 buffers in flight and if you need another one the application will block until one of these bufferes is freed up. This can happen for two reasons. The first one is that your application is quick to draw on the Dalvik side but its display lists take a long time to execute on the GPU. The second reason is that your application took a long time to execute the first few frames; once the pipeline is full it will not catch up until the animation is done. This is something we'd like to improve in a future version of Android.</i>
-</li>
+<i>About Execute: if Execute takes a long time, it means you are running ahead of the graphics pipeline. Android can have up to 3 buffers in flight and if you need another one the application will block until one of these bufferes is freed up. This can happen for two reasons. The first one is that your application is quick to draw on the Dalvik side but its display lists take a long time to execute on the GPU. The second reason is that your application took a long time to execute the first few frames; once the pipeline is full it will not catch up until the animation is done. This is something we'd like to improve in a future version of Android.</i></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-sec-1-5" class="outline-3">
-<h3 id="sec-1-5">e) More about GPU</h3>
-<div class="outline-text-3" id="text-1-5">
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">e) More about GPU</h3>
+<div class="outline-text-3" id="text-orgheadline6">
 <p>
 将对程序所描述的内容转化为最后屏幕上的像素的过程用到了 <b>光栅化</b> 这项技术. 对该技术的解释为 
 "<i>把物体的数学描述以及与物体相关的颜色信息转换为屏幕上用于对应位置的像素及用于填充像素的颜色，
@@ -165,9 +158,9 @@ GPU 的过程都是非常耗时的操作.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-1-6" class="outline-3">
-<h3 id="sec-1-6">f) Invalidate/layout</h3>
-<div class="outline-text-3" id="text-1-6">
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">f) Invalidate/layout</h3>
+<div class="outline-text-3" id="text-orgheadline7">
 <p>
 上节说过 CPU 通过 displaylist 将数据传给 GPU,如果一个 view 的位置发生改变,可能只需重新
 执行一次这个 displaylist 就可以.但是在另一种情况下,view 的改变会导致 displaylist 不合法,
@@ -180,9 +173,9 @@ GPU 的过程都是非常耗时的操作.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-1-7" class="outline-3">
-<h3 id="sec-1-7">g) Overdraw/Cliprect/Quickreject</h3>
-<div class="outline-text-3" id="text-1-7">
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">g) Overdraw/Cliprect/Quickreject</h3>
+<div class="outline-text-3" id="text-orgheadline8">
 <p>
 Android 目前在尽量避免 overdraw 现象.但是对于自定义 view,android 系统的优化程序通常无法触及
 (重写onDraw()函数). 但是可以通过下述方法给优化程序一些提示:
@@ -190,17 +183,15 @@ Android 目前在尽量避免 overdraw 现象.但是对于自定义 view,android
 
 <ul class="org-ul">
 <li>Canvas.cliprect(): 该函数可以让你定义 boundaries.所以只有 boundaries 区域内的内容会被绘制.
-屏幕上的其他区域会被忽略.在底层实现上,也只有该区域内的数据会传输给 GPU.
-</li>
-<li>quickreject: 规划不用 draw 的区域.
-</li>
+屏幕上的其他区域会被忽略.在底层实现上,也只有该区域内的数据会传输给 GPU.</li>
+<li>quickreject: 规划不用 draw 的区域.</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">Battery Performance</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9">Battery Performance</h2>
+<div class="outline-text-2" id="text-orgheadline9">
 <p>
 普渡大学对常用的应用/游戏做了一项耗电研究, 研究发现, 在这些应用消耗的电量中,
 只有大约25%~30%用于应用的核心功能.剩下的75%左右都被网络传输/广告等功能消耗掉.
@@ -208,9 +199,9 @@ Android 目前在尽量避免 overdraw 现象.但是对于自定义 view,android
 </p>
 </div>
 
-<div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1">a) PowerManager.Wakelock</h3>
-<div class="outline-text-3" id="text-2-1">
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">a) PowerManager.Wakelock</h3>
+<div class="outline-text-3" id="text-orgheadline10">
 <p>
 该函数可以保持 CPU 一直运行,并不会使屏幕进入休眠状态.但是要注释锁的时机, 不然可能
 导致屏幕一直不休眠.
@@ -221,17 +212,17 @@ Android 目前在尽量避免 overdraw 现象.但是对于自定义 view,android
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2">b) JobScheduler API</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11">b) JobScheduler API</h3>
+<div class="outline-text-3" id="text-orgheadline11">
 <p>
 该 api 可以将工作安排到指定条件执行(WIFI/batching&#x2026;)
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2-3" class="outline-3">
-<h3 id="sec-2-3">c) Battery HIstorian tool</h3>
-<div class="outline-text-3" id="text-2-3">
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12">c) Battery HIstorian tool</h3>
+<div class="outline-text-3" id="text-orgheadline12">
 <p>
 L 版发布, 可以查看唤醒 CPU 的频率,"凶手"和持续时间.
 </p>

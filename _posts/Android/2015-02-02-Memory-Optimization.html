@@ -3,6 +3,7 @@ layout: post
 title: Memory Optimization
 description: [Some methods to analyze memory usage]
 category: [Android]
+tag: [Android]
 ---
 
 <p>
@@ -14,9 +15,9 @@ For a Samsung Galaxy Note 4 memory usage high issue: Setting-&gt;App-&gt;Running
 (Not that high in Nexus5).Try to analyze why this happens.
 </p>
 
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">GC_XXX logs</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">GC_XXX logs</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
 After first install and run, the memory usage is about 200MB.
 about 20+ GC_FOR_ALLOC logs show. as this
@@ -46,9 +47,9 @@ From the GC logs, check if <b>75674K/85580K</b> is continue growing, if so, ther
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">DDMS VM heap</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">DDMS VM heap</h2>
+<div class="outline-text-2" id="text-orgheadline2">
 <p>
 Use ddms vm heap feature to chech the heap change while interacting with app,
 as blew.
@@ -66,17 +67,17 @@ about more than 2000.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3">Allocation Tracker</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">Allocation Tracker</h2>
+<div class="outline-text-2" id="text-orgheadline3">
 <p>
 Allcation Tracker can show all the allocations and the code path.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4">dumpsys meminfo pid/packagename</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">dumpsys meminfo pid/packagename</h2>
+<div class="outline-text-2" id="text-orgheadline4">
 <p>
 This command used to  lists all of your app's current allocations, measured in kilobytes.
 </p>
@@ -86,25 +87,19 @@ Import columns and line combinations need concerded:
 </p>
 <ol class="org-ol">
 <li>Dalvik heap + private dirty.
-It's your app's heap allocation.
-</li>
+It's your app's heap allocation.</li>
 <li>.dex mmap + private clean.
-The own code size of your app.
-</li>
+The own code size of your app.</li>
 <li>Unknow + private Dirty.
-Allocation belongs to your app but can't classified by system.
-</li>
+Allocation belongs to your app but can't classified by system.</li>
 <li>private dirty column.
 Your own memory use, this memory is pages that been modified, 
-so must stay in memory.
-</li>
+so must stay in memory.</li>
 <li>private clean colum.
 Still your apps own memory alloc, but not modified, then can be 
-paged out.
-</li>
+paged out.</li>
 <li><b>Appcontext and Activity</b>.
-A very important part to track activity memory leak.
-</li>
+A very important part to track activity memory leak.</li>
 </ol>
 
 <p>
@@ -148,20 +143,20 @@ after GC. But it's not.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5">dumpsys procstats packagename</h2>
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">dumpsys procstats packagename</h2>
 </div>
-<div id="outline-container-sec-6" class="outline-2">
-<h2 id="sec-6">heap dump</h2>
-<div class="outline-text-2" id="text-6">
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">heap dump</h2>
+<div class="outline-text-2" id="text-orgheadline6">
 <p>
 It will dump to a hprof file.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-7" class="outline-2">
-<h2 id="sec-7">some good post online</h2>
-<div class="outline-text-2" id="text-7">
+<div id="outline-container-orgheadline7" class="outline-2">
+<h2 id="orgheadline7">some good post online</h2>
+<div class="outline-text-2" id="text-orgheadline7">
 <p>
 <a href="http://blog.hsc.com/android/technology-trends/android-memory-optimization/">http://blog.hsc.com/android/technology-trends/android-memory-optimization/</a>
 <a href="https://developer.android.com/tools/debugging/debugging-memory.html">https://developer.android.com/tools/debugging/debugging-memory.html</a>

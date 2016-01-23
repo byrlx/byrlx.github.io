@@ -9,6 +9,7 @@ layout: post
 title: Magit文档笔记
 description: [阅读Magit文档的笔记, 记录常用的magit使用方法]
 category: [Emacs]
+tag: [Emacs, Git]
 ---
 #+END_HTML
 
@@ -21,7 +22,7 @@ v2.1.0于2015年7月1日发布, 该版本的主要更新: [[https://raw.githubus
 2. 由于改动较大, 所以建议先删除旧版本.
 3. 由于不在依赖git-commit-mode和git-rebase-mode, 所以建议删除这两个package.
 4. 操作完成后, 重启安装新包.
-#+BEGIN_SRC
+#+BEGIN_EXAMPLE
     Archive: n/a
     Version: 20150806.1658
    Requires: emacs-24.4, dash-2.10.0, with-editor-2.1.0, git-commit-2.1.0,
@@ -30,7 +31,7 @@ v2.1.0于2015年7月1日发布, 该版本的主要更新: [[https://raw.githubus
    Homepage: https://github.com/magit/magit
    Keywords: git tools vc 
     Other versions: 20150806.1658 (melpa).
-#+END_SRC
+#+END_EXAMPLE
 ** note
 1. 在magit中disable evil-mode
    #+BEGIN_SRC lisp

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: how i learn python
-tag: [Python]
+tag: [Tech]
 description: [Some funny thought during python learing]
 ---
 

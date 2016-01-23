@@ -2,6 +2,7 @@
 layout: post
 title: Okio 源码学习 
 categories: [Square]
+tag: [Square, Java]
 description: [Okio源码阅读笔记]
 ---
 
@@ -13,9 +14,9 @@ description: [Okio源码阅读笔记]
 该项目的github地址: <a href="https://github.com/square/okio">https://github.com/square/okio</a>
 </p>
 
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">简介</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">简介</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
 Okio是Square公司推出的Java IO库, 这个库本来Square公司的著名开源项目OkHttp的一部分,
 后来被提取出来作为单独的一个开源项目发布.
@@ -26,26 +27,26 @@ Okio是Square公司推出的Java IO库, 这个库本来Square公司的著名开�
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">核心数据结构</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">核心数据结构</h2>
+<div class="outline-text-2" id="text-orgheadline2">
 <p>
 常言道 "程序=数据结构+算法", Okio的核心之一就是数据结构的设计. 这部分主要"片段式"的介绍
 Okio的各数据结构的实现.
 </p>
 </div>
-<div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1">Source and Sink</h3>
-<div class="outline-text-3" id="text-2-1">
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">Source and Sink</h3>
+<div class="outline-text-3" id="text-orgheadline3">
 <p>
 IO系统就是读写系统, 更直接的说就是二进制流的流动, 所以需要一个"流"的源头和目的. Source即代表Okio
 数据流的来源, 即JDK中的InputStream. 而Sink则代表目的地.即JDK中的outputStream.
 </p>
 </div>
 
-<div id="outline-container-sec-2-1-1" class="outline-4">
-<h4 id="sec-2-1-1">Source源码</h4>
-<div class="outline-text-4" id="text-2-1-1">
+<div id="outline-container-orgheadline4" class="outline-4">
+<h4 id="orgheadline4">Source源码</h4>
+<div class="outline-text-4" id="text-orgheadline4">
 <p>
 Source的实现比较简单, 就是一个继承了Closeable的接口, 只定义了 read()/timeout()/close()
 三个函数.
@@ -79,9 +80,9 @@ Buffer也是Okio的核心数据结构, 后面会讲到.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-1-2" class="outline-4">
-<h4 id="sec-2-1-2">Sink源码</h4>
-<div class="outline-text-4" id="text-2-1-2">
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5">Sink源码</h4>
+<div class="outline-text-4" id="text-orgheadline5">
 <p>
 Sink与Source类似, 也是一个接口, 继承了Closeable和Flushable两个接口, 同时定义(重写)了
 write()/flush()/timeout()/close()四个函数. 
@@ -116,9 +117,9 @@ write()也接受一个Buffer参数, 与Source的read()不同的是: 在read()中
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2">BufferedSource and BufferedSink</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">BufferedSource and BufferedSink</h3>
+<div class="outline-text-3" id="text-orgheadline6">
 <p>
 在Okio的官方文档中,并不建议直接使用Source和Sink,而是建议使用他们的子类
 BufferedSource和BufferedSink, 后者都封装了一个Buffer对象作为数据操作的"buffer", 
@@ -127,9 +128,9 @@ BufferedSource和BufferedSink, 后者都封装了一个Buffer对象作为数据�
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2-3" class="outline-3">
-<h3 id="sec-2-3">Segment</h3>
-<div class="outline-text-3" id="text-2-3">
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">Segment</h3>
+<div class="outline-text-3" id="text-orgheadline7">
 <p>
 前面介绍的类InputStream/OutputStream的Source和Sink及其子类都使用了Buffer作为操作对象,
 由此可见Buffer应该是Okio的核心数据结构.所以后面会详细介绍一下Buffer. 不过在讲Buffer之前,
@@ -192,64 +193,51 @@ struct node{
 除了成员变量外,segment类还封装了对segment进行的操作:
 </p>
 <ol class="org-ol">
-<li>pop()删除当前的segment, 并返回后一个(next指向)segment.
-</li>
-<li>push()将segment插入到当前segment的后面.
-</li>
+<li>pop()删除当前的segment, 并返回后一个(next指向)segment.</li>
+<li>push()将segment插入到当前segment的后面.</li>
 <li>split(count), 该函数用于将segment拆分成两个segment, 第一个segment占用count个可用
-数据, 第二个segment(<b>即当前segment</b>)占用(avail - count)个.
-</li>
+数据, 第二个segment(<b>即当前segment</b>)占用(avail - count)个.</li>
 <li>compact(), 压缩函数, 如果当前segment的数据可以存放到前面的segment,则存放过去, 并回收当前的
-segment.
-</li>
-<li>writeTo(), 将当前segment的count个byte写入到目标segment中.
-</li>
+segment.</li>
+<li>writeTo(), 将当前segment的count个byte写入到目标segment中.</li>
 <li><b>共享</b>, 在segment的设计中, 两个(或多个?)segment可以共享一个同一个segment的数据,可以将其理解为
 "<b>主从</b>"关系, 只有一个segment是data的owner, 而其他的segment只是引用了这个数据.
 同时, "主从"segment也有"<b>读写</b>"的关系:即只有data的owner segment才可以往data写数据. 非owner segment
-不可以往data中写数据.
-</li>
+不可以往data中写数据.</li>
 </ol>
 </div>
-<div id="outline-container-sec-2-3-1" class="outline-4">
-<h4 id="sec-2-3-1">SegmentPool</h4>
-<div class="outline-text-4" id="text-2-3-1">
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8">SegmentPool</h4>
+<div class="outline-text-4" id="text-orgheadline8">
 <p>
 Okio实现了一个segment池, 用于segment的获取和回收, 该segment pool通过"单链表"的方式
 组织segment, 分为"获取"和"回收"操作:
 </p>
 <ol class="org-ol">
-<li>获取, 检测单链表是否为空, 是, 取下链表头给申请者, 否则生成一个新segment.
-</li>
+<li>获取, 检测单链表是否为空, 是, 取下链表头给申请者, 否则生成一个新segment.</li>
 <li>回收, 回收需要一些条件判断(如下), 满足才可以放到链表头.
 <ul class="org-ul">
-<li>该segment的数据被其他"segment"共享, 不能回收.
-</li>
-<li>segment池的大小已经容不下该segment, 直接抛弃(会被GC回收).
-</li>
-</ul>
-</li>
+<li>该segment的数据被其他"segment"共享, 不能回收.</li>
+<li>segment池的大小已经容不下该segment, 直接抛弃(会被GC回收).</li>
+</ul></li>
 </ol>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-4" class="outline-3">
-<h3 id="sec-2-4">Buffer</h3>
-<div class="outline-text-3" id="text-2-4">
-</div><div id="outline-container-sec-2-4-1" class="outline-4">
-<h4 id="sec-2-4-1">介绍</h4>
-<div class="outline-text-4" id="text-2-4-1">
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12">Buffer</h3>
+<div class="outline-text-3" id="text-orgheadline12">
+</div><div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9">介绍</h4>
+<div class="outline-text-4" id="text-orgheadline9">
 <p>
 Buffer是Okio的存储数据的结构, 它的灵活性非常强, 官方文档里介绍了它的三个优点:
 </p>
 <ol class="org-ol">
 <li>数据在buffer间"转移"速度快. 前面介绍segment时提到了segment有"owner"这个属性, 所以有时候
-数据的转移就是简单的修改一下owner的值.
-</li>
-<li>buffer随着数据的增长而增长, 这样可以"节省"空间.
-</li>
-<li>buffer实现了byte池的功能.可以减少GC的反复操作.
-</li>
+数据的转移就是简单的修改一下owner的值.</li>
+<li>buffer随着数据的增长而增长, 这样可以"节省"空间.</li>
+<li>buffer实现了byte池的功能.可以减少GC的反复操作.</li>
 </ol>
 
 <p>
@@ -259,23 +247,25 @@ Buffer类继承自前面介绍的BufferSource和BufferSink类, 所以它既可�
 </div>
 </div>
 
-<div id="outline-container-sec-2-4-2" class="outline-4">
-<h4 id="sec-2-4-2">成员变量</h4>
-<div class="outline-text-4" id="text-2-4-2">
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10">成员变量</h4>
+<div class="outline-text-4" id="text-orgheadline10">
 <p>
 buffer只有两个成员变量: head, size. head是一个Segment类型的变量, 由此来看buffe的内部数据
 的组织单位Segment, Segment的天然链表构造也使其天然可以动态的Buffer的数据大小.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2-4-3" class="outline-4">
-<h4 id="sec-2-4-3">API分析</h4>
-<div class="outline-text-4" id="text-2-4-3">
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11">API分析</h4>
+<div class="outline-text-4" id="text-orgheadline11">
 <ol class="org-ol">
-<li>write()/read()系列函数
+<li><p>
+write()/read()系列函数
 Buffer提供了很强大的write()和read()系列函数簇, 使用这些函数可以很方便的从buffer中读写各种类型的数据,
 例如readInt()/writeInt()用于从buffer中读取/写入一个整数, 类似的还有readLong()/writeLong()&#x2026;等.
 这里主要通过两个具体函数代码的分析, 来观察在这个过程中Buffer内部的变化, 主要就是Segment的变化.
+</p>
 
 <p>
 write(byte[] source, int offset, int byteCount), 这个函数将source中的部分数据写入到buffer中.
@@ -312,7 +302,9 @@ Segment链表长度的一个函数. 看一下其代码.
 </p>
 
 <ul class="org-ul">
-<li>writableSegment
+<li><p>
+writableSegment
+</p>
 
 <div class="org-src-container">
 
@@ -333,16 +325,12 @@ Segment链表长度的一个函数. 看一下其代码.
 </pre>
 </div>
 <ul class="org-ul">
-<li>首先同样是检查参数合法性, 参数minimumCapacity的意思是获取到的segment剩余的最小可用空间(byte).
-</li>
-<li>接着检查head是否为空, 如果是, 从SegmentPool获取一个Segment, 并将其prev和next都指向自己.
-</li>
+<li>首先同样是检查参数合法性, 参数minimumCapacity的意思是获取到的segment剩余的最小可用空间(byte).</li>
+<li>接着检查head是否为空, 如果是, 从SegmentPool获取一个Segment, 并将其prev和next都指向自己.</li>
 <li>否则head不为空, 获取链表尾部的Segment(head-&gt;prev), 检查剩余大小是否符合要求, 同时该segment不能是一个引用
 (即该fragment数据其实是引用的其他fragment的数据, 这种类型的fragment不可写, 即owner=false).如果尾部segment
-不能满足要求, 则从SegmentPool中获取一个新的Segment插入链表中.
-</li>
-</ul>
-</li>
+不能满足要求, 则从SegmentPool中获取一个新的Segment插入链表中.</li>
+</ul></li>
 </ul>
 <p>
 获取到一个可写Segment之后, 就会调用System.arrayCopy()函数实现字节复制,重复进行上述动作
@@ -352,11 +340,12 @@ Segment链表长度的一个函数. 看一下其代码.
 <p>
 read()函数数据流的"流向"与write()是相反的, 并且当一个segment的数据全部读完后会调用
 SegmentPool的recycle()函数进行回收.
-</p>
-</li>
-<li>数据在buffer间移动
+</p></li>
+<li><p>
+数据在buffer间移动
 既然Buffer的一个特点就是数据在Buffer间移动特别快, 那就来看一下代码的具体实现:
 下面的函数用于将source头部开始的内容写入到当前Buffer的尾部.
+</p>
 <div class="org-src-container">
 
 <pre class="src src-java">@Override public void write(Buffer source, long byteCount) {
@@ -408,11 +397,12 @@ SegmentPool的recycle()函数进行回收.
 <ol class="org-ol">
 <li>如果要写入Buffer的大小小于目标Buffer head的剩余可用大小.那么
 <ul class="org-ul">
-<li>如果数据可以直接写到当前Buffer的tail中, 写入, <b>函数退出</b>.
-</li>
-<li>否则, 说明需要一个新的fragment, 将目标Buffer的head按照要写入的byte值一分为二.这样目标Buffer的head Segment
+<li>如果数据可以直接写到当前Buffer的tail中, 写入, <b>函数退出</b>.</li>
+<li><p>
+否则, 说明需要一个新的fragment, 将目标Buffer的head按照要写入的byte值一分为二.这样目标Buffer的head Segment
 就包含了所有要写入的数据.
 semeng的split()函数代码如下:
+</p>
 <div class="org-src-container">
 
 <pre class="src src-java">public Segment split(int byteCount) {
@@ -424,17 +414,16 @@ semeng的split()函数代码如下:
    return prefix;
  }
 </pre>
-</div>
-</li>
-</ul>
-</li>
+</div></li>
+</ul></li>
 <li>将目标Buffer的head从目标Buffer中弹出, 插入到当前Buffer中,
 <ul class="org-ul">
-<li>如果当前buffer的head为null, 直接设置为head.
-</li>
-<li>否则, 插入到tail后面, 并将其设为tail, 并调用tail的compat()函数进行压缩.
+<li>如果当前buffer的head为null, 直接设置为head.</li>
+<li><p>
+否则, 插入到tail后面, 并将其设为tail, 并调用tail的compat()函数进行压缩.
 按照compat()的算法, 之后跟tail之前的segment合并后的数据小于一个segment的才会压缩.
 所以即使前面segment使用率为2%, tail的使用率为99%, 也不会压缩.
+</p>
 <div class="org-src-container">
 
 <pre class="src src-java">public void compact() {
@@ -448,12 +437,9 @@ semeng的split()函数代码如下:
   SegmentPool.recycle(this);
 }
 </pre>
-</div>
-</li>
-</ul>
-</li>
-</ol>
-</li>
+</div></li>
+</ul></li>
+</ol></li>
 </ol>
 </div>
 </div>

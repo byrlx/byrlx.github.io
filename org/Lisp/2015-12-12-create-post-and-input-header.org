@@ -10,7 +10,7 @@
 layout: post
 title: 自动创建文章并设置Header
 categories: [Lisp]
-tag: [Lisp]
+tag: [Lisp, OrgMode]
 ---
 #+END_HTML
 

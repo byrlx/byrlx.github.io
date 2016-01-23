@@ -10,6 +10,7 @@
 layout: post
 title: Orgmode手册4:任务功能
 categories: [OrgMode]
+tag: [OrgMode]
 ---
 #+END_HTML
 

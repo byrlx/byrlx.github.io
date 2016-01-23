@@ -1,7 +1,7 @@
 ---
 layout: post
 title: What do I learn from the project
-tag: [Life]
+tag: [Tech]
 description: [Thought about my recent project]
 ---
 

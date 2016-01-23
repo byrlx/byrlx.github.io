@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Android Gradle Plugin User Guide 文档翻译 
-tag: [Android, Translate]
+tag: [Android, Translate, Gradle]
 description: [Android Gradle插件用户文档中文翻译]
 category: [Android]
 ---
@@ -14,100 +14,88 @@ category: [Android]
 原文地址 <a href="http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Introduction">http://tools.android.com/tech-docs/new-build-system/user-guide#TOC-Introduction</a>.
 </p>
 
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">介绍</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">介绍</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
 本文档针对&gt;=0.9版本的gradle插件,之前的插件不兼容.
 </p>
 </div>
-<div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1">Android新编译系统的目标</h3>
-<div class="outline-text-3" id="text-1-1">
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">Android新编译系统的目标</h3>
+<div class="outline-text-3" id="text-orgheadline2">
 <p>
 包括:
 </p>
 <ul class="org-ul">
-<li>代码和资源重用更方便.
-</li>
-<li>更容易生成应用的多个"形式", 例如多个APK文件或多个flavor.
-</li>
-<li>更容易配置/扩展/定制编译过程.
-</li>
-<li>更好的IDE整合.
-</li>
+<li>代码和资源重用更方便.</li>
+<li>更容易生成应用的多个"形式", 例如多个APK文件或多个flavor.</li>
+<li>更容易配置/扩展/定制编译过程.</li>
+<li>更好的IDE整合.</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-sec-1-2" class="outline-3">
-<h3 id="sec-1-2">为什么选择Gradle?</h3>
-<div class="outline-text-3" id="text-1-2">
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">为什么选择Gradle?</h3>
+<div class="outline-text-3" id="text-orgheadline3">
 <p>
 Gradle是个高级的编译系统,能够通过插件的方式建立客制化的编译逻辑.
 Gradle的一些迷人特质包括:
 </p>
 <ul class="org-ul">
-<li>使用DSL(Domain Specific Language)描述和操作编译逻辑.
-</li>
-<li>编译文件基于Groovy,通过混合DSL元素声明和代码操控来提供客制化逻辑.
-</li>
-<li>内置Maven/Ivy依赖.
-</li>
-<li>灵活性很高.
-</li>
-<li>插件可以提供自定义的DSL和API.
-</li>
-<li>提供了很好的IDE整合接口.
-</li>
+<li>使用DSL(Domain Specific Language)描述和操作编译逻辑.</li>
+<li>编译文件基于Groovy,通过混合DSL元素声明和代码操控来提供客制化逻辑.</li>
+<li>内置Maven/Ivy依赖.</li>
+<li>灵活性很高.</li>
+<li>插件可以提供自定义的DSL和API.</li>
+<li>提供了很好的IDE整合接口.</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">要求</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">要求</h2>
+<div class="outline-text-2" id="text-orgheadline4">
 <ol class="org-ol">
-<li>Gradle1.10以上,插件0.11.1.
-</li>
-<li>Android SDK 19.
-</li>
+<li>Gradle1.10以上,插件0.11.1.</li>
+<li>Android SDK 19.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3">基础配置</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">基础配置</h2>
+<div class="outline-text-2" id="text-orgheadline5">
 <p>
 在工程跟目录下定义了 build.gradle 描述工程的编译信息.
 </p>
 </div>
-<div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1">简单配置文件</h3>
-<div class="outline-text-3" id="text-3-1">
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">简单配置文件</h3>
+<div class="outline-text-3" id="text-orgheadline6">
 <ol class="org-ol">
-<li>对于一个简单的java工程,需要在build.gradle里加入
-<div class="org-src-container">
-
-<pre class="src src-java">apply plugin: 'java'
+<li><p>
+对于一个简单的java工程,需要在build.gradle里加入
+</p>
+<pre class="example">
+apply plugin: 'java'
 </pre>
-</div>
 <p>
 上述代码表示使用java插件,该插件随着Gradle包发布.可以使用该插件来
 编译和测试java应用程序.
-</p>
-</li>
-<li>对于一个简单的Android工程,build.gradle的内容一般为
+</p></li>
+<li><p>
+对于一个简单的Android工程,build.gradle的内容一般为
 (该文件一般位于每个模块的目录下面):
-<div class="org-src-container">
-
-<pre class="src src-java">buildscript {
+</p>
+<pre class="example">
+buildscript {
     repositories {
-	mavenCentral()
+        mavenCentral()
     }
 
     dependencies {
-	classpath 'com.android.tools.build:gradle:0.11.1'
+        classpath 'com.android.tools.build:gradle:0.11.1'
     }
 }
 
@@ -118,7 +106,6 @@ android {
     buildToolsVersion "19.0.0"
 }
 </pre>
-</div>
 <p>
 上述代码描述了Android编译的三个方面:
 </p>
@@ -127,33 +114,27 @@ android {
 repositories描述了使用的仓库类型.这里使用MavenCentral()仓库.同时
 dependencies描述了编译需要使用的依赖.这里使用0.11.1版本的build gradle.
 注: 这里只是定义了编译相关的代码,与项目无关.项目需要定义自己的仓库和
-依赖.
-</li>
-<li>apply plugin: 'android'. 定义使用android插件.
-</li>
-<li><a id="andriod" name="andriod"></a>{&#x2026;}段描述了android编译的所有参数.该段是Android DSL的入口.
+依赖.</li>
+<li>apply plugin: 'android'. 定义使用android插件.</li>
+<li><a id="orgtarget1"></a>{&#x2026;}段描述了Android DSL的入口.
 默认情况下只需要定义编译目标和编译工具版本.即 compileSdkVersion 和
 buildtoolsVersion字段.
 <ul class="org-ul">
-<li>注:这里只能定义 <i><b>android</b></i> plugin,如果使用 <i><b>java</b></i> plugin会报错.
-</li>
+<li>注:这里只能定义 <i><b>android</b></i> plugin,如果使用 <i><b>java</b></i> plugin会报错.</li>
 <li>注:对于编译使用的sdk目录,可以在工程目录下定义 <b>local.properties</b> 文件
 并在其中配置 <b>sdk.dir</b>.
-或者也可以定义全局变量 ANDROID_HOME.
-</li>
-</ul>
-</li>
-</ul>
-</li>
+或者也可以定义全局变量 ANDROID_HOME.</li>
+</ul></li>
+</ul></li>
 </ol>
 </div>
 </div>
-<div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2">工程结构</h3>
-<div class="outline-text-3" id="text-3-2">
-</div><div id="outline-container-sec-3-2-1" class="outline-4">
-<h4 id="sec-3-2-1">默认目录结构</h4>
-<div class="outline-text-4" id="text-3-2-1">
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">工程结构</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+</div><div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7">默认目录结构</h4>
+<div class="outline-text-4" id="text-orgheadline7">
 <p>
 上节描述的配置文件需要一个默认的目录结构.但是,gradle遵循
 约定优于配置(convention over configuration)的概念,并在
@@ -161,36 +142,26 @@ buildtoolsVersion字段.
 source sets一般有两个目录:源码目录和测试目录.他们的位置:
 </p>
 <ul class="org-ul">
-<li>src/main/
-</li>
-<li>src/androidTest/
-</li>
+<li>src/main/</li>
+<li>src/androidTest/</li>
 </ul>
 <p>
 每个目录都如果下的一些子目录:
 </p>
 <ul class="org-ul">
-<li>java/
-</li>
-<li>resources/ (这两个字段对Java和Android插件都适用)
-</li>
+<li>java/</li>
+<li>resources/ (这两个字段对Java和Android插件都适用)</li>
 </ul>
 <p>
 对于Android插件,还有一些额外的目录和文件:
 </p>
 <ul class="org-ul">
-<li>AndroidManifest.xml
-</li>
-<li>res/
-</li>
-<li>assets/
-</li>
-<li>aidl/
-</li>
-<li>rs/
-</li>
-<li>jni/
-</li>
+<li>AndroidManifest.xml</li>
+<li>res/</li>
+<li>assets/</li>
+<li>aidl/</li>
+<li>rs/</li>
+<li>jni/</li>
 </ul>
 <p>
 注: src/androidTest/AndroidManifest.xml并不需要,AS会自动创建.
@@ -198,26 +169,26 @@ source sets一般有两个目录:源码目录和测试目录.他们的位置:
 </div>
 </div>
 
-<div id="outline-container-sec-3-2-2" class="outline-4">
-<h4 id="sec-3-2-2">配置目录结构</h4>
-<div class="outline-text-4" id="text-3-2-2">
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8">配置目录结构</h4>
+<div class="outline-text-4" id="text-orgheadline8">
 <ol class="org-ol">
-<li>java工程
+<li><p>
+java工程
 gradle同时支持目录配置.例如对于一个java工程,可以使用如下配置:
-<div class="org-src-container">
-
-<pre class="src src-java">sourceSets {
+</p>
+<pre class="example">
+sourceSets {
     main {
-	java {
-	    srcDir 'src/java'
-	}
-	resources {
-	    srcDir 'src/resources'
-	}
+        java {
+            srcDir 'src/java'
+        }
+        resources {
+            srcDir 'src/resources'
+        }
     }
 }
 </pre>
-</div>
 <p>
 注: srcDir会自动将目录添加到已存的"源码"列表中.
 </p>
@@ -226,70 +197,62 @@ gradle同时支持目录配置.例如对于一个java工程,可以使用如下�
 可以使用 <b>srcDirs</b> 关键字来替换默认的source目录.该字段后面跟着
 路径数组,例如:
 </p>
-<div class="org-src-container">
-
-<pre class="src src-java">sourceSets {
+<pre class="example">
+sourceSets {
     main.java.srcDirs = ['src/java']
     main.resources.srcDirs = ['src/resources']
 }
-</pre>
-</div>
-</li>
-<li>Android工程
-android插件使用的语法跟上一节相同.但是会放在<a href="#andriod">2.3</a>字段中.
+</pre></li>
+<li><p>
+Android工程
+android插件使用的语法跟上一节相同.但是会放在<a href="#orgtarget1">2.3</a>字段中.
 下面是一段实例代码,用于映射老的android架构到gradle中:
-<div class="org-src-container">
-
-<pre class="src src-android">android {
+</p>
+<pre class="example">
+android {
     sourceSets {
-	main {
-	    manifest.srcFile 'AndroidManifest.xml'
-	    java.srcDirs = ['src']
-	    resources.srcDirs = ['src']
-	    aidl.srcDirs = ['src']
-	    renderscript.srcDirs = ['src']
-	    res.srcDirs = ['res']
-	    assets.srcDirs = ['assets']
-	}
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
 
-	androidTest.setRoot('tests')
+        androidTest.setRoot('tests')
     }
 }
 </pre>
-</div>
 <p>
 由于老架构将所有的源文件放到一个目录,所以这里需要设置所有组件的
 路径为"src".
 setRoot()函数可以将源码目录移动到新目录.例如这里将 src/androidTest/* 
 移动到 test/*.
-</p>
-</li>
+</p></li>
 </ol>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-3-3" class="outline-3">
-<h3 id="sec-3-3">编译任务</h3>
-<div class="outline-text-3" id="text-3-3">
-</div><div id="outline-container-sec-3-3-1" class="outline-4">
-<h4 id="sec-3-3-1">一般任务</h4>
-<div class="outline-text-4" id="text-3-3-1">
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">编译任务</h3>
+<div class="outline-text-3" id="text-orgheadline13">
+</div><div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10">一般任务</h4>
+<div class="outline-text-4" id="text-orgheadline10">
 <p>
 使用插件会自动生成一个可以运行的任务集.一般的任务集包括:
 </p>
 <ul class="org-ul">
 <li>assemble
-生成工程的输出 outputs.
-</li>
+生成工程的输出 outputs.</li>
 <li>check
-执行所有的检查.
-</li>
+执行所有的检查.</li>
 <li>build
-同时执行assemble和check.
-</li>
+同时执行assemble和check.</li>
 <li>clean 
-清理工程的输出.
-</li>
+清理工程的输出.</li>
 </ul>
 <p>
 assemble/check/build本身并不做什么实际工作.他们是一些"钩子"
@@ -305,29 +268,23 @@ assemble/check/build本身并不做什么实际工作.他们是一些"钩子"
 </p>
 </div>
 </div>
-<div id="outline-container-sec-3-3-2" class="outline-4">
-<h4 id="sec-3-3-2"><span class="todo TODO">TODO</span> Java工程任务</h4>
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11"><span class="todo TODO">TODO</span> Java工程任务</h4>
 </div>
-<div id="outline-container-sec-3-3-3" class="outline-4">
-<h4 id="sec-3-3-3">Android工程任务</h4>
-<div class="outline-text-4" id="text-3-3-3">
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12">Android工程任务</h4>
+<div class="outline-text-4" id="text-orgheadline12">
 <p>
 Android工程的任务一般包括:
 </p>
 <ul class="org-ul">
-<li>assemble:  生成输出
-</li>
-<li>check: 检查
-</li>
+<li>assemble:  生成输出</li>
+<li>check: 检查</li>
 <li>connectedCheck: 执行检查动作,需要一个可以连接的设备或模拟器.该任务会同时
-在机器上运行.
-</li>
-<li>deviceCheck: 使用API连接远程机器.
-</li>
-<li>build: 同时执行assemble和check.
-</li>
-<li>clean: 清理输出.
-</li>
+在机器上运行.</li>
+<li>deviceCheck: 使用API连接远程机器.</li>
+<li>build: 同时执行assemble和check.</li>
+<li>clean: 清理输出.</li>
 </ul>
 
 <p>
@@ -337,12 +294,9 @@ Android工程的任务一般包括:
 <ul class="org-ul">
 <li>assemble
 <ul class="org-ul">
-<li>assembleDebug
-</li>
-<li>assembleRelease
-</li>
-</ul>
-</li>
+<li>assembleDebug</li>
+<li>assembleRelease</li>
+</ul></li>
 </ul>
 <p>
 执行assemble任务会同时运行这两个子任务生成两个APK.
@@ -359,18 +313,13 @@ Android工程的任务一般包括:
 <ul class="org-ul">
 <li>check
 <ul class="org-ul">
-<li>lint
-</li>
-</ul>
-</li>
+<li>lint</li>
+</ul></li>
 <li>connectedCheck
 <ul class="org-ul">
-<li>connectedAndroidTest
-</li>
-<li>connectedUiAutomatorTest
-</li>
-</ul>
-</li>
+<li>connectedAndroidTest</li>
+<li>connectedUiAutomatorTest</li>
+</ul></li>
 </ul>
 
 <p>
@@ -380,55 +329,46 @@ Android工程的任务一般包括:
 </div>
 </div>
 </div>
-<div id="outline-container-sec-3-4" class="outline-3">
-<h3 id="sec-3-4">基础的编译客制化</h3>
-<div class="outline-text-3" id="text-3-4">
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14">基础的编译客制化</h3>
+<div class="outline-text-3" id="text-orgheadline14">
 <p>
 Android插件提供了丰富的DSL语言来实现编译系统的客制化.
 </p>
 </div>
-<div id="outline-container-sec-3-4-1" class="outline-4">
-<h4 id="sec-3-4-1">Manifest项</h4>
-<div class="outline-text-4" id="text-3-4-1">
+<div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15">Manifest项</h4>
+<div class="outline-text-4" id="text-orgheadline15">
 <p>
 使用DSL,可以配置如下的manifest项:
 </p>
 <ul class="org-ul">
-<li>minSdkVersion
-</li>
-<li>targetSdkVersion
-</li>
-<li>versionCode
-</li>
-<li>versionName
-</li>
-<li>applicationId
-</li>
-<li>测试程序包名
-</li>
-<li>测试runner 方法
-</li>
+<li>minSdkVersion</li>
+<li>targetSdkVersion</li>
+<li>versionCode</li>
+<li>versionName</li>
+<li>applicationId</li>
+<li>测试程序包名</li>
+<li>测试runner 方法</li>
 </ul>
 <p>
 例如: 
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">android {
+<pre class="example">
+android {
     compileSdkVersion 19
     buildToolsVersion "19.0.0"
 
     defaultConfig {
-	versionCode 12
-	versionName "2.0"
-	minSdkVersion 16
-	targetSdkVersion 16
+        versionCode 12
+        versionName "2.0"
+        minSdkVersion 16
+        targetSdkVersion 16
     }
 }
 </pre>
-</div>
 <p>
-上述所有的配置都放在 <b><i>android</i></b> 段的 <b>defaultConfig</b> 段中.
+上述所有的配置都放在 <b>android</b> 段的 <b>defaultConfig</b> 段中.
 </p>
 
 <p>
@@ -442,9 +382,8 @@ Android插件提供了丰富的DSL语言来实现编译系统的客制化.
 在build文件中进行上述配置的一个优势是灵活性高.例如,可以在其他文件或build文件
 的其他地方定义一个函数并在defaultConfig中调用他.
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">def computeVersionName() {
+<pre class="example">
+def computeVersionName() {
     ...
 }
 
@@ -453,14 +392,13 @@ android {
     buildToolsVersion "19.0.0"
 
     defaultConfig {
-	versionCode 12
-	versionName computeVersionName()
-	minSdkVersion 16
-	targetSdkVersion 16
+        versionCode 12
+        versionName computeVersionName()
+        minSdkVersion 16
+        targetSdkVersion 16
     }
 }
 </pre>
-</div>
 
 <p>
 如果没有在配置文件中设置某个属性,会使用默认值.如果默认值是null(一些property的
@@ -468,9 +406,9 @@ android {
 </p>
 </div>
 </div>
-<div id="outline-container-sec-3-4-2" class="outline-4">
-<h4 id="sec-3-4-2">编译类型</h4>
-<div class="outline-text-4" id="text-3-4-2">
+<div id="outline-container-orgheadline16" class="outline-4">
+<h4 id="orgheadline16">编译类型</h4>
+<div class="outline-text-4" id="text-orgheadline16">
 <p>
 Android插件默认会编译两个类型的应用程序:debug和release版本.
 debug版本使用一个"已知"的name/password来签名应用(这样在编译过程
@@ -478,30 +416,28 @@ debug版本使用一个"已知"的name/password来签名应用(这样在编译�
 </p>
 
 <p>
-可以使用<a id="BuildType" name="BuildType"></a>标签来对编译类型做配置,默认有debug和release段.
+可以使用<a id="orgtarget2"></a>标签来对编译类型做配置,默认有debug和release段.
 同时可以创建其他的编译类型.
 </p>
 
 <p>
 例如下面有关buildType的DSL配置：
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">android {
+<pre class="example">
+android {
     buildTypes {
-	debug {
-	    applicationIdSuffix ".debug"
-	}
+        debug {
+            applicationIdSuffix ".debug"
+        }
 
-	jnidebug.initWith(buildTypes.debug)
-	jnidebug {
-	    packageNameSuffix ".jnidebug"
-	    jniDebuggable true
-	}
+        jnidebug.initWith(buildTypes.debug)
+        jnidebug {
+            packageNameSuffix ".jnidebug"
+            jniDebuggable true
+        }
     }
 }
 </pre>
-</div>
 <p>
 上述配置实现了以下功能:
 </p>
@@ -509,14 +445,10 @@ debug版本使用一个"已知"的name/password来签名应用(这样在编译�
 <li>对默认的 debug 类型进行了定制:
 <ul class="org-ul">
 <li>将包名设置为 "applicationId.debug"(添加 debug 后缀).这样可以实现在一台机器上
-同时安装 debug 包和 release 包.
-</li>
-</ul>
-</li>
-<li>创建新编译类型 jnidebug, 该类型复制了 debug 类型.
-</li>
-<li>客制化 jnidebug 类型,将后缀改为 "jnidebug",并开启 jni 调试功能.
-</li>
+同时安装 debug 包和 release 包.</li>
+</ul></li>
+<li>创建新编译类型 jnidebug, 该类型复制了 debug 类型.</li>
+<li>客制化 jnidebug 类型,将后缀改为 "jnidebug",并开启 jni 调试功能.</li>
 </ul>
 <p>
 从上面是示例可以看到,创建一个新的编译类型就是在"buildType"下面创建新的元素.可以通过
@@ -533,13 +465,11 @@ src目录下创建一个同名目录(所以自定义编译类型不能为main或
 <p>
 也可以使用如下代码重定向编译类型的sourceSets.
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">android {
+<pre class="example">
+android {
     sourceSets.jnidebug.setRoot('foo/jnidebug')
 }
 </pre>
-</div>
 
 <p>
 同时,对于每个新的编译类型,都会创建一个相应的 assemble&lt;BuildTypeName&gt; 的任务.
@@ -552,45 +482,34 @@ assembleRelease一样,成为assemble任务的依赖.
 关于编译类型的适用场景:
 </p>
 <ul class="org-ul">
-<li>debug版本加入一些"权限", release版本去掉.
-</li>
-<li>自定义调试
-</li>
-<li>不同的模式使用不同的资源(例如在签名认证时使用不同的资源值).
-</li>
+<li>debug版本加入一些"权限", release版本去掉.</li>
+<li>自定义调试</li>
+<li>不同的模式使用不同的资源(例如在签名认证时使用不同的资源值).</li>
 </ul>
 
 <p>
 每个子目录下的代码/资源按照以下原则使用:
 </p>
 <ul class="org-ul">
-<li>manifest文件跟app的manifest合并.
-</li>
-<li>代码作为另外一个源码目录.
-</li>
-<li>资源目录覆盖主目录中的相同值.
-</li>
+<li>manifest文件跟app的manifest合并.</li>
+<li>代码作为另外一个源码目录.</li>
+<li>资源目录覆盖主目录中的相同值.</li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-sec-3-4-3" class="outline-4">
-<h4 id="sec-3-4-3">签名配置</h4>
-<div class="outline-text-4" id="text-3-4-3">
+<div id="outline-container-orgheadline17" class="outline-4">
+<h4 id="orgheadline17">签名配置</h4>
+<div class="outline-text-4" id="text-orgheadline17">
 <p>
 对一个应用做签名需要以下东西:
 </p>
 <ul class="org-ul">
-<li>一个keystore
-</li>
-<li>一个keystore 密码
-</li>
-<li>一个key别名
-</li>
-<li>一个key密码
-</li>
-<li>存储类型
-</li>
+<li>一个keystore</li>
+<li>一个keystore 密码</li>
+<li>一个key别名</li>
+<li>一个key密码</li>
+<li>存储类型</li>
 </ul>
 <p>
 上述内容组成了签名配置,可以在buildType中使用"signingConfig"来引用.
@@ -603,34 +522,32 @@ debug配置,即有一个已知的"keystore密码+别名+密码". "debug编译类
 </p>
 
 <p>
-Android插件支持签名配置的创建和客制化.通过<a id="signingConfigs" name="signingConfigs"></a>来实现.例如:
+Android插件支持签名配置的创建和客制化.通过<a id="orgtarget3"></a>来实现.例如:
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">android {
+<pre class="example">
+android {
     signingConfigs {
-	debug {
-	    storeFile file("debug.keystore")
-	}
+        debug {
+            storeFile file("debug.keystore")
+        }
 
-	myConfig {
-	    storeFile file("other.keystore")
-	    storePassword "android"
-	    keyAlias "androiddebugkey"
-	    keyPassword "android"
-	}
+        myConfig {
+            storeFile file("other.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
     }
 
     buildTypes {
-	foo {
-	    debuggable true
-	    jniDebuggable true
-	    signingConfig signingConfigs.myConfig
-	}
+        foo {
+            debuggable true
+            jniDebuggable true
+            signingConfig signingConfigs.myConfig
+        }
     }
 }
 </pre>
-</div>
 <p>
 上述代码修改了debug编译类型的keystore文件位置.并创建了一个新的签名配置和一个使用
 该签名配置的新编译类型.
@@ -648,41 +565,37 @@ Android插件支持签名配置的创建和客制化.通过<a id="signingConfigs
 </div>
 </div>
 
-<div id="outline-container-sec-3-4-4" class="outline-4">
-<h4 id="sec-3-4-4">运行ProGuard混淆</h4>
-<div class="outline-text-4" id="text-3-4-4">
+<div id="outline-container-orgheadline18" class="outline-4">
+<h4 id="orgheadline18">运行ProGuard混淆</h4>
+<div class="outline-text-4" id="text-orgheadline18">
 <p>
 Gradle插件支持4.10版本的ProGuard. ProGuard插件默认是启用的.如果在"编译类型"中设置了
 <b>minifyEnable</b> 属性.会自动创建相关任务.例如在编译类型和flavor中使用ProGuard:
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">android {
+<pre class="example">
+android {
     buildTypes {
-	release {
-	    minifyEnabled true
-	    proguardFile getDefaultProguardFile('proguard-android.txt')
-	}
+        release {
+            minifyEnabled true
+            proguardFile getDefaultProguardFile('proguard-android.txt')
+        }
     }
 
     productFlavors {
-	flavor1 {
-	}
-	flavor2 {
-	    proguardFile 'some-other-rules.txt'
-	}
+        flavor1 {
+        }
+        flavor2 {
+            proguardFile 'some-other-rules.txt'
+        }
     }
 }
 </pre>
-</div>
 <p>
 默认有两个规则文件:
 </p>
 <ul class="org-ul">
-<li>proguard-android.txt
-</li>
-<li>proguard-android-optimize.txt
-</li>
+<li>proguard-android.txt</li>
+<li>proguard-android-optimize.txt</li>
 </ul>
 <p>
 它们位于SDK中,可以通过getDefaultProguardFile()函数返回文件路径.除了启用优化功能外,
@@ -691,9 +604,9 @@ Gradle插件支持4.10版本的ProGuard. ProGuard插件默认是启用的.如果
 </div>
 </div>
 
-<div id="outline-container-sec-3-4-5" class="outline-4">
-<h4 id="sec-3-4-5">压缩资源</h4>
-<div class="outline-text-4" id="text-3-4-5">
+<div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19">压缩资源</h4>
+<div class="outline-text-4" id="text-orgheadline19">
 <p>
 可以在编译期间自动移除没用的资源.具体可以参考<a href="http://tools.android.com/tech-docs/new-build-system/resource-shrinking">http://tools.android.com/tech-docs/new-build-system/resource-shrinking</a>.
 </p>
@@ -702,25 +615,24 @@ Gradle插件支持4.10版本的ProGuard. ProGuard插件默认是启用的.如果
 </div>
 </div>
 
-<div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4">依赖,库以及多工程设置</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-orgheadline20" class="outline-2">
+<h2 id="orgheadline20">依赖,库以及多工程设置</h2>
+<div class="outline-text-2" id="text-orgheadline20">
 <p>
 一个gradle工程可能会依赖其他的组件,这些组件可以是库或者其他gradle工程.
 </p>
 </div>
-<div id="outline-container-sec-4-1" class="outline-3">
-<h3 id="sec-4-1">依赖二进制包</h3>
-<div class="outline-text-3" id="text-4-1">
-</div><div id="outline-container-sec-4-1-1" class="outline-4">
-<h4 id="sec-4-1-1">本地包</h4>
-<div class="outline-text-4" id="text-4-1-1">
+<div id="outline-container-orgheadline23" class="outline-3">
+<h3 id="orgheadline23">依赖二进制包</h3>
+<div class="outline-text-3" id="text-orgheadline23">
+</div><div id="outline-container-orgheadline21" class="outline-4">
+<h4 id="orgheadline21">本地包</h4>
+<div class="outline-text-4" id="text-orgheadline21">
 <p>
-当需要使用外部的jar包时,需要在<a id="dependencies" name="dependencies"></a>段中添加<a id="compile" name="compile"></a>配置(dependencies是标准的DSL元素,不属于android段).
+当需要使用外部的jar包时,需要在<a id="orgtarget4"></a>段中添加<a id="orgtarget5"></a>配置(dependencies是标准的DSL元素,不属于android段).
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">dependencies {
+<pre class="example">
+dependencies {
     compile files('libs/foo.jar')
 }
 
@@ -728,20 +640,15 @@ android {
     ...
 }
 </pre>
-</div>
 <p>
 <b>compile</b> 配置一般用于配置主工程.这些jar包会被添加到编译路径并包入最后的APK中.
 其他可以添加的依赖包括:
 </p>
 <ul class="org-ul">
-<li>compile: 主工程
-</li>
-<li>androidTestCompile: 测试工程
-</li>
-<li>debugCompile: debug编译类型
-</li>
-<li>releaseCompile: release编译类型
-</li>
+<li>compile: 主工程</li>
+<li>androidTestCompile: 测试工程</li>
+<li>debugCompile: debug编译类型</li>
+<li>releaseCompile: release编译类型</li>
 </ul>
 <p>
 每创建一个新的类型,都会自动创建一个类似"&lt;buildtype&gt;Compile"的配置.
@@ -749,16 +656,15 @@ android {
 </p>
 </div>
 </div>
-<div id="outline-container-sec-4-1-2" class="outline-4">
-<h4 id="sec-4-1-2">远程组件</h4>
-<div class="outline-text-4" id="text-4-1-2">
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22">远程组件</h4>
+<div class="outline-text-4" id="text-orgheadline22">
 <p>
 Gradle支持从Maven和Ivy库中下载依赖库.
 首先将仓库添加到 <b>repositories</b> 段中.然后在 <b>dependencies</b> 中添加依赖.
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">repositories {
+<pre class="example">
+repositories {
     mavenCentral()
 }
 
@@ -766,7 +672,6 @@ dependencies {
     compile 'com.google.guava:guava:11.0.2'
 }
 </pre>
-</div>
 <p>
 注: Gradle支持本地和远端仓库.
 注: 如果依赖自身也有依赖的话,都会被下载.
@@ -777,32 +682,27 @@ dependencies {
 </div>
 </div>
 
-<div id="outline-container-sec-4-2" class="outline-3">
-<h3 id="sec-4-2">多工程设置</h3>
-<div class="outline-text-3" id="text-4-2">
+<div id="outline-container-orgheadline24" class="outline-3">
+<h3 id="orgheadline24">多工程设置</h3>
+<div class="outline-text-3" id="text-orgheadline24">
 <p>
 可以通过多工程设置来使一个gradle工程依赖其他的gradle工程.一般的多工程设置
 是通过在项目根目录下添加子目录来实现的.例如:
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">MyProject/
+<pre class="example">
+MyProject/
  + app/
  + libraries/
     + lib1/
     + lib2/
 </pre>
-</div>
 <p>
 上述代码设置了三个工程:
 </p>
 <ul class="org-ul">
-<li>:app
-</li>
-<li>:libraries:lib1
-</li>
-<li>:libraries:lib2
-</li>
+<li>:app</li>
+<li>:libraries:lib1</li>
+<li>:libraries:lib2</li>
 </ul>
 <p>
 每个工程都有自己的"build.gradle"文件.另外,在根目录下需要定义"settings.gradle"
@@ -811,32 +711,23 @@ dependencies {
 <ul class="org-ul">
 <li>RootProject
 <ul class="org-ul">
-<li>settings.gradle
-</li>
+<li>settings.gradle</li>
 <li>app/
 <ul class="org-ul">
-<li>build.gradle
-</li>
-</ul>
-</li>
+<li>build.gradle</li>
+</ul></li>
 <li>libraries
 <ul class="org-ul">
 <li>lib1/
 <ul class="org-ul">
-<li>build.gradle
-</li>
-</ul>
-</li>
+<li>build.gradle</li>
+</ul></li>
 <li>lib2/
 <ul class="org-ul">
-<li>build.gradle
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<li>build.gradle</li>
+</ul></li>
+</ul></li>
+</ul></li>
 </ul>
 
 <p>
@@ -847,42 +738,39 @@ dependencies {
 <p>
 如果gradle工程之间有依赖的话,可以做如下设置.
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">dependencies {
+<pre class="example">
+dependencies {
     compile project(':libraries:lib1')
 }
 </pre>
-</div>
 <p>
 更多信息参考<a href="http://gradle.org/docs/current/userguide/multi_project_builds.html">http://gradle.org/docs/current/userguide/multi_project_builds.html</a>.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-4-3" class="outline-3">
-<h3 id="sec-4-3">库工程设置</h3>
-<div class="outline-text-3" id="text-4-3">
+<div id="outline-container-orgheadline25" class="outline-3">
+<h3 id="orgheadline25">库工程设置</h3>
+<div class="outline-text-3" id="text-orgheadline25">
 <p>
 在上一节中,":libraries:lib1"和":libraries:lib2"可以是java工程,":app"会
 使用它们生成的jar包.
 如果上面的库要使用android的API,应该将它们定义成Android库工程.
 </p>
 </div>
-<div id="outline-container-sec-4-3-1" class="outline-4">
-<h4 id="sec-4-3-1">创建Android库工程</h4>
-<div class="outline-text-4" id="text-4-3-1">
+<div id="outline-container-orgheadline26" class="outline-4">
+<h4 id="orgheadline26">创建Android库工程</h4>
+<div class="outline-text-4" id="text-orgheadline26">
 <p>
 创建一个android库工程需要使用一个不同的plugin.
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">buildscript {
+<pre class="example">
+buildscript {
     repositories {
-	mavenCentral()
+        mavenCentral()
     }
 
     dependencies {
-	classpath 'com.android.tools.build:gradle:0.5.6'
+        classpath 'com.android.tools.build:gradle:0.5.6'
     }
 }
 
@@ -894,10 +782,9 @@ android {
 </pre>
 </div>
 </div>
-</div>
-<div id="outline-container-sec-4-3-2" class="outline-4">
-<h4 id="sec-4-3-2">工程和库工程的区别</h4>
-<div class="outline-text-4" id="text-4-3-2">
+<div id="outline-container-orgheadline27" class="outline-4">
+<h4 id="orgheadline27">工程和库工程的区别</h4>
+<div class="outline-text-4" id="text-orgheadline27">
 <p>
 一个库工程会编译为"aar"(Android archive)包.该包整合了代码和资源.同时也可以在库工程中
 编译测试APK来对库做测试.
@@ -909,27 +796,25 @@ android {
 </div>
 </div>
 </div>
-<div id="outline-container-sec-4-4" class="outline-3">
-<h3 id="sec-4-4">引用库</h3>
-<div class="outline-text-3" id="text-4-4">
+<div id="outline-container-orgheadline28" class="outline-3">
+<h3 id="orgheadline28">引用库</h3>
+<div class="outline-text-3" id="text-orgheadline28">
 <p>
 库引用和其他的工程引用一样,需要在dependencies中添加 "compile project"即可.
 </p>
 </div>
-<div id="outline-container-sec-4-4-1" class="outline-4">
-<h4 id="sec-4-4-1">库发布</h4>
-<div class="outline-text-4" id="text-4-4-1">
+<div id="outline-container-orgheadline29" class="outline-4">
+<h4 id="orgheadline29">库发布</h4>
+<div class="outline-text-4" id="text-orgheadline29">
 <p>
 默认情况下,库只发布release版本,无论依赖该库的其他工程发布的是那个版本.
 可以通过配置来控制发布那个版本:
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">android {
+<pre class="example">
+android {
     defaultPublishConfig "debug"
 }
 </pre>
-</div>
 <p>
 需要注意的是配置名必须为全名,如果需要使用flavor,要写成"flavorDebug"的形式.
 </p>
@@ -937,9 +822,8 @@ android {
 <p>
 也可以通过配置来取消默认的发布.这样会导致生产所有版本的aar文件.
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">android {
+<pre class="example">
+android {
    publishNonDefault true
 }
 </pre>
@@ -947,25 +831,24 @@ android {
 </div>
 </div>
 </div>
-</div>
-<div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5">测试</h2>
-<div class="outline-text-2" id="text-5">
+<div id="outline-container-orgheadline30" class="outline-2">
+<h2 id="orgheadline30">测试</h2>
+<div class="outline-text-2" id="text-orgheadline30">
 <p>
 Gradle插件在应用的工程中整合了测试工程.
 </p>
 </div>
-<div id="outline-container-sec-5-1" class="outline-3">
-<h3 id="sec-5-1">单元测试</h3>
-<div class="outline-text-3" id="text-5-1">
+<div id="outline-container-orgheadline31" class="outline-3">
+<h3 id="orgheadline31">单元测试</h3>
+<div class="outline-text-3" id="text-orgheadline31">
 <p>
 在Android Studio1.1版本中引入了单元测试支持,不过目前还在试验阶段, 文档参考<a href="http://tools.android.com/tech-docs/unit-testing-support">http://tools.android.com/tech-docs/unit-testing-support</a>.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-5-2" class="outline-3">
-<h3 id="sec-5-2">基本配置</h3>
-<div class="outline-text-3" id="text-5-2">
+<div id="outline-container-orgheadline32" class="outline-3">
+<h3 id="orgheadline32">基本配置</h3>
+<div class="outline-text-3" id="text-orgheadline32">
 <p>
 前面提到,在工程的src目录下一般包括main目录和androidTest目录.
 该目录通过使用Android测试框架来生产可以安装在设备上的测试APK文件.
@@ -978,18 +861,16 @@ Gradle插件在应用的工程中整合了测试工程.
 <p>
 在build.gradle的android段中可以配置以下属性:
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">android {
+<pre class="example">
+android {
     defaultConfig {
-	testPackageName "com.test.foo"
-	testInstrumentationRunner "android.test.InstrumentationTestRunner"
-	testHandleProfiling true
-	testFunctionalTest true
+        testPackageName "com.test.foo"
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+        testHandleProfiling true
+        testFunctionalTest true
     }
 }
 </pre>
-</div>
 <p>
 targetPackage属性会自动被设置为test程序的package名称,即使通过defaultConfig或其他
 编译选项进行配置.
@@ -1003,27 +884,24 @@ targetPackage属性会自动被设置为test程序的package名称,即使通过d
 </p>
 </div>
 </div>
-<div id="outline-container-sec-5-3" class="outline-3">
-<h3 id="sec-5-3"><span class="todo TODO">TODO</span> 运行测试</h3>
+<div id="outline-container-orgheadline33" class="outline-3">
+<h3 id="orgheadline33"><span class="todo TODO">TODO</span> 运行测试</h3>
 </div>
-<div id="outline-container-sec-5-4" class="outline-3">
-<h3 id="sec-5-4"><span class="todo TODO">TODO</span> 测试库</h3>
+<div id="outline-container-orgheadline34" class="outline-3">
+<h3 id="orgheadline34"><span class="todo TODO">TODO</span> 测试库</h3>
 </div>
 </div>
-<div id="outline-container-sec-6" class="outline-2">
-<h2 id="sec-6">编译变量</h2>
-<div class="outline-text-2" id="text-6">
+<div id="outline-container-orgheadline35" class="outline-2">
+<h2 id="orgheadline35">编译变量</h2>
+<div class="outline-text-2" id="text-orgheadline35">
 <p>
 新编译系统的一个目标就是可以创建同一个程序的不同版本.
 需要这么做的原因:
 </p>
 <ol class="org-ol">
-<li>可能需要一个程序的不同版本:例如 免费/demo版 VS "专业"付费版.
-</li>
-<li>Google Play Store需要上传多个版本的APK文件,参考<a href="http://developer.android.com/google/play/publishing/multiple-apks.html">http://developer.android.com/google/play/publishing/multiple-apks.html</a>.
-</li>
-<li>同时需要做1和2.
-</li>
+<li>可能需要一个程序的不同版本:例如 免费/demo版 VS "专业"付费版.</li>
+<li>Google Play Store需要上传多个版本的APK文件,参考<a href="http://developer.android.com/google/play/publishing/multiple-apks.html">http://developer.android.com/google/play/publishing/multiple-apks.html</a>.</li>
+<li>同时需要做1和2.</li>
 </ol>
 
 <p>
@@ -1031,9 +909,9 @@ targetPackage属性会自动被设置为test程序的package名称,即使通过d
 而不是为了编译不同的APK创建多个工程.
 </p>
 </div>
-<div id="outline-container-sec-6-1" class="outline-3">
-<h3 id="sec-6-1">产品flavors</h3>
-<div class="outline-text-3" id="text-6-1">
+<div id="outline-container-orgheadline36" class="outline-3">
+<h3 id="orgheadline36">产品flavors</h3>
+<div class="outline-text-3" id="text-orgheadline36">
 <p>
 通过flavor可以客制化工程编译出来的产品.一个工程可以有多个flavor.
 flavor这个概念通常用于改变非常小的场景.
@@ -1042,30 +920,28 @@ flavor这个概念通常用于改变非常小的场景.
 <p>
 使用DSL的 <b>productFlavor</b> 关键字来定义flavor.
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">android {
+<pre class="example">
+android {
     productFlavors {
-	flavor1 {
-	    ...
-	}
+        flavor1 {
+            ...
+        }
 
-	flavor2 {
-	    ...
-	}
+        flavor2 {
+            ...
+        }
     }
 }
 </pre>
-</div>
 <p>
 上述代码创建了两个flavor: flavor1和flavor2.
 记住flavor的名字不能与 <b>编译类型</b> 和 <b>androidTest的sourceSet</b> 混淆.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-6-2" class="outline-3">
-<h3 id="sec-6-2">编译变量=编译类型+产品flavor</h3>
-<div class="outline-text-3" id="text-6-2">
+<div id="outline-container-orgheadline37" class="outline-3">
+<h3 id="orgheadline37">编译变量=编译类型+产品flavor</h3>
+<div class="outline-text-3" id="text-orgheadline37">
 <p>
 前面讲过,每个编译类型都会生成一个APK.
 Flavor可以完成同样的功能: 所以一个工程可以生成的APK是所有编译类型
@@ -1077,75 +953,61 @@ Flavor可以完成同样的功能: 所以一个工程可以生成的APK是所有
 四种编译变量:
 </p>
 <ul class="org-ul">
-<li>Flavor1-debug
-</li>
-<li>Flavor2-debug
-</li>
-<li>Flavor1-release
-</li>
-<li>Flavor2-release
-</li>
+<li>Flavor1-debug</li>
+<li>Flavor2-debug</li>
+<li>Flavor1-release</li>
+<li>Flavor2-release</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-sec-6-3" class="outline-3">
-<h3 id="sec-6-3">Flavor配置</h3>
-<div class="outline-text-3" id="text-6-3">
+<div id="outline-container-orgheadline38" class="outline-3">
+<h3 id="orgheadline38">Flavor配置</h3>
+<div class="outline-text-3" id="text-orgheadline38">
 <p>
 flavor的配置跟其他的配置一样,每个flavor都要用大括号括起来.
 例如:
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">android {
+<pre class="example">
+android {
     ...
 
     defaultConfig {
-	minSdkVersion 8
-	versionCode 10
+        minSdkVersion 8
+        versionCode 10
     }
 
     productFlavors {
-	flavor1 {
-	    packageName "com.example.flavor1"
-	    versionCode 20
-	}
+        flavor1 {
+            packageName "com.example.flavor1"
+            versionCode 20
+        }
 
-	flavor2 {
-	    packageName "com.example.flavor2"
-	    minSdkVersion 14
-	}
+        flavor2 {
+            packageName "com.example.flavor2"
+            minSdkVersion 14
+        }
     }
 }
 </pre>
-</div>
 <p>
-需要说明的是androd.productFlavors.*对象属于<a id="ProductFlavor" name="ProductFlavor"></a>类型,该类型
+需要说明的是androd.productFlavors.*对象属于<a id="orgtarget6"></a>类型,该类型
 与前面提到的android.defaultConfig类型共享同样的属性.
-所以每个flavor都可以重写<i>defaultConfig</i>提供的<a id="" name=""></a>配置.例如上面的代码最后创建了如
+所以每个flavor都可以重写defaultConfig提供的<a id="orgtarget7"></a>配置.例如上面的代码最后创建了如
 下两个flavor:
 </p>
 <ul class="org-ul">
 <li>flavor1
 <ul class="org-ul">
-<li>packagName: com.example.flavor1
-</li>
-<li>minSdkVersion: 8
-</li>
-<li>versionCode: 20
-</li>
-</ul>
-</li>
+<li>packagName: com.example.flavor1</li>
+<li>minSdkVersion: 8</li>
+<li>versionCode: 20</li>
+</ul></li>
 <li>flavor2
 <ul class="org-ul">
-<li>packageName: com.example.flavor2
-</li>
-<li>minSdkVersion: 14
-</li>
-<li>versionCode: 10
-</li>
-</ul>
-</li>
+<li>packageName: com.example.flavor2</li>
+<li>minSdkVersion: 14</li>
+<li>versionCode: 10</li>
+</ul></li>
 </ul>
 <p>
 通常,编译类型的配置会和flavor的配置"合并', 例如在编译类型中配置了"packageNameSuffix",
@@ -1159,26 +1021,22 @@ flavor的配置跟其他的配置一样,每个flavor都要用大括号括起来.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-6-4" class="outline-3">
-<h3 id="sec-6-4">资源集和依赖</h3>
-<div class="outline-text-3" id="text-6-4">
+<div id="outline-container-orgheadline39" class="outline-3">
+<h3 id="orgheadline39">资源集和依赖</h3>
+<div class="outline-text-3" id="text-orgheadline39">
 <p>
 和编译类型一样,Flavor同样也有自己的代码和资源目录.
 例如上一节的例子创建出如下的资源集合:
 </p>
 <ul class="org-ul">
 <li>android.sourceSets.flavor1
-Location: src/flavor1
-</li>
+Location: src/flavor1</li>
 <li>android.sourceSets.flavor2
-Location: src/flavor2
-</li>
+Location: src/flavor2</li>
 <li>android.sourceSets.androidTestFlavor1
-Location: src/androidTestFlavor1
-</li>
+Location: src/androidTestFlavor1</li>
 <li>android.sourceSets.androidTestFlavor2
-Location: src/androidTestFlavor2
-</li>
+Location: src/androidTestFlavor2</li>
 </ul>
 
 <p>
@@ -1186,39 +1044,31 @@ Location: src/androidTestFlavor2
 这个过程会遵循如下规则:
 </p>
 <ol class="org-ol">
-<li>使用所有的相关代码目录共同编译APK.
-</li>
+<li>使用所有的相关代码目录共同编译APK.</li>
 <li>所有的manifest文件被合并为一个文件.这使得flavors可以像编译类型一样,可以
-有不同的组件和权限.
-</li>
-<li>资源使用"覆盖"策略,编译类型覆盖flavor, flavor覆盖main.
-</li>
-<li>每个编译变量都生成自己的R类. 编译变量之间不共享.
-</li>
+有不同的组件和权限.</li>
+<li>资源使用"覆盖"策略,编译类型覆盖flavor, flavor覆盖main.</li>
+<li>每个编译变量都生成自己的R类. 编译变量之间不共享.</li>
 </ol>
 
 <p>
 同时,flavor也可以设置自己的依赖.例如,如果一个flavor版本需要生成一个有广告的版本
 或一个收费版本,可以为该flavor设置依赖广告SDK.
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">dependencies {
+<pre class="example">
+dependencies {
   flavor1Compile "..."
 }
 </pre>
-</div>
 
 <p>
 每个编译变量都会生成相应的资源集合:
 </p>
 <ul class="org-ul">
 <li>android.sourceSets.flavor1Debug
-Location: src/flavor1Debug
-</li>
+Location: src/flavor1Debug</li>
 <li>android.sourceSets.flavor2Debug
-Location: src/flavor2Debug
-</li>
+Location: src/flavor2Debug</li>
 </ul>
 <p>
 &#x2026;
@@ -1226,21 +1076,18 @@ Location: src/flavor2Debug
 </p>
 </div>
 </div>
-<div id="outline-container-sec-6-5" class="outline-3">
-<h3 id="sec-6-5">编译和任务</h3>
-<div class="outline-text-3" id="text-6-5">
+<div id="outline-container-orgheadline40" class="outline-3">
+<h3 id="orgheadline40">编译和任务</h3>
+<div class="outline-text-3" id="text-orgheadline40">
 <p>
 前面的内容说过,每个编译类型都有自己的 <b>assemble&lt;name&gt;</b> 任务,但是因为
 编译变量是编译类型和flavor的组合.所以当使用flavor时,会有多个assemble类型
 的任务被创建.它们是:
 </p>
 <ol class="org-ol">
-<li>assemble&lt;编译变量&gt;
-</li>
-<li>assemble&lt;编译类型&gt;
-</li>
-<li>assemble&lt;Flavor&gt;
-</li>
+<li>assemble&lt;编译变量&gt;</li>
+<li>assemble&lt;编译类型&gt;</li>
+<li>assemble&lt;Flavor&gt;</li>
 </ol>
 <p>
 使用可以生成一个APK. 使用2可以编译所有该编译类型的APK(例如flavorDebug和flavor2Debug).
@@ -1248,9 +1095,9 @@ Location: src/flavor2Debug
 </p>
 </div>
 </div>
-<div id="outline-container-sec-6-6" class="outline-3">
-<h3 id="sec-6-6">测试</h3>
-<div class="outline-text-3" id="text-6-6">
+<div id="outline-container-orgheadline41" class="outline-3">
+<h3 id="orgheadline41">测试</h3>
+<div class="outline-text-3" id="text-orgheadline41">
 <p>
 测试多个flavor工程与测试单个工程和相似. 使用 <b>androidTest</b> 可以为所有的
 flavor做一般测试.每个flavor还可以设置自己的测试.
@@ -1261,37 +1108,29 @@ flavor做一般测试.每个flavor还可以设置自己的测试.
 </p>
 <ul class="org-ul">
 <li>android.sourceSets.androidTestFlavor1
-Location: src/androidTestFlavor1
-</li>
+Location: src/androidTestFlavor1</li>
 <li>android.sourceSets.androidTestFlavor2
-Location: src/androidTestFlavor2
-</li>
+Location: src/androidTestFlavor2</li>
 </ul>
 
 <p>
 同样, 它们可以配置相关的依赖:
 </p>
-<div class="org-src-container">
-
-<pre class="src src-android">dependencies {
+<pre class="example">
+dependencies {
     androidTestFlavor1Compile "..."
 }
 </pre>
-</div>
 
 <p>
 可以通过 <b>deviceCheck</b> 或 <b>androidTest</b> 任务来运行所有的测试任务.
 每个flavor也有自己的测试任务 androidTest&lt;名称&gt;:
 </p>
 <ul class="org-ul">
-<li>assembleFlavor1Test
-</li>
-<li>installFlavor1Debug
-</li>
-<li>installFlavor1Test
-</li>
-<li>uninstallFlavor1Debug
-</li>
+<li>assembleFlavor1Test</li>
+<li>installFlavor1Debug</li>
+<li>installFlavor1Test</li>
+<li>uninstallFlavor1Debug</li>
 </ul>
 
 <p>
@@ -1299,21 +1138,17 @@ Location: src/androidTestFlavor2
 然后是集合版本.可以对root目录(build)做客制化.
 </p>
 <ul class="org-ul">
-<li>build/androidTest-results/flavors/&lt;FlavorName&gt;
-</li>
-<li>build/androidTest-results/all/
-</li>
-<li>build/reports/androidTests/flavors&lt;FlavorName&gt;
-</li>
-<li>build/reports/androidTests/all/
-</li>
+<li>build/androidTest-results/flavors/&lt;FlavorName&gt;</li>
+<li>build/androidTest-results/all/</li>
+<li>build/reports/androidTests/flavors&lt;FlavorName&gt;</li>
+<li>build/reports/androidTests/all/</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-sec-6-7" class="outline-3">
-<h3 id="sec-6-7"><span class="todo TODO">TODO</span> 多flavor变量</h3>
+<div id="outline-container-orgheadline42" class="outline-3">
+<h3 id="orgheadline42"><span class="todo TODO">TODO</span> 多flavor变量</h3>
 </div>
 </div>
-<div id="outline-container-sec-7" class="outline-2">
-<h2 id="sec-7"><span class="todo TODO">TODO</span> 高级配置</h2>
+<div id="outline-container-orgheadline43" class="outline-2">
+<h2 id="orgheadline43"><span class="todo TODO">TODO</span> 高级配置</h2>
 </div>
