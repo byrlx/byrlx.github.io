@@ -13,3 +13,13 @@ tag: [Life]
 ---
 #+END_HTML
 * Links
+** [[https://github.com/lucasr/twoway-view][twoway-view]]
+一个Android开源库, 该库可以是实现类似"瀑布流"的多行多列效果.
+** [[https://github.com/google/material-design-icons][Material Design Icons]]
+谷歌的Material Design的素材库.
+** [[https://github.com/konifar/android-material-design-icon-generator-plugin][Material Design Icon 添加插件]]
+可以将google 官方的material design 素材库添加到工程中.
+** [[http://developer.android.com/training/permissions/requesting.html][Android 运行时申请权限]]
+6.0开始, 权限申请改到运行时, 这篇官方文档介绍了相关内容.
+** [[http://developer.android.com/about/versions/kitkat.html#44-sms-provider][只有系统程序才可以存储短信]]
+从4.4起, Android只允许默认的短信程序向provider中写入短信.
