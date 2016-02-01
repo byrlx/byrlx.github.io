@@ -8,7 +8,7 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: resolve-fx
+title: 求解函数 f(x)=0
 categories: [Lisp]
 tags: [Lisp, Emacs]
 ---
