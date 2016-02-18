@@ -9,9 +9,9 @@
 ---
 layout: post
 title: Retrofit之源码解读 
-tag: [Java, Android, Square]
+tag: [java, android, square]
 description: [retrofit源码阅读笔记]
-categories: [Square]
+categories: [Java]
 ---
 #+END_HTML
 
@@ -107,7 +107,7 @@ Http请求, 而无需关心具体http的实现, 这些retrofit都帮我们做了
    #+END_SRC
    上面的代码就是retrofit的实现, 代码比较短, 首先是调用validateServiceInterface()
    来检查传入的类变量是否合法:
-   #+BEGIN_SRC 
+   #+BEGIN_SRC  java
   static <T> void validateServiceInterface(Class<T> service) {
     if (!service.isInterface()) {
       throw new IllegalArgumentException("API declarations must be interfaces.");
@@ -472,7 +472,7 @@ public interface CHHttpService {
 这一部分的内容就是讲解retrofit如何通过解析注解来生成一个完整的
 OkHttp请求(request). 这一切的入口就是MethodHandler的create()函数中的
 一行代码. 
-#+BEGIN_SRC 
+#+BEGIN_SRC  java
   static MethodHandler<?> create(Retrofit retrofit, Method method) {
     ...
     RequestFactory requestFactory = RequestFactoryParser.parse(method, responseType, retrofit);  //<====here

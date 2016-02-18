@@ -10,7 +10,7 @@ layout: post
 title: Memory Optimization
 description: [Some methods to analyze memory usage]
 category: [Android]
-tag: [Android]
+tag: [android]
 ---
 #+END_HTML
 

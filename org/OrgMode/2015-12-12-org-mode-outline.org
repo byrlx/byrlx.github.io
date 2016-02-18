@@ -10,7 +10,7 @@
 layout: post
 title: Orgmode手册1:文档结构
 categories: [OrgMode]
-tag: [OrgMode, Translate]
+tag: [orgmode, translate]
 ---
 #+END_HTML
 #+BEGIN_VERSE

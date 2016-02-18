@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Retrofit之项目介绍 
-tag: [Java, Android, Square]
-categories: [Square]
+tag: [java, android, square]
+categories: [Java]
 description: [retrofit源码阅读笔记]
 ---
 
@@ -14,9 +14,9 @@ description: [retrofit源码阅读笔记]
 该项目官网 <a href="http://square.github.io/retrofit/">http://square.github.io/retrofit/</a>, github地址: <a href="https://github.com/square/retrofit">https://github.com/square/retrofit</a>
 </p>
 
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">项目介绍</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">项目介绍</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
 官网对retrofit介绍是这是一个"类型安全(type-safe)"的Android/Java http客户端. 
 目前retrofit的最新正式版本为1.9.0. 2.0版本预计2015年底发布, 相较于之前版本, 
@@ -30,14 +30,16 @@ description: [retrofit源码阅读笔记]
 </div>
 </div>
 
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">在项目中使用retrofit</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">在项目中使用retrofit</h2>
+<div class="outline-text-2" id="text-orgheadline2">
 <p>
-retrofit库可以在<a href="http://search.maven.org/#search|ga|1|retrofit">maven.org</a> 找到. 可以直接添加到maven或gradle工程中.
+retrofit库可以在<a href="http://search.maven.org/#search%7Cga%7C1%7Cretrofit">maven.org</a> 找到. 可以直接添加到maven或gradle工程中.
 </p>
 <ul class="org-ul">
-<li>Maven
+<li><p>
+Maven
+</p>
 <div class="org-src-container">
 
 <pre class="src src-xml">&lt;dependency&gt;
@@ -46,44 +48,49 @@ retrofit库可以在<a href="http://search.maven.org/#search|ga|1|retrofit">mave
   &lt;version&gt;2.0.0-beta2&lt;/version&gt;
 &lt;/dependency&gt;
 </pre>
-</div>
-</li>
-<li>Gradle. 如果与服务端的请求和结果都是json的话,需要gson converter进行转化, 因为要把该库也添加上.
-<pre class="example">
-compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+</div></li>
+<li><p>
+Gradle. 如果与服务端的请求和结果都是json的话,需要gson converter进行转化, 因为要把该库也添加上.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-xml">compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
 compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
 </pre>
-</li>
-<li>混淆配置
+</div></li>
+<li><p>
+混淆配置
 如果项目中使用混淆的话, 需要在混淆文件中假如如下配置
+</p>
 <pre class="example">
 -dontwarn retrofit.**
 -keep class retrofit.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
-</pre>
-</li>
+</pre></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3">程序示例</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">程序示例</h2>
+<div class="outline-text-2" id="text-orgheadline3">
 <p>
 这部分从一个简单的程序开始, 展示retrofit的使用,并通过对这个程序的进一步介绍retrofit的各种功能.
 这部分内容大多参考自 <a href="https://futurestud.io/blog/retrofit-getting-started-and-android-client/">https://futurestud.io/blog/retrofit-getting-started-and-android-client/</a>.
 </p>
 </div>
-<div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1">一个简单的retrofit程序</h3>
-<div class="outline-text-3" id="text-3-1">
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">一个简单的retrofit程序</h3>
+<div class="outline-text-3" id="text-orgheadline4">
 <p>
 场景:通过GET请求向服务器返回用户信息, 服务器通过Json格式返回一个或多个用户的信息.
 基于这个例子介绍一下retrofit的使用步骤:
 </p>
 <ol class="org-ol">
-<li>用户类. 这段代码定义了用户类User, 每个用户包含三个基本信息:id, name, age; 
+<li><p>
+用户类. 这段代码定义了用户类User, 每个用户包含三个基本信息:id, name, age; 
 通过retrofit请求用户信息时, 客户端返回用户的json信息, retrofit可以直接将json信息转化为用户类.
+</p>
 <div class="org-src-container">
 
 <pre class="src src-java">public class User {
@@ -92,9 +99,10 @@ compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
     private int age;
 }
 </pre>
-</div>
-</li>
-<li>定义Client和GET请求接口
+</div></li>
+<li><p>
+定义Client和GET请求接口
+</p>
 <div class="org-src-container">
 
 <pre class="src src-java">public interface Client {
@@ -114,11 +122,13 @@ compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
 <b>注:</b> 在retrofit2.0中,要注意GET和POST注解的参数,如果参数以"/"开头,那么在跟base地址拼接时,会将base地址中
 的相对地址全部覆盖掉. 举例: base地址为"<a href="http://a/b">http://a/b</a>", GET参数为"/c/d", 那么最后的请求地址为"<a href="http://a/c/d">http://a/c/d</a>",
 因此,如果base地址本身已经是相对地址, 那么GET/POST的参数不能以"/"开头.
+</p></li>
+<li><p>
+<a id="orgtarget1"></a>
 </p>
-</li>
-<li><a id="get" name="get"></a>
-<pre class="example">
-public class MainActivity {
+<div class="org-src-container">
+
+<pre class="src src-java">public class MainActivity {
     ....
     public static final String SERVER_URL = "http://10.10.10.10/account";
     private OkHttpClient okHttpClient = new OkHttpClient();
@@ -134,6 +144,7 @@ public class MainActivity {
     ....
 }
 </pre>
+</div>
 <p>
 上述代码用来做实际的请求动作, 首先通过Retrofit Builder来基于各种参数(服务器地址, httpclient, converter)
 生成一个builder对象, 让后调用builder的build()函数生成一个retrofit对象.
@@ -143,17 +154,16 @@ public class MainActivity {
 接着,调用retrofit的create()函数,传入上一步中定义的接口作为参数来实例化一个具体的接口对象, 然后调用
 该对象的具体http请求函数(这里为getUsers())来实现http请求. 请求的结果是Json数据,会通过GsonConverter转化为具体的
 对象(即User). 由于是多个对象,所以需要放到一个List中.
-</p>
-</li>
+</p></li>
 </ol>
 <p>
 上述三步即为retrofit的基本使用方法.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2">创建一个Service generator类</h3>
-<div class="outline-text-3" id="text-3-2">
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">创建一个Service generator类</h3>
+<div class="outline-text-3" id="text-orgheadline5">
 <p>
 如果项目中 <b>针对同一个server地址</b> 需要创建多个Retrofit Interface service,那么可以创建一个通用的ServiceGenerator类
 来生成service实例.
@@ -193,9 +203,9 @@ List&lt;Users&gt; result = call.execute().body();
 </div>
 </div>
 </div>
-<div id="outline-container-sec-3-3" class="outline-3">
-<h3 id="sec-3-3">帐号密码认证的ServiceGenerator类</h3>
-<div class="outline-text-3" id="text-3-3">
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">帐号密码认证的ServiceGenerator类</h3>
+<div class="outline-text-3" id="text-orgheadline6">
 <p>
 帐号密码是一种常见的认证方式, 通常将其加密后以放入到http头部的Authorization中
 进行请求认证.通过对OkHttpClient进行配置可以在retrofit中实现该方式. 
@@ -247,9 +257,9 @@ Authorization中实现验证.
 </div>
 </div>
 
-<div id="outline-container-sec-3-4" class="outline-3">
-<h3 id="sec-3-4">OAuth认证接口的ServiceGenerator类</h3>
-<div class="outline-text-3" id="text-3-4">
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">OAuth认证接口的ServiceGenerator类</h3>
+<div class="outline-text-3" id="text-orgheadline7">
 <p>
 整合过第三方API的同学肯定对OAuth接口不陌生, 大部分情况下你都需要去第三方开发者
 平台注册你的app去获取一个id和secret, 这样才可以访问第三方的接口.
@@ -299,10 +309,12 @@ Authorization中实现验证.
 </p>
 
 <ol class="org-ol">
-<li>获取授权码
+<li><p>
+获取授权码
 授权码的获取一般需要跳转到第三方api的一个相关的网页,网页中会询问用户是否允许用户
 app获取其在该网站的信息.如果用户点击允许, 第三方服务器就会生成一个授权码返回给用户.
 第一步先创建程序主界面:
+</p>
 <div class="org-src-container">
 
 <pre class="src src-java">public class LoginActivity extends Activity {
@@ -381,11 +393,12 @@ protected void onResume() {
 
 <p>
 好, 到此为止,我们就已经获取到了授权码,下一步就是通过授权码获取Access Token. 
-</p>
-</li>
-<li>获取Access Token
+</p></li>
+<li><p>
+获取Access Token
 上一步获取到授权码后, 就可以向第三方的Access Token服务器发送请求获取token. 我们可以写一个retrofit服务
 来实现这个功能. 
+</p>
 <div class="org-src-container">
 
 <pre class="src src-java">public interface LoginService {  
@@ -410,8 +423,7 @@ protected void onResume() {
 	 AccessToken accessToken = call.execute().body();
 }
 </pre>
-</div>
-</li>
+</div></li>
 </ol>
 
 <p>
@@ -420,58 +432,52 @@ protected void onResume() {
 </div>
 </div>
 
-<div id="outline-container-sec-3-5" class="outline-3">
-<h3 id="sec-3-5">同步请求 vs 异步请求</h3>
-<div class="outline-text-3" id="text-3-5">
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">同步请求 vs 异步请求</h3>
+<div class="outline-text-3" id="text-orgheadline8">
 <p>
 Retrofit支持同步和异步请求, 不过Retrofit2的同步/异步架构功能与1有
 很大不同, 具体请参考相关文档.
 </p>
 <ol class="org-ol">
-<li>同步请求
+<li><p>
+同步请求
 直接调用execute()函数, 本文中的实例就是同步请求的例子.
+</p>
 
 <p>
 注意事项:
 </p>
 <ul class="org-ul">
-<li>不要在Android的主线程中调用execute(),有可能报错或导致ANR.
-</li>
-</ul>
-</li>
+<li>不要在Android的主线程中调用execute(),有可能报错或导致ANR.</li>
+</ul></li>
 <li>异步请求
 异步请求的话调用enque()函数, 并向enque()传入一个Callback的参数.
-并需要要实现Callback的onSuccess和onFailure函数.
-</li>
+并需要要实现Callback的onSuccess和onFailure函数.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-sec-3-6" class="outline-3">
-<h3 id="sec-3-6">请求结果Response类</h3>
-<div class="outline-text-3" id="text-3-6">
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">请求结果Response类</h3>
+<div class="outline-text-3" id="text-orgheadline9">
 <p>
 当调用execute()或enqueue()函数时, 会返回一个Reponse对象表示请求结果.
 该请求结果包含了以下信息:
 </p>
 <ul class="org-ul">
-<li>结果码: 调用code()函数获得
-</li>
-<li>结果对象: 调用body()函数获得, 如<a href="#get">示例</a>所示.
-</li>
-<li>头部: 调用headers
-</li>
-<li>原始返回结果: 调用rawResponse()函数, 返回一个OkHttp的Response对象.
-</li>
+<li>结果码: 调用code()函数获得</li>
+<li>结果对象: 调用body()函数获得, 如<a href="#orgtarget1">示例</a>所示.</li>
+<li>头部: 调用headers</li>
+<li>原始返回结果: 调用rawResponse()函数, 返回一个OkHttp的Response对象.</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4">Tips</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10">Tips</h2>
+<div class="outline-text-2" id="text-orgheadline10">
 <ol class="org-ol">
-<li>请求失败, body()返回值为null
-</li>
+<li>请求失败, body()返回值为null</li>
 </ol>
 </div>
 </div>

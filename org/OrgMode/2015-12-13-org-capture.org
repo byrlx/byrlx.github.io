@@ -10,7 +10,7 @@
 layout: post
 title: Orgmode手册5:"捕获"
 categories: [OrgMode]
-tag: [OrgMode, Translate]
+tag: [orgmode, translate]
 ---
 #+END_HTML
 

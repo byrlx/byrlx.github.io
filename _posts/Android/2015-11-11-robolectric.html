@@ -2,7 +2,7 @@
 layout: post
 title: 使用开源项目Robolectric测试Android代码
 tag: [Android]
-category: [Android]
+category: [android, test]
 ---
 
 <p>
@@ -17,9 +17,9 @@ category: [Android]
 该文章基于Robolectric3.0
 </p>
 
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">项目介绍</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">项目介绍</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
 Robolectric是一个开源的单元测试框架, 它可以实现直接在JVM里跑Android相关的测试(Activity/Service),
 避免Android自家出品的 <b>古老</b> 的必须要在虚拟机上跑的测试. (注: 目前来看, Android的后续版本对测试的支持越来越好&#x2026;..)
@@ -31,41 +31,40 @@ Robolectric是一个开源的单元测试框架, 它可以实现直接在JVM里�
 <ol class="org-ol">
 <li>模拟SDK, 资源和native方法:
 总的来说, robolectric可以模拟虚拟机环境, 使你可以在
-JVM就可以实现大部分测试. 
-</li>
+JVM就可以实现大部分测试.</li>
 <li>摆脱虚拟机的束缚.
-省去编译/打包/安装流程, 加快测试和重构速度.
-</li>
-<li>不需要Mocking框架
-</li>
+省去编译/打包/安装流程, 加快测试和重构速度.</li>
+<li>不需要Mocking框架</li>
 </ol>
 </div>
 </div>
 
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">简单的测试项目</h2>
-<div class="outline-text-2" id="text-2">
-</div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1">加入到项目工程</h3>
-<div class="outline-text-3" id="text-2-1">
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">简单的测试项目</h2>
+<div class="outline-text-2" id="text-orgheadline4">
+</div><div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">加入到项目工程</h3>
+<div class="outline-text-3" id="text-orgheadline2">
 <p>
 添加robolectric的依赖, 由于要使用Junit和assert相关的函数,
 所以把他们的依赖也一起加上.
 </p>
-<pre class="example">
-testCompile 'junit:junit:4.12'
+<div class="org-src-container">
+
+<pre class="src src-xml">testCompile 'junit:junit:4.12'
 testCompile "org.assertj:assertj-core:1.7.0"
 testCompile 'org.robolectric:robolectric:3.0'
 </pre>
+</div>
 
 <p>
 加入完成后, 把Build Variants的 "Test Artifact" 设置为 <b>Unit Tests</b>.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2">编写简单测试代码</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">编写简单测试代码</h3>
+<div class="outline-text-3" id="text-orgheadline3">
 <p>
 在src目录下创建test目录, 然后在test目录下创建与main相同的package目录. 
 创建TestMainActivity.class类, 来测试MainActivity.
@@ -85,24 +84,26 @@ public class TestMainActivity {
 <p>
 可以在类里面有 @Test 注解编写测试方法.例如:
 </p>
-<pre class="example">
-@RunWith(RobolectricGradleTestRunner.class)
+<div class="org-src-container">
+
+<pre class="src src-java">@RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class TestMainActivity {
     @Test
     public void init(){
-        ActivityController controller = Robolectric.buildActivity(MainActivity.class).create().start();
-        MainActivity activity = (MainActivity)controller.get();
+	ActivityController controller = Robolectric.buildActivity(MainActivity.class).create().start();
+	MainActivity activity = (MainActivity)controller.get();
 
-        controller.resume();
+	controller.resume();
 
-        FloatingActionButton button = (FloatingActionButton)activity.findViewById(R.id.fab);
-        button.performClick();
+	FloatingActionButton button = (FloatingActionButton)activity.findViewById(R.id.fab);
+	button.performClick();
 
-        assertTrue(button.getVisibility() == View.GONE);
+	assertTrue(button.getVisibility() == View.GONE);
     }
 }
 </pre>
+</div>
 
 <p>
 最后可以右键该类点击运行或通过gradle命令来实现跑测试.
@@ -110,12 +111,12 @@ public class TestMainActivity {
 </div>
 </div>
 </div>
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3">Robolectric文档</h2>
-<div class="outline-text-2" id="text-3">
-</div><div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1">模拟Activity的生命周期</h3>
-<div class="outline-text-3" id="text-3-1">
+<div id="outline-container-orgheadline7" class="outline-2">
+<h2 id="orgheadline7">Robolectric文档</h2>
+<div class="outline-text-2" id="text-orgheadline7">
+</div><div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">模拟Activity的生命周期</h3>
+<div class="outline-text-3" id="text-orgheadline5">
 <p>
 通过ActivityController这个API可以实现对Activity生命周期
 的控制. 通过以下API可以获取一个ActivityController实例化.
@@ -131,9 +132,11 @@ controller创建出来之后, 就可以调用start(), pause(), stop()
 或者destroy()等函数来模仿Activity流程, 例如下面的代码就是
 一个完整的activity流程:
 </p>
-<pre class="example">
-Activity activity = Robolectric.buildActivity(MyAwesomeActivity.class).create().start().resume().visible().get();
+<div class="org-src-container">
+
+<pre class="src src-java">Activity activity = Robolectric.buildActivity(MyAwesomeActivity.class).create().start().resume().visible().get();
 </pre>
+</div>
 
 <p>
 注: visible()函数用来模拟activity attach到一个窗口的过程, 如果需要使用activity中
@@ -142,9 +145,9 @@ view相关的函数, 必须要先调用visible().
 </div>
 </div>
 
-<div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2">用Intent 或 savedInstanceState启动/恢复 Activity</h3>
-<div class="outline-text-3" id="text-3-2">
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">用Intent 或 savedInstanceState启动/恢复 Activity</h3>
+<div class="outline-text-3" id="text-orgheadline6">
 <div class="org-src-container">
 
 <pre class="src src-java">//intent

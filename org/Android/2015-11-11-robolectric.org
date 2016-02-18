@@ -10,7 +10,7 @@
 layout: post
 title: 使用开源项目Robolectric测试Android代码
 tag: [Android]
-category: [Android]
+category: [android, test]
 ---
 #+END_HTML
 
@@ -36,7 +36,7 @@ Robolectric是一个开源的单元测试框架, 它可以实现直接在JVM里�
 ** 加入到项目工程
 添加robolectric的依赖, 由于要使用Junit和assert相关的函数,
 所以把他们的依赖也一起加上.
-#+BEGIN_SRC 
+#+BEGIN_SRC xml
     testCompile 'junit:junit:4.12'
     testCompile "org.assertj:assertj-core:1.7.0"
     testCompile 'org.robolectric:robolectric:3.0'
@@ -55,7 +55,7 @@ Robolectric是一个开源的单元测试框架, 它可以实现直接在JVM里�
 第二个注解必须要将constants设置为编译系统生成的BuildConfig文件.
 
 可以在类里面有 @Test 注解编写测试方法.例如:
-#+BEGIN_SRC 
+#+BEGIN_SRC  java
 @RunWith(RobolectricGradleTestRunner.class)
 @Config(constants = BuildConfig.class)
 public class TestMainActivity {
@@ -86,7 +86,7 @@ ActivityController controller = Robolectric.buildActivity(MyAwesomeActivity.clas
 controller创建出来之后, 就可以调用start(), pause(), stop()
 或者destroy()等函数来模仿Activity流程, 例如下面的代码就是
 一个完整的activity流程:
-#+BEGIN_SRC 
+#+BEGIN_SRC  java
 Activity activity = Robolectric.buildActivity(MyAwesomeActivity.class).create().start().resume().visible().get();
 #+END_SRC
 

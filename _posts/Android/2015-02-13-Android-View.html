@@ -2,7 +2,7 @@
 layout: post
 title: Android View笔记
 tag: [Android]
-category: [Android]
+category: [android]
 description: [Do some learnings/records/tips about android view]
 ---
 
@@ -28,49 +28,44 @@ View 在应用中通过"tree"的方式进行管理维护.创建 view 有两种�
 <p>
 <i><b><b><b><b>下面的内容基于源码和文档</b></b></b></b></i>
 </p>
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">基本知识</h2>
-<div class="outline-text-2" id="text-1">
-</div><div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1">View的位置.</h3>
-<div class="outline-text-3" id="text-1-1">
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">基本知识</h2>
+<div class="outline-text-2" id="text-orgheadline6">
+</div><div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1">View的位置.</h3>
+<div class="outline-text-3" id="text-orgheadline1">
 <ol class="org-ol">
 <li>View是一个矩形的物体, 通过"左上角的坐标"和"宽/高"来描述一个view.
-描述这些属性的单位是像素(pixel).
-</li>
+描述这些属性的单位是像素(pixel).</li>
 <li>通过getLeft()和getTop()可以获取一个view的左上角的"X/Y"坐标, 这个坐标是相对于
-该view的parent而言的. 例如,调用getLeft()得到20, 说明该view位于其父view右边20像素处.
-</li>
+该view的parent而言的. 例如,调用getLeft()得到20, 说明该view位于其父view右边20像素处.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-sec-1-2" class="outline-3">
-<h3 id="sec-1-2">大小和边距</h3>
-<div class="outline-text-3" id="text-1-2">
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">大小和边距</h3>
+<div class="outline-text-3" id="text-orgheadline2">
 <ol class="org-ol">
 <li>每个view都有两组"宽/高"属性
 <ul class="org-ul">
-<li>一组称为measured width/height, 这个属性定义了view"想"在parent中的大小.
-</li>
-<li>一组称为width/height, 这view画在屏幕上的实际大小.
-</li>
-</ul>
-</li>
+<li>一组称为measured width/height, 这个属性定义了view"想"在parent中的大小.</li>
+<li>一组称为width/height, 这view画在屏幕上的实际大小.</li>
+</ul></li>
 </ol>
 </div>
 </div>
-<div id="outline-container-sec-1-3" class="outline-3">
-<h3 id="sec-1-3">Layout</h3>
-<div class="outline-text-3" id="text-1-3">
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">Layout</h3>
+<div class="outline-text-3" id="text-orgheadline3">
 <p>
 Layout包含两个过程:measure和layout.
 </p>
 </div>
 </div>
 
-<div id="outline-container-sec-1-4" class="outline-3">
-<h3 id="sec-1-4">坐标系统</h3>
-<div class="outline-text-3" id="text-1-4">
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">坐标系统</h3>
+<div class="outline-text-3" id="text-orgheadline4">
 <p>
 背景知识: 一个View的父view范围有可能在当前屏幕之外.
 </p>
@@ -91,151 +86,151 @@ Layout包含两个过程:measure和layout.
 
 
 <colgroup>
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 </colgroup>
 <thead>
 <tr>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">&#xa0;</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="left">getLeft()</td>
-<td class="left">左边界与 <b>父视图</b> 左边界距离</td>
+<td class="org-left">getLeft()</td>
+<td class="org-left">左边界与 <b>父视图</b> 左边界距离</td>
 </tr>
 
 <tr>
-<td class="left">getRight()</td>
-<td class="left">右边界与 <b>父视图</b> 左边界距离</td>
+<td class="org-left">getRight()</td>
+<td class="org-left">右边界与 <b>父视图</b> 左边界距离</td>
 </tr>
 
 <tr>
-<td class="left">getTop()/getBottom()</td>
-<td class="left">上/下边界与 <b>父视图</b> 上边界距离</td>
+<td class="org-left">getTop()/getBottom()</td>
+<td class="org-left">上/下边界与 <b>父视图</b> 上边界距离</td>
 </tr>
 
 <tr>
-<td class="left">getHeight()/getWidth()</td>
-<td class="left"><b>自身</b> 宽/高</td>
+<td class="org-left">getHeight()/getWidth()</td>
+<td class="org-left"><b>自身</b> 宽/高</td>
 </tr>
 
 <tr>
-<td class="left">getX()/getY()</td>
-<td class="left">事件点距离 <b>自身</b> 左/上边界的距离</td>
+<td class="org-left">getX()/getY()</td>
+<td class="org-left">事件点距离 <b>自身</b> 左/上边界的距离</td>
 </tr>
 
 <tr>
-<td class="left">getRawX()/getRawY()</td>
-<td class="left">事件点距离 <b>屏幕</b> 左/上边界的距离</td>
+<td class="org-left">getRawX()/getRawY()</td>
+<td class="org-left">事件点距离 <b>屏幕</b> 左/上边界的距离</td>
 </tr>
 
 <tr>
-<td class="left">getScrollX()/getScrollY()</td>
-<td class="left">view相对于 <b>屏幕</b> 左上角的滚动距离(可正可负)</td>
+<td class="org-left">getScrollX()/getScrollY()</td>
+<td class="org-left">view相对于 <b>屏幕</b> 左上角的滚动距离(可正可负)</td>
 </tr>
 
 <tr>
-<td class="left">getLocationInWindow()</td>
-<td class="left">获取在 <b>窗口</b> 内的坐标</td>
+<td class="org-left">getLocationInWindow()</td>
+<td class="org-left">获取在 <b>窗口</b> 内的坐标</td>
 </tr>
 
 <tr>
-<td class="left">getLocationInScreen</td>
-<td class="left">在 <b>屏幕</b> 中的位置.</td>
+<td class="org-left">getLocationInScreen</td>
+<td class="org-left">在 <b>屏幕</b> 中的位置.</td>
 </tr>
 
 <tr>
-<td class="left">scrollTo(x,y)</td>
-<td class="left">将 <b>屏幕</b> 移动到 <b>父视图</b> 的 (x,y)处</td>
+<td class="org-left">scrollTo(x,y)</td>
+<td class="org-left">将 <b>屏幕</b> 移动到 <b>父视图</b> 的 (x,y)处</td>
 </tr>
 
 <tr>
-<td class="left">getScrollX()/getScrollY()</td>
-<td class="left"><b>屏幕</b> 边缘到 <b>父视图</b> 边缘的位置</td>
+<td class="org-left">getScrollX()/getScrollY()</td>
+<td class="org-left"><b>屏幕</b> 边缘到 <b>父视图</b> 边缘的位置</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div id="outline-container-sec-1-5" class="outline-3">
-<h3 id="sec-1-5">适配</h3>
-<div class="outline-text-3" id="text-1-5">
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">适配</h3>
+<div class="outline-text-3" id="text-orgheadline5">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
 <colgroup>
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 </colgroup>
 <thead>
 <tr>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">&#xa0;</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="left">分辨率</td>
-<td class="left">px, 横纵向上的像素点数, 如1920x1080</td>
+<td class="org-left">分辨率</td>
+<td class="org-left">px, 横纵向上的像素点数, 如1920x1080</td>
 </tr>
 
 <tr>
-<td class="left">像素密度(density)</td>
-<td class="left">dpi, 每英寸上的像素点数, 等于"对角线像素/尺寸"</td>
+<td class="org-left">像素密度(density)</td>
+<td class="org-left">dpi, 每英寸上的像素点数, 等于"对角线像素/尺寸"</td>
 </tr>
 
 <tr>
-<td class="left">dp</td>
-<td class="left">逻辑密度计算单位, px=(dpi/160) * dp</td>
+<td class="org-left">dp</td>
+<td class="org-left">逻辑密度计算单位, px=(dpi/160) * dp</td>
 </tr>
 
 <tr>
-<td class="left">mdpi</td>
-<td class="left">120dpi-160dpi</td>
+<td class="org-left">mdpi</td>
+<td class="org-left">120dpi-160dpi</td>
 </tr>
 
 <tr>
-<td class="left">hdpi</td>
-<td class="left">160-240</td>
+<td class="org-left">hdpi</td>
+<td class="org-left">160-240</td>
 </tr>
 
 <tr>
-<td class="left">xhdpi</td>
-<td class="left">240-320</td>
+<td class="org-left">xhdpi</td>
+<td class="org-left">240-320</td>
 </tr>
 
 <tr>
-<td class="left">xxhdpi</td>
-<td class="left">320-480</td>
+<td class="org-left">xxhdpi</td>
+<td class="org-left">320-480</td>
 </tr>
 
 <tr>
-<td class="left">getResource().getDisplayMetrics()</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">getResource().getDisplayMetrics()</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="left">metrics.heightPixels</td>
-<td class="left">屏幕高 px</td>
+<td class="org-left">metrics.heightPixels</td>
+<td class="org-left">屏幕高 px</td>
 </tr>
 
 <tr>
-<td class="left">metrics.widthPixels</td>
-<td class="left">屏幕宽 px</td>
+<td class="org-left">metrics.widthPixels</td>
+<td class="org-left">屏幕宽 px</td>
 </tr>
 
 <tr>
-<td class="left">metrics.densityDpi</td>
-<td class="left">密度(dpi)</td>
+<td class="org-left">metrics.densityDpi</td>
+<td class="org-left">密度(dpi)</td>
 </tr>
 
 <tr>
-<td class="left">metrics.density</td>
-<td class="left">densityDpi/160 = dpi/160</td>
+<td class="org-left">metrics.density</td>
+<td class="org-left">densityDpi/160 = dpi/160</td>
 </tr>
 </tbody>
 </table>

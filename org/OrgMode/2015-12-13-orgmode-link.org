@@ -10,7 +10,7 @@
 layout: post
 title: Orgmode手册3:链接
 categories: [OrgMode]
-tag: [OrgMode, Translate]
+tag: [orgmode, translate]
 ---
 #+END_HTML
 

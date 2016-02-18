@@ -9,7 +9,8 @@
 ---
 layout: post
 title: 对函数 f(x) 求导
-categories: [Lisp, Reading]
+categories: [Lisp]
+tags: [elisp, sicp]
 ---
 #+END_HTML
 

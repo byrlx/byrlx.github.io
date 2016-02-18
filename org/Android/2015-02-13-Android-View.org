@@ -7,7 +7,7 @@
 layout: post
 title: Android View笔记
 tag: [Android]
-category: [Android]
+category: [android]
 description: [Do some learnings/records/tips about android view]
 ---
 #+END_HTML

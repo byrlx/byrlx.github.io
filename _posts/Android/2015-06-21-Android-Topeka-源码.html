@@ -2,34 +2,30 @@
 layout: post
 title: 开源项目Topeka的Material Design 
 description: [Android Topeka是一个典型的Material Design风格的应用, 本文同过对其代码的学习, 更深入的了解Material Design在Android项目中的应用]
-category: [Android]
+category: [android]
 ---
 
-<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">项目配置</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">项目配置</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <ol class="org-ol">
 <li>minSdkVersion: 21
 由于Material Design是随着Android5.0发布, 所以一般情况下支持的sdk最小版本为21, 如果要再5.0之前的系统使用, 
-可以参考Android开发者官网关于Material Desing兼容性的相关文章.
-</li>
+可以参考Android开发者官网关于Material Desing兼容性的相关文章.</li>
 <li>使用的依赖
 <ul class="org-ul">
-<li>compile 'com.android.support:cardview-v7:22.2.0'
-</li>
-<li>compile 'com.android.support:recyclerview-v7:22.2.0'
-</li>
-</ul>
-</li>
+<li>compile 'com.android.support:cardview-v7:22.2.0'</li>
+<li>compile 'com.android.support:recyclerview-v7:22.2.0'</li>
+</ul></li>
 </ol>
 </div>
 </div>
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">项目结构</h2>
-<div class="outline-text-2" id="text-2">
-</div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1">组件</h3>
-<div class="outline-text-3" id="text-2-1">
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">项目结构</h2>
+<div class="outline-text-2" id="text-orgheadline6">
+</div><div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">组件</h3>
+<div class="outline-text-3" id="text-orgheadline2">
 <p>
 该项目的AndroidManifest.xml中只有三个Activity.其中登陆界面是默认的启动界面.
 </p>
@@ -53,12 +49,12 @@ category: [Android]
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2">自定义Theme</h3>
-<div class="outline-text-3" id="text-2-2">
-</div><div id="outline-container-sec-2-2-1" class="outline-4">
-<h4 id="sec-2-2-1">该程序使用了自定义的Theme, 该Theme定义在style.xml文件中, 名称为Topeka.</h4>
-<div class="outline-text-4" id="text-2-2-1">
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">自定义Theme</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+</div><div id="outline-container-orgheadline3" class="outline-4">
+<h4 id="orgheadline3">该程序使用了自定义的Theme, 该Theme定义在style.xml文件中, 名称为Topeka.</h4>
+<div class="outline-text-4" id="text-orgheadline3">
 <div class="org-src-container">
 
 <pre class="src src-xml">&lt;application
@@ -72,9 +68,9 @@ category: [Android]
 </div>
 </div>
 </div>
-<div id="outline-container-sec-2-2-2" class="outline-4">
-<h4 id="sec-2-2-2">Topeka的实现, 先看下源码.</h4>
-<div class="outline-text-4" id="text-2-2-2">
+<div id="outline-container-orgheadline4" class="outline-4">
+<h4 id="orgheadline4">Topeka的实现, 先看下源码.</h4>
+<div class="outline-text-4" id="text-orgheadline4">
 <div class="org-src-container">
 
 <pre class="src src-xml">&lt;style name="Topeka" parent="@android:style/Theme.Material.Light.NoActionBar"&gt;
@@ -102,75 +98,75 @@ category: [Android]
 
 
 <colgroup>
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 </colgroup>
 <thead>
 <tr>
-<th scope="col" class="left">Name</th>
-<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="org-left">Name</th>
+<th scope="col" class="org-left">&#xa0;</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="left">colorPrimary</td>
-<td class="left">标题栏颜色</td>
+<td class="org-left">colorPrimary</td>
+<td class="org-left">标题栏颜色</td>
 </tr>
 
 <tr>
-<td class="left">colorPrimaryDark</td>
-<td class="left">状态栏颜色</td>
+<td class="org-left">colorPrimaryDark</td>
+<td class="org-left">状态栏颜色</td>
 </tr>
 
 <tr>
-<td class="left">colorAccent</td>
-<td class="left">像是checkbox颜色?</td>
+<td class="org-left">colorAccent</td>
+<td class="org-left">像是checkbox颜色?</td>
 </tr>
 
 <tr>
-<td class="left">textColorPrimary</td>
-<td class="left">标题栏字体</td>
+<td class="org-left">textColorPrimary</td>
+<td class="org-left">标题栏字体</td>
 </tr>
 
 <tr>
-<td class="left">textColorPrimaryInverse</td>
-<td class="left">&#xa0;</td>
+<td class="org-left">textColorPrimaryInverse</td>
+<td class="org-left">&#xa0;</td>
 </tr>
 
 <tr>
-<td class="left">statusBarColor</td>
-<td class="left">状态栏颜色</td>
+<td class="org-left">statusBarColor</td>
+<td class="org-left">状态栏颜色</td>
 </tr>
 
 <tr>
-<td class="left">textColor</td>
-<td class="left">字体颜色</td>
+<td class="org-left">textColor</td>
+<td class="org-left">字体颜色</td>
 </tr>
 
 <tr>
-<td class="left">radioButtonStyle</td>
-<td class="left">自定义style</td>
+<td class="org-left">radioButtonStyle</td>
+<td class="org-left">自定义style</td>
 </tr>
 
 <tr>
-<td class="left">windowContentTransitions</td>
-<td class="left">动画转化效果</td>
+<td class="org-left">windowContentTransitions</td>
+<td class="org-left">动画转化效果</td>
 </tr>
 
 <tr>
-<td class="left">titleTextAppearance</td>
-<td class="left">自定义style</td>
+<td class="org-left">titleTextAppearance</td>
+<td class="org-left">自定义style</td>
 </tr>
 
 <tr>
-<td class="left">buttonStyle</td>
-<td class="left">自定义style</td>
+<td class="org-left">buttonStyle</td>
+<td class="org-left">自定义style</td>
 </tr>
 
 <tr>
-<td class="left">windowBackground</td>
-<td class="left">window背景</td>
+<td class="org-left">windowBackground</td>
+<td class="org-left">window背景</td>
 </tr>
 </tbody>
 </table>
@@ -211,20 +207,20 @@ ripple用于设置水纹效果.
 </div>
 </div>
 </div>
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3">登陆界面 SignInActivity.java</h2>
-<div class="outline-text-2" id="text-3">
-</div><div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1">onCreate()</h3>
-<div class="outline-text-3" id="text-3-1">
+<div id="outline-container-orgheadline13" class="outline-2">
+<h2 id="orgheadline13">登陆界面 SignInActivity.java</h2>
+<div class="outline-text-2" id="text-orgheadline13">
+</div><div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">onCreate()</h3>
+<div class="outline-text-3" id="text-orgheadline7">
 <p>
 在onCreate函数中,直接通过FragmentManager启动一个SignInFragment的实例来显示登录界面.
 </p>
 </div>
 </div>
-<div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2">SignInFragment</h3>
-<div class="outline-text-3" id="text-3-2">
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">SignInFragment</h3>
+<div class="outline-text-3" id="text-orgheadline8">
 <p>
 SignInFragment会在onCreateView中会判断是否需要登录, 如果不需要则直接进入CategoryActivity页面,
 如果需要, 则显示登录信息, 输入登录信息后, 再跳转到CategoryActivity页面.
@@ -232,17 +228,17 @@ SignInFragment会在onCreateView中会判断是否需要登录, 如果不需要�
 </p>
 </div>
 </div>
-<div id="outline-container-sec-3-3" class="outline-3">
-<h3 id="sec-3-3">Material Design 1: DonFab (Floating Button)</h3>
-<div class="outline-text-3" id="text-3-3">
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">Material Design 1: DonFab (Floating Button)</h3>
+<div class="outline-text-3" id="text-orgheadline9">
 <p>
 在SignInFragment中会让用户填写姓名和选择头像, 当用户填写完FirstName后, 左下角就会出现一个floating button,
 点击即可进入Category Activity, 这个Floating Button即是Material Design的风格之一.
 </p>
 </div>
-<div id="outline-container-sec-3-3-1" class="outline-4">
-<h4 id="sec-3-3-1">实现</h4>
-<div class="outline-text-4" id="text-3-3-1">
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10">实现</h4>
+<div class="outline-text-4" id="text-orgheadline10">
 <p>
 SignInFragment中FloatingButton的具体实现为DoneFab类, 该类继承自 FloatingActionButton,后者也是该应用的
 自定义view, 继承自ImageView.
@@ -264,12 +260,12 @@ SignInFragment中FloatingButton的具体实现为DoneFab类, 该类继承自 Flo
 </div>
 
 <ol class="org-ol">
-<li>在Material的主题中,通过设置view的elevation即可让主题呈现出阴影效果.
-</li>
-<li>通过重写RoundOutlineProvider()函数来设置button的size大小.
-</li>
-<li>通过使用自定义backgroundResource来设置按钮的水纹点击效果, holo_green_dark即为
+<li>在Material的主题中,通过设置view的elevation即可让主题呈现出阴影效果.</li>
+<li>通过重写RoundOutlineProvider()函数来设置button的size大小.</li>
+<li><p>
+通过使用自定义backgroundResource来设置按钮的水纹点击效果, holo_green_dark即为
    水纹颜色.
+</p>
 <div class="org-src-container">
 
 <pre class="src src-java">&lt;ripple xmlns:android="http://schemas.android.com/apk/res/android"
@@ -277,27 +273,28 @@ SignInFragment中FloatingButton的具体实现为DoneFab类, 该类继承自 Flo
     &lt;item android:drawable="@android:color/white" /&gt;
 &lt;/ripple&gt;
 </pre>
-</div>
-</li>
+</div></li>
 </ol>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-3-4" class="outline-3">
-<h3 id="sec-3-4">Material Design 2: 动画过渡</h3>
-<div class="outline-text-3" id="text-3-4">
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11">Material Design 2: 动画过渡</h3>
+<div class="outline-text-3" id="text-orgheadline11">
 <p>
 当输入完名称, 点击确定按钮时, 按钮的水纹效果完成后, 会进入CategoryActivity界面, 从视觉上来看, 
 确定按钮从登陆界面的右下角移动到了Category界面的左上角,并变成了头像. 这种控件在两个activity之间的
 移动也是MaterialDesign的一种风格.
 </p>
 </div>
-<div id="outline-container-sec-3-4-1" class="outline-4">
-<h4 id="sec-3-4-1">实现</h4>
-<div class="outline-text-4" id="text-3-4-1">
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12">实现</h4>
+<div class="outline-text-4" id="text-orgheadline12">
 <ol class="org-ol">
-<li>当单击登录界面的确定按钮时, 会执行performSignInWithTransition()函数跳转到
+<li><p>
+当单击登录界面的确定按钮时, 会执行performSignInWithTransition()函数跳转到
 CategoryActivity中.该函数的实现如下:
+</p>
 
 <div class="org-src-container">
 
@@ -317,14 +314,14 @@ CategoryActivity中.该函数的实现如下:
 makeSceneTransitionAnimation()生成.该函数接受三个参数:
 </p>
 <ul class="org-ul">
-<li>activity: 包含 <b>共享元素</b> 的activity. 在这里即为SignInActivity.
-</li>
-<li>view: 共享元素在activity中的值. 在这里即为SignInFragment中的确定按钮.
-</li>
-<li>name: 目标activity中 <b>共享元素</b> 的transitionName值. 
+<li>activity: 包含 <b>共享元素</b> 的activity. 在这里即为SignInActivity.</li>
+<li>view: 共享元素在activity中的值. 在这里即为SignInFragment中的确定按钮.</li>
+<li><p>
+name: 目标activity中 <b>共享元素</b> 的transitionName值. 
 这里为CatogeryActivity中该名称的view.打开Category的layout文件可以找transitionName值为
 name的值.可以看到该view即为category界面的头像.所以从登录界面跳刀category界面时, 右下角的登录按钮会
 变化为左上角的头像按钮.
+</p>
 
 <div class="org-src-container">
 
@@ -335,24 +332,22 @@ name的值.可以看到该view即为category界面的头像.所以从登录界�
     android:layout_marginEnd="@dimen/spacing_double"
     android:transitionName="@string/transition_avatar" /&gt;
 </pre>
-</div>
-</li>
-</ul>
-</li>
+</div></li>
+</ul></li>
 </ol>
 </div>
 </div>
 </div>
 </div>
-<div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4">Category界面</h2>
-<div class="outline-text-2" id="text-4">
-</div><div id="outline-container-sec-4-1" class="outline-3">
-<h3 id="sec-4-1">onCreate() and Layout</h3>
-<div class="outline-text-3" id="text-4-1">
-</div><div id="outline-container-sec-4-1-1" class="outline-4">
-<h4 id="sec-4-1-1">标题栏: toolbar</h4>
-<div class="outline-text-4" id="text-4-1-1">
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="orgheadline18">Category界面</h2>
+<div class="outline-text-2" id="text-orgheadline18">
+</div><div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16">onCreate() and Layout</h3>
+<div class="outline-text-3" id="text-orgheadline16">
+</div><div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14">标题栏: toolbar</h4>
+<div class="outline-text-4" id="text-orgheadline14">
 <p>
 该activity的标题栏使用了Toolbar这个控件, 然后再onCreate()函数中通过调用
 setActionBar(toolbar)将toolbar作为传统的actionbar使用.同时activity的
@@ -365,9 +360,9 @@ option menu也会添加到toolbar上.
 </div>
 </div>
 
-<div id="outline-container-sec-4-1-2" class="outline-4">
-<h4 id="sec-4-1-2">CategoryGridFragment</h4>
-<div class="outline-text-4" id="text-4-1-2">
+<div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15">CategoryGridFragment</h4>
+<div class="outline-text-4" id="text-orgheadline15">
 <p>
 该fragment使用了GridView来显示目录列表.每个列表项由一个图片和文字构成.
 使用到的gridview属性
@@ -376,35 +371,35 @@ option menu也会添加到toolbar上.
 
 
 <colgroup>
-<col  class="left" />
+<col  class="org-left" />
 
-<col  class="left" />
+<col  class="org-left" />
 </colgroup>
 <thead>
 <tr>
-<th scope="col" class="left">&#xa0;</th>
-<th scope="col" class="left">&#xa0;</th>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">&#xa0;</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="left">drawSelectorOnTop</td>
-<td class="left">选中条目的时候颜色是否显示在上边</td>
+<td class="org-left">drawSelectorOnTop</td>
+<td class="org-left">选中条目的时候颜色是否显示在上边</td>
 </tr>
 
 <tr>
-<td class="left">listSelector</td>
-<td class="left">选中条目时的可绘制对象</td>
+<td class="org-left">listSelector</td>
+<td class="org-left">选中条目时的可绘制对象</td>
 </tr>
 
 <tr>
-<td class="left">clipToPadding</td>
-<td class="left">如果ListView/GridView设置了paddingTop/Bottom. 该值为true,滚动时padding不会消失. false会消失.</td>
+<td class="org-left">clipToPadding</td>
+<td class="org-left">如果ListView/GridView设置了paddingTop/Bottom. 该值为true,滚动时padding不会消失. false会消失.</td>
 </tr>
 
 <tr>
-<td class="left">scrollBarStyle</td>
-<td class="left">outsideOverlay, 滚动时显示滚动条</td>
+<td class="org-left">scrollBarStyle</td>
+<td class="org-left">outsideOverlay, 滚动时显示滚动条</td>
 </tr>
 </tbody>
 </table>
@@ -428,9 +423,9 @@ listSelector同样使用了ripple风格. 通过设置mask的shape可以设置水
 </div>
 </div>
 </div>
-<div id="outline-container-sec-4-2" class="outline-3">
-<h3 id="sec-4-2">Material Design 3: 多动画过渡</h3>
-<div class="outline-text-3" id="text-4-2">
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17">Material Design 3: 多动画过渡</h3>
+<div class="outline-text-3" id="text-orgheadline17">
 <p>
 从category界面选中某一项会打开该类别的答题界面, 在页面切换过程中,
 该项的文字栏会变成下一页的标题栏, 而头像会变成播放按钮.这种同时有多个
@@ -494,6 +489,6 @@ activity.startActivity(QuizActivity.getStartIntent(activity, category), transiti
 </div>
 </div>
 </div>
-<div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5">答题页</h2>
+<div id="outline-container-orgheadline19" class="outline-2">
+<h2 id="orgheadline19">答题页</h2>
 </div>

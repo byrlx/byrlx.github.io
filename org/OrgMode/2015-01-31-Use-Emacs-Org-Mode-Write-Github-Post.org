@@ -9,7 +9,7 @@
 layout: post
 title: Use Emacs OrgMode Write Github Post
 category: [OrgMode]
-tag: [Emacs, OrgMode]
+tag: [emacs, orgmode]
 description: [A brief description about how to write post with orgmode]
 ---
 #+END_HTML

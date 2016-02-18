@@ -10,6 +10,7 @@
 layout: post
 title: Emacs gnus 的日常使用
 categories: [Emacs]
+tags: [emacs]
 ---
 #+END_HTML
 * 读取Gmail邮件

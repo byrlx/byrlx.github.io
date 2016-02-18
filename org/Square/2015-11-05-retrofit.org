@@ -9,8 +9,8 @@
 ---
 layout: post
 title: Retrofit之项目介绍 
-tag: [Java, Android, Square]
-categories: [Square]
+tag: [java, android, square]
+categories: [Java]
 description: [retrofit源码阅读笔记]
 ---
 #+END_HTML
@@ -38,19 +38,19 @@ retrofit库可以在[[http://search.maven.org/#search%7Cga%7C1%7Cretrofit][maven
 </dependency>
   #+END_SRC
 + Gradle. 如果与服务端的请求和结果都是json的话,需要gson converter进行转化, 因为要把该库也添加上.
-  #+BEGIN_SRC 
+  #+BEGIN_SRC  xml
  compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
  compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2' 
   #+END_SRC
 + 混淆配置
   如果项目中使用混淆的话, 需要在混淆文件中假如如下配置
-  #+BEGIN_SRC 
+  #+BEGIN_EXAMPLE 
 -dontwarn retrofit.**
 -keep class retrofit.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
   
-  #+END_SRC
+  #+END_EXAMPLE
 * 程序示例
 这部分从一个简单的程序开始, 展示retrofit的使用,并通过对这个程序的进一步介绍retrofit的各种功能.
 这部分内容大多参考自 [[https://futurestud.io/blog/retrofit-getting-started-and-android-client/]].
@@ -82,7 +82,7 @@ public interface Client {
    的相对地址全部覆盖掉. 举例: base地址为"http://a/b", GET参数为"/c/d", 那么最后的请求地址为"http://a/c/d",
    因此,如果base地址本身已经是相对地址, 那么GET/POST的参数不能以"/"开头.
 3. <<主程序中实现get请求>>
-   #+BEGIN_SRC 
+   #+BEGIN_SRC  java
 public class MainActivity {
     ....
     public static final String SERVER_URL = "http://10.10.10.10/account";

@@ -10,7 +10,7 @@
 layout: post
 title: 打造Emacs编程环境
 categories: [Emacs]
-tag: [Emacs]
+tag: [emacs, ide]
 ---
 #+END_HTML
 
