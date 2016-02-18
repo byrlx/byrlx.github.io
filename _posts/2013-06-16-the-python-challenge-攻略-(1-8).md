@@ -1,6 +1,7 @@
 ---
 layout: post
 title: The python challenge 攻略(1-8)
+category: Life
 tag: [Tech]
 description: [Answers about the python challenge]
 ---

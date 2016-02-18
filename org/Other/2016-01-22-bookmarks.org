@@ -9,7 +9,7 @@
 ---
 layout: post
 title: Useful links with description
-tag: [Life]
+Category: [Life]
 ---
 #+END_HTML
 * Links

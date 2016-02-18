@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Vim and the plugins
+category: Life
 tag: [Tech]
 description: [The vim plugins I use]
 ---

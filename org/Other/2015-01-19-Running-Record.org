@@ -8,7 +8,7 @@
 ---
 layout: post
 title: Running Record
-tag: [Life]
+Category: [Life]
 description: [Run! Run! Run!]
 ---
 #+END_HTML

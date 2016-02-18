@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Welcome 'ack' be the new member of my toolbox
+category: Life
 tag: [Tech]
 description: [Introduce to a fast search tool: ack-grep]
 ---

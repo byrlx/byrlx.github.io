@@ -2,6 +2,7 @@
 layout: post
 title: The python challenge 攻略(9-16)
 description: [Answers about python challenge, part 2]
+category: Life
 tag: [Tech]
 ---
 
