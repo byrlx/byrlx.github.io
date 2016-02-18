@@ -1,6 +1,6 @@
 ---
 layout: post
-title: What do I learn from the project
+title: 项目总结
 category: Life
 tag: [Tech]
 description: [Thought about my recent project]

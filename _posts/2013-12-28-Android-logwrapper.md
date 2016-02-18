@@ -24,10 +24,10 @@ description: [logwrapper可以将用标准输出函数写的内容重定向到lo
 如下图。
 
 使用logwrapper后，ls的结果没有输出到标准输出。
-![ls with logwrapper]({{root_url}}/images/ls.png "lslogwrapper")
+![ls with logwrapper]({{root_url}}/public/img/ls.png "lslogwrapper")
 
 在logcat抓的log中发现了上面ls命令的结果。
-![logcat with logwrapper]({{root_url}}/images/logwrapper.png "logwrapper")
+![logcat with logwrapper]({{root_url}}/public/img/logwrapper.png "logwrapper")
 
 ##### clogwrapper 代码
 

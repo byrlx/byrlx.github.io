@@ -31,7 +31,7 @@ description: [The vim plugins I use]
 文件相应的定义处。同时，如果在代码文件中不停的跳转，该“窗口”的光标也会跟着自动跳跃
 到相关的函数名处。
 
-![taglist.vim]({{root_url}}/images/taglist.png "taglist.vim")
+![taglist.vim]({{root_url}}/public/img/taglist.png "taglist.vim")
 
 默认情况，进入vim后左边的“窗口”不会启动，可以通过修改vimrc，加入*"let Tlist_Auto_Open=1"*
 将其设为进入vim自动启动。
@@ -48,7 +48,7 @@ taglist 窗口的宽度（高度，适用于新窗口以水平方式打开)。
 该插件可以让你在vim里打开一个窗口执行shell命令。对一些简单的shell命令，用起来还
 蛮方便的。
 
-![conque.vim]({{root_url}}/images/conque.png "conque.vim")
+![conque.vim]({{root_url}}/public/img/conque.png "conque.vim")
 
 常用命令“ :ConqueTermSplit bash”。
 
@@ -59,16 +59,16 @@ taglist 窗口的宽度（高度，适用于新窗口以水平方式打开)。
 安装以后，可以通过“:Ack xx”在命令模式下使用ack命令，命令结果默认会输出到vim底端新开启的“窗口”中，
 通过上下选择不同的结果，可以跳转到相应文件的相应行。
 
-![ack.vim]({{root_url}}/images/ack.png "ack.vim")
+![ack.vim]({{root_url}}/public/img/ack.png "ack.vim")
 
 #### 4. [matrix.vim](http://www.vim.org/scripts/script.php?script_id=1189)
 
 一个很有趣的插件，让vim窗口变成《黑客帝国》。
 
-![matrix.vim]({{root_url}}/images/matrix.png "matrix.vim")
+![matrix.vim]({{root_url}}/public/img/matrix.png "matrix.vim")
 
 #### 5. [minibufexpl.vim](http://www.vim.org/scripts/script.php?script_id=159)
 
 很实用的插件，如果你打开多个文件，会自动在最上方开一个类似“tab”的窗口，显示每个打开的文件名称，可以使用TAB键在文件名之间移动，按下回车即可以切换到该文件的buffer。
 
-![minibuf.vim]({{root_url}}/images/minibufexpl.png "minibufexpl.vim")
+![minibuf.vim]({{root_url}}/public/img/minibufexpl.png "minibufexpl.vim")
