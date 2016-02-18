@@ -26,18 +26,19 @@ ga:
 
 # disqus 设置
 disqus:
-  shortname: LuisXu
+  shortname: xuzhengchao
 
 # 主题设置，自动激活某个标签
 active: Lisp
 
 # 首页除了最新文章外显示分类
 cates: 
-  - Lisp
+  - Android
+  - Emacs
 
 # 中文本地化
 locals:
   tags: Tags
   about: About
-  newest: Newest Post
-  archive: ALL
+  newest: Newest
+  archive: All
