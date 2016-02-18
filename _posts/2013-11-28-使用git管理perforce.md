@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 使用 git-p4 管理 perforece
-tag: [Tech, Git]
+tag: [Tech, git]
 description: [Use git-p4 to manage perforce repo as git repo]
 ---
 

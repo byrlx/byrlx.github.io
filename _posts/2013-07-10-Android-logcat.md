@@ -2,7 +2,7 @@
 layout: post
 title: Android Logcat
 category: Android
-tags: [Android]
+tags: [android]
 ---
 
 这篇文章介绍android系统中录log的工具 logcat.

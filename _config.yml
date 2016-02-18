@@ -3,14 +3,14 @@ paginate: 10
 
 # 作者信息
 author: 
-  name: Zhengchao Xu
+  name: Luis Xu
   email: xuzhengchaojob@gmail.com
   link: http://xuzhengchao.com
   github: http://github.com/byrlx
   music: http://book.douban.com/people/134104578
 
 # 站点信息
-title: Zhengchao Xu Writings
+title: Luis Xu Writings
 description: Things a code monkey do at spare time
 url: http://xuzhengchao.com
 rss_url: /pages/atom.xml
@@ -26,19 +26,18 @@ ga:
 
 # disqus 设置
 disqus:
-  shortname: xuzhengchao
+  shortname: LuisXu
 
 # 主题设置，自动激活某个标签
 active: Lisp
 
 # 首页除了最新文章外显示分类
 cates: 
-  - Android
-  - Emacs
+  - Lisp
 
 # 中文本地化
 locals:
   tags: Tags
   about: About
-  newest: Newest
-  archive: All
+  newest: Newest Post
+  archive: ALL
