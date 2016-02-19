@@ -1,12 +1,11 @@
 ---
 layout: post
-title: Welcome 'ack' be the new member of my toolbox
+title: 武器库新成员: ack
 category: Life
 tag: [Tech]
 description: [Introduce to a fast search tool: ack-grep]
 ---
 
-##
 
 有一次跟台湾同事聊天，聊到在代码库里找key word，我就抱怨说find+grep 的时间太长，
 几十G的代码库，往往要找上一个多小时。同事就给我推荐了‘ack’这个工具，说这个tool搜代码比较快一些。
