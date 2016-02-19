@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 武器库新成员: ack
+title: 武器库新成员 -- ack
 category: Life
 tag: [Tech]
 description: [Introduce to a fast search tool: ack-grep]
