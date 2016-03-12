@@ -26,3 +26,5 @@ Category: [Life]
     从4.4起, Android只允许默认的短信程序向provider中写入短信.
 *** [[http://stackoverflow.com/questions/20542456/view-setbackground-throws-nosuchmethoderror][setBackGround]] 是API16之后(android4.1)才添加
     因此在4.0的机器上会出现NoSuchMethod错误.
+** [[https://medium.com/google-developers/intercepting-everything-with-coordinatorlayout-behaviors-8c6adc140c26#.q3rhfxmvn][CoordinatorLayout and Behavior]]
+这篇文章对Behavior讲解的很清楚. 
