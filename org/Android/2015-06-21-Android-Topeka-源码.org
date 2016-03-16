@@ -9,7 +9,7 @@
 layout: post
 title: 开源项目Topeka的Material Design 
 description: [Android Topeka是一个典型的Material Design风格的应用, 本文同过对其代码的学习, 更深入的了解Material Design在Android项目中的应用]
-category: [Android]
+category: [Android-Java]
 tag: [android]
 ---
 #+END_HTML
