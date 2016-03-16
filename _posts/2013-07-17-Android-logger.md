@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Android Logger
-category: Android
+category: Android-Java
 tags: [android]
 ---
 

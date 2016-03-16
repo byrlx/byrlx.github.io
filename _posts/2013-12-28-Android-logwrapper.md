@@ -2,7 +2,7 @@
 layout: post
 title: Android logwrapper
 tag: [android]
-category: [Android]
+category: [Android-Java]
 description: [logwrapper可以将用标准输出函数写的内容重定向到log buffer中]
 ---
 
