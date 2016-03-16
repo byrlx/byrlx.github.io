@@ -11,7 +11,7 @@ layout: post
 title: Retrofit之源码解读 
 tag: [java, android, square]
 description: [retrofit源码阅读笔记]
-categories: [Java]
+categories: [Android-Java]
 ---
 #+END_HTML
 

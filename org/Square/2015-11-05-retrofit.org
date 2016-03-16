@@ -10,7 +10,7 @@
 layout: post
 title: Retrofit之项目介绍 
 tag: [java, android, square]
-categories: [Java]
+categories: [Android-Java]
 description: [retrofit源码阅读笔记]
 ---
 #+END_HTML
