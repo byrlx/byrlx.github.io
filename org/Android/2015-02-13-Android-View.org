@@ -6,7 +6,7 @@
 ---
 layout: post
 title: Android View笔记
-category: [Android-Java]
+category: [Android]
 tag: [android]
 description: [Do some learnings/records/tips about android view]
 ---

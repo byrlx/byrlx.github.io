@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Android Logcat
-category: Android-Java
+category: Android
 tags: [android]
 ---
 
