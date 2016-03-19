@@ -1227,8 +1227,8 @@ h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small,
 }
 
 h1, .h1, h2, .h2, h3, .h3 {
-    margin-top: 23px;
-    margin-bottom: 7px
+    margin-top: 18px;
+    margin-bottom: 5px
 }
 
 h1 small, .h1 small, h2 small, .h2 small, h3 small, .h3 small, h1 .small,
@@ -1247,11 +1247,11 @@ h4 small, .h4 small, h5 small, .h5 small, h6 small, .h6 small, h4 .small,
 }
 
 h1, .h1 {
-    font-size: 30px
+    font-size: 31px
 }
 
 h2, .h2 {
-    font-size: 24px
+    font-size: 20px
 }
 
 h3, .h3 {
