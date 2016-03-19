@@ -128,7 +128,7 @@ right. 那这五者之间的关系为:
 </div>
 
 <div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4">2-3树的平衡性维持</h3>
+<h3 id="orgheadline4">2-3树的规则维持</h3>
 <div class="outline-text-3" id="text-orgheadline4">
 <p>
 2-3树的数据插入并不想前面的二叉树那么简单, 因为2-3的目的是"尽量"
@@ -202,11 +202,11 @@ right. 那这五者之间的关系为:
 </div>
 
 <div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8">红黑树的平衡性维持</h3>
+<h3 id="orgheadline8">红黑树的规则维持</h3>
 <div class="outline-text-3" id="text-orgheadline8">
 <p>
 既然红黑树本质上可以是2-3树, 那么基于2-3树的平衡维护规则同样可以推导出
-红黑树的平衡性维持. 红黑树规定新插入节点的颜色必须是红色, 因为前面讲过
+红黑树的规则维持. 红黑树规定新插入节点的颜色必须是红色, 因为前面讲过
 红节点可以和其第一个祖父节点结合, 形成2-3树中的 "3-" 或 "4-" 节点, 所以我们
 可以很方便的使用2-3树的平衡规则.
 </p>
@@ -272,4 +272,232 @@ right. 那这五者之间的关系为:
 </ol>
 </div>
 </div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9">红黑树Java实现</h2>
+<div class="outline-text-2" id="text-orgheadline9">
+<p>
+通过前面<a href="#orgheadline5">红黑树</a>一节的描述, 应该不难实现其代码. 这里使用了Java代码.
+</p>
+
+<p>
+下面代码是节点的实现, 每个节点被创建是都被设成了红色, 因为<a href="#orgheadline8">红黑树的规则维持</a>
+需要上溯, 所以定义了一个变量parent指向其父节点.
+</p>
+<pre class="example">
+private class Node {
+    int data;           //存放的数据
+    int color;          //该节点颜色(也可以理解为其父节点到该节点的链接的颜色)
+    int blackHeight;    //该节点的黑高度
+
+    Node left;    //左子树
+    Node right;   //右子树
+    Node parent;  //指向父节点
+
+    Node(int data) {
+        this.data = data;
+        color = RED;
+        blackHeight = 0;
+    }
+}
+</pre>
+
+<p>
+下面代码是<a href="#orgheadline6">左旋转</a>和<a href="#orgheadline7">右旋转</a>的代码, 注意这里要修改多个"指针", 尤其是parent.
+同时也要注意旋转后root是否也需要修改的问题.
+链表操作比较熟练的话应该没什么问题.
+</p>
+<pre class="example">
+private Node rotateLeft(Node node) {
+        Node right = node.right;
+        if (root == node) {
+            root = right;
+        }
+
+        node.right = right.left;
+        if(node.right != null) {
+            node.right.parent = node.parent;
+        }
+
+        right.left = node;
+        right.parent = node.parent;
+        node.parent = right;
+
+        //更改parent
+        if (right.parent != null) {
+            if (right.parent.left == node) {
+                right.parent.left = right;
+            } else {
+                right.parent.right = right;
+            }
+        }
+
+        right.color = node.color;
+        node.color = RED;
+
+        return right;
+    }
+
+    private Node rotateRight(Node node) {
+        Node left = node.left;
+        if (root == node) {
+            root = left;
+        }
+
+        node.left = left.right;
+        if(node.left != null) {
+            node.left.parent = node.parent;
+        }
+
+        left.right = node;
+        left.parent = node.parent;
+        node.parent = left;
+
+        if (left.parent != null) {
+            if (left.parent.left == node) {
+                left.parent.left = left;
+            } else {
+                left.parent.right = left;
+            }
+        }
+
+        left.color = node.color;
+        node.color = RED;
+
+        return left;
+    }
+</pre>
+
+<p>
+下面是红黑树的主要代码, insert()和resetTree()函数用于完成新节点的插入和插入后
+<a href="#orgheadline8">红黑树的规则维持</a>, 这里使用了一个while循环来进行一次维持后的上溯.
+</p>
+<pre class="example">
+/**
+ * 红黑树(Red-Black Tree)
+ */
+public class RbTree {
+    private static final int[] DATA = {19, 7, 30, 18, 11, 22, 3, 25, 26, 38, 20};
+    private static final int BLACK = 0;
+    private static final int RED = 1;
+
+    private Node root;
+
+    /**
+     * 基于数组构造红黑树
+     */
+    public void build(int[] data) {
+        for (int i = 0, len = data.length; i &lt; len; i++) {
+            Node newNode = new Node(data[i]);
+            insert(newNode);
+        }
+    }
+
+    /**
+     * 将新节点插入到root代表的红黑树,
+     * 新节点的颜色会先被设置为红色, 然后基于排序规则插入到红黑树,
+     * 如果插入后破坏了红黑树的任意规则, 则需要对红黑树进行重置
+     */
+    public void insert(Node newNode) {
+        //第一个节点设为root
+        if (root == null) {
+            root = newNode;
+            root.color = BLACK;
+            return;
+        }
+
+        //先将节点根据排序插入到指定的位置
+        Node cur = root;
+
+        //根据数据的大小先将新节点插入到"应该插入"的位置,
+        //注: 这有可能破坏红黑树的规则
+        while (cur != null) {
+            if (newNode.data &lt; cur.data) {
+                if (cur.left == null) {
+                    cur.left = newNode;
+                    newNode.parent = cur;
+                    break;
+                }
+                cur = cur.left;
+            } else {
+                if (cur.right == null) {
+                    cur.right = newNode;
+                    newNode.parent = cur;
+                    break;
+                }
+                cur = cur.right;
+            }
+        }
+
+        resetRbTree(newNode);
+    }
+
+    /**
+     * 如果一个节点的左右节点都为红色, 该使用该方法修改这个子树的
+     * 结构, 将两个子节点都改为黑色, 并且将该节点改为红色.
+     *
+     * @param node
+     */
+    private void flipColor(Node node) {
+        node.left.color = BLACK;
+        node.right.color = BLACK;
+        node.color = RED;
+    }
+
+    /**
+     * 重置红黑树, 因为新插入的节点可能会破坏红黑树的规则,
+     * 所以每次插入一个节点后都要看是否需要重置红黑树
+     */
+    private void resetRbTree(Node newNode) {
+        Node cur = newNode;
+
+        //提示, 这里父节点永远是其父节点的左节点
+        while (cur != root &amp;&amp; cur.color == RED) {
+            Node p = cur.parent;
+
+            //没有破坏红黑树, 直接返回
+            if (p.color == BLACK &amp;&amp; cur == p.left) {
+                break;
+            }
+
+            //父节点是黑点, 且新节点是父节点的右节点
+            else if (p.color == BLACK &amp;&amp; cur == p.right) {
+                //如果父节点的左节点也为红色, 则说明父节点的左右节点都为红色
+                if (p.left != null &amp;&amp; p.left.color == RED) {
+                    flipColor(p);
+                    cur = p;
+                    continue;
+                } else {
+                    rotateLeft(p);
+                    break;
+                }
+            }
+
+            //父节点是红色,
+            else if (p.color == RED) {
+                Node pp = p.parent;
+
+                //新节点是父节点的左节点, 先右旋转, 再flip
+                if (cur == p.left) {
+                    cur = rotateRight(pp);   //祖父节点右旋
+                    flipColor(cur);
+                } else {
+                    //新节点是父节点的右节点, 先左旋转, 再右旋转, 再flip
+                    rotateLeft(p);
+                    cur = rotateRight(pp);
+                    flipColor(cur);
+                }
+            }
+        }
+
+        if (cur == root &amp;&amp; cur.color == RED) {
+            cur.color = BLACK;
+        }
+    }
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10">红黑树Elisp实现(待完成)</h2>
 </div>
