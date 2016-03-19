@@ -9,7 +9,7 @@
 ---
 layout: post
 title: 红黑树
-categories: [Android]
+categories: [Java]
 tag: [java]
 ---
 #+END_HTML
