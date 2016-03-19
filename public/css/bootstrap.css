@@ -1226,9 +1226,13 @@ h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small,
     color: #777
 }
 
-h1, .h1, h2, .h2, h3, .h3 {
+h1, .h1, h2, .h2{
     margin-top: 18px;
     margin-bottom: 5px
+}
+h3, .h3 {
+    margin-top: 12px;
+    margin-bottom: 3px
 }
 
 h1 small, .h1 small, h2 small, .h2 small, h3 small, .h3 small, h1 .small,
@@ -1251,11 +1255,11 @@ h1, .h1 {
 }
 
 h2, .h2 {
-    font-size: 30px
+    font-size: 28px
 }
 
 h3, .h3 {
-    font-size: 22px
+    font-size: 21px
 }
 
 h4, .h4 {
