@@ -29,4 +29,13 @@ category: [Life]
 *** [[https://medium.com/google-developers/intercepting-everything-with-coordinatorlayout-behaviors-8c6adc140c26#.q3rhfxmvn][CoordinatorLayout and Behavior]]
  这篇文章对Behavior讲解的很清楚. 
 *** [[http://nerds.weddingpartyapp.com/tech/2014/12/24/implementing-an-event-bus-with-rxjava-rxbus/][使用RxJava实现event bus]]
-** [[http://bbs.hupu.com/15698397.html][马刺卡哇伊文章]]
+** 2. Java
+*** [[https://publicobject.com/2016/01/20/strict-naming-conventions-are-a-liability/][Your strict naming conventions are a liability]]
+ Jesse Wilson 在这篇文章里讨论了Java命名和其他机制(e.g. Json)之间的命名
+ 的转换问题.
+*** [[https://publicobject.com/2016/02/08/linkedhashmap-is-always-better-than-hashmap/][LinkedHashMap is always better than hashmap]]
+ 这篇文章里, 作者阐述了HashMap在迭代上的随机性.
+*** [[https://publicobject.com/2016/03/24/reflection-machines/][Reuse]]
+ 作者在该文章里通过反射和正则表达式两个例子, 阐述了重用的高效率性.
+** 3. Fancy
+*** [[http://bbs.hupu.com/15698397.html][马刺卡哇伊文章]]
