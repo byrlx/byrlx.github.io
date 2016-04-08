@@ -83,3 +83,19 @@ categories: [OrgMode]
 </ol>
 </div>
 </div>
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">让第一列自动显示行号的几个函数</h2>
+<div class="outline-text-2" id="text-orgheadline5">
+<ol class="org-ol">
+<li><code>#+TBLFM: $1=@-1+1::@2$1=1</code>
+   注意: 
+<ul class="org-ul">
+<li>如果用这个函数, 第一在函数上运行 "C-c C-c", 结果会显示不正确, 
+必需再重复一次快捷键.</li>
+<li>可以在表格的任一域内使用 "C-u C-u C-c C-c" 来显示正确结果.</li>
+</ul></li>
+<li><code>#+TBLFM: @3$1..@&gt;$1=@-1+1::@2$1=1</code></li>
+<li><code>#+TBLFM: $1=@#-1</code></li>
+</ol>
+</div>
+</div>
