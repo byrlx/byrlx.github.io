@@ -8,15 +8,17 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: Retrofit之源码解读 
+title: Retrofit源码1 ~ 为什么写一个interface就可以实现http请求 
 tag: [java, android, square]
 description: [retrofit源码阅读笔记]
 categories: [Java]
 ---
 #+END_HTML
 
-不了解Retrofit的人可以先参考这篇介绍文章[[http://xuzhengchao.com/2015/11/05/retrofit.html][Retrofit项目介绍]]
+本文学习的retrofit源码版本号: parent-2.0.0.
 
+不了解Retrofit的人可以先参考这篇介绍文章[[http://xuzhengchao.com/java/retrofit.html][Retrofit介绍]], 文章介绍了
+如何通过写一个简单的接口, 就可以实现
 * 使用Retrofit的一般步骤.
 在[[http://byrlx.github.io/2015-11/retrofit/][这篇]] 文章里我们创建了一个最简单的Retrofit程序, 定义了一个用户GET请求的Service Client, 
 并通过Retrofit来创建一个Client实例, 来实现具体的HTTP请求, 并将请求的结果转化为User对象.
