@@ -36,12 +36,12 @@ retrofit库可以在[[http://search.maven.org/#search%7Cga%7C1%7Cretrofit][maven
   <artifactId>retrofit</artifactId>
   <version>2.0.0-beta2</version>
 </dependency>
-  #+END_SRC
+  #+END_EXAMPLE
 + Gradle. 如果与服务端的请求和结果都是json的话,需要gson converter进行转化, 因为要把该库也添加上.
   #+BEGIN_SRC  xml
  compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
  compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2' 
-  #+END_SRC
+  #+END_EXAMPLE
 + 混淆配置
   如果项目中使用混淆的话, 需要在混淆文件中假如如下配置
   #+BEGIN_EXAMPLE 
@@ -59,20 +59,20 @@ retrofit库可以在[[http://search.maven.org/#search%7Cga%7C1%7Cretrofit][maven
 基于这个例子介绍一下retrofit的使用步骤:
 1. 用户类. 这段代码定义了用户类User, 每个用户包含三个基本信息:id, name, age; 
    通过retrofit请求用户信息时, 客户端返回用户的json信息, retrofit可以直接将json信息转化为用户类.
-   #+BEGIN_SRC java
+   #+BEGIN_EXAMPLE
 public class User {
     private int id;
     private String name;
     private int age;
 }
-#+END_SRC
+#+END_EXAMPLE
 2. 定义Client和GET请求接口
-   #+BEGIN_SRC java
+   #+BEGIN_EXAMPLE
 public interface Client {
     @GET("users")
     Call<List<User>>  getUsers();
 }
-#+END_SRC
+#+END_EXAMPLE
    这段代码定义了一个接口Client, 并定义了一个GET函数getUsers(), 该函数用户向服务器发送get请求获取所有的
    用户信息. 定义GET请求需要用GET注解来修饰函数, 注解的参数为uri的相对路径, 下一部分会定义URL的地址, 在
    发送GET请求时, retrofit会将GET的参数和服务器拼接.
@@ -99,7 +99,7 @@ public class MainActivity {
     ....
 }
    
-   #+END_SRC
+   #+END_EXAMPLE
    上述代码用来做实际的请求动作, 首先通过Retrofit Builder来基于各种参数(服务器地址, httpclient, converter)
    生成一个builder对象, 让后调用builder的build()函数生成一个retrofit对象.
    
@@ -111,7 +111,7 @@ public class MainActivity {
 如果项目中 *针对同一个server地址* 需要创建多个Retrofit Interface service,那么可以创建一个通用的ServiceGenerator类
 来生成service实例.
 
-#+BEGIN_SRC java
+#+BEGIN_EXAMPLE
 public class ServiceGenerator {
     public static final String BASE_URL = "";
 
@@ -129,22 +129,22 @@ public class ServiceGenerator {
 				      
 }
 
-#+END_SRC
+#+END_EXAMPLE
 
 这样在上一节的MainActivity中,可以直接使用ServiceGenerator来创建Client实例
 
-#+BEGIN_SRC java
+#+BEGIN_EXAMPLE
 
     Client client = ServiceGenerator.create(Client.class);
     Client call = client.getUsers();
     List<Users> result = call.execute().body();
 
-#+END_SRC
+#+END_EXAMPLE
 ** 帐号密码认证的ServiceGenerator类
 帐号密码是一种常见的认证方式, 通常将其加密后以放入到http头部的Authorization中
 进行请求认证.通过对OkHttpClient进行配置可以在retrofit中实现该方式. 
 
-#+BEGIN_SRC java
+#+BEGIN_EXAMPLE
     public static <T> T createService(Class<T> serviceClass){
 	createService(serviceClass, null, null);
     }
@@ -175,7 +175,7 @@ public class ServiceGenerator {
 	Retrofit retrofit = builder.client(httpClient).build();
 	return retrofit.create(serverClass);
     }
-#+END_SRC
+#+END_EXAMPLE
 
 上述代码通过修改OkHttpClient的相关参数来修改API请求的头部, 讲加密后的帐号和密码放入到
 Authorization中实现验证.
@@ -189,7 +189,7 @@ Authorization中实现验证.
 注: 关于oauth的介绍可以参考阮一峰老师的文章 [[http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html][理解OAuth2.0]].
 
 基于前面的代码, 重新写一个OAuth相关的createService()函数.
-#+BEGIN_SRC java
+#+BEGIN_EXAMPLE
 public static <T> T createService(Class<T> serviceClass, AccessToken token) {
     if (token != null) {
 	httpClient.interceptors().clear();
@@ -210,7 +210,7 @@ public static <T> T createService(Class<T> serviceClass, AccessToken token) {
 	return retrofit.create(serverClass);
     }
 }
-#+END_SRC
+#+END_EXAMPLE
 
 上面的代码通过创建一个定制的 *RequestInterceptor* 对象来配置httpClient, 在定制的对象中将token信息
 添加到Http表头的Authorization域. 不过一般情况下, Access Token并不是直接可以从服务器获取的, 
@@ -223,7 +223,7 @@ public static <T> T createService(Class<T> serviceClass, AccessToken token) {
    授权码的获取一般需要跳转到第三方api的一个相关的网页,网页中会询问用户是否允许用户
    app获取其在该网站的信息.如果用户点击允许, 第三方服务器就会生成一个授权码返回给用户.
    第一步先创建程序主界面:
-   #+BEGIN_SRC java
+   #+BEGIN_EXAMPLE
 public class LoginActivity extends Activity {
     //在第三方平台注册应用获取的clientId和secret
     private final String clientId = "your-client-id";
@@ -248,7 +248,7 @@ public class LoginActivity extends Activity {
         });
     }
 }
-   #+END_SRC
+   #+END_EXAMPLE
 
    上述代码定义了一个基本的Android界面, 界面只有一个按钮, 点击按钮会请求授权码(一般会跳转到一个授权界面).
    在请求中传入一个了回调地址, 如果用户授权一般第三方服务器带着授权码会跳到这个地址, 所以必须在请求授权码
@@ -268,11 +268,11 @@ public class LoginActivity extends Activity {
             android:scheme="your" />
     </intent-filter>
 </activity>  
-   #+END_SRC
+   #+END_EXAMPLE
 
    在onResume处理接受到的Intent.
    这里假设授权码在intent中传递并且key值为code(第三方平台的回调方式需要参考他们的文档).
-   #+BEGIN_SRC java
+   #+BEGIN_EXAMPLE
 @Override
 protected void onResume() {  
     super.onResume();
@@ -287,23 +287,23 @@ protected void onResume() {
         }
     }
 } 
-   #+END_SRC
+   #+END_EXAMPLE
 
    好, 到此为止,我们就已经获取到了授权码,下一步就是通过授权码获取Access Token. 
 2. 获取Access Token
    上一步获取到授权码后, 就可以向第三方的Access Token服务器发送请求获取token. 我们可以写一个retrofit服务
    来实现这个功能. 
-   #+BEGIN_SRC java
-public interface LoginService {  
+   #+BEGIN_EXAMPLE
+   public interface LoginService {  
     @POST("/token")
     Call<AccessToken> getAccessToken(
             @Query("code") String code,
             @Query("grant_type") String grantType);
 }
-   #+END_SRC
+   #+END_EXAMPLE
 
    这里的code就是上一步获取的授权码, grantType是授权类型. 然后用下面的代码加入到onResume获取成功的代码段中
-   #+BEGIN_SRC java
+   #+BEGIN_EXAMPLE
    if (code != null) {
             // get access token
             LoginService loginService = 
@@ -311,7 +311,7 @@ public interface LoginService {
             Call<AccessToken> call = loginService.getAccessToken(code, "authorization_code");
             AccessToken accessToken = call.execute().body();
    } 
-   #+END_SRC
+   #+END_EXAMPLE
 
 以上都是示例, 代码具体写法请参考相关第三方文档.
    

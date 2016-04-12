@@ -10,102 +10,210 @@ categories: [Java]
 本文学习的retrofit源码版本号: parent-2.0.0.
 </p>
 
-<p>
-不了解Retrofit的人可以先参考这篇介绍文章<a href="http://xuzhengchao.com/java/retrofit.html">Retrofit介绍</a>, 文章介绍了
-如何通过写一个简单的接口, 就可以实现
-</p>
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">使用Retrofit的一般步骤.</h2>
+<h2 id="orgheadline1">代码示例</h2>
 <div class="outline-text-2" id="text-orgheadline1">
 <p>
-在<a href="http://byrlx.github.io/2015-11/retrofit/">这篇</a> 文章里我们创建了一个最简单的Retrofit程序, 定义了一个用户GET请求的Service Client, 
-并通过Retrofit来创建一个Client实例, 来实现具体的HTTP请求, 并将请求的结果转化为User对象.
-所以一般来说, 使用retrofit的通常步骤为:
+不了解Retrofit的人可以先参考这篇介绍文章<a href="http://xuzhengchao.com/java/retrofit.html">Retrofit介绍</a>, 文章介绍了
+如何通过写一个简单的接口, 就可以实现一个http请求. 
 </p>
-<ol class="org-ol">
-<li>创建一个Retrofit实例.</li>
-<li>调用retrofit的create()函数创建一个接口的具体对象.
-接口为用户自定义的HTTP接口类, 并将其作为参数传递给create().</li>
-<li>用2生成的对象调用其定义的http请求函数.该函数返回一个Call对象.</li>
-<li>执行上一步返回的call对象的execute().body()获取http结果, 该结果返回的是对象.</li>
-</ol>
+
+<p>
+本文主要的内容就是介绍retrofit是如何实现的这个功能, 即只实现一个接口
+及一些接口api(这些api都被retrofit的注解"修饰"), 没有实现任何具体代码,
+就可以完成我们想要的http功能, retrofit到底在后面做了什么?
+</p>
+
+<p>
+下面的示例代码是揭开retrofit面纱的入口代码, 通过该代码可以从服务器获取用户列表
+</p>
+<pre class="example">
+//自定义接口
+public interface Client {
+    @GET("users")
+    Call&lt;List&lt;User&gt;&gt;  getUsers();
+}
+
+//使用retrofit来使用自己定义接口实现http请求
+public class MainActivity {
+    ....
+    public static final String SERVER_URL = "http://10.10.10.10/account";
+    private OkHttpClient okHttpClient = new OkHttpClient();
+    private Retrofit.Builder builder = new Retrofit.Builder()
+	.base_url(SERVER_URL)
+	.client(okHttpClient)
+	.addConvertFactory(GsonConvertFactory.create());
+
+    Retrofit retrofit = builder.build();
+    Client client = retrofit.create(Client.class);
+    Call&lt;List&lt;Users&gt;&gt; call = client.getUsers();
+    List&lt;Users&gt; result = call.execute().body();
+    ....
+}
+</pre>
 </div>
 </div>
-<div id="outline-container-orgheadline10" class="outline-2">
-<h2 id="orgheadline10">从示例代码入手追溯底层实现</h2>
-<div class="outline-text-2" id="text-orgheadline10">
-</div><div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2">Retrofit类使用动态代理创建接口代理</h3>
-<div class="outline-text-3" id="text-orgheadline2">
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">使用builder去创建一个retrofit实例</h2>
+<div class="outline-text-2" id="text-orgheadline2">
 <p>
-Retrofit的一个超好用的特点就是高度封装性:我们只需定义一个抽象接口和一系列抽象的请求函数, 
-retrofit就可以为我们生成一个该接口的具体类, 然后我们就可以用自己定义的接口函数实现具体的
-Http请求, 而无需关心具体http的实现, 这些retrofit都帮我们做了. 下面看一下这个类的代码:
-</p>
-<ol class="org-ol">
-<li><p>
-内部Builder类
+Retrofit类的源码使用了Builder设计模式, 该类只有一个私有的构造函数, 并且"几乎"没有
+任何的setter方法, 这样可以最大程序的保证retrofit对象的"不可变性".
 </p>
 
 <p>
-Retrofit使用了Builder设计模式, 不能直接通过 "new Retrofit()" 来创建一个
-retrofit对象, 而是需要调用其内部类Builder的build函数.
-从下面的代码看(实现细节省略), 这是一个典型的Builder模式, Builder类内部定义和Retrofit相同的变量, 
-并且其每一个setter()函数都会返回this. 最后通过build()函数new一个Retrofit
-对象并返回.
+下面是通过builder类可以设置的Retrofit成员变量:
 </p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">变量名</th>
+<th scope="col" class="org-left">默认值</th>
+<th scope="col" class="org-left">note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">platform</td>
+<td class="org-left">当前平台</td>
+<td class="org-left">当前运行平台:java/android/..</td>
+</tr>
+
+<tr>
+<td class="org-left">callFactory</td>
+<td class="org-left">OkHttpClient</td>
+<td class="org-left">定义构建Call对象的组件</td>
+</tr>
+
+<tr>
+<td class="org-left">baseUrl</td>
+<td class="org-left">N/A</td>
+<td class="org-left">服务器基本地址</td>
+</tr>
+
+<tr>
+<td class="org-left">converterFactories</td>
+<td class="org-left">N/A</td>
+<td class="org-left">对象的序列号/反序列化组件(例如Gson)</td>
+</tr>
+
+<tr>
+<td class="org-left">adapterFactories</td>
+<td class="org-left">该平台的默认adapterFactory</td>
+<td class="org-left">结果的适配类型(例如RxJava的Observable)(默认为OkHttp的Call类型)</td>
+</tr>
+
+<tr>
+<td class="org-left">callbackExecutor</td>
+<td class="org-left">该平台的executor</td>
+<td class="org-left">执行实际请求</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">当前运行平台</h2>
+<div class="outline-text-2" id="text-orgheadline3">
 <p>
-<b>注</b>: 从代码中可以看到, 如果在builder中没有主动传入OkHttpClient的话,
-Builder会创建一个默认的OkHttpClient.
+在<a href="#orgheadline2">上一节</a>可以看到, builder的参数默认是使用了"platform"相关的变量. 
+"platform"在retrofit中代表当前的运行平台, 例如Java8或者Android平台.
+代码为与Platform.java. Retrofit的builder类的无参构造函数中, 会调用
+<code>Platform.get()</code> 获取当前平台, 对于运行在那个平台的判断, 主要是基于
+该平台的一些独特性质, 例如如果系统存在 <b>android.os.Build</b> 类,
+则代表这是android平台.
 </p>
-<div class="org-src-container">
+<pre class="example">
+private static final Platform PLATFORM = findPlatform();
 
-<pre class="src src-java">public static final class Builder {
-  public Builder() {
-    converterFactories.add(new BuiltInConverters());
+static Platform get() {
+  return PLATFORM;
+}
+
+private static Platform findPlatform() {
+  try {
+    Class.forName("android.os.Build");
+    if (Build.VERSION.SDK_INT != 0) {
+      return new Android();
+    }
+  } catch (ClassNotFoundException ignored) {
+  }
+  try {
+    Class.forName("java.util.Optional");
+    return new Java8();
+  } catch (ClassNotFoundException ignored) {
+  }
+  try {
+    Class.forName("org.robovm.apple.foundation.NSObject");
+    return new IOS();
+  } catch (ClassNotFoundException ignored) {
+  }
+  return new Platform();
+}
+</pre>
+<p>
+下面是Android平台的实现代码,其重写了父类的两个函数. 另外, 该类还有个
+继承了Executor的子类 <b>MainThreadExecutor</b>, 该类包含了android的 UI
+线程的handler, 从而保证工作都会在UI线程完成. 至于其重写的函数的意义, 
+会在后面介绍.
+</p>
+<pre class="example">
+static class Android extends Platform {
+  @Override public Executor defaultCallbackExecutor() {
+    return new MainThreadExecutor();
   }
 
-  public Builder client(OkHttpClient client) {...}
-  public Builder baseUrl(String baseUrl) {...}
-  ...
-  public Builder addConverterFactory(Converter.Factory converterFactory) {}
-  public Builder addCallAdapterFactory(CallAdapter.Factory factory) {}
-  public Builder callbackExecutor(Executor callbackExecutor) {}
-  public Builder validateEagerly() {}
+  @Override CallAdapter.Factory defaultCallAdapterFactory(Executor callbackExecutor) {
+    return new ExecutorCallAdapterFactory(callbackExecutor);
+  }
 
-  /** Create the {@link Retrofit} instances. */
-  public Retrofit build() {
-    if (baseUrl == null) {
-      throw new IllegalStateException("Base URL required.");
+  static class MainThreadExecutor implements Executor {
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
+    @Override public void execute(Runnable r) {
+      handler.post(r);
     }
-
-    OkHttpClient client = this.client;
-    if (client == null) {
-      client = new OkHttpClient();
-    }
-
-    // Make a defensive copy of the adapters and add the default Call adapter.
-    List&lt;CallAdapter.Factory&gt; adapterFactories = new ArrayList&lt;&gt;(this.adapterFactories);
-    adapterFactories.add(Platform.get().defaultCallAdapterFactory(callbackExecutor));
-
-    // Make a defensive copy of the converters.
-    List&lt;Converter.Factory&gt; converterFactories = new ArrayList&lt;&gt;(this.converterFactories);
-
-    return new Retrofit(client, baseUrl, converterFactories, adapterFactories, callbackExecutor,
-	validateEagerly);
   }
 }
 </pre>
-</div></li>
-<li><p>
-create()函数
-该函数是Retrofit的 <b>精华</b>, 通过它, 我们可以将自定义的接口转化为一个具体的
-该接口的对象.
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">基于自定义interface创建实例</h2>
+<div class="outline-text-2" id="text-orgheadline5">
+<p>
+前两部分主要介绍了一下retrofit的builder类, 通过builder的build()函数就可以构造
+一个retrofit实例. 接下来就是retrofit很神奇的一步:通过create()函数创建一个自定义
+接口的对象实例:
 </p>
-<div class="org-src-container">
+<pre class="example">
+Client client = retrofit.create(Client.class);
+</pre>
 
-<pre class="src src-java">public &lt;T&gt; T create(final Class&lt;T&gt; service) {
+<p>
+在前面的示例代码中, Client是我们创建的一个接口, 并没有任何的"实体"代码(实现类),
+但是这里通过create()函数就可以生成一个"有血有肉"的对象实例. 通过create()函数的
+源码看一下这个过程是怎么实现的. 
+</p>
+<pre class="example">
+  public &lt;T&gt; T create(final Class&lt;T&gt; service) {
   Utils.validateServiceInterface(service);
   if (validateEagerly) {
     eagerlyValidateMethods(service);
@@ -123,36 +231,311 @@ create()函数
 	  if (platform.isDefaultMethod(method)) {
 	    return platform.invokeDefaultMethod(method, service, proxy, args);
 	  }
-	  return loadMethodHandler(method).invoke(args);
+	  ServiceMethod serviceMethod = loadServiceMethod(method);
+	  OkHttpCall okHttpCall = new OkHttpCall&lt;&gt;(serviceMethod, args);
+	  return serviceMethod.callAdapter.adapt(okHttpCall);
 	}
       });
 }
 </pre>
-</div>
-<p>
-上面的代码就是retrofit的实现, 代码比较短, 首先是调用validateServiceInterface()
-来检查传入的类变量是否合法:
-</p>
-<div class="org-src-container">
 
-<pre class="src src-java">static &lt;T&gt; void validateServiceInterface(Class&lt;T&gt; service) {
-  if (!service.isInterface()) {
-    throw new IllegalArgumentException("API declarations must be interfaces.");
-  }
-  if (service.getInterfaces().length &gt; 0) {
-    throw new IllegalArgumentException("API interfaces must not extend other interfaces.");
-  }
-}
+<p>
+前面的"if"语句暂时先不管, 最后的 "return" 返回了一个 <code>Proxy.newProxyInstance()</code>
+函数的结果, 这里使用到了java的 <a href="#orgheadline4">动态代理</a> 的编程技巧. 通过该函数, 我们可以拿到一个
+前面自定义的 "Client" 的一个 <b>代理类</b>, 其功能就相当于一个Client对象, 即我们可以通过
+它调用Client里的各个成员函数. 
+</p>
+
+<p>
+这里最重要的是其第三个参数, 该参数是一个匿名的 <b>InvocationHandler()</b>,
+该类的意义在于: 当我们通过代理类调用成员函数时, 最后调用的其实是该匿名类的
+invoke()函数, 该函数的参数method就是Client类的方法, 参数就是Client类的参数.
+这就是我们可以通过retrofit实现一个interface实例的核心代码. 至于怎么通过调用
+具体的函数实现实际的http请求, 则需要看一下 invoke() 的具体实现. 在该函数的实现里,
+最重要的就是这几行. 
+</p>
+<pre class="example">
+ServiceMethod serviceMethod = loadServiceMethod(method);
+OkHttpCall okHttpCall = new OkHttpCall&lt;&gt;(serviceMethod, args);
+return serviceMethod.callAdapter.adapt(okHttpCall);
 </pre>
 </div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9">通过invoke()执行函数, 返回一个Call</h2>
+<div class="outline-text-2" id="text-orgheadline9">
+</div><div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">函数的封装类:ServiceMethod</h3>
+<div class="outline-text-3" id="text-orgheadline6">
 <p>
-这里检查的地方有两个: 1, 传入的参数必须为一个interface类型. 2, 传入的参数
-没有实现其他interface.
+在<a href="#orgheadline5">上一节</a>的最后,提到了具体自定义service 的成员函数调用与invoke()函数
+的后几行有关, 这里先看一下第一行代码 <code>ServiceMethod serviceMethod = loadServiceMethod(method);</code> .
 </p>
 
 <p>
-参数合法性检查完之后, 会条件性的执行eagerlyValidateMethods(), 这里先略过.
-接下来是调用Proxy的newProxyInstance()函数为传入的参数生成动态代理. 
+ServiceMethod类是函数的封装类, 它保存了我们在接口中定义的函数的所有信息(前面例子中我们定义了函数 <b>getUsers()</b> ),
+包括如下内容:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">内容</th>
+<th scope="col" class="org-left">note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">请求方法</td>
+<td class="org-left">如POST/GET</td>
+</tr>
+
+<tr>
+<td class="org-left">请求体</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">请求的url</td>
+<td class="org-left">base + 相对地址</td>
+</tr>
+
+<tr>
+<td class="org-left">请求头部</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">函数参数</td>
+<td class="org-left">参数也会被"注解"修饰</td>
+</tr>
+
+<tr>
+<td class="org-left">函数返回值</td>
+<td class="org-left">一般为Call</td>
+</tr>
+
+<tr>
+<td class="org-left">other</td>
+<td class="org-left">一些具体的http协议相关的内容, 例如是否为multipart, form等</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+当调用 loadServiceMethod()函数时, 实际就是基于处理这个函数的所有信息, 
+这些信息是可以通过java的Method类拿到的. 
+</p>
+
+<p>
+对于ServiceMethod类的具体处理过程, 会在下一篇文章讲述.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">执行函数, 获取返回值(Call)</h3>
+<div class="outline-text-3" id="text-orgheadline7">
+<p>
+在invoke()函数的最后两行, 首先基于通过分析函数生成的ServiceMethod实例来
+创建一个OkHttpClient对象, 然后调用代码 <code>return serviceMethod.callAdapter.adapt(okHttpCall);</code>
+来完成"代理"的作用, 这个invoke()的返回值"等同于"我们调用自定义函数的返回值. 
+invoke()的返回值总是Object类型, 将其转换为自定义函数的返回值类型即可.
+一般这个返回值都为Call类型. 
+</p>
+
+<p>
+这里主要看一下最后一行代码. 这行代码可以分成两部分讲解:
+</p>
+<ol class="org-ol">
+<li>serviceMethod的callAdapter变量.</li>
+<li>callAdapter变量的adapt()函数</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">ServiceMethod的callAdapter变量</h3>
+<div class="outline-text-3" id="text-orgheadline8">
+<p>
+CallAdapter是Call的适配器类, 在将一个自定义函数解析成ServiceMethod实例时, 
+会生成这个ServiceMethod的callAdapter变量. 下面的代码展示了创建过程.
+</p>
+<pre class="example">
+ //SeviceMethod.java
+  private CallAdapter&lt;?&gt; createCallAdapter() {
+    Type returnType = method.getGenericReturnType();
+    if (Utils.hasUnresolvableType(returnType)) {
+      throw methodError(
+	  "Method return type must not include a type variable or wildcard: %s", returnType);
+    }
+    if (returnType == void.class) {
+      throw methodError("Service methods cannot return void.");
+    }
+    Annotation[] annotations = method.getAnnotations();
+    try {
+      return retrofit.callAdapter(returnType, annotations);
+    } catch (RuntimeException e) { // Wide exception range because factories are user code.
+      throw methodError(e, "Unable to create call adapter for %s", returnType);
+    }
+  }
+//Retrofit.java 
+public CallAdapter&lt;?&gt; nextCallAdapter(CallAdapter.Factory skipPast, Type returnType,
+    Annotation[] annotations) {
+  checkNotNull(returnType, "returnType == null");
+  checkNotNull(annotations, "annotations == null");
+
+  int start = adapterFactories.indexOf(skipPast) + 1;
+  for (int i = start, count = adapterFactories.size(); i &lt; count; i++) {
+    CallAdapter&lt;?&gt; adapter = adapterFactories.get(i).get(returnType, annotations, this);
+    if (adapter != null) {
+      return adapter;
+    }
+  }
+</pre>
+
+<p>
+上面的代码是callAdapter变量的创建过程, 第一个函数 <code>createCallAdapter()</code> 首先
+获取了函数的"返回类型"和"注解", 并基于这两个内容调用Retrofit的 <code>callAdapter()</code>
+函数, 并最终调用了 <code>nextCallAdapter()</code> 函数. 后者会检查retrofit的adapterFactories
+变量中是否包含能够匹配这个返回值类型和注解的CallAdapter, 并返回. 
+那么问题来了: 这个adapterFactories中到底有没有匹配能够匹配返回类型和注解的CallAdapter呢?
+这就要看一下这个 factory 的具体实现过程.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10">Retrofit的adapterFactories的真实面目</h2>
+<div class="outline-text-2" id="text-orgheadline10">
+<p>
+注:这里只解释了Android平台的情况.
+</p>
+
+<p>
+adapterFactories变量是在retrofit的builder中初始化的,
+builder提供了一个 <code>addCallAdapterFactory()</code>
+函数可以让使用者向factories添加自定义CallAdapter, <b>同时</b> ,
+在最后的build()阶段,会将该<a href="#orgheadline3">当前运行平台</a>的默认CallAdapterFactory
+添加到fatories里. 这里假设我们没有添加任何自定义CallAdapter, 
+那么factories里只有平台的默认CallAdapterFacotry了. 
+</p>
+
+<p>
+对于Android 平台来说, 这个"默认"的CallAdapterFactory代码如下,
+该函数返回一个ExecutorCallAdapterFactory实例. 
+</p>
+<pre class="example">
+//Android platform
+    @Override CallAdapter.Factory defaultCallAdapterFactory(Executor callbackExecutor) {
+      return new ExecutorCallAdapterFactory(callbackExecutor);
+    }
+</pre>
+<p>
+根据<a href="#orgheadline8">前面</a>的内容,当对该实例调用 <code>get()</code> 函数时, 如何返回一个
+可以适配"返回类型"和"函数注解"的CallAdapter实例, 这就要看下
+<b>ExecutorCallAdapterFactory</b> 的具体实现, 其代码如下. 
+从代码可以看出, 对于任何自定义函数, 只要其返回类型为"Call"类,
+那么都会生成一个匿名的"CallAdapter"实例.该实例实现了 <code>adapter()</code>
+方法, 使其可以返回一个具体的Call的子类, 即 ExecutorCallbackCall(). 
+</p>
+<pre class="example">
+@Override
+public CallAdapter&lt;Call&lt;?&gt;&gt; get(Type returnType, Annotation[] annotations, Retrofit retrofit) {
+  if (getRawType(returnType) != Call.class) {
+    return null;
+  }
+  final Type responseType = Utils.getCallResponseType(returnType);
+  return new CallAdapter&lt;Call&lt;?&gt;&gt;() {
+    @Override public Type responseType() {
+      return responseType;
+    }
+
+    @Override public &lt;R&gt; Call&lt;R&gt; adapt(Call&lt;R&gt; call) {
+      return new ExecutorCallbackCall&lt;&gt;(callbackExecutor, call);
+    }
+  };
+}
+</pre>
+
+<p>
+以上就是调用自定义interface的具体某个函数的过程, 以Android平台为例, 通过调用函数,
+最终会获得一个ExecutorCallbackCall实例. 通过这个Call实例, 我们就可以实现具体的Http请求.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline11" class="outline-2">
+<h2 id="orgheadline11">执行具体的Http请求</h2>
+<div class="outline-text-2" id="text-orgheadline11">
+<p>
+通过前面的内容, 已经知道调用函数可以获得一个ExecutorCallbackCall实例, 
+那么就可以通过执行该实例的execute()或enqueue()函数执行具体的http请求了.
+这一部分是OkHttp相关的内容, 会在后面文章陆续说明.
+</p>
+<pre class="example">
+//具体请求代码
+List&lt;Users&gt; result = call.execute().body();
+</pre>
+
+<p>
+这里想补充一下ExecutorCallbackCall类的一个变量: callbackExecutor. 
+</p>
+
+<p>
+在Retrofit的设计中,通过Call进行http请求有两种方法: execute()和enqueue().
+前者是同步请求, 后者是异步请求. 对于异步请求, 需要传递一个callback参数进行
+回调, 处理返回结果. 在ExecutorCallbackCall中, 回调的具体处理过程就是通过
+变量 <b>callbackExecutor</b> 完成的. 因为ExecutorCallbackCall对应的是Android平台,
+所以我们来看一下这个 callbackExecutor 有什么特殊之处. 
+下面的代码追溯了这个变量的最终出处.
+</p>
+<pre class="example">
+//Android平台通过该函数创建factory
+    @Override CallAdapter.Factory defaultCallAdapterFactory(Executor callbackExecutor) {
+      return new ExecutorCallAdapterFactory(callbackExecutor);
+    }
+
+//Retrofit在builder中调用了上面的函数, 并传入了executor参数
+adapterFactories.add(platform.defaultCallAdapterFactory(callbackExecutor));
+
+//builder的callbackExecutor的创建, 调用了平台的相关函数
+callbackExecutor = platform.defaultCallbackExecutor();
+
+//平台相关函数的实现
+    @Override public Executor defaultCallbackExecutor() {
+      return new MainThreadExecutor();
+    }
+    static class MainThreadExecutor implements Executor {
+      private final Handler handler = new Handler(Looper.getMainLooper());
+
+      @Override public void execute(Runnable r) {
+        handler.post(r);
+      }
+    }
+</pre>
+<p>
+通过上面代码可以看出, Android平台的这个executor其实是一个带有UI线程handler的
+executor, 所以最后执行execute时, 会将runnable传给UI线程执行. 即,当调用enqueue()
+函数时, 回调是在UI线程中执行的.
+</p>
+
+<p>
+over.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline12" class="outline-2">
+<h2 id="orgheadline12">附注:</h2>
+<div class="outline-text-2" id="text-orgheadline12">
+</div><div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">动态代理介绍</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
 动态代理机制是Java的一个高级特性, 其主要功能就是可以为委托类对象生成代理类,
 代理类可以将所有的方法调用分派到委托对象上反射执行. 动态代理的相关知识可参考
 相关的Java书籍. 这里传入newProxyInstance()有三个参数: 1, 接口的classLoader. 2, 
@@ -161,596 +544,6 @@ create()函数
 返回的是一个动态代理类对象(被转化成了我们自定义的接口), 当我们调用该接口的自定义
 函数时, 我们调用的实际是invoke()函数.* 而要执行的方法被当作参数传给了invoke.
 </p>
-
-<p>
-下面看下invoke()函数的具体实现:
-</p>
-<ul class="org-ul">
-<li>判断要调用的方法是否是object类的方法(每个类都有), 如果是则直接在当前
-类上调用.</li>
-<li>如果是平台的默认方法, 调用platform的相关函数(目前这段代码不会走到)</li>
-<li>否则, 调用loadMethodHandler()函数返回值的的invoke()方法实现函数调用.
-这个方法就是retrofit替我们实现Http请求的地方.</li>
-</ul></li>
-<li><p>
-loadMethodHandler()函数
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">MethodHandler&lt;?&gt; loadMethodHandler(Method method) {
-  MethodHandler&lt;?&gt; handler;
-  synchronized (methodHandlerCache) {
-    handler = methodHandlerCache.get(method);
-    if (handler == null) {
-      handler = MethodHandler.create(this, method);
-      methodHandlerCache.put(method, handler);
-    }
-  }
-  return handler;
-}
-</pre>
-</div>
-<p>
-这个函数的实现比较简单, 就是从cache中寻找调用函数的MethodHandler, 如果找到就
-返回, 否则创建一个新的返回. 下面就看下这个类的实现.
-</p></li>
-</ol>
-</div>
-</div>
-<div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3">MethodHandler类实现接口函数调用</h3>
-<div class="outline-text-3" id="text-orgheadline3">
-<p>
-在上一小节说过, 我们通过retrofit.create()创造出一个自定义接口的实例,
-然后调用实例方法实际上最后是对MethodHandler的invoke()函数的调用, 这一节
-就具体看一下这个类及相关方法的具体实现.
-</p>
-<ol class="org-ol">
-<li><p>
-对象创建.
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">final class MethodHandler&lt;T&gt; {
-  @SuppressWarnings("unchecked")
-  static MethodHandler&lt;?&gt; create(Retrofit retrofit, Method method) {
-    CallAdapter&lt;Object&gt; callAdapter = (CallAdapter&lt;Object&gt;) createCallAdapter(method, retrofit);
-    Type responseType = callAdapter.responseType();
-    Converter&lt;ResponseBody, Object&gt; responseConverter =
-	(Converter&lt;ResponseBody, Object&gt;) createResponseConverter(method, retrofit, responseType);
-    RequestFactory requestFactory = RequestFactoryParser.parse(method, responseType, retrofit);
-    return new MethodHandler&lt;&gt;(retrofit, requestFactory, callAdapter, responseConverter);
-  }
-  ...
-</pre>
-</div>
-<p>
-该类的构造函数为私有函数, 所以只能通过静态函数create()来创造一个Methodhandler
-对象.该函数首先基于mothod和retrofit创建一个CallAdapter的对象, 然后基于该对象
-创建一个Converter对象, 接着生成一个RequestFactory对象, 然后把这些对象作为
-参数传递给构造函数生成一个MethodHandler实例.
-</p></li>
-<li><p>
-创建CallAdapter实例
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">private static CallAdapter&lt;?&gt; createCallAdapter(Method method, Retrofit retrofit) {
-  Type returnType = method.getGenericReturnType();
-  if (Utils.hasUnresolvableType(returnType)) {
-    throw Utils.methodError(method,
-	"Method return type must not include a type variable or wildcard: %s", returnType);
-  }
-  if (returnType == void.class) {
-    throw Utils.methodError(method, "Service methods cannot return void.");
-  }
-  Annotation[] annotations = method.getAnnotations();
-  try {
-    return retrofit.callAdapter(returnType, annotations);
-  } catch (RuntimeException e) { // Wide exception range because factories are user code.
-    throw Utils.methodError(e, method, "Unable to create call adapter for %s", returnType);
-  }
-}
-</pre>
-</div>
-<p>
-首先调用method的getGenericReturnType()获取该函数的返回类型, 如果该类型不能
-被解析或为void, 报错. 然后通过getAnnotations()函数获取我们在定义函数时使用的注解(GET/POST..)
-最后基于返回值和注解调用retrofit的callAdapter()生成对象.
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">//retrofit.java
-public CallAdapter&lt;?&gt; callAdapter(Type returnType, Annotation[] annotations) {
-   return nextCallAdapter(null, returnType, annotations);
- }
-
- public CallAdapter&lt;?&gt; nextCallAdapter(CallAdapter.Factory skipPast, Type returnType,
-     Annotation[] annotations) {
-   checkNotNull(returnType, "returnType == null");
-   checkNotNull(annotations, "annotations == null");
-
-   int start = adapterFactories.indexOf(skipPast) + 1;
-   for (int i = start, count = adapterFactories.size(); i &lt; count; i++) {
-     CallAdapter&lt;?&gt; adapter = adapterFactories.get(i).get(returnType, annotations, this);
-     if (adapter != null) {
-       return adapter;
-     }
-   }
-    ....
- }
-</pre>
-</div>
-<p>
-callAdapter函数就是从retrofit的adapterFactories变量中找到与该函数和返回值相关的
-adapter, 如果找不到则报错. 从前面Retrofit的builder代码可以看到, 如果用户没用显示声明
-Adapter的话, 默认会创建一个defaultAdapterFactory的实例加入到adapterFactories中.
-</p></li>
-<li><p>
-invoke()函数
-invoke()函数是MethodHandler/对象/的唯一函数, 该函数实际是调用了callAdapter.adapt()
-函数, 该函数的参数为一个OkHttpCall对象, 从这里就可以看成该函数是Http请求的
-实际函数, 后面在看CallAdapter代码会再详细介绍其功能.
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">Object invoke(Object... args) {
-  return callAdapter.adapt(new OkHttpCall&lt;&gt;(retrofit, requestFactory, responseConverter, args));
-}
-</pre>
-</div></li>
-</ol>
-</div>
-</div>
-
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4">CallAdapter和DefaultCallAdapter</h3>
-<div class="outline-text-3" id="text-orgheadline4">
-<p>
-前面的小节讲过, 当我们在程序中定义了一个retrofit接口, 然后通过retrofit.create()
-生成一个实例, 并调用该实例的函数时, 会得到一个Call类型的返回值(因此用户自定义的
-接口中的函数返回值应该都为Call类型). 对实例函数的调用最终是调用到了retrofit的
-callAdapter的adapt()函数. 这个函数(返回Call)是在DefaultCallAdapter中实现的.
-</p>
-<ol class="org-ol">
-<li><p>
-DefaultCallAdapter
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">final class DefaultCallAdapter implements CallAdapter&lt;Call&lt;?&gt;&gt; {
-  static final Factory FACTORY = new Factory() {
-    @Override
-    public CallAdapter&lt;?&gt; get(Type returnType, Annotation[] annotations, Retrofit retrofit) {
-      if (Utils.getRawType(returnType) != Call.class) {
-	return null;
-      }
-      Type responseType = Utils.getCallResponseType(returnType);
-      return new DefaultCallAdapter(responseType);
-    }
-  };
-
-  private final Type responseType;
-
-  DefaultCallAdapter(Type responseType) {
-    this.responseType = responseType;
-  }
-
-  @Override public Type responseType() {
-    return responseType;
-  }
-
-  @Override public &lt;R&gt; Call&lt;R&gt; adapt(Call&lt;R&gt; call) {
-    return call;
-  }
-}
-</pre>
-</div>
-<p>
-可以看到adapt()函数返回了一个Call类型的结果, 跟我们在例子中定义的一样.
-DefaultCallAdapter的父类是CallAdapter. 所以如果要实现自己的Adapter, 同样
-需要继承此类.
-</p></li>
-</ol>
-</div>
-</div>
-<div id="outline-container-orgheadline5" class="outline-3">
-<h3 id="orgheadline5">Call和OkHttpCall 实现真正请求</h3>
-<div class="outline-text-3" id="text-orgheadline5">
-<p>
-在MethodHandler一节可以看到invoke中调用adapt()函数时传入了一个OkHttpCall类型, 
-所以实例中用户调用自定义函数返回的也是一个OkHttpCall类型的结果.
-</p>
-
-<ol class="org-ol">
-<li><p>
-Call接口定义.
-Call是retrofit定义的一个接口规范, 该类主要用于进行Http请求.
-代码注释阐明了该接口的几个功能和约束:
-</p>
-<ul class="org-ul">
-<li>使用execute()进行同步调用.</li>
-<li>使用enqueue()进行异步调用.</li>
-<li>无论同步还是异步, 都可以在任何时候使用cancel取消.</li>
-<li>使用clone()进行一个功能的多次请求.(例如失败后的轮询).</li>
-</ul>
-<div class="org-src-container">
-
-<pre class="src src-java">public interface Call&lt;T&gt; extends Cloneable {
-  Response&lt;T&gt; execute() throws IOException;
-  void enqueue(Callback&lt;T&gt; callback);
-  void cancel();
-  Call&lt;T&gt; clone();
-}
-</pre>
-</div></li>
-<li>OkHttpCall.    
-OkHttpCall是基于OkHttp的Call接口的一个实现, 可以通过这个类看一下具体它是怎样
-遵循Call接口的规范的. 下面是其几个主要函数的实现:
-<ul class="org-ul">
-<li><p>
-execute().
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">public Response&lt;T&gt; execute() throws IOException {
-  synchronized (this) {
-    if (executed) throw new IllegalStateException("Already executed");
-    executed = true;
-  }
-
-  com.squareup.okhttp.Call rawCall = createRawCall();
-  if (canceled) {
-    rawCall.cancel();
-  }
-  this.rawCall = rawCall;
-
-  return parseResponse(rawCall.execute());
-}
-</pre>
-</div>
-<p>
-前面讲过该函数是Call的同步请求函数, 直接返回请求结果. 从代码中可以看出.
-由于executed变量被设为true后其值一直不变, 所以execute的"请求"代码只会
-执行一次. 该函数使用了OkHttp的Call类来执行具体的执行动作. 最后调用
-parseResponse()处理请求结果.
-</p></li>
-<li><p>
-enqueue().
-该函数是Call的异步请求函数, 需要向该函数传递一个Callback类型的参数.Callback是一个
-接口, 提供了两个函数onResponse()表示成功, onFailure()表示失败.
-在Android中,这两个函数需要在UI线程中执行.
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">public interface Callback&lt;T&gt; {
-  /** Successful HTTP response. */
-  void onResponse(Response&lt;T&gt; response, Retrofit retrofit);
-
-  /** Invoked when a network or unexpected exception occurred during the HTTP request. */
-  void onFailure(Throwable t);
-}
-</pre>
-</div>
-
-<p>
-在enqueue()中创建了一个com.squareup.okhttp.Call实例,
-http请求动作实际是这个实例的enqueue()函数来执行的.
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">@Override public void enqueue(final Callback&lt;T&gt; callback) {
-    synchronized (this) {
-      if (executed) throw new IllegalStateException("Already executed");
-      executed = true;
-    }
-
-    com.squareup.okhttp.Call rawCall;
-    try {
-      rawCall = createRawCall();
-    } catch (Throwable t) {
-      callback.onFailure(t);
-      return;
-    }
-    ...
-    rawCall.enqueue(new com.squareup.okhttp.Callback() {
-      private void callFailure(Throwable e) {
-	try {
-	  callback.onFailure(e);
-	} catch (Throwable t) {
-	  t.printStackTrace();
-	}
-      }
-
-      private void callSuccess(Response&lt;T&gt; response) {
-	try {
-	  callback.onResponse(response, retrofit);
-	} catch (Throwable t) {
-	  t.printStackTrace();
-	}
-      }
-
-      @Override public void onFailure(Request request, IOException e) {
-	callFailure(e);
-      }
-
-      @Override public void onResponse(com.squareup.okhttp.Response rawResponse) {
-	Response&lt;T&gt; response;
-	try {
-	  response = parseResponse(rawResponse);
-	} catch (Throwable e) {
-	  callFailure(e);
-	  return;
-	}
-	callSuccess(response);
-      }
-    });
-}
-</pre>
-</div></li>
-<li>cancel(). 
-取消请求, 实际是调用com.squareup.okhttp.Call的cancel()函数.</li>
-<li>clone().
-由于一个对象只能执行一次请求, 所以同一请求的多次执行, 需要通过clone()来
-复制, 该函数实际上是创建了一个新的OkHttpCall对象.</li>
-<li><p>
-parseResponse().
-该函数用来将execute()或enqueue()返回的结果转换为一个Response对象并返回, 前面讲到
-实际的请求是由OkHttp完成的, OkHttp请求也是返回一个com.squareup.okhttp.Response的对象, 
-这个函数就是将该对象转换为一个retrofit的Response对象.
-</p>
-
-<p>
-看一下这个函数的代码. 首先调用response的body()函数获取一个ResponseBody类型,
-然后基于response的contentType和length生成一个新的rawResponse. 
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java"> ResponseBody rawBody = rawResponse.body();
-
-// Remove the body's source (the only stateful object) so we can pass the response along.
-rawResponse = rawResponse.newBuilder()
-    .body(new NoContentResponseBody(rawBody.contentType(), rawBody.contentLength()))
-    .build();
-
-int code = rawResponse.code();
-if (code &lt; 200 || code &gt;= 300) {
-  try {
-    // Buffer the entire body to avoid future I/O.
-    ResponseBody bufferedBody = Utils.readBodyToBytesIfNecessary(rawBody);
-    return Response.error(bufferedBody, rawResponse);
-  } finally {
-    closeQuietly(rawBody);
-  }
-}
-</pre>
-</div>
-
-<p>
-接着处理"错误"返回和无内容的成功返回. 对于小于200或大于300的"错误码", 会先
-尝试生成一个errBody, 然后返回一个"携带错误内容"的Response. 204或205的状态码
-表示请求成功但无返回内容, 会简单调用success函数返回一个成功的Response.
-Response是retrofit的请求结果类, 后面会介绍.
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">    int code = rawResponse.code();
-    if (code &lt; 200 || code &gt;= 300) {
-      try {
-	// Buffer the entire body to avoid future I/O.
-	ResponseBody bufferedBody = Utils.readBodyToBytesIfNecessary(rawBody);
-	return Response.error(bufferedBody, rawResponse);
-      } finally {
-	closeQuietly(rawBody);
-      }
-    }
-
-    if (code == 204 || code == 205) {
-      return Response.success(null, rawResponse);
-    }
-
-//error和success的代码
-  public static &lt;T&gt; Response&lt;T&gt; success(T body, com.squareup.okhttp.Response rawResponse) {
-    return new Response&lt;&gt;(rawResponse, body, null);
-  }
-
-  public static &lt;T&gt; Response&lt;T&gt; error(ResponseBody body, com.squareup.okhttp.Response rawResponse) {
-    return new Response&lt;&gt;(rawResponse, null, body);
-  }
-</pre>
-</div>
-
-<p>
-如果状态码不在这两个范围, 则尝试处理body并将其转化为最终我们需要的类型.
-代码中的responseConverter就是我们在示例中构建retrofit时通过调用
-addConverterFactory()传入的converter. 
-所以如果我们传回的结果为一个类的json表示, 就可以通过这个函数传入一个GsonConverter.
-它就会自动将返回内容转换为结果类型对象并存放到Response的body中.
-我们直接调用body()函数就可有获得这个结果.
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">ExceptionCatchingRequestBody catchingBody = new ExceptionCatchingRequestBody(rawBody);
-try {
-  T body = responseConverter.convert(catchingBody);
-  return Response.success(body, rawResponse);
-} catch (RuntimeException e) {
-  catchingBody.throwIfCaught();
-  throw e;
-}
-</pre>
-</div></li>
-</ul></li>
-</ol>
-</div>
-</div>
-<div id="outline-container-orgheadline6" class="outline-3">
-<h3 id="orgheadline6">Request相关类处理请求</h3>
-<div class="outline-text-3" id="text-orgheadline6">
-<p>
-在retrofit示例中讲到,使用retrofit一般首先要定义了一个接口,
-并在接口里用retrofit提供的注解定义了一系列请求函数. 下面的
-代码展示一个基本的接口和函数定义, 通过注解可以看出, 该函数
-是一个POST请求, 并使用了表单, 定义了属性user和pass,
-这两个属性的值通过函数参数传进来. 
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">public interface CHHttpService {
-    @FormUrlEncoded
-    @POST("/p/checkState.do")
-    Call&lt;CHIMEI&gt;  checkState(@Field("user") String user, @Field("pass") String pass);
-}
-</pre>
-</div>
-
-<p>
-这一部分的内容就是讲解retrofit如何通过解析注解来生成一个完整的
-OkHttp请求(request). 这一切的入口就是MethodHandler的create()函数中的
-一行代码. 
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">static MethodHandler&lt;?&gt; create(Retrofit retrofit, Method method) {
-  ...
-  RequestFactory requestFactory = RequestFactoryParser.parse(method, responseType, retrofit);  //&lt;====here
-  return new MethodHandler&lt;&gt;(retrofit, requestFactory, callAdapter, responseConverter);
-}
-</pre>
-</div>
-</div>
-
-<div id="outline-container-orgheadline7" class="outline-4">
-<h4 id="orgheadline7">RequestFactoryParser &amp; RequestFactory</h4>
-<div class="outline-text-4" id="text-orgheadline7">
-<p>
-在MethodHandler的create()函数中调用RequestFactoryParser的parse()函数
-生成了一个RequestFactory实例, 下面看下这个函数的主要功能.
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">static RequestFactory parse(Method method, Type responseType, Retrofit retrofit) {
-  RequestFactoryParser parser = new RequestFactoryParser(method);
-  parser.parseMethodAnnotations(responseType);
-  parser.parseParameters(retrofit);
-  return parser.toRequestFactory(retrofit.baseUrl());
-}
-</pre>
-</div>
-<p>
-该函数先创建一个RequestFactoryParser的实例, 然后调用parseMethodAnnotations()
-和parseParameters()两个函数, 从这两个函数的名称上可以看出它们的功能,分别是
-处理*接口函数*的注解和参数的注解.最后调用toRequestFactory()生成一个
-RequestFactory实例返回. 下面是这两个函数的实现:
-</p>
-<ul class="org-ul">
-<li><p>
-parseMethodAnnotations().
-该函数通过Method类的getAnnotations()函数返回要解析的函数的所有注解, 然后
-遍历这些注解. 大部分请求相关的注解都调用了parseHttpMethodAndPath()这个函数
-<b>Headers</b> 注解调用了parseHeaders()函数. 其他的注解则设置了相关的标志位.
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java"> private void parseMethodAnnotations(Type responseType) {
-  for (Annotation annotation : method.getAnnotations()) {
-    if (annotation instanceof POST) { //同样适用于GET/DELET/HEAD/PATCH/, 第三个参数可能不同
-      parseHttpMethodAndPath("POST", ((POST) annotation).value(), true);
-    } else if (annotation instanceof Headers) {
-      String[] headersToParse = ((Headers) annotation).value();
-      if (headersToParse.length == 0) {throw methodError(method, "@Headers annotation is empty.");}
-      headers = parseHeaders(headersToParse);
-    } else if (annotation instanceof Multipart) {
-      if (isFormEncoded) {throw methodError(method, "Only one encoding annotation is allowed.");}
-      isMultipart = true;
-    } else if (annotation instanceof FormUrlEncoded) {
-      if (isMultipart) {throw methodError(method, "Only one encoding annotation is allowed.");}
-      isFormEncoded = true;
-    }
-  }
-  ...
-}
-</pre>
-</div></li>
-<li>parseParameters
-该函数先调用Method的函数geGenericParameterTypes()获取每个参数的类型, 然后
-调用getParameterAnnotations()获取每个参数的注解.然后解析每个注解, 并将解析的
-结果存放到requestBuilderActions变量中.</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-orgheadline8" class="outline-4">
-<h4 id="orgheadline8">RequestBuilder &amp; RequestBuilderAction</h4>
-<div class="outline-text-4" id="text-orgheadline8">
-<p>
-在OkHttpCall类中, 创建一个OkHttp的call实例会传入一个OkHttp的
-Request的参数, 这个Request变量是通过调用ReqeustFactory的create()
-函数生成的. create()函数首先通过已经处理完成的所有请求参数生成一个
-RequestBuilder实例, 然后再进一步处理上一部分还未完成的参数处理, 即
-将参数和注解结果结合起来.这个是通过调用RequestBuilderAction的perform()
-函数完成的.
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">public Response&lt;T&gt; execute() throws IOException {
-  com.squareup.okhttp.Call rawCall = createRawCall();
-  return parseResponse(rawCall.execute());
-}
-private com.squareup.okhttp.Call createRawCall() {
-  return retrofit.client().newCall(requestFactory.create(args));
-}
-
-Request create(Object... args) {
-  RequestBuilder requestBuilder =
-      new RequestBuilder(method, baseUrl.url(), relativeUrl, headers, contentType, hasBody,
-	  isFormEncoded, isMultipart);
-
-  if (args != null) {
-    RequestBuilderAction[] actions = requestBuilderActions;
-    if (actions.length != args.length) {throw new IllegalArgumentException("Argument count (" + args.length + ") doesn't match action count (" + actions.length + ")");}
-    for (int i = 0, count = args.length; i &lt; count; i++) {
-      actions[i].perform(requestBuilder, args[i]);
-    }
-  }
-  return requestBuilder.build();
-}
-</pre>
-</div>
-</div>
-</div>
-</div>
-<div id="outline-container-orgheadline9" class="outline-3">
-<h3 id="orgheadline9">Response处理返回结果</h3>
-<div class="outline-text-3" id="text-orgheadline9">
-<p>
-Response是execute和enqueue函数的返回值, Reponse的实现思想是:
-如果请求成功并有结果返回, 则尝试将结果转化为最终的类, 
-否则保存OkHttp请求的返回结果(rawResponse)并交给使用者处理.
-Response的实现比较简单, 只有100行代码, 主要的两个函数为success()和
-error(), 这两个函数会生成一个包含请求结果的Response对象, 然后是一系列
-的getter()函数, 用来获取请求结果(头, 状态码, body等&#x2026;).
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">public final class Response&lt;T&gt; {
-  private final com.squareup.okhttp.Response rawResponse;
-  private final T body;
-  private final ResponseBody errorBody;
-  private Response(com.squareup.okhttp.Response rawResponse, T body, ResponseBody errorBody) { ... }
-
-  public static &lt;T&gt; Response&lt;T&gt; success(T body, com.squareup.okhttp.Response rawResponse) {return new Response&lt;&gt;(rawResponse, body, null);}
-  public static &lt;T&gt; Response&lt;T&gt; error(ResponseBody body, com.squareup.okhttp.Response rawResponse) {return new Response&lt;&gt;(rawResponse, null, body);}
-
-  public com.squareup.okhttp.Response raw() {return rawResponse;}
-  public int code() {return rawResponse.code();}
-  public String message() {return rawResponse.message();}
-  public Headers headers() {return rawResponse.headers();}
-  public boolean isSuccess() {return rawResponse.isSuccessful();}
-  public T body() {return body;}
-  public ResponseBody errorBody() {return errorBody;}
-}
-</pre>
-</div>
 </div>
 </div>
 </div>

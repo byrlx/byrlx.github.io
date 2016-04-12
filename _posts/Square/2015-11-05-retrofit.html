@@ -37,27 +37,23 @@ description: [retrofit源码阅读笔记]
 retrofit库可以在<a href="http://search.maven.org/#search%7Cga%7C1%7Cretrofit">maven.org</a> 找到. 可以直接添加到maven或gradle工程中.
 </p>
 <ul class="org-ul">
-<li><p>
-Maven
-</p>
-<div class="org-src-container">
-
-<pre class="src src-xml">&lt;dependency&gt;
+<li>Maven
+#+BEGIN_SRC xml</li>
+</ul>
+<p>
+&lt;dependency&gt;
   &lt;groupId&gt;com.squareup.retrofit&lt;/groupId&gt;
   &lt;artifactId&gt;retrofit&lt;/artifactId&gt;
   &lt;version&gt;2.0.0-beta2&lt;/version&gt;
 &lt;/dependency&gt;
-</pre>
-</div></li>
-<li><p>
-Gradle. 如果与服务端的请求和结果都是json的话,需要gson converter进行转化, 因为要把该库也添加上.
+  #+END_EXAMPLE
 </p>
-<div class="org-src-container">
-
-<pre class="src src-xml">compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
-compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
-</pre>
-</div></li>
+<ul class="org-ul">
+<li>Gradle. 如果与服务端的请求和结果都是json的话,需要gson converter进行转化, 因为要把该库也添加上.
+ #+BEGIN_SRC  xml
+compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2' 
+ #+END_EXAMPLE</li>
 <li><p>
 混淆配置
 如果项目中使用混淆的话, 需要在混淆文件中假如如下配置
@@ -91,26 +87,22 @@ compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
 用户类. 这段代码定义了用户类User, 每个用户包含三个基本信息:id, name, age; 
 通过retrofit请求用户信息时, 客户端返回用户的json信息, retrofit可以直接将json信息转化为用户类.
 </p>
-<div class="org-src-container">
-
-<pre class="src src-java">public class User {
+<pre class="example">
+public class User {
     private int id;
     private String name;
     private int age;
 }
-</pre>
-</div></li>
+</pre></li>
 <li><p>
 定义Client和GET请求接口
 </p>
-<div class="org-src-container">
-
-<pre class="src src-java">public interface Client {
+<pre class="example">
+public interface Client {
     @GET("users")
     Call&lt;List&lt;User&gt;&gt;  getUsers();
 }
 </pre>
-</div>
 <p>
 这段代码定义了一个接口Client, 并定义了一个GET函数getUsers(), 该函数用户向服务器发送get请求获取所有的
 用户信息. 定义GET请求需要用GET注解来修饰函数, 注解的参数为uri的相对路径, 下一部分会定义URL的地址, 在
@@ -123,40 +115,39 @@ compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
 的相对地址全部覆盖掉. 举例: base地址为"<a href="http://a/b">http://a/b</a>", GET参数为"/c/d", 那么最后的请求地址为"<a href="http://a/c/d">http://a/c/d</a>",
 因此,如果base地址本身已经是相对地址, 那么GET/POST的参数不能以"/"开头.
 </p></li>
-<li><p>
-<a id="orgtarget1"></a>
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java">public class MainActivity {
-    ....
-    public static final String SERVER_URL = "http://10.10.10.10/account";
+<li><a id="orgtarget1"></a>
+   #+BEGIN_SRC  java</li>
+</ol>
+<p>
+public class MainActivity {
+    &#x2026;.
+    public static final String SERVER_URL = "<a href="http://10.10.10.10/account">http://10.10.10.10/account</a>";
     private OkHttpClient okHttpClient = new OkHttpClient();
     private Retrofit.Builder builder = new Retrofit.Builder()
-	.base_url(SERVER_URL)
-	.client(okHttpClient)
-	.addConvertFactory(GsonConvertFactory.create());
+        .base_url(SERVER_URL)
+        .client(okHttpClient)
+        .addConvertFactory(GsonConvertFactory.create());
+</p>
 
+<p>
     Retrofit retrofit = builder.build();
     Client client = retrofit.create(Client.class);
     Call&lt;List&lt;Users&gt;&gt; call = client.getUsers();
     List&lt;Users&gt; result = call.execute().body();
-    ....
+    &#x2026;.
 }
-</pre>
-</div>
+</p>
+
 <p>
+#+END_EXAMPLE
 上述代码用来做实际的请求动作, 首先通过Retrofit Builder来基于各种参数(服务器地址, httpclient, converter)
 生成一个builder对象, 让后调用builder的build()函数生成一个retrofit对象.
 </p>
 
 <p>
-接着,调用retrofit的create()函数,传入上一步中定义的接口作为参数来实例化一个具体的接口对象, 然后调用
-该对象的具体http请求函数(这里为getUsers())来实现http请求. 请求的结果是Json数据,会通过GsonConverter转化为具体的
-对象(即User). 由于是多个对象,所以需要放到一个List中.
-</p></li>
-</ol>
-<p>
+   接着,调用retrofit的create()函数,传入上一步中定义的接口作为参数来实例化一个具体的接口对象, 然后调用
+   该对象的具体http请求函数(这里为getUsers())来实现http请求. 请求的结果是Json数据,会通过GsonConverter转化为具体的
+   对象(即User). 由于是多个对象,所以需要放到一个List中.
 上述三步即为retrofit的基本使用方法.
 </p>
 </div>
@@ -169,9 +160,8 @@ compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
 来生成service实例.
 </p>
 
-<div class="org-src-container">
-
-<pre class="src src-java">public class ServiceGenerator {
+<pre class="example">
+public class ServiceGenerator {
     public static final String BASE_URL = "";
 
     private static OkHttpClient httpClient = new OkHttpClient();
@@ -181,26 +171,23 @@ compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
 	.addConverterFactory(GsonConverterFactory.create());
 
     public static &lt;T&gt; T createService(Class&lt;T&gt; serviceClass){
-	//把设置client放到这里是因为后续有对client进行配置的需求
+        //把设置client放到这里是因为后续有对client进行配置的需求
 	Retrofit retrofit = builder.client(httpClient).build(); 
 	return retrofit.create(serviceClass);
     }
-
+				      
 }
 </pre>
-</div>
 
 <p>
 这样在上一节的MainActivity中,可以直接使用ServiceGenerator来创建Client实例
 </p>
 
-<div class="org-src-container">
-
-<pre class="src src-java">Client client = ServiceGenerator.create(Client.class);
+<pre class="example">
+Client client = ServiceGenerator.create(Client.class);
 Client call = client.getUsers();
 List&lt;Users&gt; result = call.execute().body();
 </pre>
-</div>
 </div>
 </div>
 <div id="outline-container-orgheadline6" class="outline-3">
@@ -211,9 +198,8 @@ List&lt;Users&gt; result = call.execute().body();
 进行请求认证.通过对OkHttpClient进行配置可以在retrofit中实现该方式. 
 </p>
 
-<div class="org-src-container">
-
-<pre class="src src-java">public static &lt;T&gt; T createService(Class&lt;T&gt; serviceClass){
+<pre class="example">
+public static &lt;T&gt; T createService(Class&lt;T&gt; serviceClass){
     createService(serviceClass, null, null);
 }
 
@@ -231,8 +217,8 @@ pubic static &lt;T&gt; T createService(Class&lt;T&gt; serviceCls, String userNam
 
 		    Request.Builder requestBuilder = original.newBuilder()
 			.header("Authorization", basic);
-		    .header("Accept", "applicaton/json");
-		    .method(original.method(), original.body());
+                    .header("Accept", "applicaton/json");
+                    .method(original.method(), original.body());
 
 		    Request request = requestBuilder.build();
 		    return chain.proceed(request);
@@ -244,7 +230,6 @@ pubic static &lt;T&gt; T createService(Class&lt;T&gt; serviceCls, String userNam
     return retrofit.create(serverClass);
 }
 </pre>
-</div>
 
 <p>
 上述代码通过修改OkHttpClient的相关参数来修改API请求的头部, 讲加密后的帐号和密码放入到
@@ -272,9 +257,8 @@ Authorization中实现验证.
 <p>
 基于前面的代码, 重新写一个OAuth相关的createService()函数.
 </p>
-<div class="org-src-container">
-
-<pre class="src src-java">public static &lt;T&gt; T createService(Class&lt;T&gt; serviceClass, AccessToken token) {
+<pre class="example">
+public static &lt;T&gt; T createService(Class&lt;T&gt; serviceClass, AccessToken token) {
     if (token != null) {
 	httpClient.interceptors().clear();
 	httpClient.interceptors().add(new Interceptor() {
@@ -295,7 +279,6 @@ Authorization中实现验证.
     }
 }
 </pre>
-</div>
 
 <p>
 上面的代码通过创建一个定制的 <b>RequestInterceptor</b> 对象来配置httpClient, 在定制的对象中将token信息
@@ -315,9 +298,8 @@ Authorization中实现验证.
 app获取其在该网站的信息.如果用户点击允许, 第三方服务器就会生成一个授权码返回给用户.
 第一步先创建程序主界面:
 </p>
-<div class="org-src-container">
-
-<pre class="src src-java">public class LoginActivity extends Activity {
+<pre class="example">
+public class LoginActivity extends Activity {
     //在第三方平台注册应用获取的clientId和secret
     private final String clientId = "your-client-id";
     private final String clientSecret = "your-client-secret";
@@ -326,104 +308,99 @@ app获取其在该网站的信息.如果用户点击允许, 第三方服务器�
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-	setContentView(R.layout.activity_login);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
 
-	Button loginButton (Button) findViewById(R.id.loginbutton);
-	loginButton.setOnClickListener(new View.OnClickListener() {
-	    @Override
-	    public void onClick(View v) {
-		Intent intent = new Intent(
-		    Intent.ACTION_VIEW,
-		    Uri.parse(ServiceGenerator.API_BASE_URL + "/login" + "?client_id=" + clientId + "&amp;redirect_uri=" + redirectUri));
-		startActivity(intent);
-	    }
-	});
+        Button loginButton (Button) findViewById(R.id.loginbutton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(ServiceGenerator.API_BASE_URL + "/login" + "?client_id=" + clientId + "&amp;redirect_uri=" + redirectUri));
+                startActivity(intent);
+            }
+        });
     }
 }
 </pre>
-</div>
 
 <p>
 上述代码定义了一个基本的Android界面, 界面只有一个按钮, 点击按钮会请求授权码(一般会跳转到一个授权界面).
 在请求中传入一个了回调地址, 如果用户授权一般第三方服务器带着授权码会跳到这个地址, 所以必须在请求授权码
 时传入回调地址. 这在Android中会表现发送回调Uri的广播,并将授权码通过intent传递出去.
 所以app中需要在注册一个可以接受该intent的界面,这里还是使用主界面. 在AndroidMainfest.xml中设置intent-filter
-</p>
-<div class="org-src-container">
-
-<pre class="src src-xml">&lt;activity  
+#+BEGIN_SRC xml
+</p></li>
+</ol>
+<p>
+&lt;activity  
     android:name="com.futurestudio.oauthexample.LoginActivity"
     android:label="@string/app_name"
     android:configChanges="keyboard|orientation|screenSize"&gt;
     &lt;intent-filter&gt;
-	&lt;action android:name="android.intent.action.VIEW" /&gt;
-	&lt;category android:name="android.intent.category.DEFAULT" /&gt;
-	&lt;category android:name="android.intent.category.BROWSABLE" /&gt;
-	&lt;data
-	    android:host="redirecturi"
-	    android:scheme="your" /&gt;
+        &lt;action android:name="android.intent.action.VIEW" /&gt;
+        &lt;category android:name="android.intent.category.DEFAULT" /&gt;
+        &lt;category android:name="android.intent.category.BROWSABLE" /&gt;
+        &lt;data
+            android:host="redirecturi"
+            android:scheme="your" /&gt;
     &lt;/intent-filter&gt;
-&lt;/activity&gt;
-</pre>
-</div>
+&lt;/activity&gt;  
+   #+END_EXAMPLE
+</p>
 
 <p>
 在onResume处理接受到的Intent.
 这里假设授权码在intent中传递并且key值为code(第三方平台的回调方式需要参考他们的文档).
 </p>
-<div class="org-src-container">
-
-<pre class="src src-java">@Override
+<pre class="example">
+@Override
 protected void onResume() {  
     super.onResume();
 
     Uri uri = getIntent().getData();
     if (uri != null &amp;&amp; uri.toString().startsWith(redirectUri)) {
-	String code = uri.getQueryParameter("code");
-	if (code != null) {
-	    //处理授权码
-	} else if (uri.getQueryParameter("error") != null) {
-	    //处理错误
-	}
+        String code = uri.getQueryParameter("code");
+        if (code != null) {
+            //处理授权码
+        } else if (uri.getQueryParameter("error") != null) {
+            //处理错误
+        }
     }
 }
 </pre>
-</div>
 
 <p>
 好, 到此为止,我们就已经获取到了授权码,下一步就是通过授权码获取Access Token. 
-</p></li>
+</p>
+<ol class="org-ol">
 <li><p>
 获取Access Token
 上一步获取到授权码后, 就可以向第三方的Access Token服务器发送请求获取token. 我们可以写一个retrofit服务
 来实现这个功能. 
 </p>
-<div class="org-src-container">
-
-<pre class="src src-java">public interface LoginService {  
+<pre class="example">
+   public interface LoginService {  
     @POST("/token")
     Call&lt;AccessToken&gt; getAccessToken(
-	    @Query("code") String code,
-	    @Query("grant_type") String grantType);
+            @Query("code") String code,
+            @Query("grant_type") String grantType);
 }
 </pre>
-</div>
 
 <p>
 这里的code就是上一步获取的授权码, grantType是授权类型. 然后用下面的代码加入到onResume获取成功的代码段中
 </p>
-<div class="org-src-container">
-
-<pre class="src src-java">if (code != null) {
-	 // get access token
-	 LoginService loginService = 
-	     ServiceGenerator.createService(LoginService.class, clientId, clientSecret);
-	 Call&lt;AccessToken&gt; call = loginService.getAccessToken(code, "authorization_code");
-	 AccessToken accessToken = call.execute().body();
+<pre class="example">
+if (code != null) {
+         // get access token
+         LoginService loginService = 
+             ServiceGenerator.createService(LoginService.class, clientId, clientSecret);
+         Call&lt;AccessToken&gt; call = loginService.getAccessToken(code, "authorization_code");
+         AccessToken accessToken = call.execute().body();
 }
-</pre>
-</div></li>
+</pre></li>
 </ol>
 
 <p>
