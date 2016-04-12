@@ -13,6 +13,8 @@ categories: [Reading]
 ---
 #+END_HTML
 
+(on-going)
+
 file:../../../../public/img/zmantra.jpg
 
 [[http://www.introtorx.com/][Introduction To Rx]] 是介绍[[http://reactivex.io/][Reactive编程思想]] 一本书, 本书有mobi格式, 适合在kindle上看. 
