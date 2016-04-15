@@ -14,6 +14,12 @@ description: [A brief description about how to write post with orgmode]
 ---
 #+END_HTML
 
+* 说明
+本blog是搭建在github之上的blog, 关于如何在github上搭建blog, 网上有N多的教程.
+
+本blog使用org mode撰写而成, 并绑定了一些emacs快捷键, 以及一些elisp写的自动化
+程序.后续会补充该部分内容.
+
 * 更新记录
 ** Emacs 24.4.1 + org mode 8.2.10(Mac)
  换了mac后,又下载了最新的24.4.1版本, 发现之前的脚本不能用了.
@@ -37,7 +43,7 @@ description: [A brief description about how to write post with orgmode]
 	  )))
 
  #+END_SRC
-** +Not working on Emacs 24.4.1 (Mac)+
+** 24.4.1之前 +Not working on Emacs 24.4.1+
 *** Why do I do this???
    Before I decided to learn emacs and lisp, I used markdown and jeklly to write
  github post, as many people do.

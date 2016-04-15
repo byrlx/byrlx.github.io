@@ -6,12 +6,26 @@ tag: [emacs, orgmode]
 description: [A brief description about how to write post with orgmode]
 ---
 
-<div id="outline-container-orgheadline9" class="outline-2">
-<h2 id="orgheadline9">更新记录</h2>
-<div class="outline-text-2" id="text-orgheadline9">
-</div><div id="outline-container-orgheadline1" class="outline-3">
-<h3 id="orgheadline1">Emacs 24.4.1 + org mode 8.2.10(Mac)</h3>
-<div class="outline-text-3" id="text-orgheadline1">
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">说明</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+本blog是搭建在github之上的blog, 关于如何在github上搭建blog, 网上有N多的教程.
+</p>
+
+<p>
+本blog使用org mode撰写而成, 并绑定了一些emacs快捷键, 以及一些elisp写的自动化
+程序.后续会补充该部分内容.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10">更新记录</h2>
+<div class="outline-text-2" id="text-orgheadline10">
+</div><div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">Emacs 24.4.1 + org mode 8.2.10(Mac)</h3>
+<div class="outline-text-3" id="text-orgheadline2">
 <p>
 换了mac后,又下载了最新的24.4.1版本, 发现之前的脚本不能用了.
 现在是写了一个publish 工程, 然后再emacs里执行org-publish命令完成.
@@ -38,12 +52,12 @@ description: [A brief description about how to write post with orgmode]
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8"><del>Not working on Emacs 24.4.1 (Mac)</del></h3>
-<div class="outline-text-3" id="text-orgheadline8">
-</div><div id="outline-container-orgheadline2" class="outline-4">
-<h4 id="orgheadline2">Why do I do this???</h4>
-<div class="outline-text-4" id="text-orgheadline2">
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">24.4.1之前 <del>Not working on Emacs 24.4.1</del></h3>
+<div class="outline-text-3" id="text-orgheadline9">
+</div><div id="outline-container-orgheadline3" class="outline-4">
+<h4 id="orgheadline3">Why do I do this???</h4>
+<div class="outline-text-4" id="text-orgheadline3">
 <p>
   Before I decided to learn emacs and lisp, I used markdown and jeklly to write
 github post, as many people do.
@@ -72,12 +86,12 @@ Thanks to these guys who share their experience about this, finally, I made it.
 </div>
 </div>
 
-<div id="outline-container-orgheadline7" class="outline-4">
-<h4 id="orgheadline7">Things I do:</h4>
-<div class="outline-text-4" id="text-orgheadline7">
-</div><div id="outline-container-orgheadline3" class="outline-5">
-<h5 id="orgheadline3">1. My original github blog arch</h5>
-<div class="outline-text-5" id="text-orgheadline3">
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8">Things I do:</h4>
+<div class="outline-text-4" id="text-orgheadline8">
+</div><div id="outline-container-orgheadline4" class="outline-5">
+<h5 id="orgheadline4">1. My original github blog arch</h5>
+<div class="outline-text-5" id="text-orgheadline4">
 <p>
 As methioned before, I used <b>markdown+jekyll</b> to write post before transfer 
 to orgmode, these are the import contents of my blog folder then:
@@ -95,9 +109,9 @@ If you write blog with jekyll, you must know what these contents mean.
 </div>
 </div>
 
-<div id="outline-container-orgheadline4" class="outline-5">
-<h5 id="orgheadline4">2. Makefile</h5>
-<div class="outline-text-5" id="text-orgheadline4">
+<div id="outline-container-orgheadline5" class="outline-5">
+<h5 id="orgheadline5">2. Makefile</h5>
+<div class="outline-text-5" id="text-orgheadline5">
 <p>
 I found this cool <b>Makefile</b> and <b>public-config.el</b> on the web, so only
 need to use command <b>make</b> to generate all the org files to html.
@@ -105,9 +119,9 @@ need to use command <b>make</b> to generate all the org files to html.
 </div>
 </div>
 
-<div id="outline-container-orgheadline5" class="outline-5">
-<h5 id="orgheadline5">3. publish-config.el</h5>
-<div class="outline-text-5" id="text-orgheadline5">
+<div id="outline-container-orgheadline6" class="outline-5">
+<h5 id="orgheadline6">3. publish-config.el</h5>
+<div class="outline-text-5" id="text-orgheadline6">
 <p>
 The core file that Makefile uses is public-config.el, it defines some
 configurations for the orgmode <b>publish</b> command.
@@ -125,9 +139,9 @@ html folder. Here I only export body as I have a default css format.</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgheadline6" class="outline-5">
-<h5 id="orgheadline6">4. jekyll format in org file</h5>
-<div class="outline-text-5" id="text-orgheadline6">
+<div id="outline-container-orgheadline7" class="outline-5">
+<h5 id="orgheadline7">4. jekyll format in org file</h5>
+<div class="outline-text-5" id="text-orgheadline7">
 <p>
 As jekyll has its own format, such as <b>layout/title/tag/..</b>, so add this
 format to the org file and treat it as HTML.
