@@ -14,11 +14,12 @@ description: [A brief description about how to write post with orgmode]
 ---
 #+END_HTML
 
-* 说明
-本blog是搭建在github之上的blog, 关于如何在github上搭建blog, 网上有N多的教程.
+本文的主要目的是介绍本博客的架构, 以及说明如何用[[http://xuzhengchao.com/orgmode/org-mode-outline.html][OrgMode]] 来体验纯文本写作的快乐, 
+就像你们用markdown所做的那样.
 
-本blog使用org mode撰写而成, 并绑定了一些emacs快捷键, 以及一些elisp写的自动化
-程序.后续会补充该部分内容.
+/注1: 本博客搭建在github之上, 关于如何在github上搭建blog, 网上一搜有N多的教程./
+/注2: 本博客的模板使用了[[http://painterlin.com/pages/about.html][PainterLin]] 同学的开源模板并做了一点UI修改./
+
 
 * 更新记录
 ** Emacs 24.4.1 + org mode 8.2.10(Mac)
@@ -43,67 +44,3 @@ description: [A brief description about how to write post with orgmode]
 	  )))
 
  #+END_SRC
-** 24.4.1之前 +Not working on Emacs 24.4.1+
-*** Why do I do this???
-   Before I decided to learn emacs and lisp, I used markdown and jeklly to write
- github post, as many people do.
-
- Now, it's the year of 2015, "*Learning Emacs and Lisp*" is one of my plans of 
- this year, so I decide to do all the things in emacs, including writing github
- post.
-
- Then I thought, since I decided to write things, why not use orgmode to do this?
- I had been using it for a while as a *GTD* tool, and I think orgmode is much more 
- cooler than mardown.
-
- But I am such a newbie on Emacs and OrgMode, I don't know how to do this at all,
- so I do some researches on google and read some douments.
-
- Thanks to these guys who share their experience about this, finally, I made it.
-
-*** Things I do:
-**** 1. My original github blog arch
- As methioned before, I used *markdown+jekyll* to write post before transfer 
- to orgmode, these are the import contents of my blog folder then:
- + index.html
- + _layouts/
- + _posts/
- + assets/
-
- If you write blog with jekyll, you must know what these contents mean.
-
-**** 2. Makefile
- I found this cool *Makefile* and *public-config.el* on the web, so only
- need to use command *make* to generate all the org files to html.
-
-**** 3. publish-config.el
- The core file that Makefile uses is public-config.el, it defines some
- configurations for the orgmode *publish* command.
-
-
- The lisp code above doing these things:
- + 1. Load org-jekyll-mode.el, it's a minor mode to export org file to 
-   jekyll-formatted html. Download it from [[https://github.com/jsuper/org-jekyll-mode/blob/master/org-jekyll-mode.el][here]].
- + 2. org-publish-project-alist defines the org file folder and the dest 
-   html folder. Here I only export body as I have a default css format.
-**** 4. jekyll format in org file
- As jekyll has its own format, such as *layout/title/tag/..*, so add this
- format to the org file and treat it as HTML.
-
- #+BEGIN_SRC org
- #+OPTIONS: ^:nil
- #+AUTHOR: Luis404
- #+EMAIL: luisxu404@gmail.com
-
- #+BEGIN_HTML
- ---
- layout: post
- title: Use Emacs OrgMode Write Github Post
- tag: [Emacs, Orgmode]
- description: [A brief description about how to write post with orgmode]
- ___
- #+END_HTML
- #+END_SRC
-
- OK, that's all, so you just run *make*, and all the org files become 
- jekyll html file.
