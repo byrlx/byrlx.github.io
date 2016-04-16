@@ -12,6 +12,9 @@ title: Favorite Links
 category: [Life]
 ---
 #+END_HTML
+
+使用OrgMode的 [[http://xuzhengchao.com/orgmode/org-capture.html]["Capture"]] 功能随时记录喜欢的文章, 便于整理和搜索.
+
 * Links
 ** 1. Android
 *** [[https://github.com/lucasr/twoway-view][twoway-view]]
@@ -29,6 +32,8 @@ category: [Life]
 *** [[https://medium.com/google-developers/intercepting-everything-with-coordinatorlayout-behaviors-8c6adc140c26#.q3rhfxmvn][CoordinatorLayout and Behavior]]
  这篇文章对Behavior讲解的很清楚. 
 *** [[http://nerds.weddingpartyapp.com/tech/2014/12/24/implementing-an-event-bus-with-rxjava-rxbus/][使用RxJava实现event bus]]
+*** [[http://www.cnblogs.com/angeldevil/p/3479431.html][对view构造函数的解释]]					     
+ 本文着重讲解了view的第三个构造函数及其参数. 
 ** 2. Java
 *** [[https://publicobject.com/2016/01/20/strict-naming-conventions-are-a-liability/][Your strict naming conventions are a liability]]
  Jesse Wilson 在这篇文章里讨论了Java命名和其他机制(e.g. Json)之间的命名
@@ -39,5 +44,3 @@ category: [Life]
  作者在该文章里通过反射和正则表达式两个例子, 阐述了重用的高效率性.
 ** 3. Fancy
 *** [[http://bbs.hupu.com/15698397.html][马刺卡哇伊文章]]
-** [[http://www.cnblogs.com/angeldevil/p/3479431.html][对view构造函数的解释]] :androd:
-本文着重讲解了view的第三个构造函数及其参数. 
