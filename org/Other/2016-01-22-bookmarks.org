@@ -39,3 +39,5 @@ category: [Life]
  作者在该文章里通过反射和正则表达式两个例子, 阐述了重用的高效率性.
 ** 3. Fancy
 *** [[http://bbs.hupu.com/15698397.html][马刺卡哇伊文章]]
+** [[http://www.cnblogs.com/angeldevil/p/3479431.html][对view构造函数的解释]] :androd:
+本文着重讲解了view的第三个构造函数及其参数. 
