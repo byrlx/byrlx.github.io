@@ -15,8 +15,8 @@ description: [Run! Run! Run!]
 * 关于跑步
 爱好不多, 跑步算得上一个. 虽然越跑越胖, 但仍然断断续续坚持着, 无论远近, 对身体总是好的.
 
-跑过几次[[http://xuzhengchao.com/life/%E7%AC%AC%E4%BA%8C%E6%AC%A1%E5%8C%97%E4%BA%AC%E9%A9%AC%E6%8B%89%E6%9D%BE.html][马拉松]], 成绩都烂的很, 后半程总是以走为主. 不过心态略好, 仍然一年年的坚持着,
-每年的马拉松, 都是平时跑步的一个动力. 期待能一直跑到老, 然后跑进一次4小时. O(∩_∩)O~
+跑过几次[[http://xuzhengchao.com/life/%E7%AC%AC%E4%BA%8C%E6%AC%A1%E5%8C%97%E4%BA%AC%E9%A9%AC%E6%8B%89%E6%9D%BE.html][马拉松]], 成绩都烂的很, 后半程总是以走为主. 不过心态略好, 仍然一年年的跑, 图个乐呵.
+而且每年马拉松, 都是平时跑步的一个动力. 期待能一直跑到老, 然后跑进一次4小时. O(∩_∩)O~
 
 该文是跑步的一个记录. [[http://xuzhengchao.com/lisp/add-running-record.html][偷闲用Emacs Lisp写了一个程序]]. 用Emacs命令的方式添加记录, 再结合
 emacs的快捷键, 一步到位更新blog, 也是蛮酷的.
