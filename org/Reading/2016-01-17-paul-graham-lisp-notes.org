@@ -8,7 +8,7 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: The Roots of Lisp 阅读笔记
+title: "<<The Roots of Lisp>> 阅读笔记"
 categories: [Lisp, Reading]
 tag: [reading]
 ---

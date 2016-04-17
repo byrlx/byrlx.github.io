@@ -8,7 +8,7 @@
 #+BEGIN_HTML
 ---
 layout: post
-title: <<Introduction To Rx>>读书笔记
+title: "<<Introduction To Rx>>读书笔记"
 categories: [Reading]
 ---
 #+END_HTML
