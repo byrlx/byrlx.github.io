@@ -23,7 +23,7 @@ tag: [orgmode, translate]
                                                                                                       -- Brian Gough vs Chris Woolfrey
 #+END_VERSE
 
-这是Org mode手册系列的第一篇, 内容主要为阅读Org Manual的笔记, 
+这是Org mode手册系列的第一篇, 内容主要为阅读[[http://orgmode.org/manual/][Org Manual]]的笔记, 
 对内容做了一些注解, 方便查阅. 
 
 * 大纲模式(outline mode)
