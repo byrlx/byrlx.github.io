@@ -7,30 +7,79 @@ description: [A brief description about how to write post with orgmode]
 ---
 
 <p>
-本文的主要目的是介绍本博客的架构, 以及说明如何用<a href="http://xuzhengchao.com/orgmode/org-mode-outline.html">OrgMode</a> 来体验纯文本写作的快乐, 
+本文的主要目的是介绍本博客的架构, 以及说明如何用<a href="http://xuzhengchao.com/orgmode/org-mode-outline.html">OrgMode</a> 来体验纯粹写作的快乐, 
 就像你们用markdown所做的那样.
 </p>
 
 <p>
-<i>注1: 本博客搭建在github之上, 关于如何在github上搭建blog, 网上一搜有N多的教程.</i>
-<i>注2: 本博客的模板使用了<a href="http://painterlin.com/pages/about.html">PainterLin</a> 同学的开源模板并做了一点UI修改.</i>
+<i>注1: 本博客搭建在github之上, 关于如何在github上搭建blog, 网上一搜有N多的教程.</i><br  />
+<i>注2: 本博客的模板使用了<a href="http://painterlin.com/pages/about.html">PainterLin</a> 同学的开源模板并做了一点UI修改.</i><br  />
+<i>注3: 阅读本文 "maybe" 需要一些markdown和jekyll的经验.</i>
 </p>
 
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">OrgMode"写作"一切</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+该blog最初的几篇文章, 都是用Markdown写成了, 作为目前最流行的文本标记语言, markdown
+简洁明了并被Github大力支持. 
+</p>
+
+<p>
+然而, <a href="http://xuzhengchao.com/orgmode/%E4%BD%BF%E7%94%A8-org-mode-%E7%AE%A1%E7%90%86%E5%B7%A5%E4%BD%9C%E7%94%9F%E6%B4%BB.html">自从认识了Orgmode并变成重度依赖用户</a>之后, 所有有文本相关的工作, 基本都在尝试用 OrgMode 来完成,
+目前已经用OrgMode可以做的工作包括:
+</p>
+<ol class="org-ol">
+<li>读书/代码笔记.</li>
+<li>日程管理(GTD).</li>
+<li>PDF写作. (任何内容转PDF).</li>
+<li>制作PPT.</li>
+<li>表格计算.</li>
+<li>博客.</li>
+</ol>
+</div>
+</div>
 
 <div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2">更新记录</h2>
+<h2 id="orgheadline2">OrgMode写博客</h2>
 <div class="outline-text-2" id="text-orgheadline2">
-</div><div id="outline-container-orgheadline1" class="outline-3">
-<h3 id="orgheadline1">Emacs 24.4.1 + org mode 8.2.10(Mac)</h3>
-<div class="outline-text-3" id="text-orgheadline1">
 <p>
-换了mac后,又下载了最新的24.4.1版本, 发现之前的脚本不能用了.
-现在是写了一个publish 工程, 然后再emacs里执行org-publish命令完成.
+本部分内容对 Mac Pro 的 <b>Emacs 24.4.1 + org mode 8.3.3</b> 有效.
+</p>
+</div>
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">基本架构</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<p>
+写过github博客的人都知道, 文章一般都是放在 _posts 目录下面, 
+对于用Markdown写作的人来说, 只要把markdown格式的文章放到该目录下面,
+然后提交到github, 等几秒钟github的jekyll就会把它解析成html.
 </p>
 
-<div class="org-src-container">
+<p>
+由于jekyll并不支持org格式的文件, 所以不能直接放在 _posts 目录下然后提交,
+需要进行一次转换, 将org格式文件转成markdown或html. 幸运的是, orgmode基本
+支持<a href="http://xuzhengchao.com/orgmode/org-markup.html">org文件到所有主流格式的转化</a>.
+</p>
+</div>
+</div>
 
-<pre class="src src-lisp">;; =============== Org Publish =====================
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">工程发布功能</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
+转化使用了orgMode的"工程发布"功能, 相较于依次对文章执行转化命令, "工程发布"可以
+通过将所有文章看做一个工程实现批量转化.
+</p>
+
+<p>
+在本博客中, org文件都存放在org目录下, 并有一些子目录. 通过下面代码的"工程发布"配置,
+可以将生成的html存放到 _posts 目录下, 由于转化后的html文章没有使用博客的前端配置, 
+所以我写了一个 lisp 程序来自动创建文章, 并在创建过程中自动添加文章的配置 "header".
+这段程序在 <a href="http://xuzhengchao.com/lisp/create-post-and-input-header.html">这篇文章</a> 做了介绍. 
+</p>
+<pre class="example">
+;; =============== Org Publish =====================
 (setq org-publish-project-alist
       '(("github-blog"
 	 :base-directory "/Users/douhua/lx/github/blog/org/post/"
@@ -47,6 +96,31 @@ description: [A brief description about how to write post with orgmode]
 	 )))
 </pre>
 </div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">自动提交发布</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+<p>
+前面的工作只是将org文章转成了html, 然而并没有提交到github服务器, 作为一个"有追求"
+的程序员, 怎么能够忍受每次写完文章都要输入一堆的 git 命令. 故写了个小程序并将其
+绑定到了Emacs的 <b>F9</b> 快捷键.
+</p>
+<pre class="example">
+;;自动更新blog
+(defun lx-update-blog ()
+  (interactive)
+  (org-publish "github-blog")
+  (shell-command (concat "cd " LXBLOG " &amp;&amp; git add -A &amp;&amp; git ci -m 'update blog' &amp;&amp; git push")))
+(global-set-key (kbd "&lt;f9&gt;") 'lx-update-blog)
+</pre>
+
+<p>
+OK, 现在每次写完文章, 只要按一下F9, 等几秒, 就可以在网站上看到了.
+</p>
+<p class="verse">
+使用OrgMode, 体验"更"纯粹写作的乐趣.<br  />
+</p>
 </div>
 </div>
 </div>
