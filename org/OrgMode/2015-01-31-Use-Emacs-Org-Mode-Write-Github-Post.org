@@ -88,5 +88,5 @@ description: [A brief description about how to write post with orgmode]
 
 OK, 现在每次写完文章, 只要按一下F9, 等几秒, 就可以在网站上看到了.
 #+BEGIN_VERSE
-          使用OrgMode, 体验"更"纯粹写作的乐趣.
+                     使用OrgMode, 体验"更"纯粹写作的乐趣.
 #+END_VERSE
