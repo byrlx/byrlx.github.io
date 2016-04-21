@@ -44,3 +44,4 @@ category: [Life]
  作者在该文章里通过反射和正则表达式两个例子, 阐述了重用的高效率性.
 ** 3. Fancy
 *** [[http://bbs.hupu.com/15698397.html][马刺卡哇伊文章]]
+** [[http://blog.fullstory.com/2016/04/code-reviews-arent-just-for-catching-bugs/][Code Review 对构造企业文化的意义]]
