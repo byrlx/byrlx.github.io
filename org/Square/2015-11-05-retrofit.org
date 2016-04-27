@@ -82,7 +82,7 @@ public interface Client {
    的相对地址全部覆盖掉. 举例: base地址为"http://a/b", GET参数为"/c/d", 那么最后的请求地址为"http://a/c/d",
    因此,如果base地址本身已经是相对地址, 那么GET/POST的参数不能以"/"开头.
 3. <<主程序中实现get请求>>
-   #+BEGIN_SRC  java
+   #+BEGIN_EXAMPLE  
 public class MainActivity {
     ....
     public static final String SERVER_URL = "http://10.10.10.10/account";

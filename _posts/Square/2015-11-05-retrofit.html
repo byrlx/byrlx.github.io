@@ -115,39 +115,38 @@ public interface Client {
 的相对地址全部覆盖掉. 举例: base地址为"<a href="http://a/b">http://a/b</a>", GET参数为"/c/d", 那么最后的请求地址为"<a href="http://a/c/d">http://a/c/d</a>",
 因此,如果base地址本身已经是相对地址, 那么GET/POST的参数不能以"/"开头.
 </p></li>
-<li><a id="orgtarget1"></a>
-   #+BEGIN_SRC  java</li>
-</ol>
-<p>
+<li><p>
+<a id="orgtarget1"></a>
+</p>
+<pre class="example">
 public class MainActivity {
-    &#x2026;.
-    public static final String SERVER_URL = "<a href="http://10.10.10.10/account">http://10.10.10.10/account</a>";
+    ....
+    public static final String SERVER_URL = "http://10.10.10.10/account";
     private OkHttpClient okHttpClient = new OkHttpClient();
     private Retrofit.Builder builder = new Retrofit.Builder()
-        .base_url(SERVER_URL)
-        .client(okHttpClient)
-        .addConvertFactory(GsonConvertFactory.create());
-</p>
+	.base_url(SERVER_URL)
+	.client(okHttpClient)
+	.addConvertFactory(GsonConvertFactory.create());
 
-<p>
     Retrofit retrofit = builder.build();
     Client client = retrofit.create(Client.class);
     Call&lt;List&lt;Users&gt;&gt; call = client.getUsers();
     List&lt;Users&gt; result = call.execute().body();
-    &#x2026;.
+    ....
 }
-</p>
-
+</pre>
 <p>
-#+END_EXAMPLE
 上述代码用来做实际的请求动作, 首先通过Retrofit Builder来基于各种参数(服务器地址, httpclient, converter)
 生成一个builder对象, 让后调用builder的build()函数生成一个retrofit对象.
 </p>
 
 <p>
-   接着,调用retrofit的create()函数,传入上一步中定义的接口作为参数来实例化一个具体的接口对象, 然后调用
-   该对象的具体http请求函数(这里为getUsers())来实现http请求. 请求的结果是Json数据,会通过GsonConverter转化为具体的
-   对象(即User). 由于是多个对象,所以需要放到一个List中.
+接着,调用retrofit的create()函数,传入上一步中定义的接口作为参数来实例化一个具体的接口对象, 然后调用
+该对象的具体http请求函数(这里为getUsers())来实现http请求. 请求的结果是Json数据,会通过GsonConverter转化为具体的
+对象(即User). 由于是多个对象,所以需要放到一个List中.
+</p></li>
+</ol>
+<p>
 上述三步即为retrofit的基本使用方法.
 </p>
 </div>
