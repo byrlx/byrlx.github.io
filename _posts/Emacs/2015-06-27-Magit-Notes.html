@@ -7,19 +7,30 @@ tag: [emacs, git]
 ---
 
 <p>
-(持续更新)
+项目官网: <a href="https://magit.vc/">https://magit.vc/</a>
 </p>
-
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">v2.1.0</h2>
+<h2 id="orgheadline1">version 2.6.1</h2>
 <div class="outline-text-2" id="text-orgheadline1">
+<p>
+Elpa升级magit到2.x版本之后, 发现快捷键变化太大, 所以重新读了2.6.1版本的文档.
+在Emacs中使用"C-h i"之后选择 magit 即可打开文档.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10">old</h2>
+<div class="outline-text-2" id="text-orgheadline10">
+</div><div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">v2.1.0</h3>
+<div class="outline-text-3" id="text-orgheadline2">
 <p>
 v2.1.0于2015年7月1日发布, 该版本的主要更新: <a href="https://raw.githubusercontent.com/magit/magit/master/Documentation/RelNotes/2.1.0.txt">https://raw.githubusercontent.com/magit/magit/master/Documentation/RelNotes/2.1.0.txt</a>
 </p>
 </div>
-<div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2">升级</h3>
-<div class="outline-text-3" id="text-orgheadline2">
+<div id="outline-container-orgheadline3" class="outline-4">
+<h4 id="orgheadline3">升级</h4>
+<div class="outline-text-4" id="text-orgheadline3">
 <ol class="org-ol">
 <li>该版本依赖的其他软件的最小版本: &gt;=Emacs24.4, &gt;=git1.9.4.</li>
 <li>由于改动较大, 所以建议先删除旧版本.</li>
@@ -30,7 +41,7 @@ v2.1.0于2015年7月1日发布, 该版本的主要更新: <a href="https://raw.g
  Archive: n/a
  Version: 20150806.1658
 Requires: emacs-24.4, dash-2.10.0, with-editor-2.1.0, git-commit-2.1.0,
-            magit-popup-2.1.0
+	    magit-popup-2.1.0
  Summary: A Git porcelain inside Emacs
 Homepage: https://github.com/magit/magit
 Keywords: git tools vc 
@@ -38,9 +49,9 @@ Keywords: git tools vc
 </pre>
 </div>
 </div>
-<div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3">note</h3>
-<div class="outline-text-3" id="text-orgheadline3">
+<div id="outline-container-orgheadline4" class="outline-4">
+<h4 id="orgheadline4">note</h4>
+<div class="outline-text-4" id="text-orgheadline4">
 <ol class="org-ol">
 <li><p>
 在magit中disable evil-mode
@@ -56,30 +67,30 @@ Keywords: git tools vc
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4">快捷键:</h3>
-<div class="outline-text-3" id="text-orgheadline4">
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5">快捷键:</h4>
+<div class="outline-text-4" id="text-orgheadline5">
 <ul class="org-ul">
 <li>删除branch: b -&gt; v -&gt; k, 输入要删除的branch名.</li>
 </ul>
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5">v1.4</h2>
-<div class="outline-text-2" id="text-orgheadline5">
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">v1.4</h3>
+<div class="outline-text-3" id="text-orgheadline6">
 <p>
 Magit 1.4版本文档地址 <a href="http://magit.vc/manual/1.4/magit/index.html#Top">http://magit.vc/manual/1.4/magit/index.html#Top</a>
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline8" class="outline-2">
-<h2 id="orgheadline8">Magit功能学习</h2>
-<div class="outline-text-2" id="text-orgheadline8">
-</div><div id="outline-container-orgheadline6" class="outline-3">
-<h3 id="orgheadline6">Sections</h3>
-<div class="outline-text-3" id="text-orgheadline6">
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">Magit功能学习</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+</div><div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7">Sections</h4>
+<div class="outline-text-4" id="text-orgheadline7">
 <p>
 所有的Magit buffer都是通过 sections 的形式组织的, 每个section还可以包含子section.在一个magit buffer中, 这些
 sections可以独立的被显示和隐藏.当一个section被隐藏的时候,只会显示该section的
@@ -148,9 +159,9 @@ section操作的快捷键:
 </div>
 </div>
 
-<div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="orgheadline7">其他快捷键/配置</h3>
-<div class="outline-text-3" id="text-orgheadline7">
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8">其他快捷键/配置</h4>
+<div class="outline-text-4" id="text-orgheadline8">
 <p>
 注: <i>当快捷键操作于section头部时, 会影响所有的文件.</i>
 </p>
@@ -396,6 +407,7 @@ section操作的快捷键:
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 </div>
