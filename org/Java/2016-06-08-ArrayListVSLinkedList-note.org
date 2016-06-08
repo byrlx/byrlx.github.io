@@ -1,0 +1,32 @@
+#+OPTIONS: num:nil
+#+OPTIONS: ^:nil
+#+OPTIONS: H:nil
+#+OPTIONS: toc:nil
+#+AUTHOR: Zhengchao Xu
+#+EMAIL: xuzhengchaojob@gmail.com
+
+#+BEGIN_HTML
+---
+layout: post
+title: ArrayListVSLinkedList源码笔记
+categories: [Java]
+---
+#+END_HTML
+最近工作不忙, 抽空看了一下ArrayList和LinkedList的源码. 下面是一些主要知识点的笔记. 
+
+* Iterable
+实现了Iterable的接口类, 可以使用 "for-loop" 形式的语法. 
+例如这里实现一个 Foo 类实现了 Iterable 接口. 那么可以使用
+如下代码来操作 Foo 实例.
+
+#+BEGIN_EXAMPLE
+   Foo foo = new Foo();
+   for(T t : foo ) {//do  something}
+#+END_EXAMPLE
+
+该接口的几个主要API:
+** interator()
+返回一个[[Interator]] 实例, 用于实现对Interable接口的"遍历".
+** forEach(action)
+接受一个Cousumer类型的参数action, 然后对"遍历"后的每个元素用action做处理.
+* Interator
