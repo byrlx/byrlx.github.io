@@ -25,8 +25,16 @@ categories: [Java]
 #+END_EXAMPLE
 
 该接口的几个主要API:
-** interator()
-返回一个[[Interator]] 实例, 用于实现对Interable接口的"遍历".
-** forEach(action)
-接受一个Cousumer类型的参数action, 然后对"遍历"后的每个元素用action做处理.
-* Interator
+| interator()     | 返回一个[[Iterator][Iterator]] 实例, 用于实现对Interable接口的"遍历".                  |
+| forEach(action) | 接受一个Cousumer类型的参数action, 然后对"遍历"后的每个元素用action做处理. |
+
+* Iterator
+Iterator是集合的"迭代器", 提供了对集合进行遍历的方法. Iterator一般
+都是依附Iterable存在的. \\
+Iterator提供的API:
+
+| hasNext()                | 判断集合是否还有元素.                                             |
+| next()                   | 返回下一个元素.                                                   |
+| remove()                 | 删除next()返回的元素.                                             |
+| forEachRemaining(action) | 对集合剩下的元素执行action动作. action的定义与[[Iterable]]介绍的相同. |
+

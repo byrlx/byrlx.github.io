@@ -1,0 +1,90 @@
+---
+layout: post
+title: ArrayListVSLinkedList源码笔记
+categories: [Java]
+---
+<p>
+最近工作不忙, 抽空看了一下ArrayList和LinkedList的源码. 下面是一些主要知识点的笔记. 
+</p>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">Iterable</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<p>
+实现了Iterable的接口类, 可以使用 "for-loop" 形式的语法. 
+例如这里实现一个 Foo 类实现了 Iterable 接口. 那么可以使用
+如下代码来操作 Foo 实例.
+</p>
+
+<pre class="example">
+Foo foo = new Foo();
+for(T t : foo ) {//do  something}
+</pre>
+
+<p>
+该接口的几个主要API:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">interator()</td>
+<td class="org-left">返回一个<a href="#orgheadline1">Iterator</a> 实例, 用于实现对Interable接口的"遍历".</td>
+</tr>
+
+<tr>
+<td class="org-left">forEach(action)</td>
+<td class="org-left">接受一个Cousumer类型的参数action, 然后对"遍历"后的每个元素用action做处理.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Iterator</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+Iterator是集合的"迭代器", 提供了对集合进行遍历的方法. Iterator一般
+都是依附Iterable存在的. <br  />
+Iterator提供的API:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">hasNext()</td>
+<td class="org-left">判断集合是否还有元素.</td>
+</tr>
+
+<tr>
+<td class="org-left">next()</td>
+<td class="org-left">返回下一个元素.</td>
+</tr>
+
+<tr>
+<td class="org-left">remove()</td>
+<td class="org-left">删除next()返回的元素.</td>
+</tr>
+
+<tr>
+<td class="org-left">forEachRemaining(action)</td>
+<td class="org-left">对集合剩下的元素执行action动作. action的定义与<a href="#orgheadline2">Iterable</a>介绍的相同.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
