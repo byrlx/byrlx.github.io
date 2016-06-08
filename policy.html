@@ -1,0 +1,190 @@
+<!doctype html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!-- Consider adding a manifest.appcache: h5bp.com/d/Offline -->
+<!--[if gt IE 8]><!--> 
+<html class="no-js" lang="en-US"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<!--[if IE]>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" >
+	<![endif]-->
+
+	<title>Privacy Policy &laquo; InsistUpon</title>
+
+	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+	
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"http:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/www.xuzhengchao.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.2.8"}};
+			!function(a,b,c){function d(a){var c=b.createElement("canvas"),d=c.getContext&&c.getContext("2d");return d&&d.fillText?(d.textBaseline="top",d.font="600 32px Arial","flag"===a?(d.fillText(String.fromCharCode(55356,56812,55356,56807),0,0),c.toDataURL().length>3e3):(d.fillText(String.fromCharCode(55357,56835),0,0),0!==d.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<style id='rs-plugin-settings-inline-css' type='text/css'>
+.tp-caption a{color:#ff7302;text-shadow:none;-webkit-transition:all 0.2s ease-out;-moz-transition:all 0.2s ease-out;-o-transition:all 0.2s ease-out;-ms-transition:all 0.2s ease-out}.tp-caption a:hover{color:#ffa902}
+</style>
+<link rel='stylesheet' id='redux-google-fonts-be_themes_data-css'  href='http://fonts.googleapis.com/css?family=Open+Sans%3A300%2C400%2C600%2C300italic%7CRaleway%3A400%7CMontserrat%3A400%7CLato%3A700&#038;subset=latin&#038;ver=1438236552' type='text/css' media='all' />
+<meta name="generator" content="WordPress 4.2.8" />
+<meta name="generator" content="MasterSlider 2.12.2 - Responsive Touch Image Slider" />
+		<script type="text/javascript">
+			jQuery(document).ready(function() {
+				// CUSTOM AJAX CONTENT LOADING FUNCTION
+				var ajaxRevslider = function(obj) {
+				
+					// obj.type : Post Type
+					// obj.id : ID of Content to Load
+					// obj.aspectratio : The Aspect Ratio of the Container / Media
+					// obj.selector : The Container Selector where the Content of Ajax will be injected. It is done via the Essential Grid on Return of Content
+					
+					var content = "";
+
+					data = {};
+					
+					data.action = 'revslider_ajax_call_front';
+					data.client_action = 'get_slider_html';
+					data.token = '400b514101';
+					data.type = obj.type;
+					data.id = obj.id;
+					data.aspectratio = obj.aspectratio;
+					
+					// SYNC AJAX REQUEST
+					jQuery.ajax({
+						type:"post",
+						dataType: 'json',
+						data:data,
+						async:false,
+						success: function(ret, textStatus, XMLHttpRequest) {
+							if(ret.success == true)
+								content = ret.data;								
+						},
+						error: function(e) {
+							console.log(e);
+						}
+					});
+					
+					 // FIRST RETURN THE CONTENT WHEN IT IS LOADED !!
+					 return content;						 
+				};
+				
+				// CUSTOM AJAX FUNCTION TO REMOVE THE SLIDER
+				var ajaxRemoveRevslider = function(obj) {
+					return jQuery(obj.selector+" .rev_slider").revkill();
+				};
+
+				// EXTEND THE AJAX CONTENT LOADING TYPES WITH TYPE AND FUNCTION
+				var extendessential = setInterval(function() {
+					if (jQuery.fn.tpessential != undefined) {
+						clearInterval(extendessential);
+						if(typeof(jQuery.fn.tpessential.defaults) !== 'undefined') {
+							jQuery.fn.tpessential.defaults.ajaxTypes.push({type:"revslider",func:ajaxRevslider,killfunc:ajaxRemoveRevslider,openAnimationSpeed:0.3});   
+							// type:  Name of the Post to load via Ajax into the Essential Grid Ajax Container
+							// func: the Function Name which is Called once the Item with the Post Type has been clicked
+							// killfunc: function to kill in case the Ajax Window going to be removed (before Remove function !
+							// openAnimationSpeed: how quick the Ajax Content window should be animated (default is 0.3)
+						}
+					}
+				},30);
+			});
+		</script>
+			<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+</head>
+<body class="page page-id-3534 page-template page-template-page-with-title page-template-page-with-title-php _masterslider _msp_version_2.12.2 no-section-scroll smooth-scroll top-header none all-ajax-content be-themes-layout-layout-wide">
+	<div class="sb-slidebar sb-right">
+		<i class="overlay-menu-close font-icon icon-icon_close"></i>
+		<div class="display-table">
+			<div id="sb-slidebar-content" class="sb-slidebar-content ajaxable">
+				<div id="logo-sidebar"><a href="http://www.xuzhengchao.com"><img class="transparent-logo dark-scheme-logo" src="http://www.xuzhengchao.com/wp-content/uploads/2015/06/InsistUpon-butterfly-box-01.png" alt="" /></a></div>			</div>
+		</div>
+	</div>
+	<div class="search-box-wrapper style2-header-search-widget">
+				<a href="#" class="header-search-form-close"><i class="icon-icon_close font-icon"></i></a>
+				<div class="search-box-inner1">
+					<div class="search-box-inner2"><form role="search" method="get" class="searchform" action="http://www.xuzhengchao.com/" >
+	    <input type="text" placeholder="Search ..." value="" name="s" class="s" />
+	    <i class="search-icon icon-search font-icon"></i>
+	    <input type="submit" class="search-submit" value="" />
+	    </form></div>
+				</div>
+			</div>	<div id="main-wrapper">
+				<div id="main" class="ajaxable layout-wide" >
+			 <!-- if ( isset($be_themes_data['opt-header-type']) && ('top' == $be_themes_data['opt-header-type'] ) ) { -->
+	<header id="header">
+				<div id="header-inner-wrap" class=" style1"  >
+						<div id = "left-header-mobile" class="clearfix">
+			</div>
+			<div id="header-wrap" class=" clearfix" data-default-height="46" data-sticky-height="46">
+														<div class="logo">
+					<div id="header-controls-right">
+						</div>
+					</div>					<nav id="navigation" class="clearfix">						</nav><!-- End Navigation -->			</div>
+							<span class="header-border be-wrap "></span>						<div class="clearfix">			</div>
+		</div>
+	</header> <!-- END HEADER -->
+<div class="header-hero-section"></div><div class="title-module-wrap page-title-module-custom"><div class="be-wrap clearfix"><div class="left page-title-custom">Privacy Policy</div><div class="right header-breadcrumb"><div class="breadcrumbs"><a href="http://www.xuzhengchao.com">Home</a>  /  Privacy Policy</div></div></div></div>	<section id="content" class="no-sidebar-page">
+		<div id="content-wrap" class="page-builder">
+			<section id="page-content">
+				<div class="clearfix">
+					<div class="be-section       clearfix" data-headerscheme="background--dark" style=""  ><div class="be-section-pad clearfix" style="padding-top:90px;padding-bottom:90px;"><div class="be-row be-wrap clearfix"><div class="one-col column-block clearfix    " data-animation="" style="  "><div class="be-custom-column-inner"><p style="text-align: center;"><b>InsistUpon Homescreen&nbsp;Privacy Policy</b></p>
+<p style="text-align: center;"><b>Effective Date: July 28, 2015</b></p>
+<p style="text-align: center;"><i>At InsistUpon, we value transparency and, above all, your privacy</i>.</p>
+<p><b>Introduction</b></p>
+<p>This Privacy Policy (“Policy”) applies to your access and use of InsistUpon Homescreen&nbsp;(“Mobile App”), a mobile software application created and operated by InsistUpon, Inc. (“we,” “us,” or “our”), and expressly discloses the types of personal and non-personal information collected, used and stored as a result of your use of the Mobile App.&nbsp; Please note that your use of our Mobile App is always subject to the terms in our <a href="http://www.xuzhengchao.com/index.php/about-2/terms_of_service/">InsistUpon Homescreen&nbsp;Terms of Service</a>.</p>
+<p><b><i>By installing and/or using the Mobile App, you consent to the collection, use and storage of information as set forth in this Privacy Policy.&nbsp;</i></b></p>
+<p><b>Children’s Online Privacy</b></p>
+<p>We value protection and security of children’s privacy. We do not knowingly collect or solicit any personally identifiable information from children under the age of thirteen (13).</p>
+<p>If a child under the age of 13 has under any circumstances provided us with personal information and data, a parent or legal guardian can email us at&nbsp;<a href="mailto:support@InsistUpon.com">support@InsistUpon.com</a>&nbsp;to request that their children’s information be deleted from our records.</p>
+<p><b>When is Personal Information Collected?&nbsp;</b></p>
+<p>We collect certain types of personal information when you install, register, and/or use our Mobile App. Such information may be used to provide you with an enhanced personalized experience on InsistUpon Homescreen, with access to the right apps at the right time and place, in addition to more relevant search results and customized recommendations of applications available for download.</p>
+<p>&nbsp;</p>
+<p><b>What Information is Collected?&nbsp;</b></p>
+<p><b>1.&nbsp; Information Collected through Google Play Services</b></p>
+<p style="padding-left: 30px;">InsistUpon has integrated various Google API’s to enhance its user experience.&nbsp; Use of the Mobile App is conditioned on your acceptance of&nbsp;<a href="https://play.google.com/intl/en_us/about/play-terms.html">Google Play&#8217;s Terms of Service&nbsp;</a>&nbsp;and&nbsp;<a href="http://www.google.com/policies/privacy/">Google&#8217;s Privacy Policy</a>.&nbsp; Google Play Services will collect:</p>
+<p style="padding-left: 30px;"><b>Geo-location Data:</b>&nbsp; InsistUpon Homescreen&nbsp;is designed to interact, in real-time, to facilitate a smarter, more pleasant user experience.&nbsp; To accomplish this objective, Google Play Services collect geo-location information from your mobile device, so that the Mobile App can assess:</p>
+<p style="padding-left: 60px;"><b>Location Awareness &#8211;&nbsp;</b>to obtain the last known location of your mobile device, periodic location updates, and location addresses.</p>
+<p style="padding-left: 60px;"><b>Travel Distance –</b>&nbsp;to identify your approximate location and movement to determine when you are driving and to gauge travel distance.</p>
+<p style="padding-left: 30px;"><b>Sensor Data:&nbsp;</b>&nbsp;Google Play collects information from the sensors in a user&#8217;s phone, such as the accelerometer, gyroscope, and GPS.</p>
+<p><b>2. Information collected directly by InsistUpon</b></p>
+<p style="padding-left: 30px;"><b>Mobile Device Data</b>:&nbsp; InsistUpon records certain data from your mobile device, including information about mobile device models, applicable operating systems and mobile device use.&nbsp; Aggregated information pertaining to a user’s history of application installations and uninstallations, applications run or opened on your device, and the number of times the mobile device is turned on, is collected for the following purposes:</p>
+<p style="padding-left: 60px;"><b>Research, Development and Marketing</b>: Generate aggregated, non-personally identifiable information for research, development and marketing purposes</p>
+<p style="padding-left: 60px;"><b>Deliver Content</b>:&nbsp; Converge with anonymous geo-location data to deliver real-time, customized content directly to your mobile device.</p>
+<p style="padding-left: 60px;"><b>Make Improvements to Our Services:</b>&nbsp;Improve our algorithms and measure application usage for improving your InsistUpon Homescreen&nbsp;experience on the whole.</p>
+<p style="padding-left: 30px;"><b>Third Party Accounts:&nbsp;&nbsp;</b>We may allow you to connect or link the Mobile App with third party accounts to personalize your experience. If you choose to connect your accounts, any information that you share with us will be subject to this Privacy Policy.</p>
+<p style="padding-left: 30px;">Such third party accounts have their own privacy policies, which you should review if you link the Mobile App with these accounts.&nbsp; InsistUpon is not responsible for the practices of any third party accounts linked to the Mobile App or your mobile device.</p>
+<p><b>InsistUpon does NOT collect any of the following items:</b></p>
+<p style="padding-left: 60px;">• Network connection such as Wi-Fi settings;</p>
+<p style="padding-left: 60px;">• Phone system settings such as Sync, Bluetooth, or storage space; or</p>
+<p style="padding-left: 60px;">• Any content or files of notifications, email account information, camera, media, and/or SMS.</p>
+<p>&nbsp;</p>
+<p><b>How Is Collected Information Used? &nbsp;</b></p>
+<p><b><i>We do not license or sell collected data to third parties or nonaffiliated companies</i></b>. We use the information we collect from the Mobile App to provide, maintain, protect, and improve our services by developing new features.</p>
+<p>Information collected by InsistUpon may be utilized to (i) communicate with our users to provide information regarding our services or material changes to our Terms of Service and/or Privacy Policy; (ii) help us maintain and improve services offered; and/or (iii) provide advertisements or content that match users’ interests.</p>
+<p>Information is disclosed to third parties only (i) when we are required to do so by law, or (ii) in the event of a change of ownership, such as a merger, acquisition or assignment of interests.</p>
+<p>We will use commercially reasonable efforts to notify users (i) about law enforcement or court ordered requests for data unless otherwise prohibited by law, or (ii) if your personal information is to be disclosed or transferred and/or becomes subject to a different privacy policy.</p>
+<p>InsistUpon retains collected data for no longer than is reasonably necessary to deliver and improve upon its services, generally for a period of two months.</p>
+<p><b>What Security Measures are in Place to Protect My Data?&nbsp;</b></p>
+<p>We use commercially reasonable physical and technical safeguards to secure your data. We encrypt the communication channels to ensure protection of your personal information. Despite our efforts, however, please note that no security measures or method of data transmission can be guaranteed against any interception, unauthorized entry, or other type of misuse, or software and/or hardware failure.</p>
+<p>Although we do not sell or rent data to third parties, we do use third party vendors and hosting partners to provide the necessary hardware, software, networking, storage, and related technology required to provide our service. By installing and using the Mobile App, you consent to the transfer of any data collected to such third parties.</p>
+<p><b>How Does InsistUpon Respond to “Do Not Track” Signals?</b></p>
+<p>“Do Not Track or DNT is a feature enabled on some browsers that sends a signal to request that a web application disable its tracking or cross-site user tracking. At present, our Mobile App does not respond to or alter its practices when a DNT signal is received.&nbsp; Users can check your mobile phone settings or Google’s&nbsp;<a href="http://www.google.com/policies/privacy/partners/">How Google uses data when you use our partners’ sites or apps</a>&nbsp;to obtain information about DNT settings on its platform.</p>
+<p><b>How Will I Be Notified of Any Changes to this Privacy Policy?</b></p>
+<p>If InsistUpon makes material changes to its Privacy Policy, we will notify you by (1) changing the Effective Date on our Privacy Policy and provide additional notification either (1) via our Mobile App, our Twitter account, or other means as we may deem commercially reasonable.</p>
+<p>Your continued use our Mobile App after such changes have been made to the Privacy Policy constitutes your consent to our modified data collection and use practices.</p>
+<p><b>Questions?&nbsp;</b></p>
+<p><b>Interpretation</b></p>
+</body>
+</html>
