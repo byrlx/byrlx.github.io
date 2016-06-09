@@ -37,23 +37,23 @@ description: [retrofit源码阅读笔记]
 retrofit库可以在<a href="http://search.maven.org/#search%7Cga%7C1%7Cretrofit">maven.org</a> 找到. 可以直接添加到maven或gradle工程中.
 </p>
 <ul class="org-ul">
-<li>Maven
-#+BEGIN_SRC xml</li>
-</ul>
-<p>
+<li><p>
+Maven
+</p>
+<pre class="example">
 &lt;dependency&gt;
   &lt;groupId&gt;com.squareup.retrofit&lt;/groupId&gt;
   &lt;artifactId&gt;retrofit&lt;/artifactId&gt;
   &lt;version&gt;2.0.0-beta2&lt;/version&gt;
 &lt;/dependency&gt;
-  #+END_EXAMPLE
+</pre></li>
+<li><p>
+Gradle. 如果与服务端的请求和结果都是json的话,需要gson converter进行转化, 因为要把该库也添加上.
 </p>
-<ul class="org-ul">
-<li>Gradle. 如果与服务端的请求和结果都是json的话,需要gson converter进行转化, 因为要把该库也添加上.
- #+BEGIN_SRC  xml
+<pre class="example">
 compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
-compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2' 
- #+END_EXAMPLE</li>
+compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+</pre></li>
 <li><p>
 混淆配置
 如果项目中使用混淆的话, 需要在混淆文件中假如如下配置
@@ -329,10 +329,8 @@ public class LoginActivity extends Activity {
 在请求中传入一个了回调地址, 如果用户授权一般第三方服务器带着授权码会跳到这个地址, 所以必须在请求授权码
 时传入回调地址. 这在Android中会表现发送回调Uri的广播,并将授权码通过intent传递出去.
 所以app中需要在注册一个可以接受该intent的界面,这里还是使用主界面. 在AndroidMainfest.xml中设置intent-filter
-#+BEGIN_SRC xml
-</p></li>
-</ol>
-<p>
+</p>
+<pre class="example">
 &lt;activity  
     android:name="com.futurestudio.oauthexample.LoginActivity"
     android:label="@string/app_name"
@@ -345,9 +343,8 @@ public class LoginActivity extends Activity {
             android:host="redirecturi"
             android:scheme="your" /&gt;
     &lt;/intent-filter&gt;
-&lt;/activity&gt;  
-   #+END_EXAMPLE
-</p>
+&lt;/activity&gt;
+</pre>
 
 <p>
 在onResume处理接受到的Intent.
@@ -372,8 +369,7 @@ protected void onResume() {
 
 <p>
 好, 到此为止,我们就已经获取到了授权码,下一步就是通过授权码获取Access Token. 
-</p>
-<ol class="org-ol">
+</p></li>
 <li><p>
 获取Access Token
 上一步获取到授权码后, 就可以向第三方的Access Token服务器发送请求获取token. 我们可以写一个retrofit服务

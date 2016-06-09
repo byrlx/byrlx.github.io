@@ -30,7 +30,7 @@ description: [retrofit源码阅读笔记]
 * 在项目中使用retrofit
 retrofit库可以在[[http://search.maven.org/#search%7Cga%7C1%7Cretrofit][maven.org]] 找到. 可以直接添加到maven或gradle工程中.
 + Maven
-  #+BEGIN_SRC xml
+  #+BEGIN_EXAMPLE xml
 <dependency>
   <groupId>com.squareup.retrofit</groupId>
   <artifactId>retrofit</artifactId>
@@ -38,7 +38,7 @@ retrofit库可以在[[http://search.maven.org/#search%7Cga%7C1%7Cretrofit][maven
 </dependency>
   #+END_EXAMPLE
 + Gradle. 如果与服务端的请求和结果都是json的话,需要gson converter进行转化, 因为要把该库也添加上.
-  #+BEGIN_SRC  xml
+  #+BEGIN_EXAMPLE  xml
  compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
  compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2' 
   #+END_EXAMPLE
@@ -254,7 +254,7 @@ public class LoginActivity extends Activity {
    在请求中传入一个了回调地址, 如果用户授权一般第三方服务器带着授权码会跳到这个地址, 所以必须在请求授权码
    时传入回调地址. 这在Android中会表现发送回调Uri的广播,并将授权码通过intent传递出去.
    所以app中需要在注册一个可以接受该intent的界面,这里还是使用主界面. 在AndroidMainfest.xml中设置intent-filter
-   #+BEGIN_SRC xml
+   #+BEGIN_EXAMPLE xml
 <activity  
     android:name="com.futurestudio.oauthexample.LoginActivity"
     android:label="@string/app_name"
