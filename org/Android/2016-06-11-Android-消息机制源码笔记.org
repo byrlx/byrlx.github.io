@@ -1,0 +1,28 @@
+#+OPTIONS: num:nil
+#+OPTIONS: ^:nil
+#+OPTIONS: H:nil
+#+OPTIONS: toc:nil
+#+AUTHOR: Zhengchao Xu
+#+EMAIL: xuzhengchaojob@gmail.com
+
+#+BEGIN_HTML
+---
+layout: post
+title: Android 消息机制源码笔记
+categories: [Android]
+---
+#+END_HTML
+
+本笔记是Android中对Handler相关原理的代码阅读笔记.
+
+* Message
+该类是描述了用于作为信息载体的"消息"的实现, 几个重要的成员变量.
+|      | 描述 |
+|------+------|
+| what | 该变量可以用来唯一的标志条消息, 因为每个handler都有自己的命名空间, 所以不同发给不同handler的message, 即使what相同, 也不会冲突 |
+|      |      |
+|      |      |
+|      |      |
+|      |      |
+|      |      |
+|      |      |
