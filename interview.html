@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-06-21 Tue 19:30 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="lx" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  pre.src-sh:before    { content: 'sh'; }
+  pre.src-bash:before  { content: 'sh'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-R:before     { content: 'R'; }
+  pre.src-perl:before  { content: 'Perl'; }
+  pre.src-java:before  { content: 'Java'; }
+  pre.src-sql:before   { content: 'SQL'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">1. ormlite库操作数据库, 实现类到表的操作</a></li>
+<li><a href="#orgheadline2">2. gson操作json字符串</a></li>
+<li><a href="#orgheadline3">3. okhttp进行网络操作</a></li>
+<li><a href="#orgheadline4">4. fresco网络图片加载</a></li>
+<li><a href="#orgheadline5">5. umeng进行统计分析和反馈</a></li>
+<li><a href="#orgheadline6">6. sharesdk进行统一分享</a></li>
+<li><a href="#orgheadline7">7. 阿里聚安全进行加密</a></li>
+<li><a href="#orgheadline8">8. 广点通和百度的广告进行广告投放</a></li>
+<li><a href="#orgheadline9">9. 小米push和umengpush来推送消息</a></li>
+<li><a href="#orgheadline10">10. 设置多进程</a></li>
+<li><a href="#orgheadline11">11. 四种启动模式</a></li>
+<li><a href="#orgheadline12">12. 让activity支持scheme</a></li>
+<li><a href="#orgheadline15">13. home页蒙版指导图</a>
+<ul>
+<li><a href="#orgheadline13">13.1. 显示获取通知权限蒙版</a></li>
+<li><a href="#orgheadline14">13.2. home页提示</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline16">14. 设置应用可以获取通知权限保持应用不被杀死</a></li>
+<li><a href="#orgheadline17">15. 通常可以放在Application类的动作</a></li>
+<li><a href="#orgheadline18">16. <span class="done nilDONE">DONE</span> abstract class VS interface</a></li>
+<li><a href="#orgheadline19">17. <span class="done nilDONE">DONE</span> recyclerView VS listView</a></li>
+<li><a href="#orgheadline20">18. <span class="done nilDONE">DONE</span> startService VS bindService</a></li>
+<li><a href="#orgheadline21">19. <span class="todo nilTODO">TODO</span> factory pattern</a></li>
+<li><a href="#orgheadline24">20. <span class="todo nilTODO">TODO</span> thread with looper and handler</a>
+<ul>
+<li><a href="#orgheadline22">20.1. 在其他线程中创建handler</a></li>
+<li><a href="#orgheadline23">20.2. 在其他线程中使用UI线程的looper.</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline25">21. <span class="done nilDONE">DONE</span> linkedlist VS Arraylist</a></li>
+<li><a href="#orgheadline26">22. <span class="todo nilTODO">TODO</span> async task</a></li>
+<li><a href="#orgheadline27">23. <span class="todo nilTODO">TODO</span> thread basic</a></li>
+<li><a href="#orgheadline28">24. <span class="todo nilTODO">TODO</span> H5</a></li>
+<li><a href="#orgheadline29">25. <span class="done nilDONE">DONE</span> 给定一个tree, 如何判断是BST</a></li>
+<li><a href="#orgheadline30">26. <span class="done nilDONE">DONE</span> how to resolve ANR</a></li>
+<li><a href="#orgheadline31">27. <span class="todo nilTODO">TODO</span> fix resume</a></li>
+<li><a href="#orgheadline35">28. <span class="done nilDONE">DONE</span> static inner class VS inner class</a>
+<ul>
+<li><a href="#orgheadline32">28.1. why use inner class</a></li>
+<li><a href="#orgheadline33">28.2. static inner class</a></li>
+<li><a href="#orgheadline34">28.3. non-static inner class</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline37">29. touch事件传递机制</a>
+<ul>
+<li><a href="#orgheadline36">29.1. 实验</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1"><span class="section-number-2">1</span> ormlite库操作数据库, 实现类到表的操作</h2>
+<div class="outline-text-2" id="text-1">
+<ol class="org-ol">
+<li>实现一个OrmListeSqliteOpenHelper类的子类, 实现对
+onUpgrade的监听.</li>
+<li>自定了一个类用于数据的实际升级操作, 每个版本到下一个版本
+都有一个升级函数.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2"><span class="section-number-2">2</span> gson操作json字符串</h2>
+</div>
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3"><span class="section-number-2">3</span> okhttp进行网络操作</h2>
+</div>
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4"><span class="section-number-2">4</span> fresco网络图片加载</h2>
+</div>
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5"><span class="section-number-2">5</span> umeng进行统计分析和反馈</h2>
+</div>
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6"><span class="section-number-2">6</span> sharesdk进行统一分享</h2>
+</div>
+<div id="outline-container-orgheadline7" class="outline-2">
+<h2 id="orgheadline7"><span class="section-number-2">7</span> 阿里聚安全进行加密</h2>
+</div>
+<div id="outline-container-orgheadline8" class="outline-2">
+<h2 id="orgheadline8"><span class="section-number-2">8</span> 广点通和百度的广告进行广告投放</h2>
+</div>
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9"><span class="section-number-2">9</span> 小米push和umengpush来推送消息</h2>
+</div>
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10"><span class="section-number-2">10</span> 设置多进程</h2>
+<div class="outline-text-2" id="text-10">
+<ol class="org-ol">
+<li>方法: 设置 taskAffinity</li>
+<li>保持锁屏占用的资源变少. 避免被系统应用杀死.</li>
+<li>加快应用的相应速度.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline11" class="outline-2">
+<h2 id="orgheadline11"><span class="section-number-2">11</span> 四种启动模式</h2>
+<div class="outline-text-2" id="text-11">
+<ol class="org-ol">
+<li>standard: 标准模式, 建立一个新的栈放入task中, 什么都不判断.</li>
+<li>singleTop: 如果当前页面已经是栈顶, 则不新建, 否则新建.</li>
+<li>singleTask: 如果当前页面不是栈顶, 弹出所有.</li>
+<li>singleInstance: 给当前页面建立一个全新的task, 只有一个实例.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline12" class="outline-2">
+<h2 id="orgheadline12"><span class="section-number-2">12</span> 让activity支持scheme</h2>
+<div class="outline-text-2" id="text-12">
+<p>
+通过在activity节点中设置 intent-filter 节点. 里面的内容
+</p>
+<ol class="org-ol">
+<li>设置scheme格式, 包括 host 和 scheme</li>
+<li>设置action为 VIEW.</li>
+<li>设置category为 DEFAULT. 
+也可以设置browsable, 这样可以通过浏览器打开activity.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline15" class="outline-2">
+<h2 id="orgheadline15"><span class="section-number-2">13</span> home页蒙版指导图</h2>
+<div class="outline-text-2" id="text-13">
+<ol class="org-ol">
+<li>通过在MainFragment里添加了一个MainFragmentManager.</li>
+<li>在mainfragmet的oncreate里调用该manager的showGuide()函数.</li>
+<li>showGuide()函数一次检查是否需要显示权限, 如果需要的话, 
+依次显示, 所以这几个view是层层网上叠加的.</li>
+</ol>
+</div>
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13"><span class="section-number-3">13.1</span> 显示获取通知权限蒙版</h3>
+<div class="outline-text-3" id="text-13-1">
+<p>
+自定义了一个RelativeLayout来实现"覆盖效果".
+然后调用 getWindow().getDecorView.addView()将其
+加载到当前view的最上层.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14"><span class="section-number-3">13.2</span> home页提示</h3>
+<div class="outline-text-3" id="text-13-2">
+<ol class="org-ol">
+<li>收入的提示使用了自定义view.直接显示一个蒙版效果图.</li>
+<li>商城的提示使用了开源控件ShowTipsBuilder.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline16" class="outline-2">
+<h2 id="orgheadline16"><span class="section-number-2">14</span> 设置应用可以获取通知权限保持应用不被杀死</h2>
+</div>
+<div id="outline-container-orgheadline17" class="outline-2">
+<h2 id="orgheadline17"><span class="section-number-2">15</span> 通常可以放在Application类的动作</h2>
+<div class="outline-text-2" id="text-15">
+<ol class="org-ol">
+<li>设置自定义异常捕获类.</li>
+<li>统计, 注册, 反馈, 更新.</li>
+<li>数据库.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="orgheadline18"><span class="section-number-2">16</span> <span class="done DONE">DONE</span> abstract class VS interface</h2>
+<div class="outline-text-2" id="text-16">
+<ol class="org-ol">
+<li>只能继承一个abstract 类, 可以实现多个interface.</li>
+<li>实现interface必须实现所有接口. 实现abstract类则不一定需要实现抽象接口(这个类是abstract).</li>
+<li>abstract类可以实现函数. interface不行.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline19" class="outline-2">
+<h2 id="orgheadline19"><span class="section-number-2">17</span> <span class="done DONE">DONE</span> recyclerView VS listView</h2>
+<div class="outline-text-2" id="text-17">
+<p>
+使用RecyclerView的一些好处:
+</p>
+<ol class="org-ol">
+<li>支持添加/删除的动画</li>
+<li>支持item的装饰</li>
+<li>支持layoutManager实现多重布局.</li>
+</ol>
+
+<p>
+<a href="http://www.truiton.com/2015/03/android-recyclerview-vs-listview-comparison/">这篇文章</a> 比较了这两个控件, 主要包括:
+总体来说就是RecyclerView提供了更多的客制化的功能, 尤其是对于
+复杂的布局或者list实现. 
+具体来说:
+</p>
+<ol class="org-ol">
+<li>RecyclerView强制使用ViewHolder, 其ViewHolder与Adapter绑定. 
+因为ListView并没有强制使用ViewHolder,如果不用时, 查找View会变得
+麻烦, 可能导致性能下降.</li>
+<li>RecyclerView通过LayoutManager的方式提供布局的多样化.
+ListView默认只支持竖直方向(可以通过重写代码实现水平方向, 但是麻烦).</li>
+<li>ItemDecoration 支持对每个项目进行修饰.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline20" class="outline-2">
+<h2 id="orgheadline20"><span class="section-number-2">18</span> <span class="done DONE">DONE</span> startService VS bindService</h2>
+<div class="outline-text-2" id="text-18">
+<p>
+<a href="http://codetheory.in/understanding-android-started-bound-services/">http://codetheory.in/understanding-android-started-bound-services/</a>
+</p>
+<ol class="org-ol">
+<li>如果需要和service进行交互,可以使用bindService.</li>
+<li>startService的service可以一直运行, 即使创建他的组件挂掉.
+而bindService不行, 跟组件的生命周期一样.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline21" class="outline-2">
+<h2 id="orgheadline21"><span class="section-number-2">19</span> <span class="todo TODO">TODO</span> factory pattern</h2>
+</div>
+<div id="outline-container-orgheadline24" class="outline-2">
+<h2 id="orgheadline24"><span class="section-number-2">20</span> <span class="todo TODO">TODO</span> thread with looper and handler</h2>
+<div class="outline-text-2" id="text-20">
+</div><div id="outline-container-orgheadline22" class="outline-3">
+<h3 id="orgheadline22"><span class="section-number-3">20.1</span> 在其他线程中创建handler</h3>
+<div class="outline-text-3" id="text-20-1">
+<ol class="org-ol">
+<li>使用Looper.prepare()给该thread创建一个looper "线程变量"</li>
+<li>创建一个handler.</li>
+<li>调用Looper.loop()函数使线程陷入等待事件状态.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline23" class="outline-3">
+<h3 id="orgheadline23"><span class="section-number-3">20.2</span> 在其他线程中使用UI线程的looper.</h3>
+<div class="outline-text-3" id="text-20-2">
+<ol class="org-ol">
+<li>通过Looper.getMainLooper()获取UI线程的looper.
+然后使用该Looper创建一个handler.</li>
+<li>使用handler.post()交给主线程执行.如果主线程有Handler, 
+会调用handler的handleMessage.</li>
+<li>如果是线程的handler没有覆盖handleMessage()方法.
+那么调用sendMessage方法默认不处理. 只有重写该方法
+才会处理.</li>
+<li>调用loop()函数之后就进入死循环, 后面的代码都不会调用到.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline25" class="outline-2">
+<h2 id="orgheadline25"><span class="section-number-2">21</span> <span class="done DONE">DONE</span> linkedlist VS Arraylist</h2>
+<div class="outline-text-2" id="text-21">
+<p>
+就是数组和链表的差别
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline26" class="outline-2">
+<h2 id="orgheadline26"><span class="section-number-2">22</span> <span class="todo TODO">TODO</span> async task</h2>
+</div>
+<div id="outline-container-orgheadline27" class="outline-2">
+<h2 id="orgheadline27"><span class="section-number-2">23</span> <span class="todo TODO">TODO</span> thread basic</h2>
+</div>
+<div id="outline-container-orgheadline28" class="outline-2">
+<h2 id="orgheadline28"><span class="section-number-2">24</span> <span class="todo TODO">TODO</span> H5</h2>
+</div>
+<div id="outline-container-orgheadline29" class="outline-2">
+<h2 id="orgheadline29"><span class="section-number-2">25</span> <span class="done DONE">DONE</span> 给定一个tree, 如何判断是BST</h2>
+<div class="outline-text-2" id="text-25">
+<p>
+每次子树遍历传递一个最大值和最小值.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline30" class="outline-2">
+<h2 id="orgheadline30"><span class="section-number-2">26</span> <span class="done DONE">DONE</span> how to resolve ANR</h2>
+<div class="outline-text-2" id="text-26">
+<p>
+<a href="http://www.programering.com/a/MTMyEDMwATI.html">http://www.programering.com/a/MTMyEDMwATI.html</a>
+</p>
+<ol class="org-ol">
+<li>first analysis log</li>
+<li>from the trace.txt file call stack.</li>
+<li>see code</li>
+<li>check the ANR origin(iowait?block?memoryleak?)</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline31" class="outline-2">
+<h2 id="orgheadline31"><span class="section-number-2">27</span> <span class="todo TODO">TODO</span> fix resume</h2>
+</div>
+<div id="outline-container-orgheadline35" class="outline-2">
+<h2 id="orgheadline35"><span class="section-number-2">28</span> <span class="done DONE">DONE</span> static inner class VS inner class</h2>
+<div class="outline-text-2" id="text-28">
+</div>
+<div id="outline-container-orgheadline32" class="outline-3">
+<h3 id="orgheadline32"><span class="section-number-3">28.1</span> why use inner class</h3>
+<div class="outline-text-3" id="text-28-1">
+<ol class="org-ol">
+<li>架构明晰. 使用一个内部类可以使代码可读性更好, 更方便维护.
+尤其是内部类不会在其他的context中使用.</li>
+<li>内部类可以访问外部类的private变量. 这也是一个便利性.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline33" class="outline-3">
+<h3 id="orgheadline33"><span class="section-number-3">28.2</span> static inner class</h3>
+<div class="outline-text-3" id="text-28-2">
+<ol class="org-ol">
+<li>不能访问外部类的 non-static 成员变量.</li>
+<li>可以访问外部类的 static 成员变量. 尤其是可以访问private的.</li>
+<li>可以在其他类中直接被使用, 用来创建对象.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline34" class="outline-3">
+<h3 id="orgheadline34"><span class="section-number-3">28.3</span> non-static inner class</h3>
+<div class="outline-text-3" id="text-28-3">
+<ol class="org-ol">
+<li>可以访问所有outer class 的变量.</li>
+<li>不能直接用来创建实例. 必须在outer 类的一个实例里
+创建实例.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline37" class="outline-2">
+<h2 id="orgheadline37"><span class="section-number-2">29</span> touch事件传递机制</h2>
+<div class="outline-text-2" id="text-29">
+</div><div id="outline-container-orgheadline36" class="outline-3">
+<h3 id="orgheadline36"><span class="section-number-3">29.1</span> 实验</h3>
+<div class="outline-text-3" id="text-29-1">
+<p>
+自定义一个relativelayout和view, layout结构是两个relativelayout A/B, 里面放一个view C.
+</p>
+<ol class="org-ol">
+<li>默认点击行为. onInterceptTouchEvent()都返回false, onTouchEvent()都返回false.
+ACTIONDOWN的传递过程: 
+<ol class="org-ol">
+<li>A:onInterceptTouchEvent-&gt;B:onInterceptTouchEvent-&gt;C:onTouchEvent-&gt;B:onTouchEvent-&gt;A:onTouchEvent</li>
+<li>MOVE和UP的动作都不会被收到.</li>
+</ol></li>
+<li>A拦截DOWN和MOVE. onTouchEvent中DOWN和MOVE都返回true.
+A的onInterceptTouchEvent()只有在DOWN时被调用. 后续ACTION不会调用. 
+所有ACTION都会传递给onTouchEvent().</li>
+<li>A拦截DOWN, 但是onTouchEvent返回false.
+后续所有的事件都不会传递给ABC.</li>
+<li>A不拦截DOWN, 但是在onTouchEvent()里消耗DOWN(BC都是false, 所以会回传到A的onTouchEvent).
+这样会导致所有的MOVE和UP都会再传递给A.</li>
+<li>A不拦截DOWN, 拦截MOVE. B拦截DOWN.
+<ol class="org-ol">
+<li>DOWN发生时AB的intercept都会被调用.</li>
+<li>第一次MOVE时只调用A的intercept. 但是会转化成CANCEL传给B的onTouchEvent.</li>
+<li>后续的MOVE和UP都只传给A.</li>
+</ol></li>
+<li>A拦截UP, B拦截MOVE, C拦截DOWN.
+<ol class="org-ol">
+<li>DOWN会传给C的onTouchEvent.</li>
+<li>第一次MOVE最终会变成CANCEL, 传给C.</li>
+<li>后续的MOVE都会先经过A的onInterceptTouchEvent, 然后传给B的onTouchEvent.</li>
+<li>UP会变成CANCEL传给B的onTouchEvent.</li>
+</ol></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: lx</p>
+<p class="date">Created: 2016-06-21 Tue 19:30</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
