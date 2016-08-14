@@ -34,6 +34,8 @@ category: [Life]
 *** [[http://nerds.weddingpartyapp.com/tech/2014/12/24/implementing-an-event-bus-with-rxjava-rxbus/][使用RxJava实现event bus]]
 *** [[http://www.cnblogs.com/angeldevil/p/3479431.html][对view构造函数的解释]]					     
  本文着重讲解了view的第三个构造函数及其参数. 
+*** RecyclerView 动画详解 
+ [[http://www.birbit.com/recyclerview-animations-part-1-how-animations-work/]]
 ** 2. Java
 *** [[https://publicobject.com/2016/01/20/strict-naming-conventions-are-a-liability/][Your strict naming conventions are a liability]]
  Jesse Wilson 在这篇文章里讨论了Java命名和其他机制(e.g. Json)之间的命名
@@ -44,4 +46,4 @@ category: [Life]
  作者在该文章里通过反射和正则表达式两个例子, 阐述了重用的高效率性.
 ** 3. Fancy
 *** [[http://bbs.hupu.com/15698397.html][马刺卡哇伊文章]]
-** [[http://blog.fullstory.com/2016/04/code-reviews-arent-just-for-catching-bugs/][Code Review 对构造企业文化的意义]]
+*** [[http://blog.fullstory.com/2016/04/code-reviews-arent-just-for-catching-bugs/][Code Review 对构造企业文化的意义]]
