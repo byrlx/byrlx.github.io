@@ -6,9 +6,9 @@
 <!-- 2016-08-17 Wed 06:31 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
-<title>Index</title>
+<title>搜索利器 &#x2013; ack</title>
 <meta  name="generator" content="Org-mode" />
-<meta  name="author" content="lx" />
+<meta  name="author" content="Zhengchao Xu" />
 <link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
 <link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
 <link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
@@ -84,8 +84,45 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
-<h1 class="title">Index</h1>
+<h1 class="title">搜索利器 &#x2013; ack</h1>
+<p>
+有一次跟台湾同事聊天，聊到在代码库里找key word，我就抱怨说find+grep 的时间太长，
+几十G的代码库，往往要找上一个多小时。同事就给我推荐了‘ack’这个工具，说这个tool搜代码比较快一些。
+</p>
 
+<p>
+"于是，我抱着试试看的态度,试用了一段时间"&#x2026;结果就是，我现在几乎不怎么用grep了，而且我决定把它加入到
+我的toolbox当中，就像git一样。
+</p>
+
+<p>
+ack(ubuntu上叫ack-grep) 是一款搜索工具，就像作者说的那样，*"a tool like grep, optimized for programmers"*，它尤其适用于
+代码库大且层次比较多的地方。作者用perl5实现了ack的全部代码。
+</p>
+
+<p>
+之所以称ack为“程序员的grep”，是因为ack在代码搜索方面做了很大的优化，默认情况下，ack只会在它“认识”的文件类型
+中做搜索。而ack认识的大部分文件类型即位代码文件。同时，也可以使用“&#x2013;type=X”或“&#x2013;X”指定在特定的代码文件中搜索。
+这些都可以在ack的文档中找到。
+</p>
+
+<p>
+例如：ack &#x2013;type=php keyword 只会在php类型的文件中做搜索（.php .phpt .php3 .php4 .php5 .phtml）。
+也可以这样写：ack &#x2013;php keyword。（记住c文件的话要写成cc）。当然也可以通过在类型面前加“no”指定不搜索
+该类型的文件。
+</p>
+
+<p>
+通过设定“-g”选项，可以只搜索文件，就是一个简单的find命令了。
+</p>
+
+<p>
+另外一个比较迷人的地方是会把搜索结果的keyword高亮，也可以通过这三个选项“&#x2013;color-filename=COLOR, &#x2013;color-match=COLOR, &#x2013;color-lineno=COLOR” 定制化自己的颜色主题。
+</p>
+
+<p>
+OK,常用的功能基本就是这些了，更多功能可以去[官方网站](<a href="http://beyondgrep.com/">http://beyondgrep.com/</a>)查看了。
+</p>
 </div>
 <div id="postamble" class="status">
 The code examples and css stylesheets are licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a> or later.</p></div>

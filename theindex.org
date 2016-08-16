@@ -1,4 +1,0 @@
-# Created 2016-08-16 Tue 21:57
-#+TITLE: Index
-#+AUTHOR: lx
-

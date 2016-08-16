@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-08-17 Wed 06:31 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>Orgmode手册1:文档结构</title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Zhengchao Xu" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+<h1 class="title">Orgmode手册1:文档结构</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">大纲模式(outline mode)</a></li>
+<li><a href="#orgheadline2">创建标题</a></li>
+<li><a href="#orgheadline3">标题显示</a></li>
+<li><a href="#orgheadline4">标题间移动</a></li>
+<li><a href="#orgheadline5">改变标题级别</a></li>
+<li><a href="#orgheadline6">操作标题内容</a></li>
+<li><a href="#orgheadline12">其他高级操作</a>
+<ul>
+<li><a href="#orgheadline7">初始化"可见性"</a></li>
+<li><a href="#orgheadline9">稀疏树显示</a></li>
+<li><a href="#orgheadline10">列表</a></li>
+<li><a href="#orgheadline11">脚注</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p class="verse">
+[BG]: We’ve got a lot more books coming out in the pipeline. The one which is my favourite is the Emacs Org-Mode Reference Manual. Honestly, it’s the greatest Emacs mode in 20 years.<br  />
+<br  />
+[CW]: Would you say Org-Mode is one of the more exciting projects in the Free Software world at the moment?<br  />
+<br  />
+[BG]: Definitely. Maybe it’s even the most exciting. Certainly it’s transformed the way that I organise my work, and I think it has for a lot of other people as well, so it’s software that can revolutionise your life, not just perform a function.<br  />
+<br  />
+&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#x2013; Brian Gough vs Chris Woolfrey<br  />
+</p>
+
+<p>
+这是Org mode手册系列的第一篇, 内容主要为阅读<a href="http://orgmode.org/manual/">Org Manual</a>的笔记, 
+对内容做了一些注解, 方便查阅. 
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">大纲模式(outline mode)</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+Org mode是建立在大纲视图(outline mode)之上的. 
+大纲将笔记按照层级结构进行组织, 这种结构有两个好处:
+</p>
+<ol class="org-ol">
+<li>实现对文档的概括性浏览(只看大纲).</li>
+<li>只显示当前正在工作的部分,非工作部分可以隐藏.</li>
+</ol>
+
+<p>
+大纲模式在Org mode中具体实现方式为标题, 标题的写法很简单, 
+在这一行的最开始加上1到多个星号即表示标题. 
+"*"的数量表示这是个N级标题, N级标题为N-1级标题的子标题.
+下图为一个标题的示例:
+</p>
+
+
+<div class="figure">
+<p><img src="../../../../public/img/org-outline.png" alt="org-outline.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">创建标题</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<p>
+前面介绍过, 创建标题很简单, 一行的最前面写N个"*"即可,
+同时org mode提供了一些快捷键来实现标题操作. 
+标题中"树(tree"即为该标题和其所有子标题. 
+表格中"割断"的意思是如果你在当前标题上使用快捷键来创建新标题,
+有些快捷键可能会将该标题一分为二, 后半部分即为新标题的内容.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">功能</th>
+<th scope="col" class="org-left">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">M-RET</td>
+<td class="org-left">创建同级标题</td>
+<td class="org-left">可能会"割断"当前标题内容</td>
+</tr>
+
+<tr>
+<td class="org-left">C-u C-u M-RET</td>
+<td class="org-left">在当前树的最后创建同级标题</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-RET</td>
+<td class="org-left">当前标题后面创建同级标题</td>
+<td class="org-left">不会"割断"</td>
+</tr>
+
+<tr>
+<td class="org-left">M-S-RET</td>
+<td class="org-left">创建TODO标题</td>
+<td class="org-left">同M-RET</td>
+</tr>
+
+<tr>
+<td class="org-left">C-S-RET</td>
+<td class="org-left">创建TODO标题</td>
+<td class="org-left">C-RET</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">标题显示</h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<p>
+前面说过, 大纲模式的一个好处就是可以折叠/显示标题, 这样可以方便你整体浏览大纲内容, 
+或关注于当前的工作内容, 例如前面的例子折叠后变为下图, 这样就可以只关注
+打开标题的内容.
+</p>
+
+
+<div class="figure">
+<p><img src="../../../../public/img/org-outline2.png" alt="org-outline2.png" />
+</p>
+</div>
+
+<p>
+这里是标题显示标题操作的一些快捷键
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">功能</th>
+<th scope="col" class="org-left">对应命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">TAB</td>
+<td class="org-left">循环打开关闭当前标题</td>
+<td class="org-left">org-cycle</td>
+</tr>
+
+<tr>
+<td class="org-left">S-TAB/C-u TAB</td>
+<td class="org-left">循环打开关闭所有标题</td>
+<td class="org-left">org-global-cycle</td>
+</tr>
+
+<tr>
+<td class="org-left">C-u C-u TAB</td>
+<td class="org-left">恢复到最初视图</td>
+<td class="org-left">org-set-startup-visibility</td>
+</tr>
+
+<tr>
+<td class="org-left">C-u C-u C-u TAB</td>
+<td class="org-left">显示所有</td>
+<td class="org-left">show-all</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-r</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">org-reveal</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-k</td>
+<td class="org-left">显示当前标题的所有子树标题</td>
+<td class="org-left">show-branches</td>
+</tr>
+
+<tr>
+<td class="org-left">(C-u N) C-c TAB</td>
+<td class="org-left">显示当前标题的(N层)子树</td>
+<td class="org-left">show-children</td>
+</tr>
+
+<tr>
+<td class="org-left">(C-u N) C-c C-x b</td>
+<td class="org-left">在新buffer显示(从第N层开始的)子树</td>
+<td class="org-left">org-tree-to-indirect-buffer</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x v</td>
+<td class="org-left">复制当前区域内容</td>
+<td class="org-left">org-copy-visible</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">标题间移动</h2>
+<div class="outline-text-2" id="text-orgheadline4">
+<p>
+org mode也提供了很多快捷键用来进行标题间的移动, 这样可以很方便的实现
+章节的跳动.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">功能</th>
+<th scope="col" class="org-left">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C-c C-n</td>
+<td class="org-left">移动到下个可见标题</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-p</td>
+<td class="org-left">移动到上个可见标题</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-f</td>
+<td class="org-left">移动到上个同级标题</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-b</td>
+<td class="org-left">移动到下个同级标题</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-u</td>
+<td class="org-left">移动到上级标题</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-j</td>
+<td class="org-left">跳到指定位置</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c &amp;</td>
+<td class="org-left">跳回之前位置</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">改变标题级别</h2>
+<div class="outline-text-2" id="text-orgheadline5">
+<p>
+万能快捷键, 减少打字.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">功能</th>
+<th scope="col" class="org-left">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">TAB</td>
+<td class="org-left">改变空标题的level</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">M-left/M-right</td>
+<td class="org-left">升级/降级</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">M-S-left/right</td>
+<td class="org-left">所有子树升级/降级</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">M-S-up/down</td>
+<td class="org-left">上移/下移</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">操作标题内容</h2>
+<div class="outline-text-2" id="text-orgheadline6">
+<p>
+下面的快捷键可以很方便的对标题下的内容进行操作, 勤加练习.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">功能</th>
+<th scope="col" class="org-left">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">M-h</td>
+<td class="org-left">标记当前内容</td>
+<td class="org-left">连击会标记更多</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c @</td>
+<td class="org-left">标记当前标题及内容</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x C-w</td>
+<td class="org-left">剪切当前子树</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x M-w</td>
+<td class="org-left">复制当前子树</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-y</td>
+<td class="org-left">粘贴</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x c</td>
+<td class="org-left">复制多次</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c ^</td>
+<td class="org-left">排序标题</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-x n s</td>
+<td class="org-left">让buffer只显示当前子树</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-x n w</td>
+<td class="org-left">恢复buffer显示</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c *</td>
+<td class="org-left">添加/去掉星星</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-2">
+<h2 id="orgheadline12">其他高级操作</h2>
+<div class="outline-text-2" id="text-orgheadline12">
+</div><div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">初始化"可见性"</h3>
+<div class="outline-text-3" id="text-orgheadline7">
+<p>
+Emacs打开org文件默认只显示顶层标题, 可以通过 "#+STARTUP" 选项来配置
+第一次打开要显示的内容. #+STARTUP的参数包括
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">overview</td>
+<td class="org-left">只显示顶层标题</td>
+</tr>
+
+<tr>
+<td class="org-left">content</td>
+<td class="org-left">显示所有标题</td>
+</tr>
+
+<tr>
+<td class="org-left">showall</td>
+<td class="org-left">显示所有内容</td>
+</tr>
+
+<tr>
+<td class="org-left">showeverything</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="org-ul"><li><a id="orgheadline8"></a>编辑"不可见区域"报错<br  /><div class="outline-text-5" id="text-orgheadline8">
+<p>
+有时候会不小心编辑到"不可见区域", 编辑器默认不会报错, 所以如果想组织这个
+行为, 可以在配置文件中设置org-catch-invisible-edits的值为非nil.例如下面
+的代码, 这样就可以阻止编辑非可见区域.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(setq-default org-catch-invisible-edits 'error)
+</pre>
+</div>
+
+<p>
+org-catch-invisible-edits的更多参数可以参考 C-h v org-catch-invisible-edits 
+</p>
+</div></li></ul>
+</div>
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">稀疏树显示</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+<p>
+Org mode的另一个功能就可以只展现你想要的内容, 称之为"稀疏树"展示.
+使用快捷键"C-c /"可以调出稀疏树功能, 它会询问你想要显示的内容, 
+如下图所示.
+</p>
+
+
+<div class="figure">
+<p><img src="../../../../public/img/org-outline3.png" alt="org-outline3.png" />
+</p>
+</div>
+
+<p>
+选择 '/' 或 "r" 会显示正则表达式搜索, 输入搜索内容即可以稀疏树方式展示结果, 如果
+结果只在标题, 则显示标题, 如果在内容则显示内容, 搜索关键字会高亮. 按 "C-c C-c"会
+取消高亮. 如果 C-u N之后输入C-c / r, 之前的N此搜索都会显示.
+快捷键 "M-g n/p"用于在搜索结果之间跳转. 命令 "ps-print-buffer-with-faces"用于
+打印机打印搜索结果.
+</p>
+
+<p>
+稀疏树是org mode的很强大的搜索展示功能.后面的文章还会有更多介绍.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">列表</h3>
+<div class="outline-text-3" id="text-orgheadline10">
+<p>
+org mode可以显示列表, 以下列字符开头的文本都为列表" - + 1. 1) *",
+<b>标题的大部分快捷键都可以用于列表</b>, 其他的快捷键包括:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">C-c -</td>
+<td class="org-left">改变列表展示方式</td>
+</tr>
+
+<tr>
+<td class="org-left">S-left/right</td>
+<td class="org-left">同上</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11">脚注</h3>
+<div class="outline-text-3" id="text-orgheadline11">
+<p>
+org mode支持脚注功能, 脚注通常用 <code>[fn:数字]</code> 表示, 然后在其他地方写上
+脚注说明<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>:
+</p>
+<pre class="example">
+The Org homepage[fn:1] now looks a lot better than it used to.
+...
+[fn:1] The link is: http://orgmode.org
+</pre>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+脚注示例.
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+The code examples and css stylesheets are licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a> or later.</p></div>
+</div>
+</body>
+</html>

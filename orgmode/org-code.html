@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-08-17 Wed 06:31 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>Orgmode手册7:运行代码</title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Zhengchao Xu" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+<h1 class="title">Orgmode手册7:运行代码</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">添加代码</a></li>
+<li><a href="#orgheadline2">编辑代码</a></li>
+<li><a href="#orgheadline3">运行代码</a></li>
+<li><a href="#orgheadline4">给代码添加参数</a></li>
+<li><a href="#orgheadline5">导出代码</a></li>
+<li><a href="#orgheadline6">提取代码</a></li>
+<li><a href="#orgheadline7">Babel库</a></li>
+<li><a href="#orgheadline8">header参数</a>
+<ul>
+<li><a href="#orgheadline10">全局header参数</a></li>
+<li><a href="#orgheadline11">文件级header参数</a></li>
+<li><a href="#orgheadline12">标题header参数</a></li>
+<li><a href="#orgheadline13">代码块设置header参数</a></li>
+<li><a href="#orgheadline14">调用代码块时使用header参数</a></li>
+<li><a href="#orgheadline15">支持的header参数</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline9">支持的语言</a></li>
+</ul>
+</div>
+</div>
+<p>
+在org文件中可以运行代码, 这里并不是指类似VBA那样的宏, 
+而是指各种各种的代码, 例如C/Python/Java/Lisp/Elisp/Ruby&#x2026;等所有目前
+市面上的主流和非主流代码, 都可以在org mode中运行.
+还有比这更酷的事情吗? <br  />
+这个功能叫做org babel. Babel这个词取自圣经:
+</p>
+
+<p class="verse">
+据《圣经·旧约·创世记》第11章记载，当时人类联合起来希望兴建能通往天堂的高塔。<br  />
+为了阻止人类的计划，上帝让人类说不同的语言，使人类相互之间不能沟通，计划因此失败，人类自此各散东西。<br  />
+此故事试图为世上出现不同语言和种族提供解释。<br  />
+</p>
+
+<p>
+Org babel就是这个通天塔, 你可以同一个org文件中运行各种代码. <br  />
+下面就来具体看下org mode中运行代码这个"黑魔法"功能.
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">添加代码</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+下面是一个简单的在org文件中运行代码的例子. 在orgmode的任意位置添加
+下面这段python代码. 
+</p>
+<pre class="example">
+#+BEGIN_SRC python
+def x():
+     s = 1 + 1
+     return s
+
+return x()
+#+END_SRC
+</pre>
+<p>
+添加完成后, 在代码块上使用快捷键"C-c C-c", 会看到代码块下面会显示如下的
+内容, 即这段代码的运行结果. 这就是一个简单的在orgmode中使用代码的例子, 
+是不是觉得很酷?
+</p>
+<pre class="example">
+#+RESULTS:
+: 2
+</pre>
+
+<p>
+上面的例子简单展示了在org mode中使用代码. 一般而言, 在org中插入的代码格式为
+</p>
+<ol class="org-ol">
+<li><p>
+代码块.
+可以使用 <code>#+NAME</code> 为当前代码块命名, 然后在其他地方引用. 
+</p>
+<pre class="example">
+#+NAME: &lt;name&gt;
+#+BEGIN_SRC &lt;language&gt; &lt;switches&gt; &lt;header arguments&gt;
+ &lt;body&gt;
+#+END_SRC
+</pre></li>
+<li><p>
+在行内使用代码, 格式为 <code>src_&lt;language&gt;{body}</code> 的方式. 如下例
+</p>
+<pre class="example">
+hi src_elisp{(print "jack")}
+</pre></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">编辑代码</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<p>
+可以直接在org文件中编辑代码, 也可以使用快捷键"C-c '"打开另一个buffer来
+编辑文件, 该buffer默认使用了该代码语言的emacs mode模式, 这样会更容易
+对代码进行缩进补全等编辑. 编辑完成后用"C-x C-s"保存. 然后再次使用"C-c '"
+退出. 放弃编辑使用快捷键"C-c C-k".
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">运行代码</h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<p>
+前面示例讲过可以通过在代码块上使用 "C-c C-c" 或 "C-c C-v e"来运行代码.这样
+会在代码块后面显示运行结果, 以"#+RESULTS:"开头. 如果想修改
+"RESULTS"为其他字符串, 可以设置"org-babel-results-keyword"变量.
+</p>
+
+<p>
+org mode同样支持在一处定义代码块, 然后在文件的其他地方进行引用, 这需要对代码块
+设置名称, 例如下面定义了一个名称为"helowold"的代码块.
+</p>
+<pre class="example">
+#+NAME: helowold
+#+BEGIN_SRC elisp
+(print "helowold")
+#+END_SRC
+</pre>
+
+<p>
+这样可以在文件的其他地方使用下面的方式调用该代码块:
+</p>
+<pre class="example">
+#+CALL: helowold()
+或者在一行中间使用
+call_helowold()
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">给代码添加参数</h2>
+<div class="outline-text-2" id="text-orgheadline4">
+<p>
+可以在 <code>#+BEGIN_SRC</code> 后面接 ":var name=value"的方式来向给代码块设置参数,
+如下例:
+</p>
+<pre class="example">
+#+NAME: lxxxx
+#+BEGIN_SRC elisp :var n=5
+(+ 1 n)
+#+END_SRC
+</pre>
+
+<p>
+在其他地方使用 <code>#+CALL</code> 调用代码时, 可以想其中传入参数替代默认参数, 例如
+</p>
+<pre class="example">
+#+CALL: lxxxx(9)
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">导出代码</h2>
+<div class="outline-text-2" id="text-orgheadline5">
+<p>
+在将org文件导出为HTML/PDF等格式时, 可以有选择行的导出代码块或结果,
+orgmode支持以下方式的代码导出
+</p>
+<ol class="org-ol">
+<li>只导出代码, 默认形式.</li>
+<li>导出代码和结果.</li>
+<li>只导出结果.</li>
+<li>都不导出</li>
+</ol>
+
+<p>
+可以通过设置header argument的":exports"属性来实现上述的特性, 该属性的
+值可以为:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">code</td>
+<td class="org-left">代码</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">results</td>
+<td class="org-left">结果</td>
+<td class="org-left">结果需要已经在文件中显示</td>
+</tr>
+
+<tr>
+<td class="org-left">both</td>
+<td class="org-left">都</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">none</td>
+<td class="org-left">都不</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+例如下面的代码:
+</p>
+<pre class="example">
+#+NAME: lxxxx
+#+BEGIN_SRC elisp :var n=5 :exports results
+(+ 1 n)
+#+END_SRC
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">提取代码</h2>
+<div class="outline-text-2" id="text-orgheadline6">
+<p>
+orgmode支持将org文件中的代码块提取到代码原文件中, 
+使用快捷键 "C-c C-v t" 或命令"org-babel-tangle"可以
+实现该功能, 该命令默认在当前目录创建一个源码文件, 文件
+名与org文件名相同, 后缀为该类型语言的后缀. 
+</p>
+
+<p>
+该功能默认是关闭的, 可以通过设置 header argument的":tangle"
+属性来打开, 将其设置为"yes"即可打开. 
+也可以将其设置为文件名,这样可以将代码导出到该文件,
+使用命令"org-babel-tangle-file"或"C-c C-v f"也可以.
+</p>
+<pre class="example">
+  :PROPERTIES:
+  :header-args: :exports results :tangle yes
+  :END:
+或者
+#+BEGIN_SRC elisp :tangle yes/filename
+
+#+END_SRC
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-2">
+<h2 id="orgheadline7">Babel库</h2>
+<div class="outline-text-2" id="text-orgheadline7">
+<p>
+orgmode的babel包含了一些可重用代码, 可以直接在当前org mode中使用.
+如果想将你的代码加入到babel库中,可以使用函数 "org-babel-lob-ingest".
+然后就可以调用里面的代码了.
+</p>
+
+<p>
+<b>注:</b> <br  />
+Emacs自带的org mode中默认并没有安装babel库, 如果想使用带babel库的orgmode,
+可以从orgmode的elpa中获取, 在配置文件中加入如下配置, 使用"eval-buffer"更新
+配置, 然后调用 "package-refresh-content", 接着安装 "org-plus-contrib"包.
+</p>
+<pre class="example">
+(require 'package)
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+</pre>
+
+<p>
+安装完成后, 如果想使用那个包, 可以在配置文件中使用 <b>require</b> 引用:
+</p>
+<pre class="example">
+(require 'org-mac-iCal)
+;;在 org 文件调用
+#+CALL: org-mac-iCal()
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-2">
+<h2 id="orgheadline8">header参数</h2>
+<div class="outline-text-2" id="text-orgheadline8">
+<p>
+可以通过header参数来配置代码块的一些功能, 本节会介绍一下
+各种header参数.
+</p>
+
+<p>
+orgmode可以设置各种范围的header参数, 下面会逐一介绍, 一般来说, 范围
+越大, 优先级越小, 即最小范围的header参数总是会覆盖大范围的header参数.
+</p>
+</div>
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">全局header参数</h3>
+<div class="outline-text-3" id="text-orgheadline10">
+<p>
+可以通过设置"org-babel-default-header-args"变量来设置全局的header参数. 
+例如下面的例子将":noweb"设置为"yes". ":noweb"功能会在后面介绍.
+</p>
+<pre class="example">
+(setq org-babel-default-header-args
+       (cons '(:noweb . "yes")
+             (assq-delete-all :noweb org-babel-default-header-args)))
+</pre>
+<p>
+也可以通过设置 `org-babel-default-header-args:&lt;lang&gt;'为某个语言设置header参数.
+可以参考<a href="#orgheadline9">支持的语言</a>一节.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11">文件级header参数</h3>
+<div class="outline-text-3" id="text-orgheadline11">
+<p>
+可以通过设置 <code>#+PROPERTY</code> 来设置文件级的header参数, 这个变量可以设置多次.
+例如下面的例子设置"R"语言的seesion为"R", 并设置result为silent.
+</p>
+<pre class="example">
+#+PROPERTY: header-args:R  :session *R*
+#+PROPERTY: header-args    :results silent
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12">标题header参数</h3>
+<div class="outline-text-3" id="text-orgheadline12">
+<p>
+可以为标题及所有子树设置header参数, 例如
+</p>
+<pre class="example">
+* outline header
+  :PROPERTIES:
+  :header-args:    :cache yes
+  :END:
+</pre>
+<p>
+也可以给具体语言设置header参数, 例如
+</p>
+<pre class="example">
+* Heading
+  :PROPERTIES:
+  :header-args:clojure:    :session *clojure-1*
+  :header-args:R:          :session *R*
+  :END:
+** Subheading
+  :PROPERTIES:
+  :header-args:clojure:    :session *clojure-2*
+  :END:
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">代码块设置header参数</h3>
+<div class="outline-text-3" id="text-orgheadline13">
+<p>
+也可以给单独的代码块设置header参数.有两种方式:
+</p>
+<ol class="org-ol">
+<li><p>
+在 <code>#+BEGIN_SRC</code> 后面.
+</p>
+<pre class="example">
+#+NAME: factorial
+#+BEGIN_SRC haskell :results silent :exports code :var n=0
+fac 0 = 1
+fac n = n * fac (n-1)
+#+END_SRC
+</pre></li>
+<li><p>
+使用 <code>#+HEADERS</code> 关键字
+</p>
+<pre class="example">
+   #+HEADERS: :var data1=1
+   #+BEGIN_SRC emacs-lisp :var data2=2
+     (message "data1:%S, data2:%S" data1 data2)
+   #+END_SRC
+或者使用多岗
+   #+NAME: named-block
+   #+HEADER: :var data=2
+   #+BEGIN_SRC emacs-lisp
+</pre></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14">调用代码块时使用header参数</h3>
+<div class="outline-text-3" id="text-orgheadline14">
+<p>
+有两种方式:
+</p>
+<ol class="org-ol">
+<li>=#+CALL: func() :exports results</li>
+<li>=#+CALL: func[:exports results]()</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15">支持的header参数</h3>
+<div class="outline-text-3" id="text-orgheadline15">
+<p>
+未完成
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9">支持的语言</h2>
+<div class="outline-text-2" id="text-orgheadline9">
+<p>
+下表是orgmode支持的语言和在org文件中的写法, 可以通过设置变量
+"org-babel-load-languages"设置默认支持的语言, 例如
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Language</th>
+<th scope="col" class="org-left">识别符</th>
+<th scope="col" class="org-left">Language</th>
+<th scope="col" class="org-left">识别符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Asymptote</td>
+<td class="org-left">asymptote</td>
+<td class="org-left">Awk</td>
+<td class="org-left">awk</td>
+</tr>
+
+<tr>
+<td class="org-left">Emacs Calc</td>
+<td class="org-left">calc</td>
+<td class="org-left">C</td>
+<td class="org-left">C</td>
+</tr>
+
+<tr>
+<td class="org-left">C++</td>
+<td class="org-left">C++</td>
+<td class="org-left">Clojure</td>
+<td class="org-left">clojure</td>
+</tr>
+
+<tr>
+<td class="org-left">CSS</td>
+<td class="org-left">css</td>
+<td class="org-left">ditaa</td>
+<td class="org-left">ditaa</td>
+</tr>
+
+<tr>
+<td class="org-left">Graphviz</td>
+<td class="org-left">dot</td>
+<td class="org-left">Emacs Lisp</td>
+<td class="org-left">emacs-lisp</td>
+</tr>
+
+<tr>
+<td class="org-left">gnuplot</td>
+<td class="org-left">gnuplot</td>
+<td class="org-left">Haskell</td>
+<td class="org-left">haskell</td>
+</tr>
+
+<tr>
+<td class="org-left">Java</td>
+<td class="org-left">java</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Javascript</td>
+<td class="org-left">js</td>
+<td class="org-left">LaTeX</td>
+<td class="org-left">latex</td>
+</tr>
+
+<tr>
+<td class="org-left">Ledger</td>
+<td class="org-left">ledger</td>
+<td class="org-left">Lisp</td>
+<td class="org-left">lisp</td>
+</tr>
+
+<tr>
+<td class="org-left">Lilypond</td>
+<td class="org-left">lilypond</td>
+<td class="org-left">MATLAB</td>
+<td class="org-left">matlab</td>
+</tr>
+
+<tr>
+<td class="org-left">Mscgen</td>
+<td class="org-left">mscgen</td>
+<td class="org-left">Objective  Caml</td>
+<td class="org-left">ocaml</td>
+</tr>
+
+<tr>
+<td class="org-left">Octave</td>
+<td class="org-left">octave</td>
+<td class="org-left">Org mode</td>
+<td class="org-left">org</td>
+</tr>
+
+<tr>
+<td class="org-left">Oz</td>
+<td class="org-left">oz</td>
+<td class="org-left">Perl</td>
+<td class="org-left">perl</td>
+</tr>
+
+<tr>
+<td class="org-left">Plantuml</td>
+<td class="org-left">plantuml</td>
+<td class="org-left">Python</td>
+<td class="org-left">python</td>
+</tr>
+
+<tr>
+<td class="org-left">R</td>
+<td class="org-left">R</td>
+<td class="org-left">Ruby</td>
+<td class="org-left">ruby</td>
+</tr>
+
+<tr>
+<td class="org-left">Sass</td>
+<td class="org-left">sass</td>
+<td class="org-left">Scheme</td>
+<td class="org-left">scheme</td>
+</tr>
+
+<tr>
+<td class="org-left">GNU Screen</td>
+<td class="org-left">screen</td>
+<td class="org-left">shell</td>
+<td class="org-left">sh</td>
+</tr>
+
+<tr>
+<td class="org-left">SQL</td>
+<td class="org-left">sql</td>
+<td class="org-left">SQLite</td>
+<td class="org-left">sqlite</td>
+</tr>
+</tbody>
+</table>
+
+<pre class="example">
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . nil)
+   (R . t)))
+</pre>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+The code examples and css stylesheets are licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a> or later.</p></div>
+</div>
+</body>
+</html>

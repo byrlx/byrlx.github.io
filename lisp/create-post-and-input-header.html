@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-08-17 Wed 06:31 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>自动创建文章并设置Header :#+END_EXAMPLE</title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Zhengchao Xu Zhengchao Xu" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+<h1 class="title">自动创建文章并设置Header :#+END_EXAMPLE</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">header配置模板</a></li>
+<li><a href="#orgheadline2">编程实现</a>
+<ul>
+<li><a href="#orgheadline3">lx-create-post-today (title category)</a></li>
+<li><a href="#orgheadline4">lx-create-post (date title category)</a></li>
+<li><a href="#orgheadline5">lx-create-post-head (title category)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+用org mode写Jekyll博客需要在文章开头设置一些HTML export的配置,
+每次写文章都写一遍, 很繁琐, 故写了一个elisp 程序自动实现
+这个步骤. 
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">header配置模板</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+下面是博客文章开头的设置模板,
+将模板插入到文章头部后, 要根据命令参数自动
+生成title和category.
+</p>
+
+<p>
+#+BEGIN_EXAMPLE 
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">编程实现</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<p>
+定义了两个函数来实现这个功能, 并将其设置为命令, 
+可以通过"M-x"来调用. 这两个函数为:
+lx-create-post-today, lx-creat-post. 第一个函数需要
+输入"title"和"category". 第二个函数需要输入"date",
+"title"和"category"三个函数. 
+</p>
+</div>
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">lx-create-post-today (title category)</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<p>
+该函数实际上调用了lx-create-post这个函数, 所以其代码比较简单:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">lx-create-post-today</span> (title category)
+  (interactive <span style="color: #CC9393;">"sInput title:\nsInput category: "</span>)
+  (lx-create-post (format-time-string <span style="color: #CC9393;">"%Y-%m-%d"</span>) title category))
+</pre>
+</div>
+
+<p>
+执行"M-x", 输入命令 <img src="../../../public/img/cmd.png" alt="cmd.png" />
+</p>
+
+<p>
+提示输入title <img src="../../../public/img/title.png" alt="title.png" />
+</p>
+
+<p>
+提示输入category. <img src="../../../public/img/category.png" alt="category.png" />
+</p>
+
+<p>
+输入完成后, 会基于当前的日期, 创建文件名为"date-title.org"的文件,
+并将参数插入到模板的title和category的对应位置.  
+</p>
+
+
+<div class="figure">
+<p><img src="../../../public/img/header.png" alt="header.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">lx-create-post (date title category)</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
+该函数的代码实现如下,
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">lx-create-post</span> (date title category)
+  (interactive <span style="color: #CC9393;">"Input date title and category: %s %s %s"</span>)
+  <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">&#32452;&#35013;&#25991;&#20214;&#21517;</span>
+  (setq whole-filename (concat ORG-PATH <span style="color: #CC9393;">"blog/"</span> date <span style="color: #CC9393;">"-"</span> title <span style="color: #CC9393;">".org"</span>))
+  <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">&#21019;&#24314;&#25991;&#20214;, &#25171;&#24320;&#25991;&#20214;</span>
+  (setq filebuf (find-file-other-window whole-filename))
+  <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">&#25554;&#20837;&#36890;&#29992;&#22836;&#37096;</span>
+  (lx-create-post-head title category)
+  <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">&#20809;&#26631;&#23450;&#20301;&#22312;&#22836;&#37096;&#19979;&#36793;&#30340;&#31354;&#30333;&#34892;</span>
+  )
+</pre>
+</div>
+
+<p>
+代码解释:
+</p>
+<ul class="org-ul">
+<li>首先提示输入"date", "title"和"category".</li>
+<li>将日期和tilte组装成文件名</li>
+<li>调用file-file-other-window创建并在新窗口打开文件</li>
+<li>调用lx-create-post-head插入head模板</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">lx-create-post-head (title category)</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+<p>
+该函数用于插入和修改head模板
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">&#26681;&#25454;title&#21644;category&#29983;&#25104;&#22836;&#37096;</span>
+(<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">lx-create-post-head</span> (title category)
+  <span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">&#35835;&#21462;&#22836;&#37096;&#25991;&#20214;&#20869;&#23481;&#24182;&#25554;&#20837;&#21040;&#25991;&#20214;&#24320;&#22987;</span>
+  (insert-file-contents <span style="color: #CC9393;">"~/lx/GoogleDrive/lxorg/blog/header"</span>)
+  <span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">&#31227;&#21160;&#20809;&#26631;, &#22635;&#20889;&#26631;&#39064;&#21644;category</span>
+  (goto-char (point-max))
+  (forward-line -3)
+  (end-of-line)
+  (insert (concat <span style="color: #CC9393;">"["</span> category <span style="color: #CC9393;">"]"</span>))
+  (forward-line -1)
+  (end-of-line)
+  (insert title)
+  )
+</pre>
+</div>
+<p>
+代码解释:
+</p>
+<ul class="org-ul">
+<li>调用insert-file-contents 插入header模板</li>
+<li>移动光标到最后一行</li>
+<li>移动光标到前三行: category的那一行</li>
+<li>移动到该行尾部并插入category参数</li>
+<li>同样的方法插入title</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+The code examples and css stylesheets are licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a> or later.</p></div>
+</div>
+</body>
+</html>
