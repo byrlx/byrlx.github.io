@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-08-16 Tue 18:52 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="lx" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+<p>
+&#x2014;
+layout: post
+title: 项目总结
+category: Life
+tag: [Tech]
+description: [Thought about my recent project]
+&#x2014;
+</p>
+
+<p>
+今年做过的一个项目的总结，记下有用的经验。
+</p>
+
+<p>
+#### 1. 做好前期规划
+</p>
+
+<p>
+一定对你即将做的东西有一个整体的轮廓，首先要明确这个东西是什么，具有什么样的功能。然后，划分模块，每个模块要做什么事情，最大化实现模块之间的低耦合度，模块之间尽量用最少的API。定义每个模块的API，最好能细化到应该用几个线程或函数实现该模块。
+</p>
+
+<p>
+我觉得这个过程是非常重要的，如果是一个team共同做这个东西，一定要经常性的开会讨论，反复修改。如果是一个人做，也要把架构图完整的描述出来，并不断的review。虽然很多人（包括我）都喜欢上来就直接写代码，但是这次项目经验让我了解到，前期架构描述的越完整，后期的改动就会越小。
+</p>
+
+<p>
+#### 2. 用Git维护代码库
+</p>
+
+<p>
+当然也可以用别的版本库工具，但是人人都爱git。
+</p>
+
+<p>
+我是个略有“洁癖”的人，有时候看到一些无关痛痒的地方，例如代码命名、格式等不顺眼，都喜欢改一下。但我还是认为不要把每次这种细小的改动都当成一次修改提交到git中，这会使log记录变得冗长且无用。尽量使每一次提交都是有意义的提交，像是修改bug、修改功能或是增加新功能。
+</p>
+
+<p>
+写好gitignore文件，只追踪git库的源代码文件。忽略掉tags,cscope.out这些有用经常出现的文件。设定你喜欢的颜色输出，尤其是git diff。有git format-patch 最好加上'-s'，这样人人都知道是你提供的patch了。
+</p>
+
+<p>
+用好git tag。
+</p>
+
+<p>
+#### 3. 写好Test Case
+</p>
+
+<p>
+前辈经常教育我们：你的代码，只有你自己最懂。写好test case的一个好处就是：不用每次写完一段代码都要人工测试。
+</p>
+
+<p>
+另一个好处就是：可以顺便学习一门新语言，例如python。
+</p>
+
+<p>
+基本功能的test case是必须的，你的模块具备什么样的功能，你就要写case测试他有没有这些功能。
+</p>
+
+<p>
+另一方面，你可以像老顽童一样，玩“左右互搏”的游戏：写一些变态的Test Case对模块进行“狂轰乱炸”，看看你的模块能否抵挡住袭击。
+然后，你就知道哪方面需要改进了。
+</p>
+
+<p>
+#### 4. 使用可变参数宏
+</p>
+
+<p>
+项目前期，开始写代码之后，总需要在代码中添加一些调试手段。后期需要发布时，需要把这些调试手段关掉，如果通过添/删代码的方式来做，
+那一条条删除的工作量会很大，而且未必能删的干净。
+</p>
+
+<p>
+一个常用的方法是使用宏开关和宏方法。
+</p>
+
+<p>
+宏开关基本就是if else语法，如果定义了这个宏，那么就执行A段代码，否则执行B段代码。可以通过在gcc中使用“-D”定义宏，例如
+</p>
+
+<p>
+gcc -o helloworld -DHELLO helloword.c
+</p>
+
+<p>
+代码实现：
+#ifdefine TEST
+  printf("hello world");
+#else
+  printf("NO hello world");
+#endif
+</p>
+
+<p>
+宏方法主要是指使用宏封装函数或代码，常见的一个场景是log输出，在实际项目中，经常会定义一组通用的宏API代替printf()系列函数。
+例如我们定义了一个函数__lxlog(type, msg)，而且要msg支持format格式，即__lxlog(type, format, str&#x2026;),
+那我们可以用宏来封装这个函数：
+</p>
+
+<p>
+#define LXLOG(type,format,str&#x2026;) __lxlog(type, format, str&#x2026;)
+</p>
+
+<p>
+在宏中可以对参数进行简化，用省略号代替，例如上面语句可以写成
+</p>
+
+<p>
+#define LXLOG(type, format, &#x2026;)      <span class="underline"><span class="underline">lxlog(type, format, __VA_ARGS</span></span>)
+或者
+#define LXLOG(type, format, &#x2026;)      <span class="underline"><span class="underline">lxlog(type, format, ##__VAR_ARGS</span></span>)
+</p>
+
+<p>
+第二种表示方式的好处是，当可变参数为空，它会自动将__VAR_ARGS__前面的逗号去掉。例如，
+如果使用第一种方法调用LXLOG(ERROR, "err"),则会编译失败，因为展开后函数__lx_log()里多了一个逗号。
+而使用第二种方式会自动将逗号去掉。
+</p>
+
+<p>
+如果觉得每次都要输入type麻烦，也可以继续对LXLOG进行封装。
+</p>
+
+<p>
+#define LXERROR(&#x2026;)    LXLOG(ERROR, ##__VA_ARGS__)
+#define LXDEBUG(&#x2026;)    LXLOG(ERROR, ##__VA_ARGS__)
+&#x2026;
+</p>
+
+<p>
+善用宏开关和宏参数，会使代码维护变得简单可靠。
+</p>
+
+<p>
+#### 5. 多线程编程的注意事项
+</p>
+
+<p>
+(1). 创建线程时，传给线程的参数尽量使用全局变量或静态变量。如果使用局部变量作为传给线程的参数（尽量不要这么做！），那么创建线程的函数调用完pthread_create()后如果立即返回，会导致静态变量被释放，其指向的内容在线程中就变得未知，可能导致非法访问。当然可以让函数调用完pthread_create() sleep一段时间来解决这个问题，但是这并不是良好的编程风格（个人观点）。因为永远kernel的调度行为是无法预知的，通常情况sleep几秒可能会解决这个问题，但如果系统loading太重，几秒的时间未必会够用。另一方面，如果sleep时间太长，则可能会影响父线程的行为。
+</p>
+
+<p>
+(2). 在所有需要加锁的地方加锁。这是个老生常谈的问题，大一的时候老师都已经告诫过大家。不要太过相信自己的设计（而不加锁），只要你的代码可能被多个线程访问，就有可能出现竞争。一定要在模块设计初期就设计好锁，不然后期的维护会很麻烦。
+</p>
+
+<p>
+(3). pthread_kill()的使用，如果在代码中用到这个函数。对于可能用到的每个signal(除非你只是用来检查线程是否存在)，一定要在线程里设计好相关的signal handler，不然该函数发送的signal会被整个进程接受并处理。
+</p>
+</div>
+<div id="postamble" class="status">
+<div id="show_source"><input type="button" value="Show Org source" onClick='show_org_source()'></div><div id="license"><p>Documentation from the http://orgmode.org/worg/ website (either in its HTML format or in its Org format) is licensed under the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License version 1.3</a> or later.  The code examples and css stylesheets are licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a> or later.</p></div>
+</div>
+</body>
+</html>

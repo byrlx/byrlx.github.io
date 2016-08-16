@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-16 Tue 17:29 -->
+<!-- 2016-08-16 Tue 18:52 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
-<title>Emacs gnus 的日常使用* 读取Gmail邮件</title>
+<title>Emacs gnus 的日常使用</title>
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Zhengchao Xu" />
 <link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
@@ -84,28 +84,37 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
-<h1 class="title">Emacs gnus 的日常使用* 读取Gmail邮件</h1>
+<h1 class="title">Emacs gnus 的日常使用</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline1">offlineimap配置</a></li>
-<li><a href="#orgheadline2">配置</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline3">订阅RSS</a>
+<li><a href="#orgheadline1">读取Gmail邮件</a>
 <ul>
-<li><a href="#orgheadline4">订阅atom文件</a></li>
+<li><a href="#orgheadline2">offlineimap配置</a></li>
+<li><a href="#orgheadline3">配置</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline5">gnus 快捷键</a></div>
+<li><a href="#orgheadline4">订阅RSS</a>
+<ul>
+<li><a href="#orgheadline5">订阅atom文件</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline6">gnus 快捷键</a></li>
+</ul>
 </div>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">读取Gmail邮件</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
 主要架构: offlineimap同步邮件, gnus读邮件
 </p>
-<div id="outline-container-orgheadline1" class="outline-3">
-<h3 id="orgheadline1">offlineimap配置</h3>
-<div class="outline-text-3" id="text-orgheadline1">
+</div>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">offlineimap配置</h3>
+<div class="outline-text-3" id="text-orgheadline2">
 <ol class="org-ol">
 <li>mac安装:  brew install offlineimap</li>
 <li>配置 ~/.offlineimaprc</li>
@@ -140,9 +149,9 @@ sslcacertfile = /usr/local/etc/openssl/cert.pem
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2">配置</h3>
-<div class="outline-text-3" id="text-orgheadline2">
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">配置</h3>
+<div class="outline-text-3" id="text-orgheadline3">
 <pre class="example">
   ;; Gnus配置
 (setq gnus-select-method
@@ -150,16 +159,17 @@ sslcacertfile = /usr/local/etc/openssl/cert.pem
 </pre>
 </div>
 </div>
-<div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="orgheadline3">订阅RSS</h2>
-<div class="outline-text-2" id="text-orgheadline3">
+</div>
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">订阅RSS</h2>
+<div class="outline-text-2" id="text-orgheadline4">
 <p>
 在Gnus页面可以使用快捷键"G R"来订阅RSS.通过"u"取消订阅.
 </p>
 </div>
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4">订阅atom文件</h3>
-<div class="outline-text-3" id="text-orgheadline4">
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">订阅atom文件</h3>
+<div class="outline-text-3" id="text-orgheadline5">
 <p>
 gnus对于atom类型的RSS支持不好, 可以通过在以下方式解决
 </p>
@@ -196,9 +206,9 @@ Put the following code into your .gnus:
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5">gnus 快捷键</h2>
-<div class="outline-text-2" id="text-orgheadline5">
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">gnus 快捷键</h2>
+<div class="outline-text-2" id="text-orgheadline6">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 

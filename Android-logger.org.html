@@ -1,0 +1,493 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!-- Created by htmlize-1.43 in css mode. -->
+<html>
+  <head>
+    <title>Android-logger.org</title>
+    <style type="text/css">
+    <!--
+      body {
+        color: #DCDCCC;
+        background-color: #3F3F3F;
+      }
+      .org-block {
+        /* org-block */
+        color: #009acd;
+      }
+      .org-block-begin-line {
+        /* org-block-begin-line */
+        color: #7F9F7F;
+      }
+      .org-block-end-line {
+        /* org-block-end-line */
+        color: #7F9F7F;
+      }
+      .org-document-info {
+        /* org-document-info */
+        color: #afeeee;
+      }
+      .org-document-info-keyword {
+        /* org-document-info-keyword */
+        color: #b3b3b3;
+      }
+      .org-document-title {
+        /* org-document-title */
+        color: #afeeee;
+        font-weight: bold;
+      }
+      .org-level-1 {
+        /* org-level-1 */
+        color: #DFAF8F;
+        font-size: 130%;
+        text-decoration: overline;
+      }
+      .org-meta-line {
+        /* org-meta-line */
+        color: #7F9F7F;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+  </head>
+  <body>
+    <pre>
+<span class="org-meta-line">#+OPTIONS: ^:nil</span>
+<span class="org-meta-line">#+OPTIONS: toc:t H:2</span>
+<span class="org-document-info-keyword">#+AUTHOR:</span> <span class="org-document-info">Zhengchao Xu
+</span><span class="org-document-info-keyword">#+EMAIL:</span> <span class="org-document-info">xuzhengchaojob@gmail.com
+</span><span class="org-document-info-keyword">#+TITLE:</span> <span class="org-document-title">Android Logger
+</span>
+[logcat](../Android-logcat/) &#21644; [liblog](../Android-liblog/) &#36825;&#20004;&#31687;&#25991;&#31456;,&#35762;&#21040;&#20102;android&#31995;&#32479;&#20013;&#22914;&#20309;&#35835;log&#21644;&#20889;log. &#37027;&#20040;,log&#23384;&#25918;&#30340;&#20301;&#32622;&#22312;&#21738;&#37324;? &#26412;&#25991;&#23601;&#20171;&#32461;&#19968;&#19979;android &#31995;&#32479;&#20013;&#23384;&#25918;log&#30340;&#22320;&#26041;: logger device.
+
+Android &#22312; kernel &#23618;&#25552;&#20379;&#20102;&#22235;&#20010;&#34394;&#25311;&#30340;device &#35774;&#22791;,&#29992;&#20110;&#23384;&#25918;log. &#21487;&#20197;&#36890;&#36807;&#36755;&#20837; `adb shell ls /dev/log/` &#26469;&#26597;&#30475;&#31995;&#32479;&#30340;&#34394;&#25311;logger &#35774;&#22791;. &#36825;&#20123;&#35774;&#22791;&#26159;&#22312;&#31995;&#32479;&#21551;&#21160;&#30340;&#26102;&#20505;&#20197;&#20869;&#26680;&#27169;&#22359;&#30340;&#26041;&#24335;&#21021;&#22987;&#21270;.
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">
+        device_initcall(logger_init);
+
+        static int __init logger_init(void)
+        {
+                int ret;
+        
+                ret = create_log(LOGGER_LOG_MAIN, 256*1024);
+                if (unlikely(ret))
+                        goto out;
+        
+                ret = create_log(LOGGER_LOG_EVENTS, 256*1024);
+                if (unlikely(ret))
+                        goto out;
+        
+                ret = create_log(LOGGER_LOG_RADIO, 256*1024);
+                if (unlikely(ret))
+                        goto out;
+        
+                ret = create_log(LOGGER_LOG_SYSTEM, 256*1024);
+                if (unlikely(ret))
+                        goto out;
+        
+        out:
+                return ret;
+        }
+
+</span><span class="org-block-end-line">#+END_EXAMPLE   
+</span>&#27169;&#22359;&#21021;&#22987;&#35805;&#20989;&#25968;&#36890;&#36807;create_log()&#29983;&#25104;&#22235;&#20010;device,&#24182;&#25351;&#23450;&#20102;&#27599;&#20010;device&#30340;&#22823;&#23567;.
+
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">        static int __init create_log(char *log_name, int size)
+        {
+                int ret = 0;
+                struct logger_log *log;
+                unsigned char *buffer;
+        
+                buffer = vmalloc(size);
+                if (buffer == NULL)
+                        return -ENOMEM;
+        
+                log = kzalloc(sizeof(struct logger_log), GFP_KERNEL);
+                if (log == NULL) {
+                        ret = -ENOMEM;
+                        goto out_free_buffer;
+                }
+                log-&gt;buffer = buffer;
+        
+                log-&gt;misc.minor = MISC_DYNAMIC_MINOR;
+                log-&gt;misc.name = kstrdup(log_name, GFP_KERNEL);
+                if (log-&gt;misc.name == NULL) {
+                        ret = -ENOMEM;
+                        goto out_free_log;
+                }
+        
+                log-&gt;misc.fops = &amp;logger_fops;
+                log-&gt;misc.parent = NULL;
+        
+                init_waitqueue_head(&amp;log-&gt;wq);
+                INIT_LIST_HEAD(&amp;log-&gt;readers);
+                mutex_init(&amp;log-&gt;mutex);
+                log-&gt;w_off = 0;
+                log-&gt;head = 0;
+                log-&gt;size = size;
+        
+                INIT_LIST_HEAD(&amp;log-&gt;logs);
+                list_add_tail(&amp;log-&gt;logs, &amp;log_list);
+        
+                /* finally, initialize the misc device for this log */
+                ret = misc_register(&amp;log-&gt;misc);
+                if (unlikely(ret)) {
+                        pr_err("failed to register misc device for log '%s'!\n",
+                                        log-&gt;misc.name);
+                        goto out_free_log;
+                }
+        
+                pr_info("created %luK log '%s'\n",
+                        (unsigned long) log-&gt;size &gt;&gt; 10, log-&gt;misc.name);
+        
+                return 0;
+        
+        out_free_log:
+                kfree(log);
+        
+        out_free_buffer:
+                vfree(buffer);
+                return ret;
+        }
+
+&#23545;&#20110;&#27599;&#19968;&#20010;logger device,&#37117;&#23545;&#24212;&#19968;&#20010;&#26680;&#24515;&#30340;&#32467;&#26500;&#20307;: struct logger_log. create_log()&#20989;&#25968;&#30340;&#20316;&#29992;&#23601;&#26159;&#20998;&#37197;&#19968;&#20010;logger_log,&#21021;&#22987;&#21270;&#20854;&#21464;&#37327;,&#24182;&#36890;&#36807;misc_register()&#27880;&#20876;&#20026;misc&#35774;&#22791;.
+
+&#23545;&#20110;&#20043;&#21069;&#20171;&#32461;&#30340; [logcat](../Android-logcat/) &#21644; [liblog](../Android-liblog/), &#35762;&#21040;&#37117;&#26159;&#36890;&#36807;read()/write()&#20989;&#25968;&#26469;&#35835;&#20889;log, read/write&#30340;&#23454;&#29616;&#21017;&#23545;&#24212;&#21040;driver&#23618;&#27880;&#20876;&#21040;file system&#30340; fops.
+
+        log-&gt;misc.fops = &amp;logger_fops;
+        
+        static const struct file_operations logger_fops = {
+                .owner = THIS_MODULE,
+                .read = logger_read,
+                .aio_write = logger_aio_write,
+                .poll = logger_poll,
+                .unlocked_ioctl = logger_ioctl,
+                .compat_ioctl = logger_ioctl,
+                .open = logger_open,
+                .release = logger_release,
+        };
+
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span><span class="org-level-1">* &#25171;&#24320;Logger&#35774;&#22791;</span>
+
+&#22312;&#24212;&#29992;&#23618;&#36890;&#36807;&#35843;&#29992;open("/dev/log/main",O_RDWR)&#30340;&#26041;&#24335;&#21487;&#20197;&#25171;&#24320;&#19968;&#20010;logger&#35774;&#22791;,&#23545;&#24212;&#30340;kernel &#23618;&#30340;&#23454;&#29616;&#26159;logger_open.
+
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">        /* logger_open() */
+        log = get_log_from_minor(MINOR(inode-&gt;i_rdev));
+        if (!log)
+                return -ENODEV;
+
+        if (file-&gt;f_mode &amp; FMODE_READ) {
+                struct logger_reader *reader;
+
+                reader = kmalloc(sizeof(struct logger_reader), GFP_KERNEL);
+                if (!reader)
+                        return -ENOMEM;
+
+                reader-&gt;log = log;
+                reader-&gt;r_ver = 1;
+                reader-&gt;r_all = in_egroup_p(inode-&gt;i_gid) ||
+                        capable(CAP_SYSLOG);
+
+                INIT_LIST_HEAD(&amp;reader-&gt;list);
+
+                mutex_lock(&amp;log-&gt;mutex);
+                reader-&gt;r_off = log-&gt;head;
+                list_add_tail(&amp;reader-&gt;list, &amp;log-&gt;readers);
+                mutex_unlock(&amp;log-&gt;mutex);
+
+                file-&gt;private_data = reader;
+        } else
+                file-&gt;private_data = log;
+
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>&#36890;&#36807;&#20256;&#20837;&#30340;inode&#33410;&#28857;&#30340;&#27425;&#35774;&#22791;&#21495;&#20174;log_list&#38142;&#34920;&#20013;&#25214;&#21040;&#23545;&#24212;&#30340;logger device&#30340;&#32467;&#26500;&#20307;. &#25509;&#30528;&#20250;&#21028;&#26029;&#25171;&#24320;&#26041;&#24335;,&#22914;&#26524;&#25171;&#24320;&#26041;&#24335;&#20013;&#21253;&#21547;"read"(&#20363;&#22914;logcat)&#30340;&#35805;,&#20250;&#20998;&#37197;&#19968;&#20010;logger_read&#32467;&#26500;&#20307;&#34987;&#36171;&#20540;&#32473;file&#30340;private_data&#21464;&#37327;,&#21516;&#26102;&#20250;&#25226;reader&#30340;&#35835;&#24320;&#22987;&#20301;&#32622;&#35774;&#20026;logger buffer&#30340;head&#20301;&#32622;(&#20063;&#23601;&#26159;&#20174;&#22836;&#24320;&#22987;&#35835;),&#28982;&#21518;&#25226;reader&#21152;&#20837;&#21040;logger&#30340;reader&#38142;&#34920;&#20013;.&#21542;&#21017;file&#30340;private_data&#21464;&#37327;&#30452;&#25509;&#25351;&#21521;logger.
+
+<span class="org-level-1">* &#35835;logger</span>
+
+read()&#20989;&#25968;&#23545;&#24212;logger_read.
+
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">        .read = logger_read,
+
+        static ssize_t logger_read(struct file *file, char __user *buf,
+                                   size_t count, loff_t *pos)
+        {
+                struct logger_reader *reader = file-&gt;private_data;
+                struct logger_log *log = reader-&gt;log;
+                ssize_t ret;
+                DEFINE_WAIT(wait);
+        
+        start:
+                while (1) {
+                        mutex_lock(&amp;log-&gt;mutex);
+        
+                        prepare_to_wait(&amp;log-&gt;wq, &amp;wait, TASK_INTERRUPTIBLE);
+        
+                        ret = (log-&gt;w_off == reader-&gt;r_off);
+                        mutex_unlock(&amp;log-&gt;mutex);
+                        if (!ret)
+                                break;
+        
+                        if (file-&gt;f_flags &amp; O_NONBLOCK) {
+                                ret = -EAGAIN;
+                                break;
+                        }
+        
+                        if (signal_pending(current)) {
+                                ret = -EINTR;
+                                break;
+                        }
+        
+                        schedule();
+                }
+        
+                finish_wait(&amp;log-&gt;wq, &amp;wait);
+                if (ret)
+                        return ret;
+
+</span><span class="org-block-end-line">#+END_EXAMPLE   
+</span>&#39318;&#20808;&#31243;&#24207;&#20250;&#22312;&#19968;&#20010;while&#24490;&#29615;&#20013;&#20570;&#19968;&#20123;&#21028;&#26029;:&#22914;&#26524;w_off&#19981;&#31561;&#20110;r_off,&#34920;&#26126;&#30446;&#21069;logger&#20013;&#26377;log&#21487;&#35835;,&#36339;&#20986;&#24490;&#29615;.&#21542;&#21017;,&#22914;&#26524;&#35774;&#22791;&#20197;&#38750;&#38459;&#22622;&#30340;&#26041;&#24335;&#25171;&#24320;,&#30452;&#25509;&#36820;&#22238; -EAGAIN &#30340;&#38169;&#35823;. &#22914;&#26524;&#31243;&#24207;&#34987;&#20449;&#21495;&#25171;&#26029;,&#21017;&#36820;&#22238; -EINTR. &#22914;&#26524;&#36825;&#20123;&#26465;&#20214;&#37117;&#19981;&#28385;&#36275;,&#34920;&#31034;&#30446;&#21069;&#27809;&#26377;log&#21487;&#35835;,&#35843;&#29992;schedule()&#35753;&#20986;cpu.
+
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">                /*logger_read()*/
+                mutex_lock(&amp;log-&gt;mutex);
+        
+                if (!reader-&gt;r_all)
+                        reader-&gt;r_off = get_next_entry_by_uid(log,
+                                reader-&gt;r_off, current_euid());
+        
+                /* is there still something to read or did we race? */
+                if (unlikely(log-&gt;w_off == reader-&gt;r_off)) {
+                        mutex_unlock(&amp;log-&gt;mutex);
+                        goto start;
+                }
+
+</span><span class="org-block-end-line">#+END_EXAMPLE   
+</span>r_all&#37096;&#20998;&#30446;&#21069;&#36824;&#19981;&#22826;&#29702;&#35299;,&#20197;&#21518;&#20877;&#34917;&#20805;.....(&#20174;&#20195;&#30721;&#26469;&#30475;,&#36825;&#20010;&#21464;&#37327;&#24212;&#35813;&#26159;&#19982;reader&#30340;&#26435;&#38480;&#26377;&#20851;,&#36890;&#36807;&#36825;&#20010;&#21464;&#37327;&#21487;&#20197;&#25511;&#21046;&#35813;reader&#26159;&#21542;&#26377;&#26435;&#38480;&#21435;&#35835;&#25152;&#26377;&#30340;log, &#22914;&#26524;&#20026;0,&#34920;&#26126;reader&#27809;&#26377;&#35813;&#26435;&#38480;,&#21482;&#33021;&#35835;&#33258;&#24049;&#36827;&#31243;euid&#30456;&#31561;&#30340;log)
+
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">                /*logger_read()*/
+                ret = get_user_hdr_len(reader-&gt;r_ver) +
+                        get_entry_msg_len(log, reader-&gt;r_off);
+                if (count &lt; ret) {
+                        ret = -EINVAL;
+                        goto out;
+                }
+
+</span><span class="org-block-end-line">#+END_EXAMPLE   
+</span>&#36890;&#36807;get_user_hdr_len()&#21450;get_entry_msg_len()&#33719;&#21462;entry&#30340;header&#38271;&#24230;&#21644;entry&#38271;&#24230;,&#21152;&#36215;&#26469;&#23601;&#26159;&#19968;&#26465;log&#30340;&#38271;&#24230;.
+
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">        static size_t get_user_hdr_len(int ver)
+        {
+                if (ver &lt; 2)
+                        return sizeof(struct user_logger_entry_compat);
+                else
+                        return sizeof(struct logger_entry);
+        }
+
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>&#35813;&#20989;&#25968;&#20250;&#26681;&#25454;&#20256;&#20837;&#30340;reader&#25104;&#21592;r_ver&#30340;&#20540;&#26469;&#20915;&#23450;&#36820;&#22238;&#21738;&#20010;&#38271;&#24230;&#30340;entry header&#20540;,&#22240;&#20026;&#22312;logger_open&#20013;&#35813;&#20540;&#34987;&#35774;&#23450;&#20026;1, &#25925;&#35813;&#20989;&#25968;&#30340;&#36820;&#22238;&#20540;&#20026; user_logger_entry_compat &#30340;&#38271;&#24230;. &#25509;&#30528;&#35835;&#21462;log entry&#30340;&#38271;&#24230;.
+
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">        static __u32 get_entry_msg_len(struct logger_log *log, size_t off)
+        {
+                struct logger_entry scratch;
+                struct logger_entry *entry;
+        
+                entry = get_entry_header(log, off, &amp;scratch);
+                return entry-&gt;len;
+        }
+
+
+        static struct logger_entry *get_entry_header(struct logger_log *log,
+                        size_t off, struct logger_entry *scratch)
+        {
+                size_t len = min(sizeof(struct logger_entry), log-&gt;size - off);
+                if (len != sizeof(struct logger_entry)) {
+                        memcpy(((void *) scratch), log-&gt;buffer + off, len);
+                        memcpy(((void *) scratch) + len, log-&gt;buffer,
+                                sizeof(struct logger_entry) - len);
+                        return scratch;
+                }
+        
+                return (struct logger_entry *) (log-&gt;buffer + off);
+        }
+
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>&#22240;&#20026;&#27599;&#20010;logger device&#30340;size&#37117;&#26159;&#22266;&#23450;&#22823;&#23567;,&#32780;&#31995;&#32479;&#20013;&#30340;log&#37327;&#35201;&#36828;&#36828;&#22823;&#20110;&#35813;size,&#25925;logger device&#37117;&#26159;&#37319;&#29992; ring buffer&#30340;&#26041;&#24335;&#23384;&#25918;log. &#36825;&#26679;&#23601;&#21487;&#33021;&#20986;&#29616;&#36825;&#20010;&#30340;&#24773;&#20917;,&#19968;&#26465;log&#30340;&#19968;&#37096;&#20998;&#22312;buffer&#23614;&#37096;,&#32780;&#21478;&#19968;&#37096;&#20998;&#22312;buffer&#22836;&#37096;,&#25152;&#20197;&#27599;&#27425;&#20174;buffer&#35835;log&#37117;&#35201;&#32771;&#34385;&#36825;&#31181;&#24773;&#20917;. &#33719;&#24471;entry&#20043;&#21518;,&#36890;&#36807;entry&#30340;&#21464;&#37327;len&#23601;&#21487;&#20197;&#30693;&#36947;msg&#30340;&#38271;&#24230;. &#35843;&#29992; do_read_log_to_user()&#23558;entry+msg&#20889;&#21040;user&#30340;buf&#20013;.
+
+                ret = do_read_log_to_user(log, reader, buf, ret);
+
+<span class="org-level-1">* Log write</span>
+
+&#20043;&#21069;&#26377;&#35762;,user space&#22312;&#20889;log&#30340;&#27969;&#31243;&#26368;&#21518;&#35843;&#29992;&#21040;&#20102;write()&#20989;&#25968;,&#23545;&#24212;&#21040;driver&#23618;&#30340;&#23454;&#29616;&#20026; logger_aio_write(). &#35753;&#25105;&#20204;&#19968;&#27573;&#19968;&#27573;&#30340;&#20998;&#26512;&#36825;&#20010;&#20989;&#25968;&#30340;&#23454;&#29616;.
+
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">        static ssize_t logger_aio_write(struct kiocb *iocb, const struct iovec *iov,
+                                 unsigned long nr_segs, loff_t ppos)
+        {
+                struct logger_log *log = file_get_log(iocb-&gt;ki_filp);
+                size_t orig = log-&gt;w_off;
+                struct logger_entry header;
+                struct timespec now;
+                ssize_t ret = 0;
+
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>&#39318;&#20808;&#26159;&#35843;&#29992;file_get_log()&#20989;&#25968;&#33719;&#24471;&#36825;&#20010;&#25991;&#20214;&#32467;&#26500;&#20307;&#23545;&#24212;&#30340;logger&#35774;&#22791;. &#22312;&#25171;&#24320;&#35774;&#22791;&#30340;&#20195;&#30721;&#20013;&#26377;&#35762;,file&#32467;&#26500;&#20307;&#30340;private_data&#21464;&#37327;&#20250;&#23384;&#25918;&#20004;&#20010;&#20540;&#20043;&#19968;:logger&#25110;reader,&#25152;&#20197;&#36825;&#37324;&#20250;&#21028;&#26029;&#25991;&#20214;&#26159;&#21542;&#20197;FMODE_READ&#30340;&#26041;&#24335;&#25171;&#24320;,&#22914;&#26524;&#26159;,&#21017;private_data&#20026;reader,&#38656;&#35201;&#21435;reader&#20013;&#25214;logger,&#21542;&#21017;&#30452;&#25509;&#36820;&#22238;private_data.
+        
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">        static inline struct logger_log *file_get_log(struct file *file)
+        {
+                if (file-&gt;f_mode &amp; FMODE_READ) {
+                        struct logger_reader *reader = file-&gt;private_data;
+                        return reader-&gt;log;
+                } else
+                        return file-&gt;private_data;
+        }
+
+</span><span class="org-block-end-line">#+END_EXAMPLE   
+</span>&#19979;&#38754;&#30340;&#20195;&#30721;&#36890;&#36807;&#31995;&#32479;&#21442;&#25968;&#21021;&#22987;&#21270;log entry&#30340;header.
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">                now = current_kernel_time();
+        
+                header.pid = current-&gt;tgid;
+                header.tid = current-&gt;pid;
+                header.sec = now.tv_sec;
+                header.nsec = now.tv_nsec;
+                header.euid = current_euid();
+                header.len = min_t(size_t, iocb-&gt;ki_left, LOGGER_ENTRY_MAX_PAYLOAD);
+                header.hdr_size = sizeof(struct logger_entry);
+        
+                /* null writes succeed, return zero */
+                if (unlikely(!header.len))
+                        return 0;
+        
+                mutex_lock(&amp;log-&gt;mutex);
+
+</span><span class="org-block-end-line">#+END_EXAMPLE   
+</span>&#25509;&#19979;&#26469;&#35843;&#29992;fix_up_readers()&#20989;&#25968;,&#36890;&#36807;&#20256;&#20837;&#26412;&#27425;log&#30340;&#38271;&#24230;&#23545;&#35813;logger&#35774;&#22791;&#30340;readers&#36827;&#34892;&#20462;&#27491;.
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">                /*
+                 * Fix up any readers, pulling them forward to the first readable
+                 * entry after (what will be) the new write offset. We do this now
+                 * because if we partially fail, we can end up with clobbered log
+                 * entries that encroach on readable buffer.
+                 */
+                fix_up_readers(log, sizeof(struct logger_entry) + header.len);
+
+        static void fix_up_readers(struct logger_log *log, size_t len)
+        {
+                size_t old = log-&gt;w_off;
+                size_t new = logger_offset(log, old + len);
+                struct logger_reader *reader;
+        
+                if (is_between(old, new, log-&gt;head))
+                        log-&gt;head = get_next_entry(log, log-&gt;head, len);
+        
+                list_for_each_entry(reader, &amp;log-&gt;readers, list)
+                        if (is_between(old, new, reader-&gt;r_off))
+                                reader-&gt;r_off = get_next_entry(log, reader-&gt;r_off, len);
+        }
+
+        static size_t get_next_entry(struct logger_log *log, size_t off, size_t len)
+        {
+                size_t count = 0;
+        
+                do {
+                        size_t nr = sizeof(struct logger_entry) +
+                                get_entry_msg_len(log, off);
+                        off = logger_offset(log, off + nr);
+                        count += nr;
+                } while (count &lt; len);
+        
+                return off;
+        }
+</span><span class="org-block-end-line">#+END_EXAMPLE   
+</span>&#20026;&#20160;&#20040;&#35201;&#23545;reader&#36827;&#34892;&#20462;&#27491;?&#21069;&#38754;&#26377;&#35762;&#36807;,logger buffer&#30340;size&#26159;&#22266;&#23450;&#30340;,&#31995;&#32479;&#37319;&#29992;ring buffer&#30340;&#26041;&#24335;&#20889;log,&#37027;&#20040;&#23601;&#20250;&#20986;&#29616;&#36825;&#26679;&#30340;&#24773;&#20917;,&#26368;&#26032;&#30340;logger&#20250;&#26377;&#26426;&#20250;&#35206;&#30422;&#21069;&#38754;&#30340;&#19968;&#26465;log,&#37027;&#20040;&#22312;&#36825;&#31181;&#24773;&#20917;&#19979;,&#23545;&#20110;reader&#26469;&#35828;,r_off&#36825;&#20010;&#21442;&#25968;&#23601;&#26159;&#26080;&#25928;&#30340;,&#22240;&#20026;&#19979;&#19968;&#26465;log(&#25110;&#32773;&#21518;&#38754;&#20960;&#26465;log)&#24050;&#32463;&#19981;&#23384;&#22312;&#20102;.
+
+get_next_entry()&#30340;&#23454;&#29616;&#19981;&#38590;&#29702;&#35299;,&#22240;&#20026;&#26032;&#21152;&#20837;&#30340;log&#38271;&#24230;&#20026;len,&#21363;&#23547;&#25214;&#20174;r_off+len&#20301;&#32622;&#20043;&#21518;&#30340;&#31532;&#19968;&#26465;&#26377;&#25928;log.
+
+&#25509;&#19979;&#26469;&#23601;&#26159;&#30495;&#27491;&#25226;log&#30340;&#20869;&#23481;&#20889;&#20837;buffer
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">
+                do_write_log(log, &amp;header, sizeof(struct logger_entry));
+        
+                while (nr_segs-- &gt; 0) {
+                        size_t len;
+                        ssize_t nr;
+        
+                        /* figure out how much of this vector we can keep */
+                        len = min_t(size_t, iov-&gt;iov_len, header.len - ret);
+        
+                        /* write out this segment's payload */
+                        nr = do_write_log_from_user(log, iov-&gt;iov_base, len);
+                        if (unlikely(nr &lt; 0)) {
+                                log-&gt;w_off = orig;
+                                mutex_unlock(&amp;log-&gt;mutex);
+                                return nr;
+                        }
+        
+                        iov++;
+                        ret += nr;
+                }
+        
+                mutex_unlock(&amp;log-&gt;mutex);
+        
+                /* wake up any blocked readers */
+                wake_up_interruptible(&amp;log-&gt;wq);
+        
+                return ret;
+        }
+
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>&#39318;&#20808;&#20250;&#35843;&#29992;do_write_log()&#25226;header&#20808;&#20889;&#20837;buffer,&#36825;&#37324;&#30452;&#25509;&#35843;&#29992;memcpy(),header&#26377;&#21487;&#33021;&#34987;&#20889;&#21040;buffer&#30340;&#23614;&#37096;&#21644;&#39318;&#37096;(ring buffer). &#28982;&#21518;&#23601;&#26159;&#25226;user space&#20256;&#20837;&#30340;iovec&#25968;&#32452;&#30340;&#20869;&#23481;&#20381;&#27425;&#20889;&#20837;buffer. &#22914;&#26524;&#20889;&#22833;&#36133;,&#20250;&#30452;&#25509;&#25226;logger&#30340;w_off&#20301;&#32622;roll back&#20250;&#20043;&#21069;&#30340;&#20540;.
+
+<span class="org-level-1">* logger_poll</span>
+
+&#22312;logcat&#30340;&#23454;&#29616;&#20013;&#26366;&#35762;&#21040;,logcat&#22312;&#25171;&#24320;logger&#35774;&#22791;&#21518;,&#20250;&#35843;&#29992;select()&#20989;&#25968;&#30417;&#25511;&#35813;logger&#35774;&#22791;,&#22914;&#26524;&#20989;&#25968;&#36820;&#22238;,&#34920;&#26126;&#26377;log&#21487;&#35835;,&#25509;&#19979;&#26469;&#23601;&#20250;&#35843;&#29992;read()&#35835;log.&#36825;&#37324;select&#23545;&#24212;&#30340;driver&#23618;&#20989;&#25968;&#23601;&#26159;logger_poll()
+        
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">        static unsigned int logger_poll(struct file *file, poll_table *wait)
+        {
+                struct logger_reader *reader;
+                struct logger_log *log;
+                unsigned int ret = POLLOUT | POLLWRNORM;
+        
+                if (!(file-&gt;f_mode &amp; FMODE_READ))
+                        return ret;
+        
+                reader = file-&gt;private_data;
+                log = reader-&gt;log;
+        
+                poll_wait(file, &amp;log-&gt;wq, wait);
+        
+                mutex_lock(&amp;log-&gt;mutex);
+                if (!reader-&gt;r_all)
+                        reader-&gt;r_off = get_next_entry_by_uid(log,
+                                reader-&gt;r_off, current_euid());
+        
+                if (log-&gt;w_off != reader-&gt;r_off)
+                        ret |= POLLIN | POLLRDNORM;
+                mutex_unlock(&amp;log-&gt;mutex);
+        
+                return ret;
+        }
+
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>&#20989;&#25968;&#39318;&#20808;&#20250;&#21028;&#26029;&#26159;&#21542;&#20197;read&#30340;&#26041;&#24335;&#25171;&#24320;&#35774;&#22791;,&#22914;&#26524;&#19981;&#26159;,&#30452;&#25509;&#36820;&#22238;.(&#22240;&#20026;select()&#19968;&#33324;&#23545;&#24212;&#35835;&#25805;&#20316;,&#22914;&#26524;&#19981;&#35835;&#37027;&#20040;select()&#23601;&#27809;&#20160;&#20040;&#24847;&#20041;&#20102;).&#21028;&#26029;log&#26159;&#21542;&#21487;&#35835;&#30340;&#21807;&#19968;&#26465;&#20214;&#23601;&#26159;w_off&#26159;&#21542;&#31561;&#20110;r_off.
+
+OK,logger&#35774;&#22791;&#26242;&#26102;&#23601;&#20889;&#21040;&#36825;&#37324;,&#20197;&#21518;&#26377;&#26032;&#30340;&#29702;&#35299;&#20250;&#32487;&#32493;&#34917;&#20805;.
+</pre>
+  </body>
+</html>

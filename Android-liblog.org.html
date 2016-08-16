@@ -1,0 +1,406 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!-- Created by htmlize-1.43 in css mode. -->
+<html>
+  <head>
+    <title>Android-liblog.org</title>
+    <style type="text/css">
+    <!--
+      body {
+        color: #DCDCCC;
+        background-color: #3F3F3F;
+      }
+      .bold {
+        /* bold */
+        font-weight: bold;
+      }
+      .italic {
+        /* italic */
+        font-style: italic;
+      }
+      .org-document-info {
+        /* org-document-info */
+        color: #afeeee;
+      }
+      .org-document-info-keyword {
+        /* org-document-info-keyword */
+        color: #b3b3b3;
+      }
+      .org-document-title {
+        /* org-document-title */
+        color: #afeeee;
+        font-weight: bold;
+      }
+      .org-footnote {
+        /* org-footnote */
+        color: #93E0E3;
+        text-decoration: underline;
+      }
+      .org-level-1 {
+        /* org-level-1 */
+        color: #DFAF8F;
+        font-size: 130%;
+        text-decoration: overline;
+      }
+      .org-meta-line {
+        /* org-meta-line */
+        color: #7F9F7F;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+  </head>
+  <body>
+    <pre>
+<span class="org-meta-line">#+OPTIONS: ^:nil</span>
+<span class="org-meta-line">#+OPTIONS: toc:t H:2</span>
+<span class="org-document-info-keyword">#+AUTHOR:</span> <span class="org-document-info">Zhengchao Xu
+</span><span class="org-document-info-keyword">#+EMAIL:</span> <span class="org-document-info">xuzhengchaojob@gmail.com
+</span><span class="org-document-info-keyword">#+TITLE:</span> <span class="org-document-title">Android liblog
+</span>
+Androi&#31995;&#32479;&#25552;&#20379;&#20102;&#19968;&#22871;&#23436;&#25972;&#30340;API&#20379;&#20854;&#20182;&#31243;&#24207;&#35843;&#29992;&#36755;&#20986;log,&#36825;&#22871;API&#20998;&#20026;Java &#23618;&#21644; native &#23618;,&#19981;&#36807;&#20004;&#20010;API&#26368;&#32456;&#37117;&#26159;&#36890;&#36807;file system&#23558;log&#20889;&#20837;kernel &#23618;&#30340;logger device.
+
+<span class="org-level-1">* ALOGX &#31995;&#21015;</span>
+&#20197;native&#23618;&#20026;&#20363;,&#22914;&#26524;&#25105;&#20204;&#35201;&#24320;&#21457;'.cpp'&#25110;'.c'&#31243;&#24207;,&#37027;&#20040;&#21487;&#20197;call&#19979;&#21015;API&#20043;&#20197;&#20889;&#20986;&#19981;&#21516;level&#30340;log
+
+        #define LOG_TAG "HeloWorld"
+        ALOGV("hello world,level verbose");
+        ALOGD("hello world,level debug");
+        ALOGI("hello world,level info");
+        ALOGE("hello world,level error");
+        ALOGW("hello world,level warning");
+
+&#36825;&#37324;&#36890;&#24120;&#37117;&#38656;&#35201;&#23450;&#20041;&#19968;&#20010;LOG_TAG, &#20316;&#20026;&#19968;&#20010;&#23436;&#25972;log&#30340;&#19968;&#37096;&#20998;,&#21487;&#20197;&#21807;&#19968;&#30340;&#23450;&#20301;&#19968;&#20010;module. ALOGX()&#31995;&#21015;API&#30340;&#23454;&#29616;&#36890;&#36807;&#23439;&#23450;&#20301;&#21040;&#20849;&#21516;&#30340;&#19968;&#32452;&#20989;&#25968;.
+
+        #ifndef ALOGE
+        #define ALOGE(...) ((void)ALOG(LOG_ERROR, LOG_TAG, __VA_ARGS__))
+        #endif
+
+        #ifndef ALOG
+        #define ALOG(priority, tag, ...) \
+            LOG_PRI(ANDROID_##priority, tag, __VA_ARGS__)
+        #endif
+
+        #ifndef LOG_PRI
+        #define LOG_PRI(priority, tag, ...) \
+            android_printLog(priority, tag, __VA_ARGS__)
+        #endif
+
+        #define android_printLog(prio, tag, fmt...) \
+            __android_log_print(prio, tag, fmt)
+
+        int __android_log_print(int prio, const char *tag, const char *fmt, ...)
+        {
+            va_list ap;
+            char buf[LOG_BUF_SIZE];
+        
+            va_start(ap, fmt);
+            vsnprintf(buf, LOG_BUF_SIZE, fmt, ap);
+            va_end(ap);
+        
+            return __android_log_write(prio, tag, buf);
+        }
+        
+__android_log_print()&#36890;&#36807;va_list&#21464;&#37327;&#25226;format&#24418;&#24335;&#23383;&#31526;&#20018;&#29983;&#25104;&#26368;&#32456;&#30340;&#23383;&#31526;&#20018;,&#28982;&#21518;&#35843;&#29992;__android_log_write(),&#36825;&#37324;&#30340;&#21442;&#25968;tag&#23601;&#26159;&#20043;&#21069;&#23450;&#20041;&#30340; LOG_TAG. &#32780;prio&#26159;&#19968;&#20010;&#25972;&#25968;&#20540;,&#20013;[logcat](../Android-logcat/)&#35762;&#21040;&#36807;,&#26368;&#21518;&#36890;&#36807;logcat&#25235;&#20986;&#26469;&#21518;,&#20250;&#23558;&#25972;&#24418;log level&#36716;&#25442;&#20026;&#23383;&#31526;&#22411;.
+        
+        int __android_log_write(int prio, const char *tag, const char *msg)
+        {
+            struct iovec vec<span class="org-footnote">[3]</span>;
+            log_id_t log_id = LOG_ID_MAIN;
+        
+            if (!tag)
+                tag = "";
+        
+            <span class="italic">/* XXX: This needs to go! */</span>
+            if (!strcmp(tag, "HTC_RIL") ||
+                !strncmp(tag, "RIL", 3) || <span class="italic">/* Any log tag with "RIL" as the prefix </span><span class="bold"><span class="italic">*/</span></span><span class="bold">
+                !strncmp(tag, "IMS", 3) || </span><span class="italic"><span class="bold">/*</span></span><span class="italic"> Any log tag with "IMS" as the prefix */</span>
+                !strcmp(tag, "AT") ||
+                !strcmp(tag, "GSM") ||
+                !strcmp(tag, "STK") ||
+                !strcmp(tag, "CDMA") ||
+                !strcmp(tag, "PHONE") ||
+                !strcmp(tag, "SMS"))
+                    log_id = LOG_ID_RADIO;
+        
+            vec<span class="org-footnote">[0]</span>.iov_base   = (unsigned char *) &amp;prio;
+            vec<span class="org-footnote">[0]</span>.iov_len    = 1;
+            vec<span class="org-footnote">[1]</span>.iov_base   = (void *) tag;
+            vec<span class="org-footnote">[1]</span>.iov_len    = strlen(tag) + 1;
+            vec<span class="org-footnote">[2]</span>.iov_base   = (void *) msg;
+            vec<span class="org-footnote">[2]</span>.iov_len    = strlen(msg) + 1;
+        
+            return write_to_log(log_id, vec, 3);
+        }
+
+Android log &#31995;&#32479;&#30446;&#21069;&#26377;&#22235;&#31181;&#31867;&#22411;&#30340;log:main,system,radio,events. &#21518;&#19977;&#31181;&#19968;&#33324;&#37117;&#26159;&#31995;&#32479;&#30340;&#19968;&#20123;&#29305;&#27530;&#30340;log,&#38500;&#27492;&#20043;&#22806;,&#33258;&#24049;&#24320;&#21457;&#30340;&#31243;&#24207;,log&#37117;&#40664;&#35748;&#20889;&#21040;main&#20013;. &#25152;&#20197;&#31243;&#24207;&#26368;&#24320;&#22987;&#25226; log_id &#35774;&#20026; LOG_ID_MAIN. &#19981;&#36807;&#31243;&#24207;&#25509;&#19979;&#26469;&#20250;&#21028;&#26029;tag&#21442;&#25968;,&#22914;&#26524;tag&#31526;&#21512;radio log&#30340;&#35268;&#21017;&#30340;&#35805;,&#21017;&#23558;log_id&#25913;&#20026; LOG_ID_RADIO. &#25509;&#30528;&#25226;&#20256;&#20837;&#30340;&#19977;&#20010;&#21442;&#25968;&#25918;&#21040;&#19968;&#20010;iovec&#21464;&#37327;&#20013;. &#24182;&#35843;&#29992;write_to_log()
+        
+        struct iovec {
+            const void*  iov_base;
+            size_t       iov_len;
+        };
+        
+        static int (*write_to_log)(log_id_t, struct iovec *vec, size_t nr) = __write_to_log_init;
+        
+write_to_log()&#26159;&#19968;&#20010;&#25351;&#38024;&#20989;&#25968;,&#36825;&#37324;&#30340;&#23454;&#29616;&#29992;&#20102;&#19968;&#28857;&#23567;&#20238;&#20457;. &#26368;&#24320;&#22987;&#36825;&#20010;&#25351;&#38024;&#23601;&#34987;&#36171;&#20540;&#20026;__write_to_log_init, &#25152;&#20197;,&#22312;&#31532;&#19968;&#27425;&#35843;&#29992;&#35813;&#20989;&#25968;&#30340;&#26102;&#20505;,&#35843;&#29992;&#30340;&#23601;&#26159; __write_to_log_init()
+
+        static int __write_to_log_init(log_id_t log_id, struct iovec *vec, size_t nr)
+        {
+        #ifdef HAVE_PTHREADS
+            pthread_mutex_lock(&amp;log_init_lock);
+        #endif
+        
+            if (write_to_log == __write_to_log_init) {
+                log_fds[LOG_ID_MAIN] = log_open("<span class="italic">/dev/</span>"LOGGER_LOG_MAIN, O_WRONLY);
+                log_fds[LOG_ID_RADIO] = log_open("<span class="italic">/dev/</span>"LOGGER_LOG_RADIO, O_WRONLY);
+                log_fds[LOG_ID_EVENTS] = log_open("<span class="italic">/dev/</span>"LOGGER_LOG_EVENTS, O_WRONLY);
+                log_fds[LOG_ID_SYSTEM] = log_open("<span class="italic">/dev/</span>"LOGGER_LOG_SYSTEM, O_WRONLY);
+        
+                write_to_log = __write_to_log_kernel;
+        
+                if (log_fds[LOG_ID_MAIN] &lt; 0 || log_fds[LOG_ID_RADIO] &lt; 0 ||
+                        log_fds[LOG_ID_EVENTS] &lt; 0) {
+                    log_close(log_fds[LOG_ID_MAIN]);
+                    log_close(log_fds[LOG_ID_RADIO]);
+                    log_close(log_fds[LOG_ID_EVENTS]);
+                    log_fds[LOG_ID_MAIN] = -1;
+                    log_fds[LOG_ID_RADIO] = -1;
+                    log_fds[LOG_ID_EVENTS] = -1;
+                    write_to_log = __write_to_log_null;
+                }
+        
+                if (log_fds[LOG_ID_SYSTEM] &lt; 0) {
+                    log_fds[LOG_ID_SYSTEM] = log_fds[LOG_ID_MAIN];
+                }
+            }
+        
+        #ifdef HAVE_PTHREADS
+            pthread_mutex_unlock(&amp;log_init_lock);
+        #endif
+        
+            return write_to_log(log_id, vec, nr);
+        }
+        
+&#20043;&#25152;&#20197;&#35201;&#36825;&#26679;&#20570;,&#26159;&#22240;&#20026;&#22312;&#31995;&#32479;&#24320;&#21551;&#21518;&#31532;&#19968;&#27425;&#20889;&#36890;&#36807;ALOGX&#20989;&#25968;&#20889;log&#30340;&#26102;&#20505;,kernel &#23618;&#30340;logger device&#36824;&#26410;&#34987;&#25171;&#24320;,&#25152;&#20197;&#35201;&#23558;&#36825;&#20123;device&#37117;&#25171;&#24320;,&#28982;&#21518;,&#23558;write_to_log&#25913;&#25104;__write_to_log_kernel. &#22312;&#20989;&#25968;&#30340;&#26368;&#21518;,&#25509;&#30528;&#20877;&#35843;&#29992;&#19968;&#27425;write_to_log(),&#36825;&#27425;&#35843;&#29992;&#30340;&#23601;&#26159;__write_log_log_kernel &#20102;.
+
+        static int __write_to_log_kernel(log_id_t log_id, struct iovec *vec, size_t nr)
+        {
+            ssize_t ret;
+            int log_fd;
+        
+            if (<span class="italic">/*(int)log_id &gt;= 0 &amp;&amp;*/</span> (int)log_id &lt; (int)LOG_ID_MAX) {
+                log_fd = log_fds[(int)log_id];
+            } else {
+                return EBADF;
+            }
+        
+            do {
+                ret = log_writev(log_fd, vec, nr);
+            } while (ret &lt; 0 &amp;&amp; errno == EINTR);
+        
+            return ret;
+        }
+
+&#20989;&#25968;&#23558;log_id&#36716;&#20026;log_fd&#21518;,&#23601;&#30452;&#25509;&#35843;&#29992; log_writev()&#20989;&#25968;
+
+        #define log_writev(filedes, vector, count) writev(filedes, vector, count)
+
+log_writev()&#23601;&#34987;&#26144;&#23556;&#21040;&#20855;&#20307;&#30340;driver&#23618;&#30340;writev()&#20989;&#25968;.&#36825;&#26679;,&#19968;&#26465;log&#23601;&#34987;&#20889;&#20837;&#21040;&#20102;kernel&#23618;&#30340;device&#20013;.
+
+<span class="org-level-1">* SLOGX</span>
+
+SLOGX()API&#26063;&#29992;&#20110;&#29983;&#25104;system log,log&#34987;&#20889;&#21040;system&#36825;&#20010;logger device&#20013;,SLOGX&#30340;&#23454;&#29616;&#36319;main log&#22522;&#26412;&#30456;&#21516;,&#21482;&#26159;&#40664;&#35748;&#30340;log id&#26159;system&#32780;&#19981;&#26159;main
+        
+        #define SLOGV(...) ((void)__android_log_buf_print(LOG_ID_SYSTEM, ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__))
+        
+        int __android_log_buf_print(int bufID, int prio, const char *tag, const char *fmt, ...)
+        {
+            va_list ap;
+            char buf[LOG_BUF_SIZE];
+        
+            va_start(ap, fmt);
+            vsnprintf(buf, LOG_BUF_SIZE, fmt, ap);
+            va_end(ap);
+        
+            return __android_log_buf_write(bufID, prio, tag, buf);
+        }
+        
+        int __android_log_buf_write(int bufID, int prio, const char *tag, const char *msg)
+        {
+            struct iovec vec<span class="org-footnote">[3]</span>;
+        
+            if (!tag)
+                tag = "";
+        
+            <span class="italic">/* XXX: This needs to go! */</span>
+            if (!strcmp(tag, "HTC_RIL") ||
+                !strncmp(tag, "RIL", 3) || <span class="italic">/* Any log tag with "RIL" as the prefix </span><span class="bold"><span class="italic">*/</span></span><span class="bold">
+                !strncmp(tag, "IMS", 3) || </span><span class="italic"><span class="bold">/*</span></span><span class="italic"> Any log tag with "IMS" as the prefix */</span>
+                !strcmp(tag, "AT") ||
+                !strcmp(tag, "GSM") ||
+                !strcmp(tag, "STK") ||
+                !strcmp(tag, "CDMA") ||
+                !strcmp(tag, "PHONE") ||
+                !strcmp(tag, "SMS"))
+                    bufID = LOG_ID_RADIO;
+        
+            vec<span class="org-footnote">[0]</span>.iov_base   = (unsigned char *) &amp;prio;
+            vec<span class="org-footnote">[0]</span>.iov_len    = 1;
+            vec<span class="org-footnote">[1]</span>.iov_base   = (void *) tag;
+            vec<span class="org-footnote">[1]</span>.iov_len    = strlen(tag) + 1;
+            vec<span class="org-footnote">[2]</span>.iov_base   = (void *) msg;
+            vec<span class="org-footnote">[2]</span>.iov_len    = strlen(msg) + 1;
+        
+            return write_to_log(bufID, vec, 3);
+        }
+
+<span class="org-level-1">* Events Log</span>
+
+Events log&#26159;&#19968;&#31181;&#29305;&#27530;&#30340;log,&#32463;&#24120;&#34987;&#29992;&#26469;&#35760;&#24405;&#31995;&#32479;&#30340;&#19968;&#20123;&#21442;&#25968;:&#20363;&#22914;&#30005;&#27744;&#30340;&#24403;&#21069;&#29366;&#24577;,&#21097;&#20313;&#30005;&#37327;......&#31561;&#31561;
+
+Java&#23618;&#20889;event log&#30340;api&#20026; writeEvent(),&#19981;&#36807;&#31995;&#32479;&#26377;&#22235;&#31181;&#35813;&#20989;&#25968;&#30340;&#23454;&#29616;.
+
+    public static native int writeEvent(int tag, int value);
+    public static native int writeEvent(int tag, long value);
+    public static native int writeEvent(int tag, String str);
+    public static native int writeEvent(int tag, Object... list);
+
+&#31995;&#32479;&#20250;&#26681;&#25454;&#27169;&#22359;&#20013;call api&#26102;&#20256;&#20837;&#30340;&#21442;&#25968;&#23545;&#24212;&#35843;&#29992;&#19981;&#21516;&#30340;writeEvent()&#20989;&#25968;.&#36825;&#20123;&#20989;&#25968;&#20998;&#21035;&#23545;&#24212;&#21040;&#19981;&#21516;&#30340;JNI&#23454;&#29616;.&#39318;&#20808;&#30475;&#19979;&#21442;&#25968;&#20026;int/long&#26102;&#30340;JNI&#23454;&#29616;.
+
+        static jint android_util_EventLog_writeEvent_Integer(JNIEnv* env, jobject clazz,
+                                                             jint tag, jint value)
+        {
+            return android_btWriteLog(tag, EVENT_TYPE_INT, &amp;value, sizeof(value));
+        }
+        
+        static jint android_util_EventLog_writeEvent_Long(JNIEnv* env, jobject clazz,
+                                                          jint tag, jlong value)
+        {
+            return android_btWriteLog(tag, EVENT_TYPE_LONG, &amp;value, sizeof(value));
+        }
+        
+&#36825;&#20004;&#20010;&#20989;&#25968;&#35843;&#29992;&#20102;&#19968;&#20010;&#20849;&#21516;&#30340;&#20989;&#25968; android_btWriteLog()
+
+        #define android_btWriteLog(tag, type, payload, len)  __android_log_btwrite(tag, type, payload, len)
+
+        int __android_log_btwrite(int32_t tag, char type, const void *payload,
+            size_t len)
+        {
+            struct iovec vec<span class="org-footnote">[3]</span>;
+        
+            vec<span class="org-footnote">[0]</span>.iov_base = &amp;tag;
+            vec<span class="org-footnote">[0]</span>.iov_len = sizeof(tag);
+            vec<span class="org-footnote">[1]</span>.iov_base = &amp;type;
+            vec<span class="org-footnote">[1]</span>.iov_len = sizeof(type);
+            vec<span class="org-footnote">[2]</span>.iov_base = (void*)payload;
+            vec<span class="org-footnote">[2]</span>.iov_len = len;
+        
+            return write_to_log(LOG_ID_EVENTS, vec, 3);
+        }
+
+&#26159;&#19981;&#26159;&#24456;&#29087;&#24713;?&#27809;&#38169;,&#26368;&#21518;&#36319;main log&#27969;&#31243;&#19968;&#26679;,&#37117;&#35843;&#29992;write_to_log(0&#20989;&#25968;. &#19979;&#38754;&#26159;&#21442;&#25968;&#20026;string&#26102;&#30340;JNI&#23454;&#29616;:
+
+        static jint android_util_EventLog_writeEvent_String(JNIEnv* env, jobject clazz,
+                                                            jint tag, jstring value) {
+            uint8_t buf[MAX_EVENT_PAYLOAD];
+        
+            const char *str = value != NULL ? env-&gt;GetStringUTFChars(value, NULL) : "NULL";
+            jint len = strlen(str);
+            const int max = sizeof(buf) - sizeof(len) - 2;  // Type byte, final newline
+            if (len &gt; max) len = max;
+        
+            buf<span class="org-footnote">[0]</span> = EVENT_TYPE_STRING;
+            memcpy(&amp;buf<span class="org-footnote">[1]</span>, &amp;len, sizeof(len));
+            memcpy(&amp;buf[1 + sizeof(len)], str, len);
+            buf[1 + sizeof(len) + len] = '\n';
+        
+            if (value != NULL) env-&gt;ReleaseStringUTFChars(value, str);
+            return android_bWriteLog(tag, buf, 2 + sizeof(len) + len);
+        }
+
+&#35813;&#20989;&#25968;&#25226;type,string&#38271;&#24230;,string&#37117;&#25918;&#21040;&#20102;&#21516;&#19968;&#20010;buffer&#20013;,&#28982;&#21518;call android_bWriteLog()
+
+        int __android_log_bwrite(int32_t tag, const void *payload, size_t len)
+        {
+            struct iovec vec<span class="org-footnote">[2]</span>;
+        
+            vec<span class="org-footnote">[0]</span>.iov_base = &amp;tag;
+            vec<span class="org-footnote">[0]</span>.iov_len = sizeof(tag);
+            vec<span class="org-footnote">[1]</span>.iov_base = (void*)payload;
+            vec<span class="org-footnote">[1]</span>.iov_len = len;
+        
+            return write_to_log(LOG_ID_EVENTS, vec, 2);
+        }
+
+&#35813;&#20989;&#25968;&#19982;__android_log_bwrite&#30340;&#19981;&#21516;&#26159;&#21518;&#32773;&#26159;&#25226;type(int/long)&#36319;payload&#20998;&#24320;&#30340;,&#32780;&#35813;&#20989;&#25968;&#25918;&#21040;&#20102;&#19968;&#36215;.
+
+writeEvent&#30340;&#31532;&#22235;&#31181;&#24418;&#24335;:&#20889;&#20837;&#30340;&#26159;int/long/string&#30340;&#32452;&#21512;&#20307;,&#21017;&#20250;&#24490;&#29615;&#36941;&#21382;&#35813;&#32452;&#21512;,&#36716;&#25442;&#25104;&#26684;&#24335;&#21270;&#23383;&#31526;&#20018;&#25918;&#21040;&#21516;&#19968;&#20010;buffer&#20013;.
+        
+        static jint android_util_EventLog_writeEvent_Array(JNIEnv* env, jobject clazz,
+                                                           jint tag, jobjectArray value) {
+        
+            uint8_t buf[MAX_EVENT_PAYLOAD];
+            const size_t max = sizeof(buf) - 1;  // leave room for final newline
+            size_t pos = 2;  // Save room for type tag &amp; array count
+        
+            jsize copied = 0, num = env-&gt;GetArrayLength(value);
+            for (; copied &lt; num &amp;&amp; copied &lt; 255; ++copied) {
+                jobject item = env-&gt;GetObjectArrayElement(value, copied);
+                if (item == NULL || env-&gt;IsInstanceOf(item, gStringClass)) {
+                    if (pos + 1 + sizeof(jint) &gt; max) break;
+                    const char *str = item != NULL ? env-&gt;GetStringUTFChars((jstring) item, NULL) : "NULL";
+                    jint len = strlen(str);
+                    if (pos + 1 + sizeof(len) + len &gt; max) len = max - pos - 1 - sizeof(len);
+                    buf[pos++] = EVENT_TYPE_STRING;
+                    memcpy(&amp;buf[pos], &amp;len, sizeof(len));
+                    memcpy(&amp;buf[pos + sizeof(len)], str, len);
+                    pos += sizeof(len) + len;
+                    if (item != NULL) env-&gt;ReleaseStringUTFChars((jstring) item, str);
+                } else if (env-&gt;IsInstanceOf(item, gIntegerClass)) {
+                    jint intVal = env-&gt;GetIntField(item, gIntegerValueID);
+                    if (pos + 1 + sizeof(intVal) &gt; max) break;
+                    buf[pos++] = EVENT_TYPE_INT;
+                    memcpy(&amp;buf[pos], &amp;intVal, sizeof(intVal));
+                    pos += sizeof(intVal);
+                } else if (env-&gt;IsInstanceOf(item, gLongClass)) {
+                    jlong longVal = env-&gt;GetLongField(item, gLongValueID);
+                    if (pos + 1 + sizeof(longVal) &gt; max) break;
+                    buf[pos++] = EVENT_TYPE_LONG;
+                    memcpy(&amp;buf[pos], &amp;longVal, sizeof(longVal));
+                    pos += sizeof(longVal);
+                } else {
+                    jniThrowException(env,
+                            "java/lang/IllegalArgumentException",
+                            "Invalid payload item type");
+                    return -1;
+                }
+                env-&gt;DeleteLocalRef(item);
+            }
+        
+            buf<span class="org-footnote">[0]</span> = EVENT_TYPE_LIST;
+            buf<span class="org-footnote">[1]</span> = copied;
+            buf[pos++] = '\n';
+            return android_bWriteLog(tag, buf, pos);
+        }
+
+&#26368;&#21518;&#21516;&#26679;&#26159;&#35843;&#29992;&#20989;&#25968; android_bWriteLog()
+
+<span class="org-level-1">* Footnotes</span>
+
+<span class="org-footnote">[1]</span> ignore
+
+<span class="org-footnote">[0]</span> ignore
+<span class="org-footnote">[2]</span> ignore
+
+<span class="org-footnote">[3]</span> ignore
+</pre>
+  </body>
+</html>

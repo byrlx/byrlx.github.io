@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-08-16 Tue 18:52 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="lx" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+<p>
+&#x2014;
+layout: post
+title: Vim and the plugins
+category: Life
+tag: [Tech]
+description: [The vim plugins I use]
+&#x2014;
+</p>
+
+<p>
+学Linux之初，就知道有vim这么个东西，但一直没有深入使用，读研之后，开始写代码，
+开始使用vim，其中多少也有些装X的成分。那时候对vim了解不深，用的也都是些基本的功能。
+工作之后，刚去公司，就一直用vim学习代码，也开始学习些更复杂的操作，期间也试着
+用了一段时间的UE以及公司买的sourceinlight。不过没多久就又回到vim里了。
+</p>
+
+<p>
+就跟练武一样，时间久了，”武器“就越用越顺手，遂决定将其作为”首席武器”。于是开始
+去网上搜高级操作，搜各种实用插件。偶尔也会去看一些“vim”和“emacs”巅峰对决的帖子，
+想着自己正使用着代码界的”两大神器“之一，就会又膨胀了一些。
+</p>
+
+<p>
+写此文，主要记录平常使用的vim插件及使用心得。插件越来越多，总免不了会有一些操作
+或快捷键上的冲突。记下来，将来用的时候省得再去翻文档。
+</p>
+
+<p>
+#### 1. [taglist.vim](<a href="http://www.vim.org/scripts/script.php?script_id=273">http://www.vim.org/scripts/script.php?script_id=273</a>)
+</p>
+
+<p>
+该插件主要用于代码浏览，目前来讲我最常用的一个命令就是“TlistToggle”，我还把F2
+键赋予了这个命令.
+</p>
+
+<p>
+nmpa &lt;F2&gt; :TlistToggle &lt;CR&gt;
+</p>
+
+<p>
+当在vim输入“:TlistToggle”命令后，默认会在vim左边开启一个“窗口”，该窗口中会按照
+”varible/class/fuction“等关键字分成几段文字，每一段文字都显示了目前在该代码文件
+中定义的代码”关键字“, 通过将光标移到相应的关键字上，然后按回车键，会自动跳到代码
+文件相应的定义处。同时，如果在代码文件中不停的跳转，该“窗口”的光标也会跟着自动跳跃
+到相关的函数名处。
+</p>
+
+<p>
+![taglist.vim]({{root_url}}/public/img/taglist.png "taglist.vim")
+</p>
+
+<p>
+默认情况，进入vim后左边的“窗口”不会启动，可以通过修改vimrc，加入*"let Tlist_Auto_Open=1"*
+将其设为进入vim自动启动。
+</p>
+
+<p>
+默认情况，打开taglist之后，vim会开启一个单独的buffer，所以如果退出了代码文件的buffer，
+taglist的buffer默认还会存在，如果想让所有源文件都退出后vim自动退出（即taglist的buffer
+自动退出），可以在vimrc中设定*"let Tlist_Exit_OnlyWindow=1"*。
+</p>
+
+<p>
+可以通过*"let Tlist_WinWidth = x(let Tlist_WinHeight = x)"* 设定
+taglist 窗口的宽度（高度，适用于新窗口以水平方式打开)。
+</p>
+
+<p>
+#### 2. [conque_term.vim](<a href="http://www.vim.org/scripts/script.php?script_id=2771">http://www.vim.org/scripts/script.php?script_id=2771</a>)
+</p>
+
+<p>
+该插件可以让你在vim里打开一个窗口执行shell命令。对一些简单的shell命令，用起来还
+蛮方便的。
+</p>
+
+<p>
+![conque.vim]({{root_url}}/public/img/conque.png "conque.vim")
+</p>
+
+<p>
+常用命令“ :ConqueTermSplit bash”。
+</p>
+
+<p>
+#### 3. [ack.vim](<a href="http://www.vim.org/scripts/script.php?script_id=2572">http://www.vim.org/scripts/script.php?script_id=2572</a>)
+</p>
+
+<p>
+要使用这个插件，必须先安装“ack”这个工具，笔者在[这篇文章](<a href="http://byrlx.github.io/2013/10/31/Welcome-ack-to-my-toolbox.html">http://byrlx.github.io/2013/10/31/Welcome-ack-to-my-toolbox.html</a>)中有对这个tool作简单介绍。
+</p>
+
+<p>
+安装以后，可以通过“:Ack xx”在命令模式下使用ack命令，命令结果默认会输出到vim底端新开启的“窗口”中，
+通过上下选择不同的结果，可以跳转到相应文件的相应行。
+</p>
+
+<p>
+![ack.vim]({{root_url}}/public/img/ack.png "ack.vim")
+</p>
+
+<p>
+#### 4. [matrix.vim](<a href="http://www.vim.org/scripts/script.php?script_id=1189">http://www.vim.org/scripts/script.php?script_id=1189</a>)
+</p>
+
+<p>
+一个很有趣的插件，让vim窗口变成《黑客帝国》。
+</p>
+
+<p>
+![matrix.vim]({{root_url}}/public/img/matrix.png "matrix.vim")
+</p>
+
+<p>
+#### 5. [minibufexpl.vim](<a href="http://www.vim.org/scripts/script.php?script_id=159">http://www.vim.org/scripts/script.php?script_id=159</a>)
+</p>
+
+<p>
+很实用的插件，如果你打开多个文件，会自动在最上方开一个类似“tab”的窗口，显示每个打开的文件名称，可以使用TAB键在文件名之间移动，按下回车即可以切换到该文件的buffer。
+</p>
+
+<p>
+![minibuf.vim]({{root_url}}/public/img/minibufexpl.png "minibufexpl.vim")
+</p>
+</div>
+<div id="postamble" class="status">
+<div id="show_source"><input type="button" value="Show Org source" onClick='show_org_source()'></div><div id="license"><p>Documentation from the http://orgmode.org/worg/ website (either in its HTML format or in its Org format) is licensed under the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License version 1.3</a> or later.  The code examples and css stylesheets are licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a> or later.</p></div>
+</div>
+</body>
+</html>

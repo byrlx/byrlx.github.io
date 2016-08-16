@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!-- Created by htmlize-1.43 in css mode. -->
+<html>
+  <head>
+    <title>emacs-ide.org</title>
+    <style type="text/css">
+    <!--
+      body {
+        color: #DCDCCC;
+        background-color: #3F3F3F;
+      }
+      .org-block {
+        /* org-block */
+        color: #009acd;
+      }
+      .org-block-begin-line {
+        /* org-block-begin-line */
+        color: #7F9F7F;
+      }
+      .org-block-end-line {
+        /* org-block-end-line */
+        color: #7F9F7F;
+      }
+      .org-document-info {
+        /* org-document-info */
+        color: #afeeee;
+      }
+      .org-document-info-keyword {
+        /* org-document-info-keyword */
+        color: #b3b3b3;
+      }
+      .org-document-title {
+        /* org-document-title */
+        color: #afeeee;
+        font-weight: bold;
+      }
+      .org-formula {
+        /* org-formula */
+        color: #D0BF8F;
+      }
+      .org-level-1 {
+        /* org-level-1 */
+        color: #DFAF8F;
+        font-size: 130%;
+        text-decoration: overline;
+      }
+      .org-level-2 {
+        /* org-level-2 */
+        color: #BFEBBF;
+        font-size: 120%;
+      }
+      .org-level-3 {
+        /* org-level-3 */
+        color: #7CB8BB;
+      }
+      .org-link {
+        /* org-link */
+        color: #D0BF8F;
+        text-decoration: underline;
+      }
+      .org-meta-line {
+        /* org-meta-line */
+        color: #7F9F7F;
+      }
+      .org-table {
+        /* org-table */
+        color: #9FC59F;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+  </head>
+  <body>
+    <pre>
+<span class="org-meta-line">#+OPTIONS: toc:t H:3</span>
+<span class="org-document-info-keyword">#+AUTHOR:</span> <span class="org-document-info">Zhengchao Xu
+</span><span class="org-document-info-keyword">#+EMAIL:</span> <span class="org-document-info">xuzhengchaojob@gmail.com
+</span><span class="org-meta-line">#+SETUPFILE: macros.setupfile</span>
+
+<span class="org-document-info-keyword">#+TITLE:</span> <span class="org-document-title">&#25171;&#36896;Emacs&#32534;&#31243;&#29615;&#22659;
+</span><span class="org-level-1">* Elisp&#24320;&#21457;&#29615;&#22659;</span>
+<span class="org-level-2">** &#20351;&#29992;</span><span class="org-link"><a href="paredit">paredit</a></span><span class="org-level-2">&#20889;&#20195;&#30721;</span>
+<span class="org-level-2">** &#36816;&#34892;&#20195;&#30721;</span>
+1. &#22312;*scratch*&#37324;&#21487;&#20197;&#20351;&#29992; "C-x C-e"&#36816;&#34892;&#34920;&#36798;&#24335;.
+2. &#20351;&#29992; "C-M-x" &#36816;&#34892;&#20989;&#25968;.
+2. &#21487;&#20197;&#22312;buffer&#20013;&#20351;&#29992;eval-buffer&#20351;&#24403;&#21069;&#20195;&#30721;&#29983;&#25928;, &#28982;&#21518;&#22312;eshell&#25110;ielm&#20013;&#35843;&#29992;.
+<span class="org-level-2">** &#35843;&#35797;&#20195;&#30721;</span>
+<span class="org-level-3">*** Edebug</span>
+Edebug&#26159;Emacs&#33258;&#24102;&#30340;&#20195;&#30721;&#32423;&#30340;&#35843;&#35797;&#22120;. &#21487;&#20197;&#22312;&#24819;&#35201;&#35843;&#35797;&#30340;&#20195;&#30721;&#19978;&#20351;&#29992;
+"C-u C-M-x", &#23601;&#20250;&#36827;&#20837;&#35843;&#35797;&#27169;&#24335;, &#27492;&#26102;&#36816;&#34892;&#31243;&#24207;, &#23601;&#20250;&#22312;&#20989;&#25968;&#22836;&#20572;&#30041;.
+
+&#20351;&#29992;&#24555;&#25463;&#38190;n&#21487;&#20197;&#19968;&#27493;&#19968;&#27493;&#30340;&#35843;&#35797;. 
+<span class="org-level-1">* Clojure&#24320;&#21457;&#29615;&#22659;</span>
+<span class="org-level-2">** &#23433;&#35013;&#30456;&#20851;&#21253;</span>
+1. cider. Cider&#26159;clojure&#30340;emacs&#24320;&#21457;&#29615;&#22659;, &#36890;&#36807;&#21253;&#31649;&#29702;&#24037;&#20855;&#23433;&#35013;cider.
+2. clojure-mode. 
+3. ac-cider. Clojure mode&#30340;&#33258;&#21160;&#34917;&#20840;&#25554;&#20214;.
+4. Leiningen.  &#38750;Emacs&#25554;&#20214;, shell&#31243;&#24207;.
+5. projectile
+<span class="org-level-2">** emacs&#37197;&#32622;</span>
+1. &#22312;clojure mode&#19979;&#20351;&#29992;paredit.
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">   (add-hook 'clojure-mode-hook 'paredit-mode)
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>2. &#37197;&#32622;lein, &#20351;&#29992;cider, &#22312;.lein/profiles.clj&#20013;&#21152;&#20837;&#22914;&#19979;
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">   {:repl {:plugins <a href="cider/cider-nrepl &quot;0.10.1&quot;">[[</a><a href="cider/cider-nrepl &quot;0.10.1&quot;">cider/cider-nrepl "0.10.1"</a><a href="cider/cider-nrepl &quot;0.10.1&quot;">]]</a>}}
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span><span class="org-level-2">** &#31034;&#20363;&#31243;&#24207;</span>
+<span class="org-level-3">*** &#20351;&#29992;lein new name&#21629;&#20196;&#21019;&#24314;&#19968;&#20010;&#21517;&#31216;&#20026;name&#30340;&#24037;&#31243;.</span>
+<span class="org-level-3">*** &#22312;emacs&#20013;&#36816;&#34892; cider-jack-in&#36827;&#20837;nREPL</span>
+<span class="org-level-1">* paredit</span>
+&#35813;&#25554;&#20214;&#29992;&#20110;&#25324;&#21495;/&#24341;&#21495;&#30340;&#33258;&#21160;&#34917;&#20840;.
+&#22914;&#26524;&#25285;&#24515;evil mode&#30772;&#22351;&#25324;&#21495;&#30340;&#23436;&#25972;, &#32534;&#20889;&#26102;&#20808;&#26242;&#20572;&#25481;evil mode 
+<span class="org-level-2">** &#24120;&#29992;&#20989;&#25968;/&#24555;&#25463;&#38190;</span>
+<span class="org-table">| &#24555;&#25463;&#38190;        | &#20989;&#25968;         | &#21151;&#33021;          |</span>
+<span class="org-table">|---------------+--------------+---------------|</span>
+<span class="org-table">|               | </span><span class="org-formula">&lt;12&gt;</span><span class="org-table">         | </span><span class="org-formula">&lt;12&gt;</span><span class="org-table">          |</span>
+<span class="org-table">| (             | paredit-open-round | &#29983;&#25104;&#23545;&#25324;&#21495;    |</span>
+<span class="org-table">| [             | paredit-open-sqaure | &#29983;&#25104;&#20013;&#25324;&#21495;&#23545;  |</span>
+<span class="org-table">| {             | paredit-open-curly | &#29983;&#25104;&#22823;&#25324;&#21495;&#23545;  |</span>
+<span class="org-table">| )/]/}         | paredit-close-[round/squre/curly] | &#36339;&#36716;&#21040;&#23545;&#24212;&#30340;&#32467;&#23614; |</span>
+<span class="org-table">| "             | paredit-doublequote | &#29983;&#25104;&#21452;&#24341;&#21495;&#23545;  |</span>
+<span class="org-table">| M-(           | paredit-wrap-round | &#23558;&#24403;&#21069;&#20869;&#23481;&#25324;&#36215;&#26469; |</span>
+<span class="org-table">| M-"           | paredit-meta-doublequote | &#23558;&#24403;&#21069;&#20869;&#23481;&#29992;&#24341;&#21495;&#25324;&#36215;&#26469; |</span>
+<span class="org-table">| C-d           |              | &#21024;&#38500;&#21518;&#38754;&#19968;&#20010;&#23383;&#31526; |</span>
+<span class="org-table">| M-d           |              | &#21024;&#38500;&#21518;&#38754;&#30340;word |</span>
+<span class="org-table">| DEL           |              | &#21024;&#38500;&#21069;&#38754;&#30340;&#23383;&#31526; |</span>
+<span class="org-table">| M-DEL         |              | &#21024;&#38500;&#21069;&#38754;&#30340;word |</span>
+<span class="org-table">| C-k           |              | &#21024;&#38500;&#21040;&#32467;&#23614;    |</span>
+<span class="org-table">| C-)           |              | &#25226;&#24403;&#21069;&#21491;&#25324;&#21495;&#23614;&#37096;&#30340;&#20869;&#23481;&#25918;&#21040;&#25324;&#21495;&#20869; |</span>
+<span class="org-table">| C-(           |              | &#25226;&#24403;&#21069;&#24038;&#25324;&#21495;&#23614;&#37096;&#30340;&#20869;&#23481;&#25918;&#20837;&#25324;&#21495; |</span>
+<span class="org-table">| C-}/{         |              | &#25226;&#24403;&#21069;&#24038;&#21491;&#25324;&#21495;&#30340;&#20869;&#23481;&#25380;&#20986;&#25324;&#21495; |</span>
+<span class="org-table">| C-M-f/b       |              | &#36339;&#36291;&#24335;&#21069;&#36827;/&#21518;&#36864; |</span>
+<span class="org-table">| C-M-d/p       |              | &#38477;&#32423;&#21069;&#36827;/&#21518;&#36864; |</span>
+<span class="org-table">| C-M-u/n       |              | &#21319;&#32423;&#21069;&#36827;/&#21518;&#36864; |</span>
+<span class="org-table">| M-&lt;up&gt;/&lt;down&gt; |              | &#21319;&#32423;/&#38477;&#32423;&#25324;&#21495; |</span>
+<span class="org-table">| M-s           |              | &#21435;&#38500;&#24341;&#21495;      |</span>
+<span class="org-table">| M-S/J         |              | &#20998;&#21106;/&#21512;&#24182;   |</span>
+<span class="org-table">|               |              |               |</span>
+</pre>
+  </body>
+</html>
