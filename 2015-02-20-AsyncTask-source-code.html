@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-08-16 Tue 14:31 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Zhengchao Xu" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+---
+layout: post
+title: AsyncTask 源码阅读
+categories: [Android]
+---
+
+<p>
+AsyncTask是Android提供的一个封装类, 可以实现后台线程与UI线程的交互. <br  />
+本文是该类的源码的阅读笔记, 至于AsyncTask的用法, 可以去查阅相关的资料.
+</p>
+
+<p>
+AsyncTask的源码实现主要是封装了 <b>Handler</b> 和 <b>Thread</b> 两个功能. 
+下面是详细的代码实现. 该类是一个抽象类.
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">thread相关</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+AsyncTask的源码中定义了如下与"thread"相关的变量或函数.
+</p>
+</div>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">sThreadFactory</h3>
+<div class="outline-text-3" id="text-orgheadline2">
+<p>
+该变量是一个实现了ThreadFacotry类的匿名类变量, 主要实现了
+newThread()函数, 该函数定义了创建线程的方法. 创建的线程
+接受一个Runnable对象. 这个线程就是doInBackground()函数
+所执行的线程. 
+</p>
+<pre class="example">
+private static final ThreadFactory sThreadFactory = new ThreadFactory() {
+    private final AtomicInteger mCount = new AtomicInteger(1);
+
+    public Thread newThread(Runnable r) {
+        return new Thread(r, "AsyncTask #" + mCount.getAndIncrement());
+    }
+};
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">sPoolWorkQueue</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<p>
+创建了一个"阻塞队列". 用于存放Runnable对象.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">THREAD_POOL_EXECUTOR</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
+该变量是一个ThreadPoolExecutor对象, 基于上面创建的两个
+变量 "sThreadFacotry" 和 "sPoolWorkQueue" 创建, 意思即
+这个executor执行的thread会从sThreadFactory中创建, 并且
+提交给这个executor的runnable对象在执行前, 都会存放到
+sPoolWorkQueue中. 
+</p>
+<pre class="example">
+public static final Executor THREAD_POOL_EXECUTOR
+         = new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,
+                 TimeUnit.SECONDS, sPoolWorkQueue, sThreadFactory);
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">SERIAL_EXECUTOR</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+<p>
+该变量是一个SerialExecutor对象, 后者是一个自定义的
+Executor子类, 该类实现了"顺序"执行任务的功能, 即同一时刻
+只能提交并执行一个runnable. 该对象是AsyncTask默认的执行
+executor. 
+</p>
+
+<p>
+该类通过<a href="#orgheadline4">THREAD_POOL_EXECUTOR</a> 来执行实际的"线程"功能.见代码:
+</p>
+<pre class="example">
+private static class SerialExecutor implements Executor {
+     final ArrayDeque&lt;Runnable&gt; mTasks = new ArrayDeque&lt;Runnable&gt;();
+     Runnable mActive;
+
+     public synchronized void execute(final Runnable r) {
+         mTasks.offer(new Runnable() {
+             public void run() {
+                 try {
+                     r.run();
+                 } finally {
+                     scheduleNext();
+                 }
+             }
+         });
+         if (mActive == null) {
+             scheduleNext();
+         }
+     }
+
+     protected synchronized void scheduleNext() {
+         if ((mActive = mTasks.poll()) != null) {
+             THREAD_POOL_EXECUTOR.execute(mActive);
+         }
+     }
+ }
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">sWorker和mFuture</h3>
+<div class="outline-text-3" id="text-orgheadline6">
+<p>
+这两个变量是在AsyncTask的构造函数中创建的. 
+</p>
+
+<p>
+mWorker是一个Callable类, 它的call()函数主要就是执行 <b>doInBackground()</b>
+这个函数, 然后将结果通过handler传递给UI线程.
+</p>
+
+<p>
+mFuture是一个FutureTask变量.它封装了mWorker, 这样可以支持任务的取消.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-2">
+<h2 id="orgheadline7">handler相关</h2>
+<div class="outline-text-2" id="text-orgheadline7">
+<p>
+AsyncTask内部定义了一个私有类 InternalHandler, 该类使用了
+UI线程的looper. 所以该Handler对Message的处理都是在UI线程中进行的.
+</p>
+<pre class="example">
+private static class InternalHandler extends Handler {
+    public InternalHandler() {
+        super(Looper.getMainLooper());
+    }
+
+    @SuppressWarnings({"unchecked", "RawUseOfParameterizedType"})
+    @Override
+    public void handleMessage(Message msg) {
+        AsyncTaskResult&lt;?&gt; result = (AsyncTaskResult&lt;?&gt;) msg.obj;
+        switch (msg.what) {
+            case MESSAGE_POST_RESULT:
+                // There is only one result
+                result.mTask.finish(result.mData[0]);
+                break;
+            case MESSAGE_POST_PROGRESS:
+                result.mTask.onProgressUpdate(result.mData);
+                break;
+        }
+    }
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10">流程</h2>
+<div class="outline-text-2" id="text-orgheadline10">
+</div><div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">execute()函数过程</h3>
+<div class="outline-text-3" id="text-orgheadline8">
+<p>
+使用AsyncTask时, 一般通过调用 execute(var) 函数执行任务, 该函数
+调用了executeOnExecutor()函数, 默认使用 sDefaultEExecutor即
+SERIAL_EXECUTOR来执行任务. 下面是后者的实现:
+</p>
+<pre class="example">
+@MainThread
+public final AsyncTask&lt;Params, Progress, Result&gt; executeOnExecutor(Executor exec,
+        Params... params) {
+    if (mStatus != Status.PENDING) {
+        switch (mStatus) {
+            case RUNNING:
+                throw new IllegalStateException("Cannot execute task:"
+                        + " the task is already running.");
+            case FINISHED:
+                throw new IllegalStateException("Cannot execute task:"
+                        + " the task has already been executed "
+                        + "(a task can be executed only once)");
+        }
+    }
+
+    mStatus = Status.RUNNING;
+
+    onPreExecute();
+
+    mWorker.mParams = params;
+    exec.execute(mFuture);
+
+    return this;
+}
+</pre>
+
+<p>
+该函数首先判断任务状态. 然后调用 onPreExecute(), 这是在UI线程调用的.
+然后是调用exec.execute(mFuture). 从前面的内容可以知道, 这行代码就会
+在线程中调用doInBackground()函数. 等doInBackground执行完成后, 会调用postResult()
+提交结果. postResult()通过handler将结果传递给UI线程执行.  
+</p>
+
+<pre class="example">
+private Result postResult(Result result) {
+    @SuppressWarnings("unchecked")
+    Message message = getHandler().obtainMessage(MESSAGE_POST_RESULT,
+            new AsyncTaskResult&lt;Result&gt;(this, result));
+    message.sendToTarget();
+    return result;
+}
+</pre>
+
+<p>
+前面handler的内容可知, handler最后会调用到finish()函数, 该函数会调用到
+onPostExecute().
+</p>
+<pre class="example">
+private void finish(Result result) {
+    if (isCancelled()) {
+        onCancelled(result);
+    } else {
+        onPostExecute(result);
+    }
+    mStatus = Status.FINISHED;
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">发布进度</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+<p>
+可以通过publishProgress函数发布当前进度.该函数会通过handler向UI线程推送消息.
+</p>
+<pre class="example">
+@WorkerThread
+protected final void publishProgress(Progress... values) {
+    if (!isCancelled()) {
+        getHandler().obtainMessage(MESSAGE_POST_PROGRESS,
+                new AsyncTaskResult&lt;Progress&gt;(this, values)).sendToTarget();
+    }
+}
+</pre>
+
+<p>
+该消息的处理会调用到onProgressUpdate()函数.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="show_source"><input type="button" value="Show Org source" onClick='show_org_source()'></div><div id="license"><p>Documentation from the http://orgmode.org/worg/ website (either in its HTML format or in its Org format) is licensed under the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License version 1.3</a> or later.  The code examples and css stylesheets are licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a> or later.</p></div>
+</div>
+</body>
+</html>

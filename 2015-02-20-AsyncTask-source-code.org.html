@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!-- Created by htmlize-1.43 in css mode. -->
+<html>
+  <head>
+    <title>2015-02-20-AsyncTask-source-code.org</title>
+    <style type="text/css">
+    <!--
+      body {
+        color: #DCDCCC;
+        background-color: #3F3F3F;
+      }
+      .bold {
+        /* bold */
+        font-weight: bold;
+      }
+      .org-block {
+        /* org-block */
+        color: #009acd;
+      }
+      .org-block-begin-line {
+        /* org-block-begin-line */
+        color: #7F9F7F;
+      }
+      .org-block-end-line {
+        /* org-block-end-line */
+        color: #7F9F7F;
+      }
+      .org-document-info {
+        /* org-document-info */
+        color: #afeeee;
+      }
+      .org-document-info-keyword {
+        /* org-document-info-keyword */
+        color: #b3b3b3;
+      }
+      .org-level-1 {
+        /* org-level-1 */
+        color: #DFAF8F;
+        font-size: 130%;
+        text-decoration: overline;
+      }
+      .org-level-2 {
+        /* org-level-2 */
+        color: #BFEBBF;
+        font-size: 120%;
+      }
+      .org-link {
+        /* org-link */
+        color: #D0BF8F;
+        text-decoration: underline;
+      }
+      .org-meta-line {
+        /* org-meta-line */
+        color: #7F9F7F;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+  </head>
+  <body>
+    <pre>
+<span class="org-meta-line">#+OPTIONS: num:nil</span>
+<span class="org-meta-line">#+OPTIONS: ^:nil</span>
+<span class="org-meta-line">#+OPTIONS: H:nil</span>
+<span class="org-meta-line">#+OPTIONS: toc:nil</span>
+<span class="org-document-info-keyword">#+AUTHOR:</span> <span class="org-document-info">Zhengchao Xu
+</span><span class="org-document-info-keyword">#+EMAIL:</span> <span class="org-document-info">xuzhengchaojob@gmail.com
+</span>
+<span class="org-block-begin-line">#+BEGIN_HTML
+</span><span class="org-block">---
+layout: post
+title: AsyncTask &#28304;&#30721;&#38405;&#35835;
+categories: [Android]
+---
+</span><span class="org-block-end-line">#+END_HTML
+</span>
+AsyncTask&#26159;Android&#25552;&#20379;&#30340;&#19968;&#20010;&#23553;&#35013;&#31867;, &#21487;&#20197;&#23454;&#29616;&#21518;&#21488;&#32447;&#31243;&#19982;UI&#32447;&#31243;&#30340;&#20132;&#20114;. \\
+&#26412;&#25991;&#26159;&#35813;&#31867;&#30340;&#28304;&#30721;&#30340;&#38405;&#35835;&#31508;&#35760;, &#33267;&#20110;AsyncTask&#30340;&#29992;&#27861;, &#21487;&#20197;&#21435;&#26597;&#38405;&#30456;&#20851;&#30340;&#36164;&#26009;.
+
+AsyncTask&#30340;&#28304;&#30721;&#23454;&#29616;&#20027;&#35201;&#26159;&#23553;&#35013;&#20102; <span class="bold">*Handler*</span> &#21644; <span class="bold">*Thread*</span> &#20004;&#20010;&#21151;&#33021;. 
+&#19979;&#38754;&#26159;&#35814;&#32454;&#30340;&#20195;&#30721;&#23454;&#29616;. &#35813;&#31867;&#26159;&#19968;&#20010;&#25277;&#35937;&#31867;.
+
+<span class="org-level-1">* thread&#30456;&#20851;</span>
+AsyncTask&#30340;&#28304;&#30721;&#20013;&#23450;&#20041;&#20102;&#22914;&#19979;&#19982;"thread"&#30456;&#20851;&#30340;&#21464;&#37327;&#25110;&#20989;&#25968;.
+<span class="org-level-2">** sThreadFactory</span>
+&#35813;&#21464;&#37327;&#26159;&#19968;&#20010;&#23454;&#29616;&#20102;ThreadFacotry&#31867;&#30340;&#21311;&#21517;&#31867;&#21464;&#37327;, &#20027;&#35201;&#23454;&#29616;&#20102;
+newThread()&#20989;&#25968;, &#35813;&#20989;&#25968;&#23450;&#20041;&#20102;&#21019;&#24314;&#32447;&#31243;&#30340;&#26041;&#27861;. &#21019;&#24314;&#30340;&#32447;&#31243;
+&#25509;&#21463;&#19968;&#20010;Runnable&#23545;&#35937;. &#36825;&#20010;&#32447;&#31243;&#23601;&#26159;doInBackground()&#20989;&#25968;
+&#25152;&#25191;&#34892;&#30340;&#32447;&#31243;. 
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">    private static final ThreadFactory sThreadFactory = new ThreadFactory() {
+        private final AtomicInteger mCount = new AtomicInteger(1);
+
+        public Thread newThread(Runnable r) {
+            return new Thread(r, "AsyncTask #" + mCount.getAndIncrement());
+        }
+    };
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span><span class="org-level-2">** sPoolWorkQueue</span>
+   &#21019;&#24314;&#20102;&#19968;&#20010;"&#38459;&#22622;&#38431;&#21015;". &#29992;&#20110;&#23384;&#25918;Runnable&#23545;&#35937;.
+<span class="org-level-2">** THREAD_POOL_EXECUTOR</span>
+&#35813;&#21464;&#37327;&#26159;&#19968;&#20010;ThreadPoolExecutor&#23545;&#35937;, &#22522;&#20110;&#19978;&#38754;&#21019;&#24314;&#30340;&#20004;&#20010;
+&#21464;&#37327; "sThreadFacotry" &#21644; "sPoolWorkQueue" &#21019;&#24314;, &#24847;&#24605;&#21363;
+&#36825;&#20010;executor&#25191;&#34892;&#30340;thread&#20250;&#20174;sThreadFactory&#20013;&#21019;&#24314;, &#24182;&#19988;
+&#25552;&#20132;&#32473;&#36825;&#20010;executor&#30340;runnable&#23545;&#35937;&#22312;&#25191;&#34892;&#21069;, &#37117;&#20250;&#23384;&#25918;&#21040;
+sPoolWorkQueue&#20013;. 
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">   public static final Executor THREAD_POOL_EXECUTOR
+            = new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,
+                    TimeUnit.SECONDS, sPoolWorkQueue, sThreadFactory);
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span><span class="org-level-2">** SERIAL_EXECUTOR</span>
+&#35813;&#21464;&#37327;&#26159;&#19968;&#20010;SerialExecutor&#23545;&#35937;, &#21518;&#32773;&#26159;&#19968;&#20010;&#33258;&#23450;&#20041;&#30340;
+Executor&#23376;&#31867;, &#35813;&#31867;&#23454;&#29616;&#20102;"&#39034;&#24207;"&#25191;&#34892;&#20219;&#21153;&#30340;&#21151;&#33021;, &#21363;&#21516;&#19968;&#26102;&#21051;
+&#21482;&#33021;&#25552;&#20132;&#24182;&#25191;&#34892;&#19968;&#20010;runnable. &#35813;&#23545;&#35937;&#26159;AsyncTask&#40664;&#35748;&#30340;&#25191;&#34892;
+executor. 
+
+&#35813;&#31867;&#36890;&#36807;<span class="org-link"><a href="THREAD_POOL_EXECUTOR">THREAD_POOL_EXECUTOR</a></span> &#26469;&#25191;&#34892;&#23454;&#38469;&#30340;"&#32447;&#31243;"&#21151;&#33021;.&#35265;&#20195;&#30721;:
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">   private static class SerialExecutor implements Executor {
+        final ArrayDeque&lt;Runnable&gt; mTasks = new ArrayDeque&lt;Runnable&gt;();
+        Runnable mActive;
+
+        public synchronized void execute(final Runnable r) {
+            mTasks.offer(new Runnable() {
+                public void run() {
+                    try {
+                        r.run();
+                    } finally {
+                        scheduleNext();
+                    }
+                }
+            });
+            if (mActive == null) {
+                scheduleNext();
+            }
+        }
+
+        protected synchronized void scheduleNext() {
+            if ((mActive = mTasks.poll()) != null) {
+                THREAD_POOL_EXECUTOR.execute(mActive);
+            }
+        }
+    }
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span><span class="org-level-2">** sWorker&#21644;mFuture</span>
+&#36825;&#20004;&#20010;&#21464;&#37327;&#26159;&#22312;AsyncTask&#30340;&#26500;&#36896;&#20989;&#25968;&#20013;&#21019;&#24314;&#30340;. 
+
+mWorker&#26159;&#19968;&#20010;Callable&#31867;, &#23427;&#30340;call()&#20989;&#25968;&#20027;&#35201;&#23601;&#26159;&#25191;&#34892; <span class="bold">*doInBackground()*</span>
+&#36825;&#20010;&#20989;&#25968;, &#28982;&#21518;&#23558;&#32467;&#26524;&#36890;&#36807;handler&#20256;&#36882;&#32473;UI&#32447;&#31243;.
+
+mFuture&#26159;&#19968;&#20010;FutureTask&#21464;&#37327;.&#23427;&#23553;&#35013;&#20102;mWorker, &#36825;&#26679;&#21487;&#20197;&#25903;&#25345;&#20219;&#21153;&#30340;&#21462;&#28040;.
+<span class="org-level-1">* handler&#30456;&#20851;</span>
+AsyncTask&#20869;&#37096;&#23450;&#20041;&#20102;&#19968;&#20010;&#31169;&#26377;&#31867; InternalHandler, &#35813;&#31867;&#20351;&#29992;&#20102;
+UI&#32447;&#31243;&#30340;looper. &#25152;&#20197;&#35813;Handler&#23545;Message&#30340;&#22788;&#29702;&#37117;&#26159;&#22312;UI&#32447;&#31243;&#20013;&#36827;&#34892;&#30340;.
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">    private static class InternalHandler extends Handler {
+        public InternalHandler() {
+            super(Looper.getMainLooper());
+        }
+
+        @SuppressWarnings({"unchecked", "RawUseOfParameterizedType"})
+        @Override
+        public void handleMessage(Message msg) {
+            AsyncTaskResult&lt;?&gt; result = (AsyncTaskResult&lt;?&gt;) msg.obj;
+            switch (msg.what) {
+                case MESSAGE_POST_RESULT:
+                    // There is only one result
+                    result.mTask.finish(result.mData[0]);
+                    break;
+                case MESSAGE_POST_PROGRESS:
+                    result.mTask.onProgressUpdate(result.mData);
+                    break;
+            }
+        }
+    }
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span><span class="org-level-1">* &#27969;&#31243;</span>
+<span class="org-level-2">** execute()&#20989;&#25968;&#36807;&#31243;</span>
+&#20351;&#29992;AsyncTask&#26102;, &#19968;&#33324;&#36890;&#36807;&#35843;&#29992; execute(var) &#20989;&#25968;&#25191;&#34892;&#20219;&#21153;, &#35813;&#20989;&#25968;
+&#35843;&#29992;&#20102;executeOnExecutor()&#20989;&#25968;, &#40664;&#35748;&#20351;&#29992; sDefaultEExecutor&#21363;
+SERIAL_EXECUTOR&#26469;&#25191;&#34892;&#20219;&#21153;. &#19979;&#38754;&#26159;&#21518;&#32773;&#30340;&#23454;&#29616;:
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">    @MainThread
+    public final AsyncTask&lt;Params, Progress, Result&gt; executeOnExecutor(Executor exec,
+            Params... params) {
+        if (mStatus != Status.PENDING) {
+            switch (mStatus) {
+                case RUNNING:
+                    throw new IllegalStateException("Cannot execute task:"
+                            + " the task is already running.");
+                case FINISHED:
+                    throw new IllegalStateException("Cannot execute task:"
+                            + " the task has already been executed "
+                            + "(a task can be executed only once)");
+            }
+        }
+
+        mStatus = Status.RUNNING;
+
+        onPreExecute();
+
+        mWorker.mParams = params;
+        exec.execute(mFuture);
+
+        return this;
+    }
+</span><span class="org-block-end-line">#+END_EXAMPLE 
+</span>
+&#35813;&#20989;&#25968;&#39318;&#20808;&#21028;&#26029;&#20219;&#21153;&#29366;&#24577;. &#28982;&#21518;&#35843;&#29992; onPreExecute(), &#36825;&#26159;&#22312;UI&#32447;&#31243;&#35843;&#29992;&#30340;.
+&#28982;&#21518;&#26159;&#35843;&#29992;exec.execute(mFuture). &#20174;&#21069;&#38754;&#30340;&#20869;&#23481;&#21487;&#20197;&#30693;&#36947;, &#36825;&#34892;&#20195;&#30721;&#23601;&#20250;
+&#22312;&#32447;&#31243;&#20013;&#35843;&#29992;doInBackground()&#20989;&#25968;. &#31561;doInBackground&#25191;&#34892;&#23436;&#25104;&#21518;, &#20250;&#35843;&#29992;postResult()
+&#25552;&#20132;&#32467;&#26524;. postResult()&#36890;&#36807;handler&#23558;&#32467;&#26524;&#20256;&#36882;&#32473;UI&#32447;&#31243;&#25191;&#34892;.  
+
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">    private Result postResult(Result result) {
+        @SuppressWarnings("unchecked")
+        Message message = getHandler().obtainMessage(MESSAGE_POST_RESULT,
+                new AsyncTaskResult&lt;Result&gt;(this, result));
+        message.sendToTarget();
+        return result;
+    }
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>
+&#21069;&#38754;handler&#30340;&#20869;&#23481;&#21487;&#30693;, handler&#26368;&#21518;&#20250;&#35843;&#29992;&#21040;finish()&#20989;&#25968;, &#35813;&#20989;&#25968;&#20250;&#35843;&#29992;&#21040;
+onPostExecute().
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">    private void finish(Result result) {
+        if (isCancelled()) {
+            onCancelled(result);
+        } else {
+            onPostExecute(result);
+        }
+        mStatus = Status.FINISHED;
+    }
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span><span class="org-level-2">** &#21457;&#24067;&#36827;&#24230;</span>
+&#21487;&#20197;&#36890;&#36807;publishProgress&#20989;&#25968;&#21457;&#24067;&#24403;&#21069;&#36827;&#24230;.&#35813;&#20989;&#25968;&#20250;&#36890;&#36807;handler&#21521;UI&#32447;&#31243;&#25512;&#36865;&#28040;&#24687;.
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">    @WorkerThread
+    protected final void publishProgress(Progress... values) {
+        if (!isCancelled()) {
+            getHandler().obtainMessage(MESSAGE_POST_PROGRESS,
+                    new AsyncTaskResult&lt;Progress&gt;(this, values)).sendToTarget();
+        }
+    }
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>
+&#35813;&#28040;&#24687;&#30340;&#22788;&#29702;&#20250;&#35843;&#29992;&#21040;onProgressUpdate()&#20989;&#25968;.
+</pre>
+  </body>
+</html>

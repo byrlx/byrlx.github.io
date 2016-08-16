@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-08-16 Tue 14:31 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Zhengchao Xu" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+---
+layout: post
+title: 一个bitmap的实现代码
+categories: [Android]
+tag: [java, android]
+---
+
+<p>
+是在阅读RecyclerView的源码时, 在里面发现了该部分代码, 觉得很有趣, 故记录一下. <br  />
+该部分代码用于实现了bitmap, 在RecyclerView的包中用于管理子view. <br  />
+代码位于RecyclerView包的 ChildHelper.java 文件, 是一个子类, 类名为 <b>Bucket</b>.
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">介绍</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+该类使用一个 <b>LONG链表</b> 作为bitmap的存储器, 该结构的主要特点包括:
+</p>
+<ol class="org-ol">
+<li>理论上可以存放无限多个bit.</li>
+<li>支持动态扩展.</li>
+<li>支持添加/删除/插入/统计等操作.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9">代码实现</h2>
+<div class="outline-text-2" id="text-orgheadline9">
+</div><div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">成员变量</h3>
+<div class="outline-text-3" id="text-orgheadline2">
+<p>
+该类只有四个变量, BITS_PER_WORD代笔每个Bucket对象可以存放的bit数量,
+这里使用了Long类型, 故可以存放64位. 
+mData是具体存放bit的数据, next指向下一个Bucket对象.
+</p>
+<pre class="example">
+static class Bucket {
+  final static int BITS_PER_WORD = Long.SIZE;
+  final static long LAST_BIT = 1L &lt;&lt; (Long.SIZE - 1);
+  long mData = 0;
+  Bucket next;
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">设置bit: set(index)</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<p>
+<code>set(int index)</code> 函数用于将index位置的bit设置为1. <br  />
+该函数首先检查要插入的位置, 是不是大于当前的Bucket的范围,
+</p>
+<ol class="org-ol">
+<li>如果不大于, 那么通过 "或" 来设置该bit位.</li>
+<li>如果大于, 先调用ensureNext()函数确定是否需要生成一个新
+的Bucket放到链表尾部, 然后调用下个Bucket的set()函数, 但是传入的参数
+为 index 减去当前Bucket的长度(64). 如果下个bucket还是不满足, 会一直
+顺着链表调用下去, 直到找到一个合适的位置.</li>
+</ol>
+
+<pre class="example">
+void set(int index) {
+      if (index &gt;= BITS_PER_WORD) {
+           ensureNext();
+           next.set(index - BITS_PER_WORD);
+      } else {
+           mData |= 1L &lt;&lt; index;
+      }
+}
+</pre>
+
+<p>
+ensureNext()的代码如下:
+</p>
+<pre class="example">
+private void ensureNext() {
+     if (next == null) {
+          next = new Bucket();
+     }
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">清除操作: clear(index)</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
+其原理跟设置一样, 通过 "与" 操作将bit位清除.
+</p>
+<pre class="example">
+void clear(int index) {
+    if (index &gt;= BITS_PER_WORD) {
+        if (next != null) {
+            next.clear(index - BITS_PER_WORD);
+        }
+    } else {
+        mData &amp;= ~(1L &lt;&lt; index);
+    }
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">判断: get(index)</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+<p>
+递归查找链表, 判断指定位置是否设置了bit位.
+</p>
+<pre class="example">
+boolean get(int index) {
+    if (index &gt;= BITS_PER_WORD) {
+        ensureNext();
+        return next.get(index - BITS_PER_WORD);
+    } else {
+        return (mData &amp; (1L &lt;&lt; index)) != 0;
+    }
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">插入: insert(index, b)</h3>
+<div class="outline-text-3" id="text-orgheadline6">
+<p>
+在指定的位置插入一个bit的设置, 该位置后面的内容后移. 
+这个操作是通过下述步骤实现:
+</p>
+<ol class="org-ol">
+<li>先获取该位置之前位置的mask: <code>long mask = (1L &lt;&lt; index) - 1;</code></li>
+<li>通过"与"操作获取该位置之前的内容.</li>
+<li>通过"与"操作与"移位"操作将该位置之后的内容后移一位.</li>
+<li>使用第二个参数设置该位置的bit值.</li>
+</ol>
+
+<p>
+注: 如果插入之前, Bucket对象的最高位的bit被设置(为1), 那么在后移过程中,
+该位置会被移除该Bucket, 所以需要记录下来, 将其重新插入到下一个Bucket中.
+这个过程会一直持续下去, 直到碰到一个最高位没被设置的Bucket.
+</p>
+<pre class="example">
+void insert(int index, boolean value) {
+    if (index &gt;= BITS_PER_WORD) {
+        ensureNext();
+        next.insert(index - BITS_PER_WORD, value);
+    } else {
+        final boolean lastBit = (mData &amp; LAST_BIT) != 0;
+        long mask = (1L &lt;&lt; index) - 1;
+        final long before = mData &amp; mask;
+        final long after = ((mData &amp; ~mask)) &lt;&lt; 1;
+        mData = before | after;
+        if (value) {
+            set(index);
+        } else {
+            clear(index);
+        }
+        if (lastBit || next != null) {
+            ensureNext();
+            next.insert(0, lastBit);
+        }
+    }
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">移除: remove(index)</h3>
+<div class="outline-text-3" id="text-orgheadline7">
+<p>
+该函数用于将该位置的bit位移除, 并将其后面的bit前移一位. 
+该函数的步骤:
+</p>
+<ol class="org-ol">
+<li>通过"与"操作将index位置的bit设为0.</li>
+<li>缓存index之前的数据.</li>
+<li>调用Long.rotateRight(), 将index之后的数据前移一位.
+因为rotate之前已经将前面(低位)的数据置位0, 所以rotate之后
+最高位一直是0.</li>
+<li>将第2步和第3步的数据合并成新数据.</li>
+<li>判断下一个Bucket的第一位是否为1. 如果是则将该bucket的最高位置1.</li>
+<li>调用下一个bucket的remove(0). 遍历链表, 重复这个操作.</li>
+</ol>
+
+<pre class="example">
+boolean remove(int index) {
+    if (index &gt;= BITS_PER_WORD) {
+        ensureNext();
+        return next.remove(index - BITS_PER_WORD);
+    } else {
+        long mask = (1L &lt;&lt; index);
+        final boolean value = (mData &amp; mask) != 0;
+        mData &amp;= ~mask;
+        mask = mask - 1;
+        final long before = mData &amp; mask;
+        // cannot use &gt;&gt; because it adds one.
+        final long after = Long.rotateRight(mData &amp; ~mask, 1);
+        mData = before | after;
+        if (next != null) {
+            if (next.get(0)) {
+                set(BITS_PER_WORD - 1);
+            }
+            next.remove(0);
+        }
+        return value;
+    }
+}
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">统计: countOnesBefore(index)</h3>
+<div class="outline-text-3" id="text-orgheadline8">
+<p>
+统计index之前的bit数量. 基于 Long 的 bitCount() 函数实现.
+</p>
+<pre class="example">
+int countOnesBefore(int index) {
+    if (next == null) {
+        if (index &gt;= BITS_PER_WORD) {
+            return Long.bitCount(mData);
+        }
+        return Long.bitCount(mData &amp; ((1L &lt;&lt; index) - 1));
+    }
+    if (index &lt; BITS_PER_WORD) {
+        return Long.bitCount(mData &amp; ((1L &lt;&lt; index) - 1));
+    } else {
+        return next.countOnesBefore(index - BITS_PER_WORD) + Long.bitCount(mData);
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="show_source"><input type="button" value="Show Org source" onClick='show_org_source()'></div><div id="license"><p>Documentation from the http://orgmode.org/worg/ website (either in its HTML format or in its Org format) is licensed under the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License version 1.3</a> or later.  The code examples and css stylesheets are licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a> or later.</p></div>
+</div>
+</body>
+</html>

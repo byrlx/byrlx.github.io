@@ -1,0 +1,436 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!-- Created by htmlize-1.43 in css mode. -->
+<html>
+  <head>
+    <title>2015-07-30-Okio-Source-Code-Learn.org</title>
+    <style type="text/css">
+    <!--
+      body {
+        color: #DCDCCC;
+        background-color: #3F3F3F;
+      }
+      .bold {
+        /* bold */
+        font-weight: bold;
+      }
+      .c-annotation {
+        /* c-annotation-face */
+        color: #BFEBBF;
+      }
+      .comment {
+        /* font-lock-comment-face */
+        color: #7F9F7F;
+      }
+      .comment-delimiter {
+        /* font-lock-comment-delimiter-face */
+        color: #5F7F5F;
+      }
+      .constant {
+        /* font-lock-constant-face */
+        color: #BFEBBF;
+      }
+      .doc {
+        /* font-lock-doc-face */
+        color: #9FC59F;
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #93E0E3;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #F0DFAF;
+        font-weight: bold;
+      }
+      .negation-char {
+        /* font-lock-negation-char-face */
+        color: #F0DFAF;
+        font-weight: bold;
+      }
+      .org-block {
+        /* org-block */
+        color: #009acd;
+      }
+      .org-block-begin-line {
+        /* org-block-begin-line */
+        color: #7F9F7F;
+      }
+      .org-block-end-line {
+        /* org-block-end-line */
+        color: #7F9F7F;
+      }
+      .org-document-info {
+        /* org-document-info */
+        color: #afeeee;
+      }
+      .org-document-info-keyword {
+        /* org-document-info-keyword */
+        color: #b3b3b3;
+      }
+      .org-level-1 {
+        /* org-level-1 */
+        color: #DFAF8F;
+        font-size: 130%;
+        text-decoration: overline;
+      }
+      .org-level-2 {
+        /* org-level-2 */
+        color: #BFEBBF;
+        font-size: 120%;
+      }
+      .org-level-3 {
+        /* org-level-3 */
+        color: #7CB8BB;
+      }
+      .org-link {
+        /* org-link */
+        color: #D0BF8F;
+        text-decoration: underline;
+      }
+      .org-meta-line {
+        /* org-meta-line */
+        color: #7F9F7F;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #CC9393;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #7CB8BB;
+      }
+      .variable-name {
+        /* font-lock-variable-name-face */
+        color: #DFAF8F;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+  </head>
+  <body>
+    <pre>
+<span class="org-meta-line">#+OPTIONS: num:nil</span>
+<span class="org-meta-line">#+OPTIONS: ^nil</span>
+<span class="org-meta-line">#+OPTIONS: toc:nil</span>
+<span class="org-document-info-keyword">#+AUTHOR:</span> <span class="org-document-info">Zhengchao Xu
+</span><span class="org-document-info-keyword">#+EMAIL:</span> <span class="org-document-info">xuzhengchaojob@gmail.com
+</span>
+<span class="org-block-begin-line">#+BEGIN_HTML
+</span><span class="org-block">---
+layout: post
+title: Okio &#28304;&#30721;&#23398;&#20064; 
+categories: [Java]
+tag: [square, java]
+description: [Okio&#28304;&#30721;&#38405;&#35835;&#31508;&#35760;]
+---
+</span><span class="org-block-end-line">#+END_HTML
+</span>
+(&#25345;&#32493;&#26356;&#26032;)
+
+&#35813;&#39033;&#30446;&#30340;github&#22320;&#22336;: <span class="org-link"><a href="https://github.com/square/okio">https://github.com/square/okio</a></span>
+
+<span class="org-level-1">* &#31616;&#20171;</span>
+Okio&#26159;Square&#20844;&#21496;&#25512;&#20986;&#30340;Java IO&#24211;, &#36825;&#20010;&#24211;&#26412;&#26469;Square&#20844;&#21496;&#30340;&#33879;&#21517;&#24320;&#28304;&#39033;&#30446;OkHttp&#30340;&#19968;&#37096;&#20998;,
+&#21518;&#26469;&#34987;&#25552;&#21462;&#20986;&#26469;&#20316;&#20026;&#21333;&#29420;&#30340;&#19968;&#20010;&#24320;&#28304;&#39033;&#30446;&#21457;&#24067;.
+
+&#26412;&#25991;&#26159;Okio&#28304;&#30721;&#30340;&#38405;&#35835;&#31508;&#35760;, &#20027;&#35201;&#20171;&#32461;&#35813;&#24320;&#28304;&#39033;&#30446;&#30340;&#20869;&#37096;&#23454;&#29616;&#21407;&#29702;,&#20351;&#29992;&#30340;&#25968;&#25454;&#32467;&#26500;&#21644;&#35774;&#35745;&#27169;&#24335;.
+<span class="org-level-1">* &#26680;&#24515;&#25968;&#25454;&#32467;&#26500;</span>
+&#24120;&#35328;&#36947; "&#31243;&#24207;=&#25968;&#25454;&#32467;&#26500;+&#31639;&#27861;", Okio&#30340;&#26680;&#24515;&#20043;&#19968;&#23601;&#26159;&#25968;&#25454;&#32467;&#26500;&#30340;&#35774;&#35745;. &#36825;&#37096;&#20998;&#20027;&#35201;"&#29255;&#27573;&#24335;"&#30340;&#20171;&#32461;
+Okio&#30340;&#21508;&#25968;&#25454;&#32467;&#26500;&#30340;&#23454;&#29616;.
+<span class="org-level-2">** Source and Sink</span>
+IO&#31995;&#32479;&#23601;&#26159;&#35835;&#20889;&#31995;&#32479;, &#26356;&#30452;&#25509;&#30340;&#35828;&#23601;&#26159;&#20108;&#36827;&#21046;&#27969;&#30340;&#27969;&#21160;, &#25152;&#20197;&#38656;&#35201;&#19968;&#20010;"&#27969;"&#30340;&#28304;&#22836;&#21644;&#30446;&#30340;. Source&#21363;&#20195;&#34920;Okio
+&#25968;&#25454;&#27969;&#30340;&#26469;&#28304;, &#21363;JDK&#20013;&#30340;InputStream. &#32780;Sink&#21017;&#20195;&#34920;&#30446;&#30340;&#22320;.&#21363;JDK&#20013;&#30340;outputStream.
+
+<span class="org-level-3">*** Source&#28304;&#30721;</span>
+Source&#30340;&#23454;&#29616;&#27604;&#36739;&#31616;&#21333;, &#23601;&#26159;&#19968;&#20010;&#32487;&#25215;&#20102;Closeable&#30340;&#25509;&#21475;, &#21482;&#23450;&#20041;&#20102; read()/timeout()/close()
+&#19977;&#20010;&#20989;&#25968;.
+
+read()&#20989;&#25968;&#30340;&#21151;&#33021;&#26159;&#35762;&#26368;&#22810;byteCount&#20010;bytes&#20889;&#20837;&#21040;sink&#20013;, sink&#26159;Buffer&#31867;&#22411;&#30340;&#21464;&#37327;, 
+Buffer&#20063;&#26159;Okio&#30340;&#26680;&#24515;&#25968;&#25454;&#32467;&#26500;, &#21518;&#38754;&#20250;&#35762;&#21040;.
+
+<span class="org-block-begin-line">#+BEGIN_SRC java
+</span><span class="keyword">public</span> <span class="keyword">interface</span> <span class="type">Source</span> <span class="keyword">extends</span> <span class="type">Closeable</span> {
+  <span class="doc">/**
+   * Removes at least 1, and up to </span><span class="constant"><span class="doc">{@code byteCount}</span></span><span class="doc"> bytes from this and appends
+   * them to </span><span class="constant"><span class="doc">{@code sink}</span></span><span class="doc">. Returns the number of bytes read, or -1 if this
+   * source is exhausted.
+   */</span>
+  <span class="type">long</span> <span class="function-name">read</span>(<span class="type">Buffer</span> <span class="variable-name">sink</span>, <span class="type">long</span> <span class="variable-name">byteCount</span>) <span class="keyword">throws</span> <span class="type">IOException</span>;
+
+  <span class="doc">/** Returns the timeout for this source. */</span>
+  <span class="type">Timeout</span> <span class="function-name">timeout</span>();
+
+  <span class="doc">/**
+   * Closes this source and releases the resources held by this source. It is an
+   * error to read a closed source. It is safe to close a source more than once.
+   */</span>
+  <span class="c-annotation">@Override</span> <span class="type">void</span> <span class="function-name">close</span>() <span class="keyword">throws</span> <span class="type">IOException</span>;
+}
+<span class="org-block-end-line">#+END_SRC
+</span><span class="org-level-3">*** Sink&#28304;&#30721;</span>
+Sink&#19982;Source&#31867;&#20284;, &#20063;&#26159;&#19968;&#20010;&#25509;&#21475;, &#32487;&#25215;&#20102;Closeable&#21644;Flushable&#20004;&#20010;&#25509;&#21475;, &#21516;&#26102;&#23450;&#20041;(&#37325;&#20889;)&#20102;
+write()/flush()/timeout()/close()&#22235;&#20010;&#20989;&#25968;. 
+
+write()&#20063;&#25509;&#21463;&#19968;&#20010;Buffer&#21442;&#25968;, &#19982;Source&#30340;read()&#19981;&#21516;&#30340;&#26159;: &#22312;read()&#20013;,source&#26159;&#20316;&#20026;&#19968;&#20010;"&#30446;&#30340;"&#20351;&#29992;,
+&#32780;&#22312;write()&#20013;&#26159;&#20316;&#20026;"&#28304;"&#23384;&#22312;, &#21363;&#23558;source&#20013;&#30340;&#20869;&#23481;&#20889;&#20837;&#21040;Sink&#20013;.
+
+<span class="org-block-begin-line">#+BEGIN_SRC java
+</span><span class="keyword">public</span> <span class="keyword">interface</span> <span class="type">Sink</span> <span class="keyword">extends</span> <span class="type">Closeable</span>, <span class="type">Flushable</span> {
+  <span class="doc">/** Removes </span><span class="constant"><span class="doc">{@code byteCount}</span></span><span class="doc"> bytes from </span><span class="constant"><span class="doc">{@code source}</span></span><span class="doc"> and appends them to this. */</span>
+  <span class="type">void</span> <span class="function-name">write</span>(<span class="type">Buffer</span> <span class="variable-name">source</span>, <span class="type">long</span> <span class="variable-name">byteCount</span>) <span class="keyword">throws</span> <span class="type">IOException</span>;
+
+  <span class="doc">/** Pushes all buffered bytes to their final destination. */</span>
+  <span class="c-annotation">@Override</span> <span class="type">void</span> <span class="function-name">flush</span>() <span class="keyword">throws</span> <span class="type">IOException</span>;
+
+  <span class="doc">/** Returns the timeout for this sink. */</span>
+  <span class="type">Timeout</span> <span class="function-name">timeout</span>();
+
+  <span class="doc">/**
+   * Pushes all buffered bytes to their final destination and releases the
+   * resources held by this sink. It is an error to write a closed sink. It is
+   * safe to close a sink more than once.
+   */</span>
+  <span class="c-annotation">@Override</span> <span class="type">void</span> <span class="function-name">close</span>() <span class="keyword">throws</span> <span class="type">IOException</span>;
+}
+<span class="org-block-end-line">#+END_SRC
+</span><span class="org-level-2">** BufferedSource and BufferedSink</span>
+&#22312;Okio&#30340;&#23448;&#26041;&#25991;&#26723;&#20013;,&#24182;&#19981;&#24314;&#35758;&#30452;&#25509;&#20351;&#29992;Source&#21644;Sink,&#32780;&#26159;&#24314;&#35758;&#20351;&#29992;&#20182;&#20204;&#30340;&#23376;&#31867;
+BufferedSource&#21644;BufferedSink, &#21518;&#32773;&#37117;&#23553;&#35013;&#20102;&#19968;&#20010;Buffer&#23545;&#35937;&#20316;&#20026;&#25968;&#25454;&#25805;&#20316;&#30340;"buffer", 
+&#24182;&#23450;&#20041;&#20102;&#19968;&#31995;&#21015;&#30340;&#25509;&#21475;, &#20363;&#22914;&#35835;&#20889;&#19968;&#20010;byte/int/long/string/byteArray, &#20197;&#21450;&#35835;&#21462;&#19968;&#34892;
+&#31561;&#31561;&#24120;&#29992;&#30340;IO&#25805;&#20316;.
+<span class="org-level-2">** Segment</span>
+&#21069;&#38754;&#20171;&#32461;&#30340;&#31867;InputStream/OutputStream&#30340;Source&#21644;Sink&#21450;&#20854;&#23376;&#31867;&#37117;&#20351;&#29992;&#20102;Buffer&#20316;&#20026;&#25805;&#20316;&#23545;&#35937;,
+&#30001;&#27492;&#21487;&#35265;Buffer&#24212;&#35813;&#26159;Okio&#30340;&#26680;&#24515;&#25968;&#25454;&#32467;&#26500;.&#25152;&#20197;&#21518;&#38754;&#20250;&#35814;&#32454;&#20171;&#32461;&#19968;&#19979;Buffer. &#19981;&#36807;&#22312;&#35762;Buffer&#20043;&#21069;,
+&#20808;&#20102;&#35299;&#19968;&#19979;&#21478;&#22806;&#19968;&#20010;&#26680;&#24515;&#30340;&#25968;&#25454;&#32467;&#26500;: segment. 
+
+&#23545;&#20110;&#26377;&#36807;C&#35821;&#35328;&#32463;&#39564;&#30340;&#20154;&#26469;&#35762;,segment&#19982;&#29992;C&#35821;&#35328;&#23454;&#29616;&#30340;"&#38142;&#34920;&#33410;&#28857;"&#22312;&#27010;&#24565;&#19978;&#23436;&#20840;&#30456;&#21516;,&#21482;&#19981;&#36807;segment&#26159;&#29992;
+java&#23454;&#29616;&#30340;&#24182;&#19988;&#22312;&#31867;&#20869;&#37096;&#23553;&#35013;&#20102;&#25805;&#20316;&#30340;API.
+
+<span class="org-block-begin-line">#+BEGIN_SRC c
+</span><span class="comment-delimiter">//</span><span class="comment">segment&#30340;C&#35821;&#35328;&#35299;&#37322;
+</span><span class="keyword">struct</span> <span class="type">node</span>{
+   <span class="string">"byte"</span> data[SIZE];<span class="comment-delimiter">// </span><span class="comment">no 'byte' type in c
+</span>   <span class="type">int</span> <span class="variable-name">pos</span>; 
+   <span class="type">int</span> <span class="variable-name">limit</span>;
+   <span class="type">int</span> <span class="variable-name">shared</span>; <span class="comment-delimiter">//</span><span class="comment">no boolean in c 
+</span>   <span class="type">int</span> <span class="variable-name">owner</span>; 
+   <span class="keyword">struct</span> <span class="type">node</span> *<span class="variable-name">next</span>;
+   <span class="keyword">struct</span> <span class="type">node</span> *<span class="variable-name">prev</span>;
+}
+<span class="comment-delimiter">//</span><span class="comment">&#22909;&#20037;&#27809;&#20889;C&#20102;, &#22909;&#20146;&#20999;...
+</span><span class="org-block-end-line">#+END_SRC
+</span>
+&#25509;&#30528;&#30475;&#20123;segment&#30340;&#30495;&#27491;&#23454;&#29616;:
+
+<span class="org-block-begin-line">#+BEGIN_SRC java
+</span><span class="keyword">final</span> <span class="keyword">class</span> <span class="type">Segment</span> {
+  <span class="doc">/** The size of all segments in bytes. */</span>
+  <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable-name">SIZE</span> = 2048;
+
+  <span class="keyword">final</span> <span class="type">byte</span>[] <span class="variable-name">data</span>;
+
+  <span class="doc">/** The next byte of application data byte to read in this segment. */</span>
+  <span class="type">int</span> <span class="variable-name">pos</span>;
+
+  <span class="doc">/** The first byte of available data ready to be written to. */</span>
+  <span class="type">int</span> <span class="variable-name">limit</span>;
+
+  <span class="doc">/** True if other segments or byte strings use the same byte array. */</span>
+  <span class="type">boolean</span> <span class="variable-name">shared</span>;
+
+  <span class="doc">/** True if this segment owns the byte array and can append to it, extending </span><span class="constant"><span class="doc">{@code limit}</span></span><span class="doc">. */</span>
+  <span class="type">boolean</span> <span class="variable-name">owner</span>;
+
+  <span class="doc">/** Next segment in a linked or circularly-linked list. */</span>
+  <span class="type">Segment</span> <span class="variable-name">next</span>;
+
+  <span class="doc">/** Previous segment in a circularly-linked list. */</span>
+  <span class="type">Segment</span> <span class="variable-name">prev</span>;
+<span class="org-block-end-line">#+END_SRC
+</span>&#38500;&#20102;&#25104;&#21592;&#21464;&#37327;&#22806;,segment&#31867;&#36824;&#23553;&#35013;&#20102;&#23545;segment&#36827;&#34892;&#30340;&#25805;&#20316;:
+1. pop()&#21024;&#38500;&#24403;&#21069;&#30340;segment, &#24182;&#36820;&#22238;&#21518;&#19968;&#20010;(next&#25351;&#21521;)segment.
+2. push()&#23558;segment&#25554;&#20837;&#21040;&#24403;&#21069;segment&#30340;&#21518;&#38754;.
+3. split(count), &#35813;&#20989;&#25968;&#29992;&#20110;&#23558;segment&#25286;&#20998;&#25104;&#20004;&#20010;segment, &#31532;&#19968;&#20010;segment&#21344;&#29992;count&#20010;&#21487;&#29992;
+   &#25968;&#25454;, &#31532;&#20108;&#20010;segment(<span class="bold">*&#21363;&#24403;&#21069;segment*</span>)&#21344;&#29992;(avail - count)&#20010;.
+4. compact(), &#21387;&#32553;&#20989;&#25968;, &#22914;&#26524;&#24403;&#21069;segment&#30340;&#25968;&#25454;&#21487;&#20197;&#23384;&#25918;&#21040;&#21069;&#38754;&#30340;segment,&#21017;&#23384;&#25918;&#36807;&#21435;, &#24182;&#22238;&#25910;&#24403;&#21069;&#30340;
+   segment.
+5. writeTo(), &#23558;&#24403;&#21069;segment&#30340;count&#20010;byte&#20889;&#20837;&#21040;&#30446;&#26631;segment&#20013;.
+6. <span class="bold">*&#20849;&#20139;*</span>, &#22312;segment&#30340;&#35774;&#35745;&#20013;, &#20004;&#20010;(&#25110;&#22810;&#20010;?)segment&#21487;&#20197;&#20849;&#20139;&#19968;&#20010;&#21516;&#19968;&#20010;segment&#30340;&#25968;&#25454;,&#21487;&#20197;&#23558;&#20854;&#29702;&#35299;&#20026;
+   "<span class="bold">*&#20027;&#20174;*</span>"&#20851;&#31995;, &#21482;&#26377;&#19968;&#20010;segment&#26159;data&#30340;owner, &#32780;&#20854;&#20182;&#30340;segment&#21482;&#26159;&#24341;&#29992;&#20102;&#36825;&#20010;&#25968;&#25454;.
+   &#21516;&#26102;, "&#20027;&#20174;"segment&#20063;&#26377;"<span class="bold">*&#35835;&#20889;*</span>"&#30340;&#20851;&#31995;:&#21363;&#21482;&#26377;data&#30340;owner segment&#25165;&#21487;&#20197;&#24448;data&#20889;&#25968;&#25454;. &#38750;owner segment
+   &#19981;&#21487;&#20197;&#24448;data&#20013;&#20889;&#25968;&#25454;.
+<span class="org-level-3">*** SegmentPool</span>
+Okio&#23454;&#29616;&#20102;&#19968;&#20010;segment&#27744;, &#29992;&#20110;segment&#30340;&#33719;&#21462;&#21644;&#22238;&#25910;, &#35813;segment pool&#36890;&#36807;"&#21333;&#38142;&#34920;"&#30340;&#26041;&#24335;
+&#32452;&#32455;segment, &#20998;&#20026;"&#33719;&#21462;"&#21644;"&#22238;&#25910;"&#25805;&#20316;:
+1. &#33719;&#21462;, &#26816;&#27979;&#21333;&#38142;&#34920;&#26159;&#21542;&#20026;&#31354;, &#26159;, &#21462;&#19979;&#38142;&#34920;&#22836;&#32473;&#30003;&#35831;&#32773;, &#21542;&#21017;&#29983;&#25104;&#19968;&#20010;&#26032;segment.
+2. &#22238;&#25910;, &#22238;&#25910;&#38656;&#35201;&#19968;&#20123;&#26465;&#20214;&#21028;&#26029;(&#22914;&#19979;), &#28385;&#36275;&#25165;&#21487;&#20197;&#25918;&#21040;&#38142;&#34920;&#22836;.
+   + &#35813;segment&#30340;&#25968;&#25454;&#34987;&#20854;&#20182;"segment"&#20849;&#20139;, &#19981;&#33021;&#22238;&#25910;.
+   + segment&#27744;&#30340;&#22823;&#23567;&#24050;&#32463;&#23481;&#19981;&#19979;&#35813;segment, &#30452;&#25509;&#25243;&#24323;(&#20250;&#34987;GC&#22238;&#25910;).
+<span class="org-level-2">** Buffer</span>
+<span class="org-level-3">*** &#20171;&#32461;</span>
+Buffer&#26159;Okio&#30340;&#23384;&#20648;&#25968;&#25454;&#30340;&#32467;&#26500;, &#23427;&#30340;&#28789;&#27963;&#24615;&#38750;&#24120;&#24378;, &#23448;&#26041;&#25991;&#26723;&#37324;&#20171;&#32461;&#20102;&#23427;&#30340;&#19977;&#20010;&#20248;&#28857;:
+1. &#25968;&#25454;&#22312;buffer&#38388;"&#36716;&#31227;"&#36895;&#24230;&#24555;. &#21069;&#38754;&#20171;&#32461;segment&#26102;&#25552;&#21040;&#20102;segment&#26377;"owner"&#36825;&#20010;&#23646;&#24615;, &#25152;&#20197;&#26377;&#26102;&#20505;
+   &#25968;&#25454;&#30340;&#36716;&#31227;&#23601;&#26159;&#31616;&#21333;&#30340;&#20462;&#25913;&#19968;&#19979;owner&#30340;&#20540;.
+2. buffer&#38543;&#30528;&#25968;&#25454;&#30340;&#22686;&#38271;&#32780;&#22686;&#38271;, &#36825;&#26679;&#21487;&#20197;"&#33410;&#30465;"&#31354;&#38388;.
+3. buffer&#23454;&#29616;&#20102;byte&#27744;&#30340;&#21151;&#33021;.&#21487;&#20197;&#20943;&#23569;GC&#30340;&#21453;&#22797;&#25805;&#20316;.
+
+Buffer&#31867;&#32487;&#25215;&#33258;&#21069;&#38754;&#20171;&#32461;&#30340;BufferSource&#21644;BufferSink&#31867;, &#25152;&#20197;&#23427;&#26082;&#21487;&#20197;&#20316;&#20026;"&#28304;", &#21448;&#21487;&#20197;&#20316;&#20026;"&#30446;&#30340;"
+&#26469;&#20351;&#29992;.
+
+<span class="org-level-3">*** &#25104;&#21592;&#21464;&#37327;</span>
+buffer&#21482;&#26377;&#20004;&#20010;&#25104;&#21592;&#21464;&#37327;: head, size. head&#26159;&#19968;&#20010;Segment&#31867;&#22411;&#30340;&#21464;&#37327;, &#30001;&#27492;&#26469;&#30475;buffe&#30340;&#20869;&#37096;&#25968;&#25454;
+&#30340;&#32452;&#32455;&#21333;&#20301;Segment, Segment&#30340;&#22825;&#28982;&#38142;&#34920;&#26500;&#36896;&#20063;&#20351;&#20854;&#22825;&#28982;&#21487;&#20197;&#21160;&#24577;&#30340;Buffer&#30340;&#25968;&#25454;&#22823;&#23567;.
+<span class="org-level-3">*** API&#20998;&#26512;</span>
+1. write()/read()&#31995;&#21015;&#20989;&#25968;
+   Buffer&#25552;&#20379;&#20102;&#24456;&#24378;&#22823;&#30340;write()&#21644;read()&#31995;&#21015;&#20989;&#25968;&#31751;, &#20351;&#29992;&#36825;&#20123;&#20989;&#25968;&#21487;&#20197;&#24456;&#26041;&#20415;&#30340;&#20174;buffer&#20013;&#35835;&#20889;&#21508;&#31181;&#31867;&#22411;&#30340;&#25968;&#25454;,
+   &#20363;&#22914;readInt()/writeInt()&#29992;&#20110;&#20174;buffer&#20013;&#35835;&#21462;/&#20889;&#20837;&#19968;&#20010;&#25972;&#25968;, &#31867;&#20284;&#30340;&#36824;&#26377;readLong()/writeLong()...&#31561;.
+   &#36825;&#37324;&#20027;&#35201;&#36890;&#36807;&#20004;&#20010;&#20855;&#20307;&#20989;&#25968;&#20195;&#30721;&#30340;&#20998;&#26512;, &#26469;&#35266;&#23519;&#22312;&#36825;&#20010;&#36807;&#31243;&#20013;Buffer&#20869;&#37096;&#30340;&#21464;&#21270;, &#20027;&#35201;&#23601;&#26159;Segment&#30340;&#21464;&#21270;.
+
+   write(byte[] source, int offset, int byteCount), &#36825;&#20010;&#20989;&#25968;&#23558;source&#20013;&#30340;&#37096;&#20998;&#25968;&#25454;&#20889;&#20837;&#21040;buffer&#20013;.
+   &#20854;&#20195;&#30721;&#22914;&#19979;:
+<span class="org-block-begin-line">   #+BEGIN_SRC java
+</span>  <span class="c-annotation">@Override</span> <span class="keyword">public</span> <span class="type">Buffer</span> <span class="function-name">write</span>(<span class="type">byte</span>[] <span class="variable-name">source</span>, <span class="type">int</span> <span class="variable-name">offset</span>, <span class="type">int</span> <span class="variable-name">byteCount</span>) {
+    <span class="keyword">if</span> (source == <span class="constant">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">IllegalArgumentException</span>(<span class="string">"source == null"</span>);
+    checkOffsetAndCount(source.length, offset, byteCount);
+
+    <span class="type">int</span> <span class="variable-name">limit</span> = offset + byteCount;
+    <span class="keyword">while</span> (offset &lt; <span class="type">limit</span>) {
+      <span class="type">Segment</span> <span class="variable-name">tail</span> = writableSegment(1);
+
+      <span class="type">int</span> <span class="variable-name">toCopy</span> = Math.min(limit - offset, <span class="constant">Segment</span>.SIZE - tail.limit);
+      System.arraycopy(source, offset, tail.data, tail.limit, toCopy);
+
+      offset += toCopy;
+      tail.limit += toCopy;
+    }
+
+    size += byteCount;
+    <span class="keyword">return</span> <span class="keyword">this</span>;
+  }
+<span class="org-block-end-line">#+END_SRC
+</span>
+   checkOffsetAndCount()&#29992;&#20110;&#26816;&#26597;&#20256;&#20837;&#21442;&#25968;&#30340;&#21512;&#27861;&#24615;. &#19981;&#21512;&#27861;&#23601;&#30452;&#25509;&#25243;&#20986;&#24322;&#24120;.&#22914;&#26524;&#21512;&#27861;, &#35745;&#31639;&#19968;&#19979;
+   byte&#25968;&#32452;&#30340;&#35201;&#20889;&#20837;&#25968;&#25454;&#30340;"&#32456;&#28857;&#20540;".&#28982;&#21518;&#36827;&#20837;&#20889;&#25968;&#25454;&#30340;&#24490;&#29615;.
+   &#27599;&#27425;&#24490;&#29615;&#24320;&#22987;&#23601;&#20250;&#35843;&#29992;writableSegment()&#21435;&#33719;&#21462;&#19968;&#20010;&#21487;&#20197;&#20889;&#30340;Segment.&#36825;&#20010;&#20989;&#25968;&#20250;&#24433;&#21709;Buffer&#20013;
+   Segment&#38142;&#34920;&#38271;&#24230;&#30340;&#19968;&#20010;&#20989;&#25968;. &#30475;&#19968;&#19979;&#20854;&#20195;&#30721;.
+
+   + writableSegment
+     
+<span class="org-block-begin-line">    #+BEGIN_SRC java
+</span> <span class="type">Segment</span> <span class="function-name">writableSegment</span>(<span class="type">int</span> <span class="variable-name">minimumCapacity</span>) {
+    <span class="keyword">if</span> (minimumCapacity &lt; 1 || minimumCapacity &gt; <span class="constant">Segment</span>.SIZE) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">IllegalArgumentException</span>();
+
+    <span class="keyword">if</span> (head == <span class="constant">null</span>) {
+      head = SegmentPool.take(); <span class="comment-delimiter">// </span><span class="comment">Acquire a first segment.
+</span>      <span class="keyword">return</span> head.next = head.prev = head;
+    }
+
+    <span class="type">Segment</span> <span class="variable-name">tail</span> = head.prev;
+    <span class="keyword">if</span> (tail.limit + minimumCapacity &gt; <span class="constant">Segment</span>.SIZE || <span class="negation-char">!</span>tail.owner) {
+      tail = tail.push(SegmentPool.take()); <span class="comment-delimiter">// </span><span class="comment">Append a new empty segment to fill up.
+</span>    }
+    <span class="keyword">return</span> tail;
+  }
+<span class="org-block-end-line">#+END_SRC
+</span>     + &#39318;&#20808;&#21516;&#26679;&#26159;&#26816;&#26597;&#21442;&#25968;&#21512;&#27861;&#24615;, &#21442;&#25968;minimumCapacity&#30340;&#24847;&#24605;&#26159;&#33719;&#21462;&#21040;&#30340;segment&#21097;&#20313;&#30340;&#26368;&#23567;&#21487;&#29992;&#31354;&#38388;(byte).
+     + &#25509;&#30528;&#26816;&#26597;head&#26159;&#21542;&#20026;&#31354;, &#22914;&#26524;&#26159;, &#20174;SegmentPool&#33719;&#21462;&#19968;&#20010;Segment, &#24182;&#23558;&#20854;prev&#21644;next&#37117;&#25351;&#21521;&#33258;&#24049;.
+     + &#21542;&#21017;head&#19981;&#20026;&#31354;, &#33719;&#21462;&#38142;&#34920;&#23614;&#37096;&#30340;Segment(head-&gt;prev), &#26816;&#26597;&#21097;&#20313;&#22823;&#23567;&#26159;&#21542;&#31526;&#21512;&#35201;&#27714;, &#21516;&#26102;&#35813;segment&#19981;&#33021;&#26159;&#19968;&#20010;&#24341;&#29992;
+       (&#21363;&#35813;fragment&#25968;&#25454;&#20854;&#23454;&#26159;&#24341;&#29992;&#30340;&#20854;&#20182;fragment&#30340;&#25968;&#25454;, &#36825;&#31181;&#31867;&#22411;&#30340;fragment&#19981;&#21487;&#20889;, &#21363;owner=false).&#22914;&#26524;&#23614;&#37096;segment
+       &#19981;&#33021;&#28385;&#36275;&#35201;&#27714;, &#21017;&#20174;SegmentPool&#20013;&#33719;&#21462;&#19968;&#20010;&#26032;&#30340;Segment&#25554;&#20837;&#38142;&#34920;&#20013;.
+
+   &#33719;&#21462;&#21040;&#19968;&#20010;&#21487;&#20889;Segment&#20043;&#21518;, &#23601;&#20250;&#35843;&#29992;System.arrayCopy()&#20989;&#25968;&#23454;&#29616;&#23383;&#33410;&#22797;&#21046;,&#37325;&#22797;&#36827;&#34892;&#19978;&#36848;&#21160;&#20316;
+   &#30452;&#21040;&#20840;&#37096;&#25968;&#25454;copy&#23436;&#20026;&#27490;.
+   
+   read()&#20989;&#25968;&#25968;&#25454;&#27969;&#30340;"&#27969;&#21521;"&#19982;write()&#26159;&#30456;&#21453;&#30340;, &#24182;&#19988;&#24403;&#19968;&#20010;segment&#30340;&#25968;&#25454;&#20840;&#37096;&#35835;&#23436;&#21518;&#20250;&#35843;&#29992;
+   SegmentPool&#30340;recycle()&#20989;&#25968;&#36827;&#34892;&#22238;&#25910;.
+2. &#25968;&#25454;&#22312;buffer&#38388;&#31227;&#21160;
+   &#26082;&#28982;Buffer&#30340;&#19968;&#20010;&#29305;&#28857;&#23601;&#26159;&#25968;&#25454;&#22312;Buffer&#38388;&#31227;&#21160;&#29305;&#21035;&#24555;, &#37027;&#23601;&#26469;&#30475;&#19968;&#19979;&#20195;&#30721;&#30340;&#20855;&#20307;&#23454;&#29616;:
+   &#19979;&#38754;&#30340;&#20989;&#25968;&#29992;&#20110;&#23558;source&#22836;&#37096;&#24320;&#22987;&#30340;&#20869;&#23481;&#20889;&#20837;&#21040;&#24403;&#21069;Buffer&#30340;&#23614;&#37096;.
+<span class="org-block-begin-line">   #+BEGIN_SRC java
+</span><span class="c-annotation">@Override</span> <span class="keyword">public</span> <span class="type">void</span> <span class="function-name">write</span>(<span class="type">Buffer</span> <span class="variable-name">source</span>, <span class="type">long</span> <span class="variable-name">byteCount</span>) {
+
+    <span class="keyword">if</span> (source == <span class="constant">null</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">IllegalArgumentException</span>(<span class="string">"source == null"</span>);
+    <span class="keyword">if</span> (source == <span class="keyword">this</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">IllegalArgumentException</span>(<span class="string">"source == this"</span>);
+    checkOffsetAndCount(source.size, 0, byteCount);
+
+    <span class="keyword">while</span> (byteCount &gt; 0) {
+      <span class="comment-delimiter">// </span><span class="comment">Is a prefix of the source's head segment all that we need to move?
+</span>      <span class="keyword">if</span> (byteCount &lt; (source.head.limit - source.head.pos)) {
+        <span class="type">Segment</span> <span class="variable-name">tail</span> = head != <span class="constant">null</span> ? head.prev : <span class="constant">null</span>;
+        <span class="keyword">if</span> (tail != <span class="constant">null</span> &amp;&amp; tail.owner
+            &amp;&amp; (byteCount + tail.limit - (tail.shared ? 0 : tail.pos) &lt;= <span class="constant">Segment</span>.SIZE)) {
+          <span class="comment-delimiter">// </span><span class="comment">Our existing segments are sufficient. Move bytes from source's head to our tail.
+</span>          source.head.writeTo(tail, (<span class="type">int</span>) byteCount);
+          source.size -= byteCount;
+          size += byteCount;
+          <span class="keyword">return</span>;
+        } <span class="keyword">else</span> {
+          <span class="comment-delimiter">// </span><span class="comment">We're going to need another segment. Split the source's head
+</span>          <span class="comment-delimiter">// </span><span class="comment">segment in two, then move the first of those two to this buffer.
+</span>          source.head = source.head.split((<span class="type">int</span>) byteCount);
+        }
+      }
+
+      <span class="comment-delimiter">// </span><span class="comment">Remove the source's head segment and append it to our tail.
+</span>      <span class="type">Segment</span> <span class="variable-name">segmentToMove</span> = source.head;
+      <span class="type">long</span> <span class="variable-name">movedByteCount</span> = segmentToMove.limit - segmentToMove.pos;
+      source.head = segmentToMove.pop();
+      <span class="keyword">if</span> (head == <span class="constant">null</span>) {
+        head = segmentToMove;
+        head.next = head.prev = head;
+      } <span class="keyword">else</span> {
+        <span class="type">Segment</span> <span class="variable-name">tail</span> = head.prev;
+        tail = tail.push(segmentToMove);
+        tail.compact();
+      }
+      source.size -= movedByteCount;
+      size += movedByteCount;
+      byteCount -= movedByteCount;
+    }
+  }
+<span class="org-block-end-line">   #+END_SRC
+</span>   &#20989;&#25968;&#26368;&#24320;&#22987;&#20173;&#28982;&#26159;&#24120;&#35268;&#30340;&#21442;&#25968;&#26816;&#26597;, &#28982;&#21518;&#23601;&#36827;&#20837;&#19968;&#20010;while()&#24490;&#29615;&#24403;&#20013;:
+   1. &#22914;&#26524;&#35201;&#20889;&#20837;Buffer&#30340;&#22823;&#23567;&#23567;&#20110;&#30446;&#26631;Buffer head&#30340;&#21097;&#20313;&#21487;&#29992;&#22823;&#23567;.&#37027;&#20040;
+      + &#22914;&#26524;&#25968;&#25454;&#21487;&#20197;&#30452;&#25509;&#20889;&#21040;&#24403;&#21069;Buffer&#30340;tail&#20013;, &#20889;&#20837;, <span class="bold">*&#20989;&#25968;&#36864;&#20986;*</span>.
+      + &#21542;&#21017;, &#35828;&#26126;&#38656;&#35201;&#19968;&#20010;&#26032;&#30340;fragment, &#23558;&#30446;&#26631;Buffer&#30340;head&#25353;&#29031;&#35201;&#20889;&#20837;&#30340;byte&#20540;&#19968;&#20998;&#20026;&#20108;.&#36825;&#26679;&#30446;&#26631;Buffer&#30340;head Segment
+        &#23601;&#21253;&#21547;&#20102;&#25152;&#26377;&#35201;&#20889;&#20837;&#30340;&#25968;&#25454;.
+        semeng&#30340;split()&#20989;&#25968;&#20195;&#30721;&#22914;&#19979;:
+<span class="org-block-begin-line">         #+BEGIN_SRC java
+</span> <span class="keyword">public</span> <span class="type">Segment</span> <span class="function-name">split</span>(<span class="type">int</span> <span class="variable-name">byteCount</span>) {
+    <span class="keyword">if</span> (byteCount &lt;= 0 || byteCount &gt; limit - pos) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">IllegalArgumentException</span>();
+    <span class="type">Segment</span> <span class="variable-name">prefix</span> = <span class="keyword">new</span> <span class="type">Segment</span>(<span class="keyword">this</span>);
+    prefix.limit = prefix.pos + byteCount;
+    pos += byteCount;
+    prev.push(prefix);
+    <span class="keyword">return</span> prefix;
+  }
+<span class="org-block-end-line">        #+END_SRC
+</span>   2. &#23558;&#30446;&#26631;Buffer&#30340;head&#20174;&#30446;&#26631;Buffer&#20013;&#24377;&#20986;, &#25554;&#20837;&#21040;&#24403;&#21069;Buffer&#20013;,
+      + &#22914;&#26524;&#24403;&#21069;buffer&#30340;head&#20026;null, &#30452;&#25509;&#35774;&#32622;&#20026;head.
+      + &#21542;&#21017;, &#25554;&#20837;&#21040;tail&#21518;&#38754;, &#24182;&#23558;&#20854;&#35774;&#20026;tail, &#24182;&#35843;&#29992;tail&#30340;compat()&#20989;&#25968;&#36827;&#34892;&#21387;&#32553;.
+        &#25353;&#29031;compat()&#30340;&#31639;&#27861;, &#20043;&#21518;&#36319;tail&#20043;&#21069;&#30340;segment&#21512;&#24182;&#21518;&#30340;&#25968;&#25454;&#23567;&#20110;&#19968;&#20010;segment&#30340;&#25165;&#20250;&#21387;&#32553;.
+        &#25152;&#20197;&#21363;&#20351;&#21069;&#38754;segment&#20351;&#29992;&#29575;&#20026;2%, tail&#30340;&#20351;&#29992;&#29575;&#20026;99%, &#20063;&#19981;&#20250;&#21387;&#32553;.
+<span class="org-block-begin-line">        #+BEGIN_SRC java
+</span>  <span class="keyword">public</span> <span class="type">void</span> <span class="function-name">compact</span>() {
+    <span class="keyword">if</span> (prev == <span class="keyword">this</span>) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="type">IllegalStateException</span>();
+    <span class="keyword">if</span> (<span class="negation-char">!</span>prev.owner) <span class="keyword">return</span>; <span class="comment-delimiter">// </span><span class="comment">Cannot compact: prev isn't writable.
+</span>    <span class="type">int</span> <span class="variable-name">byteCount</span> = limit - pos;
+    <span class="type">int</span> <span class="variable-name">availableByteCount</span> = SIZE - prev.limit + (prev.shared ? 0 : prev.pos);
+    <span class="keyword">if</span> (byteCount &gt; availableByteCount) <span class="keyword">return</span>; <span class="comment-delimiter">// </span><span class="comment">Cannot compact: not enough writable space.
+</span>    writeTo(prev, byteCount);
+    pop();
+    SegmentPool.recycle(<span class="keyword">this</span>);
+  }
+<span class="org-block-end-line">        #+END_SRC
+</span></pre>
+  </body>
+</html>

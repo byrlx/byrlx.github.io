@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-08-16 Tue 14:31 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Luis404" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+---
+layout: post
+title: 开源项目Topeka的Material Design 
+description: [Android Topeka是一个典型的Material Design风格的应用, 本文同过对其代码的学习, 更深入的了解Material Design在Android项目中的应用]
+category: [Android]
+tag: [android]
+---
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">项目配置</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<ol class="org-ol">
+<li>minSdkVersion: 21
+由于Material Design是随着Android5.0发布, 所以一般情况下支持的sdk最小版本为21, 如果要再5.0之前的系统使用, 
+可以参考Android开发者官网关于Material Desing兼容性的相关文章.</li>
+<li>使用的依赖
+<ul class="org-ul">
+<li>compile 'com.android.support:cardview-v7:22.2.0'</li>
+<li>compile 'com.android.support:recyclerview-v7:22.2.0'</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">项目结构</h2>
+<div class="outline-text-2" id="text-orgheadline6">
+</div><div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">组件</h3>
+<div class="outline-text-3" id="text-orgheadline2">
+<p>
+该项目的AndroidManifest.xml中只有三个Activity.其中登陆界面是默认的启动界面.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;<span style="color: #93E0E3;">activity</span> <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">.activity.SignInActivity</span><span style="color: #CC9393;">"</span>
+            <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">windowSoftInputMode</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">adjustPan</span><span style="color: #CC9393;">"</span>&gt;
+            &lt;<span style="color: #93E0E3;">intent-filter</span>&gt;
+                &lt;<span style="color: #93E0E3;">action</span> <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android.intent.action.MAIN</span><span style="color: #CC9393;">"</span> /&gt;
+                &lt;<span style="color: #93E0E3;">category</span> <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android.intent.category.LAUNCHER</span><span style="color: #CC9393;">"</span> /&gt;
+            &lt;/<span style="color: #93E0E3;">intent-filter</span>&gt;
+        &lt;/<span style="color: #93E0E3;">activity</span>&gt;
+
+&lt;<span style="color: #93E0E3;">activity</span> <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">.activity.CategorySelectionActivity</span><span style="color: #CC9393;">"</span> /&gt;
+
+&lt;<span style="color: #93E0E3;">activity</span> <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">.activity.QuizActivity</span><span style="color: #CC9393;">"</span>
+            <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">parentActivityName</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">.activity.CategorySelectionActivity</span><span style="color: #CC9393;">"</span>
+            <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">windowSoftInputMode</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">adjustPan</span><span style="color: #CC9393;">"</span> /&gt;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">自定义Theme</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+</div><div id="outline-container-orgheadline3" class="outline-4">
+<h4 id="orgheadline3">该程序使用了自定义的Theme, 该Theme定义在style.xml文件中, 名称为Topeka.</h4>
+<div class="outline-text-4" id="text-orgheadline3">
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;<span style="color: #93E0E3;">application</span>
+    <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">allowBackup</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">true</span><span style="color: #CC9393;">"</span>
+    <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">hardwareAccelerated</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">true</span><span style="color: #CC9393;">"</span>
+    <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">icon</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">@mipmap/ic_launcher</span><span style="color: #CC9393;">"</span>
+    <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">label</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">@string/app_name</span><span style="color: #CC9393;">"</span>
+    <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">supportsRtl</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">false</span><span style="color: #CC9393;">"</span>
+    <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">theme</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">@style/Topeka</span><span style="color: #CC9393;">"</span>&gt;
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline4" class="outline-4">
+<h4 id="orgheadline4">Topeka的实现, 先看下源码.</h4>
+<div class="outline-text-4" id="text-orgheadline4">
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;<span style="color: #93E0E3;">style</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">Topeka</span><span style="color: #CC9393;">"</span> <span style="color: #DFAF8F;">parent</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">@android:style/Theme.Material.Light.NoActionBar</span><span style="color: #CC9393;">"</span>&gt;
+    &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android:colorPrimary</span><span style="color: #CC9393;">"</span>&gt;@color/topeka_primary&lt;/<span style="color: #93E0E3;">item</span>&gt;
+    &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android:colorPrimaryDark</span><span style="color: #CC9393;">"</span>&gt;@color/topeka_primary_dark&lt;/<span style="color: #93E0E3;">item</span>&gt;
+    &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android:colorAccent</span><span style="color: #CC9393;">"</span>&gt;@color/topeka_accent&lt;/<span style="color: #93E0E3;">item</span>&gt;
+    &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android:textColorPrimary</span><span style="color: #CC9393;">"</span>&gt;@android:color/black&lt;/<span style="color: #93E0E3;">item</span>&gt;
+    &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android:textColorPrimaryInverse</span><span style="color: #CC9393;">"</span>&gt;@color/text_light&lt;/<span style="color: #93E0E3;">item</span>&gt;
+    &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android:statusBarColor</span><span style="color: #CC9393;">"</span>&gt;@color/topeka_primary_dark&lt;/<span style="color: #93E0E3;">item</span>&gt;
+    &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android:textColor</span><span style="color: #CC9393;">"</span>&gt;@color/text_dark&lt;/<span style="color: #93E0E3;">item</span>&gt;
+    &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android:radioButtonStyle</span><span style="color: #CC9393;">"</span>&gt;@style/Topeka.CompoundButton.Radio&lt;/<span style="color: #93E0E3;">item</span>&gt;
+    &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android:windowContentTransitions</span><span style="color: #CC9393;">"</span>&gt;true&lt;/<span style="color: #93E0E3;">item</span>&gt;
+    &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android:titleTextAppearance</span><span style="color: #CC9393;">"</span>&gt;@style/Topeka.TextAppearance.Title&lt;/<span style="color: #93E0E3;">item</span>&gt;
+    &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android:buttonStyle</span><span style="color: #CC9393;">"</span>&gt;@style/Topeka.CompoundButton&lt;/<span style="color: #93E0E3;">item</span>&gt;
+    &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android:windowBackground</span><span style="color: #CC9393;">"</span>&gt;@color/light_grey&lt;/<span style="color: #93E0E3;">item</span>&gt;
+&lt;/<span style="color: #93E0E3;">style</span>&gt;
+</pre>
+</div>
+<p>
+可以看到该style继承了 <b>Theme.Material.Light.NoActionBar</b> 风格, 这事Material Design的一个风格.
+同时应用也重写了该风格的一些属性:
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Name</th>
+<th scope="col" class="org-left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">colorPrimary</td>
+<td class="org-left">标题栏颜色</td>
+</tr>
+
+<tr>
+<td class="org-left">colorPrimaryDark</td>
+<td class="org-left">状态栏颜色</td>
+</tr>
+
+<tr>
+<td class="org-left">colorAccent</td>
+<td class="org-left">像是checkbox颜色?</td>
+</tr>
+
+<tr>
+<td class="org-left">textColorPrimary</td>
+<td class="org-left">标题栏字体</td>
+</tr>
+
+<tr>
+<td class="org-left">textColorPrimaryInverse</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">statusBarColor</td>
+<td class="org-left">状态栏颜色</td>
+</tr>
+
+<tr>
+<td class="org-left">textColor</td>
+<td class="org-left">字体颜色</td>
+</tr>
+
+<tr>
+<td class="org-left">radioButtonStyle</td>
+<td class="org-left">自定义style</td>
+</tr>
+
+<tr>
+<td class="org-left">windowContentTransitions</td>
+<td class="org-left">动画转化效果</td>
+</tr>
+
+<tr>
+<td class="org-left">titleTextAppearance</td>
+<td class="org-left">自定义style</td>
+</tr>
+
+<tr>
+<td class="org-left">buttonStyle</td>
+<td class="org-left">自定义style</td>
+</tr>
+
+<tr>
+<td class="org-left">windowBackground</td>
+<td class="org-left">window背景</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+重写的属性大部分都使用了单一的值, 只有radioButtonStyle/titleTextAppearance/buttonStyle这三个使用了
+自定义的风格.自定义的style都放在drawable目录下.以radioButtonStyle为例
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-xml">//style.xml
+    &lt;<span style="color: #93E0E3;">style</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">Topeka.CompoundButton.Radio</span><span style="color: #CC9393;">"</span> <span style="color: #DFAF8F;">parent</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">Topeka.CompoundButton</span><span style="color: #CC9393;">"</span>&gt;
+        &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DFAF8F;">name</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">android:background</span><span style="color: #CC9393;">"</span>&gt;@drawable/selector_checkable&lt;/<span style="color: #93E0E3;">item</span>&gt;
+    &lt;/<span style="color: #93E0E3;">style</span>&gt;
+
+//res/drawable/selector_checkable.xml
+&lt;<span style="color: #93E0E3;">ripple</span> <span style="color: #DCDCCC; font-weight: bold;">xmlns</span>:<span style="color: #DFAF8F;">android</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">http://schemas.android.com/apk/res/android</span><span style="color: #CC9393;">"</span>
+    <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">color</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">?android:attr/colorControlHighlight</span><span style="color: #CC9393;">"</span>&gt;
+    &lt;<span style="color: #93E0E3;">item</span>&gt;
+        &lt;<span style="color: #93E0E3;">selector</span>&gt;
+            &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">state_checked</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">false</span><span style="color: #CC9393;">"</span>&gt;
+                &lt;<span style="color: #93E0E3;">color</span> <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">color</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">?android:attr/colorButtonNormal</span><span style="color: #CC9393;">"</span> /&gt;
+            &lt;/<span style="color: #93E0E3;">item</span>&gt;
+            &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">state_checked</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">true</span><span style="color: #CC9393;">"</span>&gt;
+                &lt;<span style="color: #93E0E3;">color</span> <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">color</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">?android:attr/colorPrimary</span><span style="color: #CC9393;">"</span> /&gt;
+            &lt;/<span style="color: #93E0E3;">item</span>&gt;
+        &lt;/<span style="color: #93E0E3;">selector</span>&gt;
+    &lt;/<span style="color: #93E0E3;">item</span>&gt;
+&lt;/<span style="color: #93E0E3;">ripple</span>&gt;
+</pre>
+</div>
+
+<p>
+ripple用于设置水纹效果.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline13" class="outline-2">
+<h2 id="orgheadline13">登陆界面 SignInActivity.java</h2>
+<div class="outline-text-2" id="text-orgheadline13">
+</div><div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">onCreate()</h3>
+<div class="outline-text-3" id="text-orgheadline7">
+<p>
+在onCreate函数中,直接通过FragmentManager启动一个SignInFragment的实例来显示登录界面.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">SignInFragment</h3>
+<div class="outline-text-3" id="text-orgheadline8">
+<p>
+SignInFragment会在onCreateView中会判断是否需要登录, 如果不需要则直接进入CategoryActivity页面,
+如果需要, 则显示登录信息, 输入登录信息后, 再跳转到CategoryActivity页面.
+上述过程有两个地方用到了MaterialDesign的设计
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">Material Design 1: DonFab (Floating Button)</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+<p>
+在SignInFragment中会让用户填写姓名和选择头像, 当用户填写完FirstName后, 左下角就会出现一个floating button,
+点击即可进入Category Activity, 这个Floating Button即是Material Design的风格之一.
+</p>
+</div>
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10">实现</h4>
+<div class="outline-text-4" id="text-orgheadline10">
+<p>
+SignInFragment中FloatingButton的具体实现为DoneFab类, 该类继承自 FloatingActionButton,后者也是该应用的
+自定义view, 继承自ImageView.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #93E0E3;">FloatingActionButton</span>(<span style="color: #7CB8BB;">Context</span> <span style="color: #DFAF8F;">context</span>, <span style="color: #7CB8BB;">AttributeSet</span> <span style="color: #DFAF8F;">attrs</span>, <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">defStyle</span>) {
+    <span style="color: #F0DFAF; font-weight: bold;">super</span>(context, attrs, defStyle);
+    setFocusable(<span style="color: #BFEBBF;">true</span>);
+    setClickable(<span style="color: #BFEBBF;">true</span>);
+    setOutlineProvider(<span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">FabOutlineProvider</span>());
+    setClipToOutline(<span style="color: #BFEBBF;">true</span>);
+    setScaleType(<span style="color: #BFEBBF;">ScaleType</span>.CENTER_INSIDE);
+    setBackgroundResource(R.drawable.fab_background);
+    setElevation(getResources().getDimension(R.dimen.elevation_fab));
+}
+</pre>
+</div>
+
+<ol class="org-ol">
+<li>在Material的主题中,通过设置view的elevation即可让主题呈现出阴影效果.</li>
+<li>通过重写RoundOutlineProvider()函数来设置button的size大小.</li>
+<li><p>
+通过使用自定义backgroundResource来设置按钮的水纹点击效果, holo_green_dark即为
+   水纹颜色.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java">&lt;ripple xmlns:android=<span style="color: #CC9393;">"http://schemas.android.com/apk/res/android"</span>
+    android:color=<span style="color: #CC9393;">"@android:color/holo_green_dark"</span>&gt;
+    &lt;item android:drawable=<span style="color: #CC9393;">"@android:color/white"</span> /&gt;
+&lt;/ripple&gt;
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11">Material Design 2: 动画过渡</h3>
+<div class="outline-text-3" id="text-orgheadline11">
+<p>
+当输入完名称, 点击确定按钮时, 按钮的水纹效果完成后, 会进入CategoryActivity界面, 从视觉上来看, 
+确定按钮从登陆界面的右下角移动到了Category界面的左上角,并变成了头像. 这种控件在两个activity之间的
+移动也是MaterialDesign的一种风格.
+</p>
+</div>
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12">实现</h4>
+<div class="outline-text-4" id="text-orgheadline12">
+<ol class="org-ol">
+<li><p>
+当单击登录界面的确定按钮时, 会执行performSignInWithTransition()函数跳转到
+CategoryActivity中.该函数的实现如下:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">performSignInWithTransition</span>(<span style="color: #7CB8BB;">View</span> <span style="color: #DFAF8F;">v</span>) {
+    <span style="color: #7CB8BB;">Activity</span> <span style="color: #DFAF8F;">activity</span> = getActivity();
+    <span style="color: #7CB8BB;">ActivityOptions</span> <span style="color: #DFAF8F;">activityOptions</span> = ActivityOptions
+            .makeSceneTransitionAnimation(activity, v,
+                    activity.getString(R.string.transition_avatar));
+    CategorySelectionActivity.start(activity, mPlayer, activityOptions);
+    activity.finishAfterTransition();
+}
+</pre>
+</div>
+
+<p>
+通过代码可以看到, 在启动activity时传入了一个ActivityOptions参数, 该参数是通过调用
+makeSceneTransitionAnimation()生成.该函数接受三个参数:
+</p>
+<ul class="org-ul">
+<li>activity: 包含 <b>共享元素</b> 的activity. 在这里即为SignInActivity.</li>
+<li>view: 共享元素在activity中的值. 在这里即为SignInFragment中的确定按钮.</li>
+<li><p>
+name: 目标activity中 <b>共享元素</b> 的transitionName值. 
+这里为CatogeryActivity中该名称的view.打开Category的layout文件可以找transitionName值为
+name的值.可以看到该view即为category界面的头像.所以从登录界面跳刀category界面时, 右下角的登录按钮会
+变化为左上角的头像按钮.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-java">&lt;<span style="color: #BFEBBF;">com</span>.<span style="color: #BFEBBF;">google</span>.<span style="color: #BFEBBF;">samples</span>.<span style="color: #BFEBBF;">apps</span>.<span style="color: #BFEBBF;">topeka</span>.<span style="color: #BFEBBF;">widget</span>.AvatarView
+    android:id=<span style="color: #CC9393;">"@+id/avatar"</span>
+    android:layout_width=<span style="color: #CC9393;">"@dimen/size_fab"</span>
+    android:layout_height=<span style="color: #CC9393;">"@dimen/size_fab"</span>
+    android:layout_marginEnd=<span style="color: #CC9393;">"@dimen/spacing_double"</span>
+    android:transitionName=<span style="color: #CC9393;">"@string/transition_avatar"</span> /&gt;
+</pre>
+</div></li>
+</ul></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="orgheadline18">Category界面</h2>
+<div class="outline-text-2" id="text-orgheadline18">
+</div><div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16">onCreate() and Layout</h3>
+<div class="outline-text-3" id="text-orgheadline16">
+</div><div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14">标题栏: toolbar</h4>
+<div class="outline-text-4" id="text-orgheadline14">
+<p>
+该activity的标题栏使用了Toolbar这个控件, 然后再onCreate()函数中通过调用
+setActionBar(toolbar)将toolbar作为传统的actionbar使用.同时activity的
+option menu也会添加到toolbar上.
+</p>
+
+<p>
+最后在onCreate()里加载CategoryGridFragment的一个实例.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15">CategoryGridFragment</h4>
+<div class="outline-text-4" id="text-orgheadline15">
+<p>
+该fragment使用了GridView来显示目录列表.每个列表项由一个图片和文字构成.
+使用到的gridview属性
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">drawSelectorOnTop</td>
+<td class="org-left">选中条目的时候颜色是否显示在上边</td>
+</tr>
+
+<tr>
+<td class="org-left">listSelector</td>
+<td class="org-left">选中条目时的可绘制对象</td>
+</tr>
+
+<tr>
+<td class="org-left">clipToPadding</td>
+<td class="org-left">如果ListView/GridView设置了paddingTop/Bottom. 该值为true,滚动时padding不会消失. false会消失.</td>
+</tr>
+
+<tr>
+<td class="org-left">scrollBarStyle</td>
+<td class="org-left">outsideOverlay, 滚动时显示滚动条</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+listSelector同样使用了ripple风格. 通过设置mask的shape可以设置水纹的形状.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;<span style="color: #93E0E3;">ripple</span> <span style="color: #DCDCCC; font-weight: bold;">xmlns</span>:<span style="color: #DFAF8F;">android</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">http://schemas.android.com/apk/res/android</span><span style="color: #CC9393;">"</span>
+    <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">color</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">@color/touch_effect</span><span style="color: #CC9393;">"</span>&gt;
+    &lt;<span style="color: #93E0E3;">item</span> <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">id</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">@android:id/mask</span><span style="color: #CC9393;">"</span>&gt;
+        &lt;<span style="color: #93E0E3;">shape</span> <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">shape</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">rectangle</span><span style="color: #CC9393;">"</span>&gt;
+            &lt;<span style="color: #93E0E3;">solid</span> <span style="color: #DCDCCC; font-weight: bold;">android</span>:<span style="color: #DFAF8F;">color</span>=<span style="color: #CC9393;">"</span><span style="color: #CC9393;">@android:color/white</span><span style="color: #CC9393;">"</span> /&gt;
+        &lt;/<span style="color: #93E0E3;">shape</span>&gt;
+    &lt;/<span style="color: #93E0E3;">item</span>&gt;
+&lt;/<span style="color: #93E0E3;">ripple</span>&gt;
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17">Material Design 3: 多动画过渡</h3>
+<div class="outline-text-3" id="text-orgheadline17">
+<p>
+从category界面选中某一项会打开该类别的答题界面, 在页面切换过程中,
+该项的文字栏会变成下一页的标题栏, 而头像会变成播放按钮.这种同时有多个
+view进行动画过渡的效果是通过ActivityOptions.makeSceneTransitionAnimation()
+函数实现的.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-android">//find activity view
+AvatarView avatarView = (AvatarView)getActivity().findViewById(R.id.lx_avatar);
+// Create pair of transition participants.
+List&lt;Pair&gt; participants = new ArrayList&lt;&gt;(3);
+participants.add(new Pair&lt;&gt;(toolbar, activity.getString(R.string.transition_toolbar)));
+participants.add(new Pair&lt;&gt;(avatarView, activity.getString(R.string.transition_avatar)));
+@SuppressWarnings("unchecked")
+ActivityOptions sceneTransitionAnimation = ActivityOptions
+	.makeSceneTransitionAnimation(activity,
+		participants.toArray(new Pair[participants.size()]));
+
+// Starts the activity with the participants, animating from one to the other.
+final Bundle transitionBundle = sceneTransitionAnimation.toBundle();
+activity.startActivity(QuizActivity.getStartIntent(activity, category), transitionBundle);
+</pre>
+</div>
+
+<p>
+在下一页的layout文件中设置了相应的transitionName
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-android">&lt;com.google.samples.apps.topeka.widget.fab.FloatingActionButton
+    android:id="@+id/fab_quiz"
+    android:layout_width="@dimen/size_fab"
+    android:layout_height="@dimen/size_fab"
+    android:layout_gravity="bottom|end"
+    android:layout_marginBottom="@dimen/spacing_double"
+    android:layout_marginEnd="@dimen/spacing_double"
+    android:transitionName="@string/transition_avatar" /&gt;  &lt;---here----&gt;
+
+&lt;LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"&gt;
+
+    &lt;Toolbar
+	android:id="@+id/toolbar_activity_quiz"
+	android:layout_width="match_parent"
+	android:layout_height="?android:attr/actionBarSize"
+	android:layout_gravity="top"
+	android:background="?android:colorPrimary"
+	android:contentInsetStart="@dimen/spacing_huge"
+	android:elevation="@dimen/elevation_header"
+	android:navigationContentDescription="@string/up"
+	android:navigationIcon="@drawable/ic_arrow_back"
+	android:transitionName="@string/transition_toolbar"&gt; &lt;---here----&gt;
+    &lt;/Toolbar&gt;
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline19" class="outline-2">
+<h2 id="orgheadline19">答题页</h2>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="show_source"><input type="button" value="Show Org source" onClick='show_org_source()'></div><div id="license"><p>Documentation from the http://orgmode.org/worg/ website (either in its HTML format or in its Org format) is licensed under the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License version 1.3</a> or later.  The code examples and css stylesheets are licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a> or later.</p></div>
+</div>
+</body>
+</html>

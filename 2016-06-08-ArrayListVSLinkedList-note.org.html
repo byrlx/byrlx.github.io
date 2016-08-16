@@ -1,0 +1,651 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!-- Created by htmlize-1.43 in css mode. -->
+<html>
+  <head>
+    <title>2016-06-08-ArrayListVSLinkedList-note.org</title>
+    <style type="text/css">
+    <!--
+      body {
+        color: #DCDCCC;
+        background-color: #3F3F3F;
+      }
+      .bold {
+        /* bold */
+        font-weight: bold;
+      }
+      .org-block {
+        /* org-block */
+        color: #009acd;
+      }
+      .org-block-begin-line {
+        /* org-block-begin-line */
+        color: #7F9F7F;
+      }
+      .org-block-end-line {
+        /* org-block-end-line */
+        color: #7F9F7F;
+      }
+      .org-document-info {
+        /* org-document-info */
+        color: #afeeee;
+      }
+      .org-document-info-keyword {
+        /* org-document-info-keyword */
+        color: #b3b3b3;
+      }
+      .org-level-1 {
+        /* org-level-1 */
+        color: #DFAF8F;
+        font-size: 130%;
+        text-decoration: overline;
+      }
+      .org-level-2 {
+        /* org-level-2 */
+        color: #BFEBBF;
+        font-size: 120%;
+      }
+      .org-link {
+        /* org-link */
+        color: #D0BF8F;
+        text-decoration: underline;
+      }
+      .org-meta-line {
+        /* org-meta-line */
+        color: #7F9F7F;
+      }
+      .org-table {
+        /* org-table */
+        color: #9FC59F;
+      }
+      .org-verbatim {
+        /* org-verbatim */
+        color: #b3b3b3;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+  </head>
+  <body>
+    <pre>
+<span class="org-meta-line">#+OPTIONS: num:nil</span>
+<span class="org-meta-line">#+OPTIONS: ^:nil</span>
+<span class="org-meta-line">#+OPTIONS: H:nil</span>
+<span class="org-meta-line">#+OPTIONS: toc:nil</span>
+<span class="org-document-info-keyword">#+AUTHOR:</span> <span class="org-document-info">Zhengchao Xu
+</span><span class="org-document-info-keyword">#+EMAIL:</span> <span class="org-document-info">xuzhengchaojob@gmail.com
+</span>
+<span class="org-block-begin-line">#+BEGIN_HTML
+</span><span class="org-block">---
+layout: post
+title: ArrayList, LinkedList&#28304;&#30721;&#31508;&#35760;
+categories: [Java]
+---
+</span><span class="org-block-end-line">#+END_HTML
+</span>&#26368;&#36817;&#24037;&#20316;&#19981;&#24537;, &#25277;&#31354;&#30475;&#20102;&#19968;&#19979;ArrayList&#21644;LinkedList&#30340;&#28304;&#30721;. &#19979;&#38754;&#26159;&#19968;&#20123;&#20027;&#35201;&#30693;&#35782;&#28857;&#30340;&#31508;&#35760;. 
+
+<span class="org-level-1">* Iterable</span>
+&#23454;&#29616;&#20102;Iterable&#30340;&#25509;&#21475;&#31867;, &#21487;&#20197;&#20351;&#29992; "for-loop" &#24418;&#24335;&#30340;&#35821;&#27861;. 
+&#20363;&#22914;&#36825;&#37324;&#23454;&#29616;&#19968;&#20010; Foo &#31867;&#23454;&#29616;&#20102; Iterable &#25509;&#21475;. &#37027;&#20040;&#21487;&#20197;&#20351;&#29992;
+&#22914;&#19979;&#20195;&#30721;&#26469;&#25805;&#20316; Foo &#23454;&#20363;.
+
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">   Foo foo = new Foo();
+   for(T t : foo ) {//do  something}
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>
+&#35813;&#25509;&#21475;&#30340;&#20960;&#20010;&#20027;&#35201;API:
+<span class="org-table">| &#21517;&#31216;            | &#21151;&#33021;                                                                      |</span>
+<span class="org-table">|-----------------+---------------------------------------------------------------------------|</span>
+<span class="org-table">| interator()     | &#36820;&#22238;&#19968;&#20010;</span><span class="org-link"><a href="Iterator">Iterator</a></span><span class="org-table"> &#23454;&#20363;, &#29992;&#20110;&#23454;&#29616;&#23545;Interable&#25509;&#21475;&#30340;"&#36941;&#21382;".                   |</span>
+<span class="org-table">| forEach(action) | &#25509;&#21463;&#19968;&#20010;Cousumer&#31867;&#22411;&#30340;&#21442;&#25968;action, &#28982;&#21518;&#23545;"&#36941;&#21382;"&#21518;&#30340;&#27599;&#20010;&#20803;&#32032;&#29992;action&#20570;&#22788;&#29702;. |</span>
+
+<span class="org-level-1">* Iterator</span>
+Iterator&#26159;&#38598;&#21512;&#30340;"&#36845;&#20195;&#22120;", &#25552;&#20379;&#20102;&#23545;&#38598;&#21512;&#36827;&#34892;&#36941;&#21382;&#30340;&#26041;&#27861;. Iterator&#19968;&#33324;
+&#37117;&#26159;&#20381;&#38468;Iterable&#23384;&#22312;&#30340;. \\
+Iterator&#25552;&#20379;&#30340;API:
+
+<span class="org-table">| &#21517;&#31216;                     | &#21151;&#33021;                                                              |</span>
+<span class="org-table">|--------------------------+-------------------------------------------------------------------|</span>
+<span class="org-table">| hasNext()                | &#21028;&#26029;&#38598;&#21512;&#26159;&#21542;&#36824;&#26377;&#20803;&#32032;.                                             |</span>
+<span class="org-table">| next()                   | &#36820;&#22238;&#19979;&#19968;&#20010;&#20803;&#32032;.                                                   |</span>
+<span class="org-table">| remove()                 | &#21024;&#38500;next()&#36820;&#22238;&#30340;&#20803;&#32032;.                                             |</span>
+<span class="org-table">| forEachRemaining(action) | &#23545;&#38598;&#21512;&#21097;&#19979;&#30340;&#20803;&#32032;&#25191;&#34892;action&#21160;&#20316;. action&#30340;&#23450;&#20041;&#19982;</span><span class="org-link"><a href="Iterable">Iterable</a></span><span class="org-table">&#20171;&#32461;&#30340;&#30456;&#21516;. |</span>
+
+<span class="org-level-1">* Collection</span>
+Collection&#26159;Java"&#38598;&#21512;"&#23478;&#26063;&#30340;&#39030;&#23618;&#25509;&#21475;, &#32487;&#25215;&#33258;<span class="org-link"><a href="Iterable">Iterable</a></span>.
+&#23450;&#20041;&#20102;&#38598;&#21512;&#30340;&#19968;&#20123;&#20849;&#21516;&#29305;&#24615;:
+<span class="org-table">| API&#21517;&#31216;                  | &#25551;&#36848;               |</span>
+<span class="org-table">|--------------------------+--------------------|</span>
+<span class="org-table">| size()                   | &#38598;&#21512;&#22823;&#23567;           |</span>
+<span class="org-table">| isEmpty()                | &#26159;&#21542;&#20026;&#31354;           |</span>
+<span class="org-table">| contains()               | &#26159;&#21542;&#21253;&#21547;&#20803;&#32032;       |</span>
+<span class="org-table">| iterator()               | &#36820;&#22238;&#35813;&#38598;&#21512;&#30340;&#36845;&#20195;&#22120; |</span>
+<span class="org-table">| toArray()/toArray(T[] a) | &#38598;&#21512;&#36716;&#21270;&#20026;&#25968;&#32452;     |</span>
+<span class="org-table">| add(E e)                 | &#28155;&#21152;&#20803;&#32032;           |</span>
+<span class="org-table">| remove(E e)              | &#21024;&#38500;&#20803;&#32032;           |</span>
+<span class="org-table">| addAll(c)                | &#28155;&#21152;&#19968;&#20010;Collection |</span>
+<span class="org-table">| clear()                  | &#28165;&#31354;&#25972;&#20010;&#38598;&#21512;             |</span>
+<span class="org-level-1">* List</span>
+List&#26159;"&#38431;&#21015;"&#23478;&#26063;&#30340;&#25277;&#35937;&#31867;, &#38431;&#21015;&#26159;&#19968;&#31181;"&#26377;&#20808;&#21518;&#39034;&#24207;"&#30340;&#38598;&#21512;, &#38431;&#21015;&#20013;&#30340;&#20803;&#32032;
+&#26377;&#28155;&#21152;&#30340;&#20808;&#21518;&#39034;&#24207;, &#26032;&#20803;&#32032;&#37117;&#20250;&#28155;&#21152;&#21040;&#38431;&#21015;&#23614;&#37096;.
+&#35813;&#31867;&#32487;&#25215;&#33258;<span class="org-link"><a href="Collection">Collection</a></span>, &#38500;&#20102;<span class="org-link"><a href="Collection">Collection</a></span>&#30340;&#29305;&#24615;, &#35813;&#31867;&#30340;&#20854;&#20182;&#20027;&#35201;&#29305;&#24615;&#21253;&#25324;:
+<span class="org-table">| API                  | &#25551;&#36848;                                     |</span>
+<span class="org-table">|----------------------+------------------------------------------|</span>
+<span class="org-table">| add(e)               | &#28155;&#21152;&#21040;&#38431;&#23614;, &#36820;&#22238;&#26159;&#21542;&#28155;&#21152;&#25104;&#21151;             |</span>
+<span class="org-table">| remove(e)            | &#21024;&#38500;&#31532;&#19968;&#27425;&#20986;&#29616;&#30340;&#20803;&#32032;                     |</span>
+<span class="org-table">| addAll(index, c)     | &#23558;&#38598;&#21512;c&#28155;&#21152;&#21040;index&#24320;&#22987;&#30340;&#20301;&#32622;             |</span>
+<span class="org-table">| replaceAll(operator) | &#20351;&#29992;operator&#26469;&#26367;&#25442;&#25152;&#26377;&#20803;&#32032;               |</span>
+<span class="org-table">| sort(c)              | &#20351;&#29992;Comparator c&#23545;&#38431;&#21015;&#36827;&#34892;&#25490;&#24207;           |</span>
+<span class="org-table">| get(index)           | &#33719;&#21462;index&#20301;&#32622;&#30340;&#20803;&#32032;                      |</span>
+<span class="org-table">| set(index, e)        | &#26367;&#25442;index&#20301;&#32622;&#30340;&#20803;&#32032;, &#36820;&#22238;&#26087;&#20803;&#32032;          |</span>
+<span class="org-table">| add(index, e)        | index&#20301;&#32622;&#25554;&#20837;&#19968;&#20010;&#20803;&#32032;                    |</span>
+<span class="org-table">| remove(index)        | &#21024;&#38500;index&#20301;&#32622;&#30340;&#20803;&#32032;                      |</span>
+<span class="org-table">| index(e)             | &#33719;&#21462;&#20803;&#32032;&#22312;&#38431;&#21015;&#20013;&#31532;&#19968;&#27425;&#20986;&#29616;&#30340;&#20301;&#32622;, &#25110;-1   |</span>
+<span class="org-table">| lastIndexOf(e)       | &#33719;&#21462;&#20803;&#32032;&#22312;&#38431;&#21015;&#20013;&#26368;&#21518;&#19968;&#27425;&#20986;&#29616;&#30340;&#20301;&#32622;, &#25110;-1 |</span>
+<span class="org-table">| subList(start, end)  | &#33719;&#21462;[start, end) &#20301;&#32622;&#30340;&#23376;&#21015;&#34920;            |</span>
+<span class="org-table">| listIterator()       | &#33719;&#21462;list&#30340;ListIterator                   |</span>
+
+PS:
+1. replaceAll()&#23454;&#29616;: &#39318;&#20808;&#33719;&#21462;&#38431;&#21015;&#30340;ListIterator, &#28982;&#21518;&#36807;&#35813;iterator
+   &#26469;&#25805;&#20316;&#38431;&#21015;. 
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">    default void replaceAll(UnaryOperator&lt;E&gt; operator) {
+        Objects.requireNonNull(operator);
+        final ListIterator&lt;E&gt; li = this.listIterator();
+        while (li.hasNext()) {
+            li.set(operator.apply(li.next()));
+        }
+    }
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>2. sort(Comparator c)&#23454;&#29616;: &#39318;&#20808;&#35843;&#29992;toArray()&#26041;&#27861;&#23558;&#38431;&#21015;&#36716;&#21270;&#20026;array,
+   &#28982;&#21518;&#35843;&#29992; <span class="org-verbatim">=Arrays.sort()=</span> &#20989;&#25968;&#26469;&#23545;array&#36827;&#34892;&#25490;&#24207;, &#26368;&#21518;&#23558;&#25490;&#24207;&#21518;&#30340;
+   array&#36890;&#36807;ListIterator&#23384;&#20837;&#38431;&#21015;.
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">    default void sort(Comparator&lt;? super E&gt; c) {
+        Object[] a = this.toArray();
+        Arrays.sort(a, (Comparator) c);
+        ListIterator&lt;E&gt; i = this.listIterator();
+        for (Object e : a) {
+            i.next();
+            i.set((E) e);
+        }
+    }
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>3. subList(): &#36890;&#36807;&#35813;&#20989;&#25968;&#36820;&#22238;&#30340;&#23376;&#38431;&#21015;, &#20854;&#25968;&#25454;&#36824;&#26159;&#23384;&#20648;&#22312;&#20854;"&#29238;&#38431;&#21015;"&#30340;&#24213;&#23618;&#23454;&#29616;&#20013;, 
+   &#25152;&#20197;&#23545;&#35813;&#38431;&#21015;&#25968;&#25454;&#30340;&#20462;&#25913;&#37117;&#20250;&#24433;&#21709;&#20184;&#38431;&#21015;, &#21516;&#26679;, &#23545;&#29238;&#38431;&#21015;&#30340;&#20462;&#25913;&#20063;&#20250;&#24433;&#21709;&#23376;&#38431;&#21015;.
+<span class="org-level-1">* ListIterator</span>
+&#35813;&#31867;&#26159;<span class="org-link"><a href="List">List</a></span>&#31867;&#30340;&#19968;&#20010;Iterator&#23454;&#29616;, &#32487;&#25215;&#33258;<span class="org-link"><a href="Iterator">Iterator</a></span>&#25509;&#21475;, 
+&#20854;&#25552;&#20379;&#20102;&#36941;&#21382;<span class="org-link"><a href="List">List</a></span>&#30340;&#25509;&#21475;, &#21516;&#26102;&#23545;&#19968;&#20123;&#25509;&#21475;&#20570;&#20102;&#26465;&#20214;&#32422;&#26463;:
+&#21363;&#23545;<span class="org-link"><a href="List">List</a></span>&#30340;&#36941;&#21382;&#21482;&#33021;&#25353;&#29031;"&#20174;&#21069;&#21521;&#21518;"&#25110;"&#20174;&#21518;&#21521;&#21069;"&#30340;&#39034;&#24207;.\\
+&#35813;&#31867;&#30340;&#20027;&#35201;API&#22914;&#19979;:
+<span class="org-table">| API             | &#25551;&#36848;                           |</span>
+<span class="org-table">|-----------------+--------------------------------|</span>
+<span class="org-table">| hasNext()       | &#20174;&#21069;&#21521;&#21518;&#36941;&#21382;,&#21028;&#26029;&#26159;&#21542;&#36824;&#26377;&#20803;&#32032;  |</span>
+<span class="org-table">| next()          | &#20174;&#21069;&#21521;&#21518;&#36941;&#21382;, &#36820;&#22238;&#19979;&#19968;&#20010;&#20803;&#32032;   |</span>
+<span class="org-table">| nextIndex()     | &#20174;&#21069;&#21521;&#21518;&#36941;&#21382;, &#36820;&#22238;&#19979;&#19968;&#20010;&#20301;&#32622;   |</span>
+<span class="org-table">| hasPrevious()   | &#20174;&#21518;&#21521;&#21069;&#36941;&#21382;, &#21028;&#26029;&#26159;&#21542;&#36824;&#26377;&#20803;&#32032; |</span>
+<span class="org-table">| previous()      | &#20174;&#21518;&#21521;&#21069;, &#36820;&#22238;&#19979;&#19968;&#20010;&#20803;&#32032;       |</span>
+<span class="org-table">| previousIndex() | &#20174;&#21518;&#21521;&#21069;, &#36820;&#22238;&#19979;&#19968;&#20010;&#20803;&#32032;&#20301;&#32622;   |</span>
+<span class="org-table">| remove()        | &#36820;&#22238;next()&#25110;previous()&#30340;&#36820;&#22238;&#20540; |</span>
+<span class="org-table">| set()           | &#26367;&#25442;next()&#25110;previous()&#30340;&#36820;&#22238;&#20540; |</span>
+<span class="org-table">| add()           | &#35265;&#27880;1 |</span>
+
+PS:
+1. add(): &#25554;&#20837;&#21040;next()&#36820;&#22238;&#20540;&#30340;"&#21069;&#38754;", &#25110;previous()&#36820;&#22238;&#20540;&#30340;"&#21518;&#38754;".
+   &#21478;&#19968;&#20010;&#35266;&#28857;, &#20174;"&#20174;&#21069;&#21521;&#21518;"&#30340;&#35270;&#35282;&#26469;&#30475;, &#26032;&#25554;&#20837;&#30340;&#20803;&#32032;&#27704;&#36828;&#22312;&#24403;&#21069;&#20803;&#32032;&#30340;"&#21069;&#38754;".
+<span class="org-level-1">* AbstractCollection</span>
+  AbstractCollection&#26159;<span class="org-link"><a href="Collection">Collection</a></span>&#25509;&#21475;&#30340;&#19968;&#20010;&#23454;&#29616;, &#23545;&#20110;
+  &#38598;&#21512;&#31867;&#22411;&#30340;&#19968;&#20123;"&#21487;&#33021;"&#30340;&#20849;&#21516;&#25805;&#20316;, &#35813;&#31867;&#32473;&#20986;&#20102;&#19968;&#20123;API&#23454;&#29616;, &#21253;&#25324;:
+1. isEmpty()
+<span class="org-block-begin-line">    #+BEGIN_EXAMPLE
+</span><span class="org-block">    public boolean isEmpty() {
+        return size() == 0;
+    }
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>2. contains(o)
+   &#35813;&#20989;&#25968;&#23454;&#29616;&#20998;&#20004;&#31181;&#24773;&#20917;: &#22914;&#26524;o&#20026;null, &#21017;&#21028;&#26029;&#38598;&#21512;&#20013;&#26159;&#21542;&#21253;&#21547;null. &#21542;&#21017;,&#36941;&#21382;
+   &#38598;&#21512;&#24182;&#35843;&#29992;&#21442;&#25968;o&#30340;equals()&#26041;&#27861;&#26469;&#21028;&#26029;&#26159;&#21542;&#26377;&#30456;&#31561;&#20803;&#32032;. &#20803;&#32032;&#36941;&#21382;&#26159;&#36890;&#36807;iterator&#23454;&#29616;.
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">    public boolean contains(Object o) {
+        Iterator&lt;E&gt; it = iterator();
+        if (o==null) {
+            while (it.hasNext())
+                if (it.next()==null)
+                    return true;
+        } else {
+            while (it.hasNext())
+                if (o.equals(it.next()))
+                    return true;
+        }
+        return false;
+    }   
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>3. toArray()
+   &#35813;&#20989;&#25968;&#29992;&#20110;&#23558;&#38598;&#21512;&#36716;&#25442;&#20026;&#25968;&#32452;, &#38656;&#35201;&#20851;&#27880;&#30340;&#26159;, &#22312;&#36716;&#21270;&#36807;&#31243;&#20013;, &#38598;&#21512;&#30340;
+   &#32467;&#26500;&#21487;&#33021;&#34987;&#20462;&#25913;(&#22810;&#32447;&#31243;), &#21363;&#20803;&#32032;&#34987;&#28155;&#21152;&#25110;&#21024;&#38500;.\\
+   &#35813;&#20989;&#25968;&#30340;&#23454;&#29616;&#20063;cover&#20102;&#36825;&#31181;&#24773;&#20917;. &#20174;&#19979;&#38754;&#20195;&#30721;&#21487;&#20197;&#30475;&#21040;, 
+   1. &#22312;&#27599;&#27425;for&#24490;&#29615;&#24320;&#22987;&#37117;&#20250;&#35843;&#29992;hasNext()&#21028;&#26029;&#26159;&#24050;&#32463;&#21040;&#32467;&#23614;(&#21363;&#26399;&#38388;&#26377;&#20803;&#32032;&#34987;&#21024;&#38500;). 
+      &#22914;&#26524;&#26159;, &#21017;&#30452;&#25509;&#35843;&#29992;Array&#30340;copyOf()&#20989;&#25968;&#25226;&#36820;&#22238;&#20020;&#26102;&#25968;&#32452;&#30340;&#19968;&#20010;copy, &#35813;&#20020;&#26102;&#25968;&#32452;
+      &#29992;&#20110;&#23384;&#20648;&#24050;&#32463;&#36941;&#21382;&#36807;&#30340;&#20803;&#32032;.
+   2. &#36941;&#21382;&#23436;&#20043;&#21518;, &#36824;&#20250;&#20877;&#27425;&#35843;&#29992;hasNext()&#21028;&#26029;&#26159;&#21542;&#26377;&#26032;&#20803;&#32032;, &#22914;&#26524;&#26377;, &#21017;&#35843;&#29992;finishToArray()
+      &#20989;&#25968;&#32487;&#32493;&#23545;&#38598;&#21512;&#36827;&#34892;&#21464;&#37327;, &#24182;&#20998;&#37197;&#19968;&#20010;&#26356;&#22823;&#30340;&#25968;&#32452;, &#30693;&#36947;&#38598;&#21512;&#21464;&#37327;&#23436;&#25110;&#32773;&#36798;&#21040;&#25968;&#32452;&#19978;&#38480;.
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">    public Object[] toArray() {
+        // Estimate size of array; be prepared to see more or fewer elements
+        Object[] r = new Object[size()];
+        Iterator&lt;E&gt; it = iterator();
+        for (int i = 0; i &lt; r.length; i++) {
+            if (! it.hasNext()) // fewer elements than expected
+                return Arrays.copyOf(r, i);
+            r[i] = it.next();
+        }
+        return it.hasNext() ? finishToArray(r, it) : r;
+    }   
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>4. toArray(T[] a)
+   &#22914;&#26524;a&#30340;size&#36275;&#22815;&#33021;&#23481;&#19979;&#38598;&#21512;&#20803;&#32032;, &#21017;&#23384;&#20837;a&#20013;&#24182;&#36820;&#22238;a, &#21542;&#21017;&#23384;&#20837;&#19968;&#20010;&#26032;&#20998;&#37197;&#30340;&#25968;&#32452;&#24182;&#36820;&#22238;.
+5. remove(): &#23454;&#29616;&#26041;&#24335;&#19982;contains()&#30456;&#21516;, &#20063;&#26159;&#36890;&#36807;iterator&#36827;&#34892;&#25805;&#20316;.
+6. containsAll()/addAll()/removeAll()\\
+   &#23454;&#29616;&#26041;&#24335;&#22522;&#26412;&#30456;&#21516;, &#37117;&#26159;&#36941;&#21382;&#21442;&#25968;&#38598;&#21512;, &#28982;&#21518;&#22522;&#20110;&#21442;&#25968;&#20013;&#30340;&#27599;&#20010;&#20803;&#32032;
+   &#23545;&#38598;&#21512;&#36827;&#34892;&#25805;&#20316;.
+7. retainAll(c). &#21482;&#20445;&#30041;c&#21644;&#35813;&#38598;&#21512;&#30340;"&#20132;&#38598;"&#20803;&#32032;.
+8. clear(): &#21453;&#22797;&#35843;&#29992;iterator&#30340;hasNext(), next(), remove()&#20989;&#25968;&#21024;&#38500;&#25152;&#26377;&#20803;&#32032;.
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">    public void clear() {
+        Iterator&lt;E&gt; it = iterator();
+        while (it.hasNext()) {
+            it.next();
+            it.remove();
+        }
+    }   
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span><span class="org-level-1">* AbstractList</span>
+&#35813;&#31867;&#26159;<span class="org-link"><a href="AbstractCollection">AbstractCollection</a></span>&#30340;&#19968;&#20010;&#23376;&#31867;&#24182;&#23454;&#29616;&#20102;<span class="org-link"><a href="List">List</a></span>&#25509;&#21475;, &#35813;&#31867;&#23454;&#29616;&#20102;
+List&#30456;&#20851;&#30340;&#19968;&#20123;&#20849;&#21516;&#25805;&#20316;. &#21253;&#25324;:
+1. indexOf(o):&#23547;&#25214;&#20803;&#32032;&#20301;&#32622;. &#35813;&#20989;&#25968;&#30340;&#23454;&#29616;&#20351;&#29992;&#20102;previousIndex()&#20989;&#25968;, &#22240;&#20026;
+   &#35843;&#29992;next()&#20043;&#21518;, iterator&#20250;&#31227;&#21160;&#21040;&#19979;&#19968;&#20301;, &#25152;&#20197;&#38656;&#35201;&#35843;&#29992;&#36825;&#20010;&#20989;&#25968;&#25165;&#33021;&#33719;&#21462;
+   &#21040;"&#21629;&#20013;&#20803;&#32032;"&#30340;&#20301;&#32622;.
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">    public int indexOf(Object o) {
+        ListIterator&lt;E&gt; it = listIterator();
+        if (o==null) {
+            while (it.hasNext())
+                if (it.next()==null)
+                    return it.previousIndex();
+        } else {
+            while (it.hasNext())
+                if (o.equals(it.next()))
+                    return it.previousIndex();
+        }
+        return -1;
+    }
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>2. lastIndexOf(o): &#23454;&#29616;&#26041;&#24335;&#19982;indexOf()&#30456;&#21516;, &#21482;&#26159;&#36941;&#21382;&#39034;&#24207;&#30456;&#21453;.
+   
+<span class="org-level-2">** Itr</span>
+&#35813;&#31867;&#26159;AbstractList&#30340;&#19968;&#20010;&#20869;&#37096;&#31867;, &#22312;List&#30340;&#23618;&#32423;&#32467;&#26500;&#20013;, &#26159;&#31532;&#19968;&#27425;&#20855;&#20307;&#23454;&#29616;
+&#19968;&#20010;Iterator. &#21487;&#20197;&#30475;&#19979;&#35813;&#31867;&#26159;&#22914;&#20309;&#20855;&#20307;&#23454;&#29616;<span class="org-link"><a href="Iterator">Iterator</a></span>&#30340;API&#30340;.
+1. hasNext():&#21028;&#26029;&#24403;&#21069;&#30340;&#20809;&#26631;&#26159;&#21542;&#31561;&#20110;size()&#20989;&#25968;. &#22914;&#26524;&#31561;&#20110;, &#34920;&#31034;&#21040;&#36798;&#23614;&#37096;, &#36820;&#22238;false.
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">        public boolean hasNext() {
+            return cursor != size();
+        }   
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>2. next():&#36820;&#22238;&#19979;&#19968;&#20010;&#20803;&#32032;. &#30001;&#20110;&#20809;&#26631;&#19968;&#24320;&#22987;&#26159;&#25351;&#21521;&#31532;&#19968;&#20010;&#20803;&#32032;(index=0), 
+   &#25152;&#20197;&#27599;&#27425;&#35843;&#29992;&#35813;&#20989;&#25968;, &#36820;&#22238;&#30340;&#37117;&#26159;&#24403;&#21069;&#20809;&#26631;&#20301;&#32622;&#30340;&#20803;&#32032;, &#28982;&#21518;&#20877;&#25226;&#20809;&#26631;
+   &#31227;&#21160;&#19968;&#20010;&#20301;&#32622;. &#21516;&#26102;&#26377;&#19968;&#20010;&#25104;&#21592;&#21464;&#37327; lastRet &#29992;&#20110;&#35760;&#24405;&#36825;&#27425;&#36820;&#22238;&#20540;&#30340;&#20301;&#32622;.
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">           public E next() {
+            checkForComodification();
+            try {
+                int i = cursor;
+                E next = get(i);
+                lastRet = i;
+                cursor = i + 1;
+                return next;
+            } catch (IndexOutOfBoundsException e) {
+                checkForComodification();
+                throw new NoSuchElementException();
+            }
+        }
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>   
+   &#22312;&#20989;&#25968;&#30340;&#24320;&#22987;&#35843;&#29992;&#20102; <span class="org-verbatim">=checkForComodification()=</span> &#20989;&#25968;, &#35813;&#20989;&#25968;&#29992;&#20110;
+   &#21028;&#26029;&#26159;&#21542;&#26377;&#20854;&#20182;&#32447;&#31243;&#25805;&#20316;&#20102;&#35813;iterator&#25152;&#23646;&#30340;&#38598;&#21512;.&#23427;&#30340;&#23454;&#29616;&#21407;&#29702;&#26159;:
+   Iterator&#26377;&#19968;&#20010;&#25104;&#21592;&#21464;&#37327;expectedModcount, &#20854;&#20540;&#31561;&#20110;&#38598;&#21512;&#30340;&#21464;&#37327;modCount, 
+   &#27599;&#27425;&#38598;&#21512;&#34987;&#20462;&#25913;(&#28155;&#21152;/&#21024;&#38500;), modCount&#30340;&#20540;&#37117;&#20250;&#21457;&#29983;&#21464;&#21270;. &#25152;&#20197;&#22914;&#26524;&#21457;&#29616;
+   expectedModcount&#30340;&#20540;&#19982;&#35813;&#20540;&#19981;&#30456;&#31561;&#20102;, &#35828;&#26126;"&#38598;&#21512;"&#34987;&#20854;&#20182;&#32447;&#31243;&#20462;&#25913;&#20102;. 
+   &#22312;AbstractList&#20013;&#23601;&#20250;&#25243;&#24322;&#24120;.
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">       final void checkForComodification() {
+            if (modCount != expectedModCount)
+                throw new ConcurrentModificationException();
+        }
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>3. remove():
+   &#22914;&#26524;&#24403;&#21069;&#20809;&#26631;&#27809;&#26377;&#25351;&#21521;list&#21306;&#38388;, &#21017;&#25243;&#24322;&#24120;. &#21542;&#21017;&#35843;&#29992; <span class="org-link"><a href="AbstractList">AbstractList</a></span>&#30340;remove()&#20989;&#25968;.
+   &#28982;&#21518;&#23558;&#32531;&#23384;&#20809;&#26631; lastRet &#32622;&#20301;-1. &#24182;&#37325;&#26032;&#36171;&#20540; expectedModcount(&#22240;&#20026;AbstractList&#30340;
+   remove()&#20989;&#25968;&#21487;&#33021;&#20250;&#20462;&#25913;modCount&#30340;&#20540;).
+<span class="org-level-2">** ListItr</span>
+&#35813;&#31867;&#26159;<span class="org-link"><a href="Itr">Itr</a></span>&#30340;&#23376;&#31867;&#24182;&#23454;&#29616;&#20102;<span class="org-link"><a href="ListIterator">ListIterator</a></span>&#25509;&#21475;. &#20027;&#35201;&#26159;&#23454;&#29616;&#20102;ListIterator"&#20174;&#21518;&#21521;&#21069;"&#30340;&#36941;&#21382;&#26041;&#27861;.
+1. &#26500;&#36896;&#20989;&#25968;ListItr(index):
+   &#30452;&#25509;&#23558;&#20809;&#26631;&#33267;&#20110;index&#30340;&#20301;&#32622;.
+2. hasPrevious():&#21028;&#26029;&#24403;&#21069;&#20809;&#26631;&#26159;&#21542;&#20026;0, &#22914;&#26524;&#26159;&#36820;&#22238;false.
+3. previous(): &#36820;&#22238;&#24403;&#21069;&#20809;&#26631;&#30340;&#21069;&#19968;&#20010;&#20803;&#32032;. &#36825;&#37324;&#19982;next()&#19981;&#21516;, 
+   next()&#26159;&#20808;&#36820;&#22238;&#24403;&#21069;&#20809;&#26631;&#30340;&#20540;, &#31227;&#21160;&#20809;&#26631;. previous()&#26159;&#36820;&#22238;
+   &#24403;&#21069;&#20809;&#26631;&#21069;&#38754;&#30340;&#20540;, &#24182;&#31227;&#21160;&#20809;&#26631;. 
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">        public E previous() {
+            checkForComodification();
+            try {
+                int i = cursor - 1;
+                E previous = get(i);
+                lastRet = cursor = i;
+                return previous;
+            } catch (IndexOutOfBoundsException e) {
+                checkForComodification();
+                throw new NoSuchElementException();
+            }
+        }   
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>4. nextIndex(): &#36820;&#22238;&#24403;&#21069;&#20809;&#26631;.
+5. previousIndex(): &#36820;&#22238;&#24403;&#21069;&#20809;&#26631;&#20943;1.
+<span class="org-level-2">** SubList</span>
+&#35813;&#31867;&#26159;AbstractList&#30340;&#23376;&#31867;,&#26159;"&#23376;&#38431;&#21015;"&#27010;&#24565;&#30340;&#20195;&#30721;&#23454;&#29616;. &#20195;&#34920;&#20102;&#26576;&#20010;
+&#38431;&#21015;&#30340;&#19968;&#37096;&#20998;. &#22312;&#20854;&#23454;&#29616;&#20013;, &#20854;&#20869;&#23481;&#23384;&#20648;&#22312;&#21407;&#21015;&#34920;&#30340;&#24213;&#23618;&#23384;&#20648;&#20013;. &#35813;&#31867;
+&#21482;&#32500;&#25252;&#20102;&#19968;&#20123;"&#21015;&#34920;"&#29366;&#24577;, &#26469;&#34920;&#31034;&#23376;&#23545;&#31867;. &#20219;&#20309;&#23545;&#35813;&#31867;&#30340;&#38431;&#21015;&#30340;&#20462;&#25913;&#37117;&#20250;
+&#24433;&#21709;&#21040;&#21407;&#21015;&#34920;, &#21453;&#20043;&#20134;&#28982;. &#36890;&#36807;&#19979;&#38754;&#30340;&#20960;&#20010;&#20989;&#25968;&#21487;&#20197;&#30475;&#20986;&#23545;&#35813;&#31867;&#30340;&#22686;&#21024;&#20854;&#23454;&#35843;&#29992;&#30340;
+&#37117;&#26159;&#21407;&#26469;&#38431;&#21015;&#30340;&#26041;&#27861;.
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">    SubList(AbstractList&lt;E&gt; list, int fromIndex, int toIndex) {
+        if (fromIndex &lt; 0)
+            throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
+        if (toIndex &gt; list.size())
+            throw new IndexOutOfBoundsException("toIndex = " + toIndex);
+        if (fromIndex &gt; toIndex)
+            throw new IllegalArgumentException("fromIndex(" + fromIndex +
+                                               ") &gt; toIndex(" + toIndex + ")");
+        l = list;
+        offset = fromIndex;
+        size = toIndex - fromIndex;
+        this.modCount = l.modCount;
+    }
+
+    public E set(int index, E element) {
+        rangeCheck(index);
+        checkForComodification();
+        return l.set(index+offset, element);
+    }
+
+    public E get(int index) {
+        rangeCheck(index);
+        checkForComodification();
+        return l.get(index+offset);
+    }
+    
+    public void add(int index, E element) {
+        rangeCheckForAdd(index);
+        checkForComodification();
+        l.add(index+offset, element);
+        this.modCount = l.modCount;
+        size++;
+    }
+
+    public E remove(int index) {
+        rangeCheck(index);
+        checkForComodification();
+        E result = l.remove(index+offset);
+        this.modCount = l.modCount;
+        size--;
+        return result;
+    }
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span><span class="org-level-2">** RandomAccessSubList</span>
+&#35813;&#31867;&#26159;<span class="org-link"><a href="SubList">SubList</a></span>&#30340;&#19968;&#20010;&#23376;&#31867;, &#20294;&#26159;&#23454;&#29616;&#20102;RandomAccess&#25509;&#21475;(&#31354;&#25509;&#21475;),
+&#34920;&#26126;&#20854;&#20855;&#26377;RandomAccess&#30340;&#23646;&#24615;. &#35813;&#31867;&#30340;&#25152;&#26377;&#25805;&#20316;&#20960;&#20046;&#37117;&#26159;&#20351;&#29992;<span class="org-link"><a href="SubList">SubList</a></span>&#30340;&#25805;&#20316;. 
+
+&#22312;AbstractList&#30340;subList()&#20989;&#25968;&#23454;&#29616;&#20013;, &#20250;&#21028;&#26029;&#24403;&#21069;List&#26159;&#21542;&#20026;RandomAccess,
+&#22914;&#26524;&#26159;, &#21017;&#20250;&#36820;&#22238;&#19968;&#20010; RandomAccessSubList &#23454;&#20363;, &#21542;&#21017;&#36820;&#22238;&#19968;&#20010; SubList &#23454;&#20363;. 
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">    public List&lt;E&gt; subList(int fromIndex, int toIndex) {
+        return (this instanceof RandomAccess ?
+                new RandomAccessSubList&lt;&gt;(this, fromIndex, toIndex) :
+                new SubList&lt;&gt;(this, fromIndex, toIndex));
+    }
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span><span class="org-level-1">* ArrayList</span>
+&#20171;&#32461;&#20102;&#36825;&#20040;&#22810;&#20043;&#21518;, &#32456;&#20110;&#26469;&#21040;&#20102;ArrayList&#30340;&#23454;&#29616;, &#35813;&#31867;&#30452;&#25509;&#32487;&#25215;
+&#33258;<span class="org-link"><a href="AbstractList">AbstractList</a></span>, &#24182;&#23454;&#29616;&#20102; <span class="org-link"><a href="List">List</a></span> &#21644; RandomAccess &#25509;&#21475;.
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt;
+        implements List&lt;E&gt;, RandomAccess, Cloneable, java.io.Serializable
+{
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>
+&#36825;&#37324;&#20027;&#35201;&#20171;&#32461;&#20854;&#24213;&#23618;&#25968;&#25454;&#23384;&#20648;&#30340;&#23454;&#29616;&#21450;&#19982;LinkedList&#19981;&#21516;&#30340;API:
+1. ArrayList&#30340;&#20803;&#32032;&#37117;&#23384;&#25918;&#22312;&#24213;&#23618;Object&#25968;&#32452;elementData&#20013;.
+2. int&#21464;&#37327;size&#23384;&#25918;&#20803;&#32032;&#25968;&#37327;.
+3. get(index): &#33719;&#21462;&#20803;&#32032;, &#30452;&#25509;&#35775;&#38382;&#25968;&#32452;&#23545;&#24212;&#20301;&#32622;, O(1).
+4. set(index, e): &#26356;&#26032;&#20803;&#32032;, &#21516;&#19978;, O(1).
+5. add(index, e): index&#20301;&#32622;&#25554;&#20837;&#20803;&#32032;, &#36825;&#37324;&#20250;&#20570;&#20004;&#27493;:
+   + &#22914;&#26524;&#25968;&#32452;&#24050;&#28385;, &#20998;&#37197;&#26032;&#25968;&#32452;, <span class="bold">*&#36825;&#26679;&#20250;&#20570;&#19968;&#27425;&#25972;&#20010;&#25968;&#32452;&#30340;copy*</span>.
+   + &#25554;&#20837;&#26032;&#20803;&#32032;, &#27492;&#26102;&#20250;&#23558;index&#21518;&#30340;&#20869;&#23481;&#20570;&#25972;&#20307;&#31227;&#21160;.
+6. remove(index): &#23545;index&#21518;&#30340;&#20869;&#23481;&#20570;&#25972;&#20307;&#21069;&#31227;&#21160;&#20316;.
+7. batchRemove(c, flag): &#25209;&#37327;&#21024;&#38500;, flag&#26159;&#19968;&#20010;boolean&#21464;&#37327;, 
+   &#20854;&#21547;&#20041;&#26159;: &#22914;&#26524;&#20026;true, &#20445;&#30041;c&#21644;&#35813;list&#30340;&#20132;&#38598;, &#32780;&#21024;&#38500;&#20854;&#20182;&#20803;&#32032;.
+   &#22914;&#26524;&#20026;false, &#21017;&#21024;&#38500;&#20132;&#38598;.
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">    private boolean batchRemove(Collection&lt;?&gt; c, boolean complement) {
+        final Object[] elementData = this.elementData;
+        int r = 0, w = 0;
+        boolean modified = false;
+        try {
+            for (; r &lt; size; r++)
+                if (c.contains(elementData[r]) == complement)
+                    elementData[w++] = elementData[r];
+        } finally {
+            // Preserve behavioral compatibility with AbstractCollection,
+            // even if c.contains() throws.
+            if (r != size) {
+                System.arraycopy(elementData, r,
+                                 elementData, w,
+                                 size - r);
+                w += size - r;
+            }
+            if (w != size) {
+                // clear to let GC do its work
+                for (int i = w; i &lt; size; i++)
+                    elementData[i] = null;
+                modCount += size - w;
+                size = w;
+                modified = true;
+            }
+        }
+        return modified;
+    }   
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>
+&#25152;&#20197;&#23545;&#20110;ArrayList&#30340;&#25152;&#26377;&#30340;&#25554;&#20837;/&#21024;&#38500;&#21160;&#20316;, &#37117;&#20250;&#28041;&#21450;&#21040;&#24213;&#23618;&#25968;&#32452;&#30340;
+"&#31227;&#21160;", &#36825;&#20010;&#31227;&#21160;&#26368;&#32456;&#26159;&#35843;&#29992; <span class="org-verbatim">=System.arraycopy()=</span> &#20989;&#25968;&#23454;&#29616;&#30340;.
+&#25152;&#20197;&#25554;&#20837;/&#21024;&#38500;&#30340;&#25928;&#29575;&#30452;&#25509;&#19982;&#35813;&#20989;&#25968;&#30340;&#23454;&#29616;&#26377;&#20851;. 
+
+ArryaList&#30340;&#20854;&#20182;&#23454;&#29616;, &#20363;&#22914; Iterator &#21644; ListIterator, &#22522;&#26412;&#19982;
+<span class="org-link"><a href="AbstractList">AbstractList</a></span>&#22823;&#21516;&#23567;&#24322;.
+<span class="org-level-1">* AbstractSequentialList</span>
+&#22312;&#20171;&#32461;LinkedList&#20043;&#21069;, &#20808;&#30475;&#19968;&#19979;&#23427;&#30340;&#29238;&#31867;, &#35813;&#31867;&#26159;<span class="org-link"><a href="AbstractList">AbstractList</a></span>&#30340;
+&#23376;&#31867;, &#20294;&#26159;&#23427;&#20855;&#26377;"&#39034;&#24207;"&#30340;&#23646;&#24615;, &#36825;&#26159;&#30456;&#23545;&#20110;ArrayList&#30340;RandomAccess&#23646;&#24615;&#32780;&#35328;. 
+&#23448;&#26041;&#25991;&#26723;&#20013;&#23545;&#35813;&#23646;&#24615;&#26159;&#36825;&#26679;&#35299;&#37322;&#30340;. 
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block"> * This class is the opposite of the &lt;tt&gt;AbstractList&lt;/tt&gt; class in the sense
+ * that it implements the "random access" methods (&lt;tt&gt;get(int index)&lt;/tt&gt;,
+ * &lt;tt&gt;set(int index, E element)&lt;/tt&gt;, &lt;tt&gt;add(int index, E element)&lt;/tt&gt; and
+ * &lt;tt&gt;remove(int index)&lt;/tt&gt;) on top of the list's list iterator, instead of
+ * the other way around.&lt;p&gt;
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>
+&#19978;&#38754;&#36825;&#27573;&#25991;&#23383;&#35299;&#37322;&#20102;&#22312;&#35813;&#31867;&#20013;&#36890;&#36807;index "&#25554;&#20837;/&#21024;&#38500;" &#20803;&#32032;&#30340;&#23454;&#29616;&#26041;&#27861;.
+&#37117;&#26159;&#36890;&#36807;&#20854;ListIterator&#23454;&#29616;&#30340;. (&#24819;&#24819;&#22312;<span class="org-link"><a href="ArrayList">ArrayList</a></span>&#20013;,&#36825;&#20123;&#26041;&#27861;&#37117;&#26159;&#30452;&#25509;
+&#25805;&#20316;&#25968;&#32452;). &#21487;&#20197;&#30475;&#19979;&#20960;&#20010;&#30456;&#20851;&#30340;API&#20195;&#30721;.
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">    public void add(int index, E element) {
+        try {
+            listIterator(index).add(element);
+        } catch (NoSuchElementException exc) {
+            throw new IndexOutOfBoundsException("Index: "+index);
+        }
+    }
+    public E remove(int index) {
+        try {
+            ListIterator&lt;E&gt; e = listIterator(index);
+            E outCast = e.next();
+            e.remove();
+            return outCast;
+        } catch (NoSuchElementException exc) {
+            throw new IndexOutOfBoundsException("Index: "+index);
+        }
+    }
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>
+&#21478;&#22806;, &#35813;&#31867;&#30340; iterator() &#21644; listIterator() &#20989;&#25968;&#36820;&#22238;&#30340;&#37117;&#26159;
+ListIterator&#23454;&#20363;.
+<span class="org-level-1">* Deque</span>
+&#21452;&#31471;&#38431;&#21015;, &#25903;&#25345;&#22836;&#37096;&#21644;&#23614;&#37096;&#30340;&#25554;&#20837;&#21644;&#21024;&#38500;&#21160;&#20316;. 
+Deque&#25509;&#21475;&#25552;&#20379;&#20102;&#36825;&#20123;&#25805;&#20316;&#30340;&#30456;&#24212;API.
+<span class="org-level-1">* LinkedList</span>
+&#32487;&#25215;&#33258;<span class="org-link"><a href="AbstractSequentialList">AbstractSequentialList</a></span>, &#24182;&#23454;&#29616;&#20102; <span class="org-link"><a href="List">List</a></span> &#21644; <span class="org-link"><a href="Deque">Deque</a></span> &#25509;&#21475;.
+
+&#19981;&#36807;&#19982;<span class="org-link"><a href="AbstractSequentialList">AbstractSequentialList</a></span>&#19981;&#21516;&#30340;&#26159;, LinkedList&#30340;&#25554;&#20837;&#21024;&#38500;&#24182;
+&#27809;&#26377;&#20351;&#29992;ListIterator, &#32780;&#26159;&#30452;&#25509;&#25805;&#20316;&#38142;&#34920;. &#19979;&#38754;&#26159;&#19968;&#20123;&#26680;&#24515;API:
+1. unlink(e): &#21024;&#38500;&#20803;&#32032;, "&#20960;&#20046;"&#25152;&#26377;&#21024;&#38500;API&#30340;&#24213;&#23618;&#23454;&#29616;. 
+   &#19982;<span class="org-link"><a href="ArrayList">ArrayList</a></span>&#19981;&#21516;&#30340;&#26159;, &#23427;&#27809;&#26377;&#35774;&#35745;&#21040;"&#19968;&#29255;&#20869;&#23384;"&#21306;&#22495;&#30340;&#31227;&#21160;, &#25152;&#20197;
+   &#25928;&#29575;&#19978;&#35201;&#27604;ArrayList&#39640;.
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">    E unlink(Node&lt;E&gt; x) {
+        // assert x != null;
+        final E element = x.item;
+        final Node&lt;E&gt; next = x.next;
+        final Node&lt;E&gt; prev = x.prev;
+
+        if (prev == null) {
+            first = next;
+        } else {
+            prev.next = next;
+            x.prev = null;
+        }
+
+        if (next == null) {
+            last = prev;
+        } else {
+            next.prev = prev;
+            x.next = null;
+        }
+
+        x.item = null;
+        size--;
+        modCount++;
+        return element;
+    }
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>2. linkBefore(e, node): &#25554;&#20837;&#20803;&#32032;,&#23454;&#29616;&#21407;&#29702;&#21516;unlink().
+3. node(index): &#33719;&#21462;index&#20301;&#32622;&#30340;node, "&#20960;&#20046;" &#25152;&#26377;&#36941;&#21382;&#31867;&#30340;&#24213;&#23618;&#23454;&#29616;.
+   &#36825;&#38656;&#35201;&#36941;&#21382;&#38142;&#34920;, &#19981;&#36807;&#22240;&#20026;LinkedList&#26159;&#21452;&#21521;&#21015;&#34920;, 
+   &#25152;&#20197;&#35813;&#20989;&#25968;&#30340;&#23454;&#29616;&#19978;&#20063;&#26377;&#28857;&#25216;&#24039;: &#21363;&#22914;&#26524;index &gt; size/2, &#21017;&#20174;&#38431;&#21015;
+   &#23614;&#37096;&#21521;&#21069;&#23547;&#25214;, &#21542;&#21017;&#20174;&#38431;&#21015;&#22836;&#37096;&#21521;&#21518;&#23547;&#25214;.
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">    Node&lt;E&gt; node(int index) {
+        // assert isElementIndex(index);
+
+        if (index &lt; (size &gt;&gt; 1)) {
+            Node&lt;E&gt; x = first;
+            for (int i = 0; i &lt; index; i++)
+                x = x.next;
+            return x;
+        } else {
+            Node&lt;E&gt; x = last;
+            for (int i = size - 1; i &gt; index; i--)
+                x = x.prev;
+            return x;
+        }
+    }   
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>
+&#36825;&#19977;&#20010;&#20989;&#25968;&#22522;&#26412;&#23601;&#26159;LinkedList&#30340;&#26680;&#24515;&#21407;&#29702;. 
+<span class="org-level-2">** Node</span>
+LinkedList&#26159;&#20351;&#29992;"&#38142;&#34920;"&#36825;&#31181;&#25968;&#25454;&#32467;&#26500;&#26469;&#23384;&#20648;&#25968;&#25454;, &#25152;&#20197;&#20854;&#20869;&#37096;&#23450;&#20041;&#20102;&#19968;&#20010;
+Node&#31867;&#29992;&#26469;&#34920;&#31034;&#38142;&#34920;&#33410;&#28857;. Node&#31867;&#30340;&#23454;&#29616;&#24456;&#31616;&#21333;.
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">    private static class Node&lt;E&gt; {
+        E item;
+        Node&lt;E&gt; next;
+        Node&lt;E&gt; prev;
+
+        Node(Node&lt;E&gt; prev, E element, Node&lt;E&gt; next) {
+            this.item = element;
+            this.next = next;
+            this.prev = prev;
+        }
+    }
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span><span class="org-level-1">* SynchronizedList</span>
+&#30001;&#20110;List&#31867;&#19981;&#26159;&#32447;&#31243;&#23433;&#20840;&#30340;. &#22810;&#32447;&#31243;&#21487;&#20197;&#21516;&#26102;&#20462;&#25913;list&#30340;&#20869;&#23481;. 
+&#25152;&#20197;&#20026;&#20102;&#35299;&#20915;&#36825;&#20010;&#38382;&#39064;, Collections&#31867;&#25552;&#20379;&#20102;&#19968;&#20010; 
+<span class="org-verbatim">=snchronizedList()=</span> &#20989;&#25968;&#29992;&#20110;&#23558; <span class="org-link"><a href="List">List</a></span> &#36716;&#21270;&#20026;&#19968;&#20010; "&#21516;&#27493;" list.
+&#20854;&#22522;&#26412;&#21407;&#29702;&#31867;&#20284;&#20110;adapter&#27169;&#24335;, &#23454;&#29616;&#20102;&#19968;&#20010;&#26032;&#30340;list, &#34987;&#25552;&#20379;&#20102;
+&#21516;&#27493;&#21151;&#33021;. &#30475;&#19979;&#37096;&#20998;&#28304;&#30721;:
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">    public static &lt;T&gt; List&lt;T&gt; synchronizedList(List&lt;T&gt; list) {
+        return (list instanceof RandomAccess ?
+                new SynchronizedRandomAccessList&lt;&gt;(list) :
+                new SynchronizedList&lt;&gt;(list));
+    }
+
+    static class SynchronizedList&lt;E&gt;
+        extends SynchronizedCollection&lt;E&gt;
+        implements List&lt;E&gt; {
+        private static final long serialVersionUID = -7754090372962971524L;
+
+        final List&lt;E&gt; list;
+
+        SynchronizedList(List&lt;E&gt; list) {
+            super(list);
+            this.list = list;
+        }
+        SynchronizedList(List&lt;E&gt; list, Object mutex) {
+            super(list, mutex);
+            this.list = list;
+        }
+
+        public boolean equals(Object o) {
+            if (this == o)
+                return true;
+            synchronized (mutex) {return list.equals(o);}
+        }
+        public int hashCode() {
+            synchronized (mutex) {return list.hashCode();}
+        }
+
+        public E get(int index) {
+            synchronized (mutex) {return list.get(index);}
+        }
+        public E set(int index, E element) {
+            synchronized (mutex) {return list.set(index, element);}
+        }
+        public void add(int index, E element) {
+            synchronized (mutex) {list.add(index, element);}
+        }
+        public E remove(int index) {
+            synchronized (mutex) {return list.remove(index);}
+        }
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span></pre>
+  </body>
+</html>

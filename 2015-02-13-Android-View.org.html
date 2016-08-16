@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!-- Created by htmlize-1.43 in css mode. -->
+<html>
+  <head>
+    <title>2015-02-13-Android-View.org</title>
+    <style type="text/css">
+    <!--
+      body {
+        color: #DCDCCC;
+        background-color: #3F3F3F;
+      }
+      .bold {
+        /* bold */
+        font-weight: bold;
+      }
+      .italic {
+        /* italic */
+        font-style: italic;
+      }
+      .org-block {
+        /* org-block */
+        color: #009acd;
+      }
+      .org-block-begin-line {
+        /* org-block-begin-line */
+        color: #7F9F7F;
+      }
+      .org-block-end-line {
+        /* org-block-end-line */
+        color: #7F9F7F;
+      }
+      .org-level-1 {
+        /* org-level-1 */
+        color: #DFAF8F;
+        font-size: 130%;
+        text-decoration: overline;
+      }
+      .org-level-2 {
+        /* org-level-2 */
+        color: #BFEBBF;
+        font-size: 120%;
+      }
+      .org-meta-line {
+        /* org-meta-line */
+        color: #7F9F7F;
+      }
+      .org-table {
+        /* org-table */
+        color: #9FC59F;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+  </head>
+  <body>
+    <pre>
+<span class="org-meta-line">#+OPTIONS: num:nil</span>
+<span class="org-meta-line">#+OPTIONS: ^:nil</span>
+<span class="org-meta-line">#+OPTIONS: toc:nil</span>
+
+<span class="org-block-begin-line">#+BEGIN_HTML
+</span><span class="org-block">---
+layout: post
+title: Android View&#31508;&#35760;
+category: [Android]
+tag: [android]
+description: [Do some learnings/records/tips about android view]
+---
+</span><span class="org-block-end-line">#+END_HTML
+</span>
+(&#25345;&#32493;&#26356;&#26032;)
+ 
+View&#26159;Android &#20013;&#30340;&#29992;&#25143;&#20132;&#20114;&#32452;&#20214;,&#19968;&#20010; view &#23601;&#20195;&#34920;&#23631;&#24149;&#19978;&#30340;&#19968;&#22359;&#21306;&#22495;, &#20320;&#21487;&#20197;&#22312;&#36825;&#22359;&#21306;&#22495;&#19978;&#30011;&#22270;,
+&#28857;&#20987;, &#31227;&#21160;&#31561;&#21508;&#31181;&#25805;&#20316;.
+
+View &#30340;&#19968;&#20010;&#23376;&#31867;&#20026; ViewGroup,viewgroud &#26159;&#19968;&#31181;"&#24067;&#23616;"&#30340;&#27010;&#24565;, &#23427;&#26412;&#36523;&#23545;&#29992;&#25143;&#26159;&#19981;&#21487;&#35265;&#30340;, &#24320;&#21457;&#32773;
+&#21487;&#20197;&#22312;&#36890;&#36807; viewgroup &#23450;&#20041;&#21508;&#31181; view(&#25353;&#38062;,&#22270;&#29255;)&#30340;&#24067;&#23616;, viewgroup &#26412;&#36523;&#21487;&#20197;&#23884;&#22871; viewgroup.
+
+View &#22312;&#24212;&#29992;&#20013;&#36890;&#36807;"tree"&#30340;&#26041;&#24335;&#36827;&#34892;&#31649;&#29702;&#32500;&#25252;.&#21019;&#24314; view &#26377;&#20004;&#31181;&#26041;&#24335;:1&#26159;&#22312;&#20195;&#30721;&#20013;&#21160;&#24577;&#28155;&#21152;; 2&#26159;&#36890;&#36807;
+&#23450;&#20041;&#19968;&#20010; xml &#25991;&#20214;&#26469;&#28155;&#21152;.&#36890;&#24120;&#30340; Android &#24320;&#21457;&#37117;&#26159;&#20351;&#29992;&#31532;&#20108;&#31181;&#26041;&#24335;.
+
+<span class="italic">/****&#19979;&#38754;&#30340;&#20869;&#23481;&#22522;&#20110;&#28304;&#30721;&#21644;&#25991;&#26723;****/</span>
+<span class="org-level-1">* &#22522;&#26412;&#30693;&#35782;</span>
+<span class="org-level-2">** View&#30340;&#20301;&#32622;.</span>
+1. View&#26159;&#19968;&#20010;&#30697;&#24418;&#30340;&#29289;&#20307;, &#36890;&#36807;"&#24038;&#19978;&#35282;&#30340;&#22352;&#26631;"&#21644;"&#23485;/&#39640;"&#26469;&#25551;&#36848;&#19968;&#20010;view.
+   &#25551;&#36848;&#36825;&#20123;&#23646;&#24615;&#30340;&#21333;&#20301;&#26159;&#20687;&#32032;(pixel).
+2. &#36890;&#36807;getLeft()&#21644;getTop()&#21487;&#20197;&#33719;&#21462;&#19968;&#20010;view&#30340;&#24038;&#19978;&#35282;&#30340;"X/Y"&#22352;&#26631;, &#36825;&#20010;&#22352;&#26631;&#26159;&#30456;&#23545;&#20110;
+   &#35813;view&#30340;parent&#32780;&#35328;&#30340;. &#20363;&#22914;,&#35843;&#29992;getLeft()&#24471;&#21040;20, &#35828;&#26126;&#35813;view&#20301;&#20110;&#20854;&#29238;view&#21491;&#36793;20&#20687;&#32032;&#22788;.
+<span class="org-level-2">** &#22823;&#23567;&#21644;&#36793;&#36317;</span>
+1. &#27599;&#20010;view&#37117;&#26377;&#20004;&#32452;"&#23485;/&#39640;"&#23646;&#24615;
+   + &#19968;&#32452;&#31216;&#20026;measured width/height, &#36825;&#20010;&#23646;&#24615;&#23450;&#20041;&#20102;view"&#24819;"&#22312;parent&#20013;&#30340;&#22823;&#23567;.
+   + &#19968;&#32452;&#31216;&#20026;width/height, &#36825;view&#30011;&#22312;&#23631;&#24149;&#19978;&#30340;&#23454;&#38469;&#22823;&#23567;.
+<span class="org-level-2">** Layout</span>
+Layout&#21253;&#21547;&#20004;&#20010;&#36807;&#31243;:measure&#21644;layout.
+
+<span class="org-level-2">** &#22352;&#26631;&#31995;&#32479;</span>
+&#32972;&#26223;&#30693;&#35782;: &#19968;&#20010;View&#30340;&#29238;view&#33539;&#22260;&#26377;&#21487;&#33021;&#22312;&#24403;&#21069;&#23631;&#24149;&#20043;&#22806;.
+
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">---------------------------------
+|parent   | screen     |        |
+|view     |  --------  |        |
+|         |  |      |  |        |
+|         |  |      |  |        |
+|         |  |view  |  |        |
+|         |  |      |  |        |
+|         |  |      |  |        |
+|         |  --------  |        |
+|         |            |        |
+---------------------------------
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>
+<span class="org-table">|                           |                                              |</span>
+<span class="org-table">|---------------------------+----------------------------------------------|</span>
+<span class="org-table">| getLeft()                 | &#24038;&#36793;&#30028;&#19982; </span><span class="bold"><span class="org-table">*&#29238;&#35270;&#22270;*</span></span><span class="org-table"> &#24038;&#36793;&#30028;&#36317;&#31163;                 |</span>
+<span class="org-table">| getRight()                | &#21491;&#36793;&#30028;&#19982; </span><span class="bold"><span class="org-table">*&#29238;&#35270;&#22270;*</span></span><span class="org-table"> &#24038;&#36793;&#30028;&#36317;&#31163;                 |</span>
+<span class="org-table">| getTop()/getBottom()      | &#19978;/&#19979;&#36793;&#30028;&#19982; </span><span class="bold"><span class="org-table">*&#29238;&#35270;&#22270;*</span></span><span class="org-table"> &#19978;&#36793;&#30028;&#36317;&#31163;              |</span>
+<span class="org-table">| getHeight()/getWidth()    | </span><span class="bold"><span class="org-table">*&#33258;&#36523;*</span></span><span class="org-table"> &#23485;/&#39640;                                 |</span>
+<span class="org-table">| getX()/getY()             | &#20107;&#20214;&#28857;&#36317;&#31163; </span><span class="bold"><span class="org-table">*&#33258;&#36523;*</span></span><span class="org-table"> &#24038;/&#19978;&#36793;&#30028;&#30340;&#36317;&#31163;            |</span>
+<span class="org-table">| getRawX()/getRawY()       | &#20107;&#20214;&#28857;&#36317;&#31163; </span><span class="bold"><span class="org-table">*&#23631;&#24149;*</span></span><span class="org-table"> &#24038;/&#19978;&#36793;&#30028;&#30340;&#36317;&#31163;            |</span>
+<span class="org-table">| getScrollX()/getScrollY() | view&#30456;&#23545;&#20110; </span><span class="bold"><span class="org-table">*&#23631;&#24149;*</span></span><span class="org-table"> &#24038;&#19978;&#35282;&#30340;&#28378;&#21160;&#36317;&#31163;(&#21487;&#27491;&#21487;&#36127;) |</span>
+<span class="org-table">| getLocationInWindow()     | &#33719;&#21462;&#22312; </span><span class="bold"><span class="org-table">*&#31383;&#21475;*</span></span><span class="org-table"> &#20869;&#30340;&#22352;&#26631;                       |</span>
+<span class="org-table">| getLocationInScreen       | &#22312; </span><span class="bold"><span class="org-table">*&#23631;&#24149;*</span></span><span class="org-table"> &#20013;&#30340;&#20301;&#32622;.                          |</span>
+<span class="org-table">| scrollTo(x,y)             | &#23558; </span><span class="bold"><span class="org-table">*&#23631;&#24149;*</span></span><span class="org-table"> &#31227;&#21160;&#21040; </span><span class="bold"><span class="org-table">*&#29238;&#35270;&#22270;*</span></span><span class="org-table"> &#30340; (x,y)&#22788;         |</span>
+<span class="org-table">| getScrollX()/getScrollY() | </span><span class="bold"><span class="org-table">*&#23631;&#24149;*</span></span><span class="org-table"> &#36793;&#32536;&#21040; </span><span class="bold"><span class="org-table">*&#29238;&#35270;&#22270;*</span></span><span class="org-table"> &#36793;&#32536;&#30340;&#20301;&#32622;            |</span>
+<span class="org-level-2">** &#36866;&#37197;</span>
+<span class="org-table">|                                   |                                     |</span>
+<span class="org-table">|-----------------------------------+-------------------------------------|</span>
+<span class="org-table">| &#20998;&#36776;&#29575;                            | px, &#27178;&#32437;&#21521;&#19978;&#30340;&#20687;&#32032;&#28857;&#25968;, &#22914;1920x1080 |</span>
+<span class="org-table">| &#20687;&#32032;&#23494;&#24230;(density)                 | dpi, &#27599;&#33521;&#23544;&#19978;&#30340;&#20687;&#32032;&#28857;&#25968;, &#31561;&#20110;"&#23545;&#35282;&#32447;&#20687;&#32032;/&#23610;&#23544;" |</span>
+<span class="org-table">| dp                                | &#36923;&#36753;&#23494;&#24230;&#35745;&#31639;&#21333;&#20301;, px=(dpi/160) * dp |</span>
+<span class="org-table">| mdpi                              | 120dpi-160dpi                       |</span>
+<span class="org-table">| hdpi                              | 160-240                             |</span>
+<span class="org-table">| xhdpi                             | 240-320                             |</span>
+<span class="org-table">| xxhdpi                            | 320-480                             |</span>
+<span class="org-table">| getResource().getDisplayMetrics() |                                     |</span>
+<span class="org-table">| metrics.heightPixels              | &#23631;&#24149;&#39640; px                           |</span>
+<span class="org-table">| metrics.widthPixels               | &#23631;&#24149;&#23485; px                           |</span>
+<span class="org-table">| metrics.densityDpi                | &#23494;&#24230;(dpi)                           |</span>
+<span class="org-table">| metrics.density                   | densityDpi/160 = dpi/160            |</span>
+</pre>
+  </body>
+</html>
