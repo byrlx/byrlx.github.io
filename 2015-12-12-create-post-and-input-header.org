@@ -1,8 +1,7 @@
-# Created 2016-08-16 Tue 14:31
-#+OPTIONS: num:nil
+# Created 2016-08-16 Tue 14:49
 #+OPTIONS: ^:nil
 #+OPTIONS: H:nil
-#+OPTIONS: toc:nil
+#+OPTIONS: toc:t H:2
 #+TITLE: 
 #+AUTHOR: Zhengchao Xu
 用org mode写Jekyll博客需要在文章开头设置一些HTML export的配置,
@@ -15,10 +14,9 @@
 生成title和category.
 
 #+BEGIN_EXAMPLE 
-,#+OPTIONS: num:nil
 ,#+OPTIONS: ^:nil
 ,#+OPTIONS: H:nil
-,#+OPTIONS: toc:nil
+,#+OPTIONS: toc:t H:2
 ,#+AUTHOR: Zhengchao Xu
 ,#+EMAIL: xuzhengchaojob@gmail.com
 

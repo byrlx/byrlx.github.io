@@ -1,8 +1,7 @@
-# Created 2016-08-16 Tue 14:31
-#+OPTIONS: num:nil
+# Created 2016-08-16 Tue 14:48
 #+OPTIONS: ^:nil
 #+OPTIONS: H:nil
-#+OPTIONS: toc:nil
+#+OPTIONS: toc:t H:2
 #+TITLE: 
 #+AUTHOR: Zhengchao Xu
 Emacs lisp中最常见的函数调用即为List方式调用, 其形式为(name arg1..argn)

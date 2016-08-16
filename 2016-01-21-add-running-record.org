@@ -1,8 +1,7 @@
-# Created 2016-08-16 Tue 14:31
-#+OPTIONS: num:nil
+# Created 2016-08-16 Tue 14:49
 #+OPTIONS: ^:nil
 #+OPTIONS: H:nil
-#+OPTIONS: toc:nil
+#+OPTIONS: toc:t H:2
 #+TITLE: 
 #+AUTHOR: Zhengchao Xu
 正在慢慢培养[[http://xuzhengchao.com/Running-Record.html][跑步]]的习惯, 每次跑完之后都会记录到一个org文件中. 

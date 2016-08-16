@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-16 Tue 14:31 -->
+<!-- 2016-08-16 Tue 14:49 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -84,6 +84,27 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline7">结构化标记元素</a>
+<ul>
+<li><a href="#orgheadline1">标题.</a></li>
+<li><a href="#orgheadline2">修改导出层级.</a></li>
+<li><a href="#orgheadline3">目录.</a></li>
+<li><a href="#orgheadline4">换行, 引用</a></li>
+<li><a href="#orgheadline5">修饰符</a></li>
+<li><a href="#orgheadline6">注释</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline8">"字面"内容</a></li>
+<li><a href="#orgheadline9">引用其他文件</a></li>
+<li><a href="#orgheadline10">宏</a></li>
+<li><a href="#orgheadline11">LaTex</a></li>
+</ul>
+</div>
+</div>
 ---
 layout: post
 title: Orgmode手册6:富文本标记(导出前准备)
@@ -132,7 +153,7 @@ org mode默认会导出目录, 将其放在第一个标题的前面,目录深度
 </p>
 <pre class="example">
 #+OPTIONS: toc:2 (两层目录)
-#+OPTIONS: toc:nil (关掉目录)
+#+OPTIONS: toc:t H:2 (关掉目录)
 </pre>
 
 <p>
@@ -140,7 +161,7 @@ org mode默认会导出目录, 将其放在第一个标题的前面,目录深度
 配置到想插入的地方. 例如:
 </p>
 <pre class="example">
-#+OPTIONS: toc:nil        (no default TOC)
+#+OPTIONS: toc:t H:2        (no default TOC)
 ...
 #+TOC: headlines 2        (insert TOC here, with two headline levels)
 </pre>

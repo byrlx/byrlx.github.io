@@ -1,8 +1,7 @@
-# Created 2016-08-16 Tue 14:31
-#+OPTIONS: num:nil
+# Created 2016-08-16 Tue 14:49
 #+OPTIONS: ^:nil
 #+OPTIONS: H:nil
-#+OPTIONS: toc:nil
+#+OPTIONS: toc:t H:2
 #+TITLE: 
 #+AUTHOR: Zhengchao Xu
 Org mode提供了强大到"令人发指"的表格处理功能, 与excel不同, 

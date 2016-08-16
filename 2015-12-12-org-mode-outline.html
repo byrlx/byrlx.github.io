@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-16 Tue 14:31 -->
+<!-- 2016-08-16 Tue 14:49 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -84,6 +84,27 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">大纲模式(outline mode)</a></li>
+<li><a href="#orgheadline2">创建标题</a></li>
+<li><a href="#orgheadline3">标题显示</a></li>
+<li><a href="#orgheadline4">标题间移动</a></li>
+<li><a href="#orgheadline5">改变标题级别</a></li>
+<li><a href="#orgheadline6">操作标题内容</a></li>
+<li><a href="#orgheadline12">其他高级操作</a>
+<ul>
+<li><a href="#orgheadline7">初始化"可见性"</a></li>
+<li><a href="#orgheadline9">稀疏树显示</a></li>
+<li><a href="#orgheadline10">列表</a></li>
+<li><a href="#orgheadline11">脚注</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 ---
 layout: post
 title: Orgmode手册1:文档结构
@@ -538,9 +559,7 @@ Emacs打开org文件默认只显示顶层标题, 可以通过 "#+STARTUP" 选项
 </tbody>
 </table>
 </div>
-<div id="outline-container-orgheadline8" class="outline-5">
-<h5 id="orgheadline8">编辑"不可见区域"报错</h5>
-<div class="outline-text-5" id="text-orgheadline8">
+<ul class="org-ul"><li><a id="orgheadline8"></a>编辑"不可见区域"报错<br  /><div class="outline-text-5" id="text-orgheadline8">
 <p>
 有时候会不小心编辑到"不可见区域", 编辑器默认不会报错, 所以如果想组织这个
 行为, 可以在配置文件中设置org-catch-invisible-edits的值为非nil.例如下面
@@ -555,8 +574,7 @@ Emacs打开org文件默认只显示顶层标题, 可以通过 "#+STARTUP" 选项
 <p>
 org-catch-invisible-edits的更多参数可以参考 C-h v org-catch-invisible-edits 
 </p>
-</div>
-</div>
+</div></li></ul>
 </div>
 <div id="outline-container-orgheadline9" class="outline-3">
 <h3 id="orgheadline9">稀疏树显示</h3>

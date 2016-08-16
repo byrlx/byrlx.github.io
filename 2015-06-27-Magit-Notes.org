@@ -1,7 +1,6 @@
-# Created 2016-08-16 Tue 14:31
-#+OPTIONS: num:nil
+# Created 2016-08-16 Tue 14:49
 #+OPTIONS: ^:nil
-#+OPTIONS: toc:nil
+#+OPTIONS: toc:t H:2
 #+TITLE: 
 #+AUTHOR: Luis404
 项目官网: [[https://magit.vc/]]

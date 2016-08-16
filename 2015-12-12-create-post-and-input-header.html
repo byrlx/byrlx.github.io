@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-16 Tue 14:31 -->
+<!-- 2016-08-16 Tue 14:49 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -84,6 +84,21 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">header配置模板</a></li>
+<li><a href="#orgheadline2">编程实现</a>
+<ul>
+<li><a href="#orgheadline3">lx-create-post-today (title category)</a></li>
+<li><a href="#orgheadline4">lx-create-post (date title category)</a></li>
+<li><a href="#orgheadline5">lx-create-post-head (title category)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 ---
 layout: post
 title: 自动创建文章并设置Header
@@ -107,10 +122,9 @@ tag: [lisp, orgmode]
 </p>
 
 <pre class="example">
-#+OPTIONS: num:nil
 #+OPTIONS: ^:nil
 #+OPTIONS: H:nil
-#+OPTIONS: toc:nil
+#+OPTIONS: toc:t H:2
 #+AUTHOR: Zhengchao Xu
 #+EMAIL: xuzhengchaojob@gmail.com
 

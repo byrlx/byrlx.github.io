@@ -1,8 +1,7 @@
-# Created 2016-08-16 Tue 14:31
-#+OPTIONS: num:nil
+# Created 2016-08-16 Tue 14:49
 #+OPTIONS: ^:nil
 #+OPTIONS: H:nil
-#+OPTIONS: toc:nil
+#+OPTIONS: toc:t H:2
 #+TITLE: 
 #+AUTHOR: Zhengchao Xu
 使用OrgMode的 [[http://xuzhengchao.com/orgmode/org-capture.html]["Capture"]] 功能随时记录喜欢的文章, 便于整理和搜索.

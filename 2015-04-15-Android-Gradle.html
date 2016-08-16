@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-16 Tue 14:31 -->
+<!-- 2016-08-16 Tue 14:49 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -84,6 +84,56 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">介绍</a>
+<ul>
+<li><a href="#orgheadline2">Android新编译系统的目标</a></li>
+<li><a href="#orgheadline3">为什么选择Gradle?</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline4">要求</a></li>
+<li><a href="#orgheadline5">基础配置</a>
+<ul>
+<li><a href="#orgheadline6">简单配置文件</a></li>
+<li><a href="#orgheadline9">工程结构</a></li>
+<li><a href="#orgheadline13">编译任务</a></li>
+<li><a href="#orgheadline14">基础的编译客制化</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline20">依赖,库以及多工程设置</a>
+<ul>
+<li><a href="#orgheadline23">依赖二进制包</a></li>
+<li><a href="#orgheadline24">多工程设置</a></li>
+<li><a href="#orgheadline25">库工程设置</a></li>
+<li><a href="#orgheadline28">引用库</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline30">测试</a>
+<ul>
+<li><a href="#orgheadline31">单元测试</a></li>
+<li><a href="#orgheadline32">基本配置</a></li>
+<li><a href="#orgheadline33"><span class="todo nilTODO">TODO</span> 运行测试</a></li>
+<li><a href="#orgheadline34"><span class="todo nilTODO">TODO</span> 测试库</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline35">编译变量</a>
+<ul>
+<li><a href="#orgheadline36">产品flavors</a></li>
+<li><a href="#orgheadline37">编译变量=编译类型+产品flavor</a></li>
+<li><a href="#orgheadline38">Flavor配置</a></li>
+<li><a href="#orgheadline39">资源集和依赖</a></li>
+<li><a href="#orgheadline40">编译和任务</a></li>
+<li><a href="#orgheadline41">测试</a></li>
+<li><a href="#orgheadline42"><span class="todo nilTODO">TODO</span> 多flavor变量</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline43"><span class="todo nilTODO">TODO</span> 高级配置</a></li>
+</ul>
+</div>
+</div>
 ---
 layout: post
 title: Android Gradle Plugin User Guide 文档翻译 
@@ -218,9 +268,7 @@ buildtoolsVersion字段.
 <div id="outline-container-orgheadline9" class="outline-3">
 <h3 id="orgheadline9">工程结构</h3>
 <div class="outline-text-3" id="text-orgheadline9">
-</div><div id="outline-container-orgheadline7" class="outline-4">
-<h4 id="orgheadline7">默认目录结构</h4>
-<div class="outline-text-4" id="text-orgheadline7">
+</div><ul class="org-ul"><li><a id="orgheadline7"></a>默认目录结构<br  /><div class="outline-text-4" id="text-orgheadline7">
 <p>
 上节描述的配置文件需要一个默认的目录结构.但是,gradle遵循
 约定优于配置(convention over configuration)的概念,并在
@@ -252,12 +300,9 @@ source sets一般有两个目录:源码目录和测试目录.他们的位置:
 <p>
 注: src/androidTest/AndroidManifest.xml并不需要,AS会自动创建.
 </p>
-</div>
-</div>
+</div></li>
 
-<div id="outline-container-orgheadline8" class="outline-4">
-<h4 id="orgheadline8">配置目录结构</h4>
-<div class="outline-text-4" id="text-orgheadline8">
+<li><a id="orgheadline8"></a>配置目录结构<br  /><div class="outline-text-4" id="text-orgheadline8">
 <ol class="org-ol">
 <li><p>
 java工程
@@ -318,15 +363,12 @@ setRoot()函数可以将源码目录移动到新目录.例如这里将 src/andro
 移动到 test/*.
 </p></li>
 </ol>
-</div>
-</div>
+</div></li></ul>
 </div>
 <div id="outline-container-orgheadline13" class="outline-3">
 <h3 id="orgheadline13">编译任务</h3>
 <div class="outline-text-3" id="text-orgheadline13">
-</div><div id="outline-container-orgheadline10" class="outline-4">
-<h4 id="orgheadline10">一般任务</h4>
-<div class="outline-text-4" id="text-orgheadline10">
+</div><ul class="org-ul"><li><a id="orgheadline10"></a>一般任务<br  /><div class="outline-text-4" id="text-orgheadline10">
 <p>
 使用插件会自动生成一个可以运行的任务集.一般的任务集包括:
 </p>
@@ -352,14 +394,9 @@ assemble/check/build本身并不做什么实际工作.他们是一些"钩子"
 在命令行: 可以使用下述命令运行 <b>高层次</b> 的任务: gradle task.
 <b>gradlw tasks -all</b> 可以显示所有的任务及其依赖.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline11" class="outline-4">
-<h4 id="orgheadline11"><span class="todo TODO">TODO</span> Java工程任务</h4>
-</div>
-<div id="outline-container-orgheadline12" class="outline-4">
-<h4 id="orgheadline12">Android工程任务</h4>
-<div class="outline-text-4" id="text-orgheadline12">
+</div></li>
+<li><a id="orgheadline11"></a><span class="todo TODO">TODO</span> Java工程任务<br  /></li>
+<li><a id="orgheadline12"></a>Android工程任务<br  /><div class="outline-text-4" id="text-orgheadline12">
 <p>
 Android工程的任务一般包括:
 </p>
@@ -412,8 +449,7 @@ Android工程的任务一般包括:
 同时,gradle插件对于所有的编译类型(debug/release/test),都创建了install/uninstall
 任务.
 </p>
-</div>
-</div>
+</div></li></ul>
 </div>
 <div id="outline-container-orgheadline14" class="outline-3">
 <h3 id="orgheadline14">基础的编译客制化</h3>
@@ -422,9 +458,7 @@ Android工程的任务一般包括:
 Android插件提供了丰富的DSL语言来实现编译系统的客制化.
 </p>
 </div>
-<div id="outline-container-orgheadline15" class="outline-4">
-<h4 id="orgheadline15">Manifest项</h4>
-<div class="outline-text-4" id="text-orgheadline15">
+<ul class="org-ul"><li><a id="orgheadline15"></a>Manifest项<br  /><div class="outline-text-4" id="text-orgheadline15">
 <p>
 使用DSL,可以配置如下的manifest项:
 </p>
@@ -490,11 +524,8 @@ android {
 如果没有在配置文件中设置某个属性,会使用默认值.如果默认值是null(一些property的
 默认值是null),则在编译过程中会使用manifest文件中定义的值.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline16" class="outline-4">
-<h4 id="orgheadline16">编译类型</h4>
-<div class="outline-text-4" id="text-orgheadline16">
+</div></li>
+<li><a id="orgheadline16"></a>编译类型<br  /><div class="outline-text-4" id="text-orgheadline16">
 <p>
 Android插件默认会编译两个类型的应用程序:debug和release版本.
 debug版本使用一个"已知"的name/password来签名应用(这样在编译过程
@@ -581,12 +612,9 @@ assembleRelease一样,成为assemble任务的依赖.
 <li>代码作为另外一个源码目录.</li>
 <li>资源目录覆盖主目录中的相同值.</li>
 </ul>
-</div>
-</div>
+</div></li>
 
-<div id="outline-container-orgheadline17" class="outline-4">
-<h4 id="orgheadline17">签名配置</h4>
-<div class="outline-text-4" id="text-orgheadline17">
+<li><a id="orgheadline17"></a>签名配置<br  /><div class="outline-text-4" id="text-orgheadline17">
 <p>
 对一个应用做签名需要以下东西:
 </p>
@@ -648,12 +676,9 @@ android {
 注:如果工程使用版本控制系统.尽量不要将密码存在文件里.可以参考stackoverflow上的这个帖子.
 <a href="http://stackoverflow.com/questions/18328730/how-to-create-a-release-signed-apk-file-using-gradle">http://stackoverflow.com/questions/18328730/how-to-create-a-release-signed-apk-file-using-gradle</a>.
 </p>
-</div>
-</div>
+</div></li>
 
-<div id="outline-container-orgheadline18" class="outline-4">
-<h4 id="orgheadline18">运行ProGuard混淆</h4>
-<div class="outline-text-4" id="text-orgheadline18">
+<li><a id="orgheadline18"></a>运行ProGuard混淆<br  /><div class="outline-text-4" id="text-orgheadline18">
 <p>
 Gradle插件支持4.10版本的ProGuard. ProGuard插件默认是启用的.如果在"编译类型"中设置了
 <b>minifyEnable</b> 属性.会自动创建相关任务.例如在编译类型和flavor中使用ProGuard:
@@ -687,17 +712,13 @@ android {
 它们位于SDK中,可以通过getDefaultProguardFile()函数返回文件路径.除了启用优化功能外,
 这两个文件的内容是一样的.
 </p>
-</div>
-</div>
+</div></li>
 
-<div id="outline-container-orgheadline19" class="outline-4">
-<h4 id="orgheadline19">压缩资源</h4>
-<div class="outline-text-4" id="text-orgheadline19">
+<li><a id="orgheadline19"></a>压缩资源<br  /><div class="outline-text-4" id="text-orgheadline19">
 <p>
 可以在编译期间自动移除没用的资源.具体可以参考<a href="http://tools.android.com/tech-docs/new-build-system/resource-shrinking">http://tools.android.com/tech-docs/new-build-system/resource-shrinking</a>.
 </p>
-</div>
-</div>
+</div></li></ul>
 </div>
 </div>
 
@@ -711,9 +732,7 @@ android {
 <div id="outline-container-orgheadline23" class="outline-3">
 <h3 id="orgheadline23">依赖二进制包</h3>
 <div class="outline-text-3" id="text-orgheadline23">
-</div><div id="outline-container-orgheadline21" class="outline-4">
-<h4 id="orgheadline21">本地包</h4>
-<div class="outline-text-4" id="text-orgheadline21">
+</div><ul class="org-ul"><li><a id="orgheadline21"></a>本地包<br  /><div class="outline-text-4" id="text-orgheadline21">
 <p>
 当需要使用外部的jar包时,需要在<a id="orgtarget4"></a>段中添加<a id="orgtarget5"></a>配置(dependencies是标准的DSL元素,不属于android段).
 </p>
@@ -740,11 +759,8 @@ android {
 每创建一个新的类型,都会自动创建一个类似"&lt;buildtype&gt;Compile"的配置.
 如果不同的编译类型需要不同的库依赖(或依赖库的不同版本),上述配置会很有用.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline22" class="outline-4">
-<h4 id="orgheadline22">远程组件</h4>
-<div class="outline-text-4" id="text-orgheadline22">
+</div></li>
+<li><a id="orgheadline22"></a>远程组件<br  /><div class="outline-text-4" id="text-orgheadline22">
 <p>
 Gradle支持从Maven和Ivy库中下载依赖库.
 首先将仓库添加到 <b>repositories</b> 段中.然后在 <b>dependencies</b> 中添加依赖.
@@ -764,8 +780,7 @@ dependencies {
 具体使用可以参考<a href="http://gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html">http://gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html</a>
 和 <a href="http://gradle.org/docs/current/dsl/org.gradle.api.artifacts.dsl.DependencyHandler.html">http://gradle.org/docs/current/dsl/org.gradle.api.artifacts.dsl.DependencyHandler.html</a>.
 </p>
-</div>
-</div>
+</div></li></ul>
 </div>
 
 <div id="outline-container-orgheadline24" class="outline-3">
@@ -843,9 +858,7 @@ dependencies {
 如果上面的库要使用android的API,应该将它们定义成Android库工程.
 </p>
 </div>
-<div id="outline-container-orgheadline26" class="outline-4">
-<h4 id="orgheadline26">创建Android库工程</h4>
-<div class="outline-text-4" id="text-orgheadline26">
+<ul class="org-ul"><li><a id="orgheadline26"></a>创建Android库工程<br  /><div class="outline-text-4" id="text-orgheadline26">
 <p>
 创建一个android库工程需要使用一个不同的plugin.
 </p>
@@ -866,11 +879,8 @@ android {
     compileSdkVersion 15
 }
 </pre>
-</div>
-</div>
-<div id="outline-container-orgheadline27" class="outline-4">
-<h4 id="orgheadline27">工程和库工程的区别</h4>
-<div class="outline-text-4" id="text-orgheadline27">
+</div></li>
+<li><a id="orgheadline27"></a>工程和库工程的区别<br  /><div class="outline-text-4" id="text-orgheadline27">
 <p>
 一个库工程会编译为"aar"(Android archive)包.该包整合了代码和资源.同时也可以在库工程中
 编译测试APK来对库做测试.
@@ -879,8 +889,7 @@ android {
 <p>
 其他的基本与正常的工程相同.
 </p>
-</div>
-</div>
+</div></li></ul>
 </div>
 <div id="outline-container-orgheadline28" class="outline-3">
 <h3 id="orgheadline28">引用库</h3>
@@ -889,9 +898,7 @@ android {
 库引用和其他的工程引用一样,需要在dependencies中添加 "compile project"即可.
 </p>
 </div>
-<div id="outline-container-orgheadline29" class="outline-4">
-<h4 id="orgheadline29">库发布</h4>
-<div class="outline-text-4" id="text-orgheadline29">
+<ul class="org-ul"><li><a id="orgheadline29"></a>库发布<br  /><div class="outline-text-4" id="text-orgheadline29">
 <p>
 默认情况下,库只发布release版本,无论依赖该库的其他工程发布的是那个版本.
 可以通过配置来控制发布那个版本:
@@ -913,8 +920,7 @@ android {
    publishNonDefault true
 }
 </pre>
-</div>
-</div>
+</div></li></ul>
 </div>
 </div>
 <div id="outline-container-orgheadline30" class="outline-2">

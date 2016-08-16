@@ -1,7 +1,6 @@
-# Created 2016-08-16 Tue 14:31
-#+OPTIONS: num:nil
+# Created 2016-08-16 Tue 14:49
 #+OPTIONS: ^:nil
-#+OPTIONS: toc:nil
+#+OPTIONS: toc:t H:2
 #+TITLE: 
 #+AUTHOR: Zhengchao Xu
 本文的主要目的是介绍本博客的架构, 以及说明如何用[[http://xuzhengchao.com/orgmode/org-mode-outline.html][OrgMode]] 来体验纯粹写作的快乐, 

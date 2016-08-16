@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-16 Tue 14:31 -->
+<!-- 2016-08-16 Tue 14:49 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -84,6 +84,19 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline5">命令实现</a>
+<ul>
+<li><a href="#orgheadline1">核心函数</a></li>
+<li><a href="#orgheadline2">命令</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 ---
 layout: post
 title: 自动添加跑步记录
@@ -154,9 +167,7 @@ tags: [elisp]
 基于<a href="#orgheadline1">核心函数</a>写了两个emacs交互命令来让输入跑步记录.
 </p>
 </div>
-<div id="outline-container-orgheadline3" class="outline-4">
-<h4 id="orgheadline3">(lx-add-running day km loc)</h4>
-<div class="outline-text-4" id="text-orgheadline3">
+<ul class="org-ul"><li><a id="orgheadline3"></a>(lx-add-running day km loc)<br  /><div class="outline-text-4" id="text-orgheadline3">
 <p>
 该函数会提示用户输入跑步的日期,距离和地点.然后调用(lx-add-running-record)
 </p>
@@ -165,11 +176,8 @@ tags: [elisp]
   (interactive "sInput day: \nsInput distance: \nsInput location: ")
   (lx-add-running-record  day km loc))
 </pre>
-</div>
-</div>
-<div id="outline-container-orgheadline4" class="outline-4">
-<h4 id="orgheadline4">(lx-add-running-today km loc)</h4>
-<div class="outline-text-4" id="text-orgheadline4">
+</div></li>
+<li><a id="orgheadline4"></a>(lx-add-running-today km loc)<br  /><div class="outline-text-4" id="text-orgheadline4">
 <p>
 该函数接受距离和地点两个参数, 并通过elisp的 (format-time-string)自动
 生成今天的日期.
@@ -184,8 +192,7 @@ tags: [elisp]
 存放跑步记录的org文件如下, 还不错, 可以通过<a href="http://xuzhengchao.com/orgmode/orgmode-table.html">这篇文章</a> 来了解org mode的表格的更多知识.
 <img src="../../../../public/img/running.png" alt="running.png" />
 </p>
-</div>
-</div>
+</div></li></ul>
 </div>
 </div>
 </div>

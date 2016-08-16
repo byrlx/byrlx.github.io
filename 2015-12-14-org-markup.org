@@ -1,8 +1,7 @@
-# Created 2016-08-16 Tue 14:31
-#+OPTIONS: num:nil
+# Created 2016-08-16 Tue 14:49
 #+OPTIONS: ^:nil
 #+OPTIONS: H:nil
-#+OPTIONS: toc:nil
+#+OPTIONS: toc:t H:2
 #+TITLE: 
 #+AUTHOR: Zhengchao Xu
 org mode另一个牛X闪闪的功能就是导出功能, 
@@ -27,13 +26,13 @@ org mode默认会导出目录, 将其放在第一个标题的前面,目录深度
 深度或将其关闭. 例如
 #+BEGIN_EXAMPLE
 ,#+OPTIONS: toc:2 (两层目录)
-,#+OPTIONS: toc:nil (关掉目录)
+,#+OPTIONS: toc:t H:2 (关掉目录)
 #+END_EXAMPLE
 
 如果想改变目录的导出位置, 先将默认导出关闭, 然后使用 *#+TOC: headlines N*
 配置到想插入的地方. 例如:
 #+BEGIN_EXAMPLE
-,#+OPTIONS: toc:nil        (no default TOC)
+,#+OPTIONS: toc:t H:2        (no default TOC)
 ...
 ,#+TOC: headlines 2        (insert TOC here, with two headline levels)
 #+END_EXAMPLE

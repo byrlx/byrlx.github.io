@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-16 Tue 14:31 -->
+<!-- 2016-08-16 Tue 14:49 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -84,6 +84,22 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">简介</a></li>
+<li><a href="#orgheadline2">核心数据结构</a>
+<ul>
+<li><a href="#orgheadline3">Source and Sink</a></li>
+<li><a href="#orgheadline6">BufferedSource and BufferedSink</a></li>
+<li><a href="#orgheadline7">Segment</a></li>
+<li><a href="#orgheadline12">Buffer</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 ---
 layout: post
 title: Okio 源码学习 
@@ -130,9 +146,7 @@ IO系统就是读写系统, 更直接的说就是二进制流的流动, 所以�
 </p>
 </div>
 
-<div id="outline-container-orgheadline4" class="outline-4">
-<h4 id="orgheadline4">Source源码</h4>
-<div class="outline-text-4" id="text-orgheadline4">
+<ul class="org-ul"><li><a id="orgheadline4"></a>Source源码<br  /><div class="outline-text-4" id="text-orgheadline4">
 <p>
 Source的实现比较简单, 就是一个继承了Closeable的接口, 只定义了 read()/timeout()/close()
 三个函数.
@@ -164,11 +178,8 @@ Buffer也是Okio的核心数据结构, 后面会讲到.
 }
 </pre>
 </div>
-</div>
-</div>
-<div id="outline-container-orgheadline5" class="outline-4">
-<h4 id="orgheadline5">Sink源码</h4>
-<div class="outline-text-4" id="text-orgheadline5">
+</div></li>
+<li><a id="orgheadline5"></a>Sink源码<br  /><div class="outline-text-4" id="text-orgheadline5">
 <p>
 Sink与Source类似, 也是一个接口, 继承了Closeable和Flushable两个接口, 同时定义(重写)了
 write()/flush()/timeout()/close()四个函数. 
@@ -200,8 +211,7 @@ write()也接受一个Buffer参数, 与Source的read()不同的是: 在read()中
 }
 </pre>
 </div>
-</div>
-</div>
+</div></li></ul>
 </div>
 <div id="outline-container-orgheadline6" class="outline-3">
 <h3 id="orgheadline6">BufferedSource and BufferedSink</h3>
@@ -292,9 +302,7 @@ segment.</li>
 不可以往data中写数据.</li>
 </ol>
 </div>
-<div id="outline-container-orgheadline8" class="outline-4">
-<h4 id="orgheadline8">SegmentPool</h4>
-<div class="outline-text-4" id="text-orgheadline8">
+<ul class="org-ul"><li><a id="orgheadline8"></a>SegmentPool<br  /><div class="outline-text-4" id="text-orgheadline8">
 <p>
 Okio实现了一个segment池, 用于segment的获取和回收, 该segment pool通过"单链表"的方式
 组织segment, 分为"获取"和"回收"操作:
@@ -307,15 +315,12 @@ Okio实现了一个segment池, 用于segment的获取和回收, 该segment pool�
 <li>segment池的大小已经容不下该segment, 直接抛弃(会被GC回收).</li>
 </ul></li>
 </ol>
-</div>
-</div>
+</div></li></ul>
 </div>
 <div id="outline-container-orgheadline12" class="outline-3">
 <h3 id="orgheadline12">Buffer</h3>
 <div class="outline-text-3" id="text-orgheadline12">
-</div><div id="outline-container-orgheadline9" class="outline-4">
-<h4 id="orgheadline9">介绍</h4>
-<div class="outline-text-4" id="text-orgheadline9">
+</div><ul class="org-ul"><li><a id="orgheadline9"></a>介绍<br  /><div class="outline-text-4" id="text-orgheadline9">
 <p>
 Buffer是Okio的存储数据的结构, 它的灵活性非常强, 官方文档里介绍了它的三个优点:
 </p>
@@ -330,21 +335,15 @@ Buffer是Okio的存储数据的结构, 它的灵活性非常强, 官方文档里
 Buffer类继承自前面介绍的BufferSource和BufferSink类, 所以它既可以作为"源", 又可以作为"目的"
 来使用.
 </p>
-</div>
-</div>
+</div></li>
 
-<div id="outline-container-orgheadline10" class="outline-4">
-<h4 id="orgheadline10">成员变量</h4>
-<div class="outline-text-4" id="text-orgheadline10">
+<li><a id="orgheadline10"></a>成员变量<br  /><div class="outline-text-4" id="text-orgheadline10">
 <p>
 buffer只有两个成员变量: head, size. head是一个Segment类型的变量, 由此来看buffe的内部数据
 的组织单位Segment, Segment的天然链表构造也使其天然可以动态的Buffer的数据大小.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline11" class="outline-4">
-<h4 id="orgheadline11">API分析</h4>
-<div class="outline-text-4" id="text-orgheadline11">
+</div></li>
+<li><a id="orgheadline11"></a>API分析<br  /><div class="outline-text-4" id="text-orgheadline11">
 <ol class="org-ol">
 <li><p>
 write()/read()系列函数
@@ -527,8 +526,7 @@ semeng的split()函数代码如下:
 </ul></li>
 </ol></li>
 </ol>
-</div>
-</div>
+</div></li></ul>
 </div>
 </div>
 </div>

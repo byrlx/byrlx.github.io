@@ -1,4 +1,4 @@
-# Created 2016-08-16 Tue 14:31
+# Created 2016-08-16 Tue 14:48
 #+OPTIONS: toc:t H:2
 #+TITLE: Org-mode Frequently Asked Questions
 #+AUTHOR: Worg people
@@ -2140,7 +2140,7 @@ automatically.
 If the following occurs:
 
 #+BEGIN_SRC org
-  ,#+OPTIONS: toc:nil
+  ,#+OPTIONS: toc:t H:2
   Some entered text.
   ,# More entered tex.
 #+END_SRC
@@ -3584,7 +3584,7 @@ contain the following header:
 : #+TITLE: My Paper
 : #+AUTHOR: Jane Doe
 : #+DATE:
-: #+OPTIONS: toc:nil num:nil
+: #+OPTIONS: toc:t H:2 num:nil
 : #+LATEX_CMD: xelatex
 : #+LATEX_HEADER: \setsansfont[Mapping=tex-text]{Unit-Bold}
 : #+LATEX_HEADER: \setmonofont[Mapping=tex-text,Scale=MatchLowercase]{PragmataPro}
