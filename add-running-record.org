@@ -1,4 +1,4 @@
-# Created 2016-08-16 Tue 16:19
+# Created 2016-08-16 Tue 17:04
 #+OPTIONS: toc:t H:3
 #+TITLE: 自动添加跑步记录
 #+AUTHOR: Zhengchao Xu

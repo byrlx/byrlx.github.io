@@ -1,4 +1,4 @@
-# Created 2016-08-16 Tue 16:18
+# Created 2016-08-16 Tue 17:04
 #+OPTIONS: toc:t H:3
 #+TITLE: 求解函数 f(x)=0
 #+AUTHOR: Zhengchao Xu

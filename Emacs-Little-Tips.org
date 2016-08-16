@@ -1,4 +1,4 @@
-# Created 2016-08-16 Tue 16:19
+# Created 2016-08-16 Tue 17:05
 #+OPTIONS: toc:t H:3
 #+TITLE: Emacs Little Tips
 #+AUTHOR: Zhengchao Xu
