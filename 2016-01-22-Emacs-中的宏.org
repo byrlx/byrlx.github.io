@@ -1,6 +1,0 @@
-# Created 2016-08-16 Tue 14:49
-#+OPTIONS: ^:nil
-#+OPTIONS: H:nil
-#+OPTIONS: toc:t H:2
-#+TITLE: 
-#+AUTHOR: Zhengchao Xu

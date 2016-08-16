@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!-- Created by htmlize-1.43 in css mode. -->
+<html>
+  <head>
+    <title>create-post-and-input-header.org</title>
+    <style type="text/css">
+    <!--
+      body {
+        color: #DCDCCC;
+        background-color: #3F3F3F;
+      }
+      .org-document-info {
+        /* org-document-info */
+        color: #afeeee;
+      }
+      .org-document-info-keyword {
+        /* org-document-info-keyword */
+        color: #b3b3b3;
+      }
+      .org-document-title {
+        /* org-document-title */
+        color: #afeeee;
+        font-weight: bold;
+      }
+      .org-level-1 {
+        /* org-level-1 */
+        color: #DFAF8F;
+        font-size: 130%;
+        text-decoration: overline;
+      }
+      .org-level-2 {
+        /* org-level-2 */
+        color: #BFEBBF;
+        font-size: 120%;
+      }
+      .org-link {
+        /* org-link */
+        color: #D0BF8F;
+        text-decoration: underline;
+      }
+      .org-meta-line {
+        /* org-meta-line */
+        color: #7F9F7F;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+  </head>
+  <body>
+    <pre>
+<span class="org-meta-line">#+OPTIONS: toc:t H:3</span>
+<span class="org-document-info-keyword">#+AUTHOR:</span> <span class="org-document-info">Zhengchao Xu
+</span><span class="org-document-info-keyword">#+EMAIL:</span> <span class="org-document-info">xuzhengchaojob@gmail.com
+</span>
+<span class="org-document-info-keyword">#+TITLE:</span> <span class="org-document-title">&#33258;&#21160;&#21019;&#24314;&#25991;&#31456;&#24182;&#35774;&#32622;Header
+</span>&#29992;org mode&#20889;Jekyll&#21338;&#23458;&#38656;&#35201;&#22312;&#25991;&#31456;&#24320;&#22836;&#35774;&#32622;&#19968;&#20123;HTML export&#30340;&#37197;&#32622;,
+&#27599;&#27425;&#20889;&#25991;&#31456;&#37117;&#20889;&#19968;&#36941;, &#24456;&#32321;&#29712;, &#25925;&#20889;&#20102;&#19968;&#20010;elisp &#31243;&#24207;&#33258;&#21160;&#23454;&#29616;
+&#36825;&#20010;&#27493;&#39588;. 
+
+<span class="org-level-1">* header&#37197;&#32622;&#27169;&#26495;</span>
+&#19979;&#38754;&#26159;&#21338;&#23458;&#25991;&#31456;&#24320;&#22836;&#30340;&#35774;&#32622;&#27169;&#26495;,
+&#23558;&#27169;&#26495;&#25554;&#20837;&#21040;&#25991;&#31456;&#22836;&#37096;&#21518;, &#35201;&#26681;&#25454;&#21629;&#20196;&#21442;&#25968;&#33258;&#21160;
+&#29983;&#25104;title&#21644;category.
+
+#+BEGIN_EXAMPLE 
+ #+AUTHOR: Zhengchao Xu
+ #+EMAIL: xuzhengchaojob@gmail.com
+
+#+TITLE: :#+END_EXAMPLE
+
+
+<span class="org-level-1">* &#32534;&#31243;&#23454;&#29616;</span>
+&#23450;&#20041;&#20102;&#20004;&#20010;&#20989;&#25968;&#26469;&#23454;&#29616;&#36825;&#20010;&#21151;&#33021;, &#24182;&#23558;&#20854;&#35774;&#32622;&#20026;&#21629;&#20196;, 
+&#21487;&#20197;&#36890;&#36807;"M-x"&#26469;&#35843;&#29992;. &#36825;&#20004;&#20010;&#20989;&#25968;&#20026;:
+lx-create-post-today, lx-creat-post. &#31532;&#19968;&#20010;&#20989;&#25968;&#38656;&#35201;
+&#36755;&#20837;"title"&#21644;"category". &#31532;&#20108;&#20010;&#20989;&#25968;&#38656;&#35201;&#36755;&#20837;"date",
+"title"&#21644;"category"&#19977;&#20010;&#20989;&#25968;. 
+<span class="org-level-2">** lx-create-post-today (title category)</span>
+&#35813;&#20989;&#25968;&#23454;&#38469;&#19978;&#35843;&#29992;&#20102;lx-create-post&#36825;&#20010;&#20989;&#25968;, &#25152;&#20197;&#20854;&#20195;&#30721;&#27604;&#36739;&#31616;&#21333;:
+#+BEGIN_SRC elisp
+(defun lx-create-post-today (title category)
+  (interactive "sInput title:\nsInput category: ")
+  (lx-create-post (format-time-string "%Y-%m-%d") title category))
+#+END_SRC
+
+&#25191;&#34892;"M-x", &#36755;&#20837;&#21629;&#20196; <span class="org-link"><a href="file:../../../public/img/cmd.png">file:../../../public/img/cmd.png</a></span>
+
+&#25552;&#31034;&#36755;&#20837;title <span class="org-link"><a href="file:../../../public/img/title.png">file:../../../public/img/title.png</a></span>
+
+&#25552;&#31034;&#36755;&#20837;category. <span class="org-link"><a href="file:../../../public/img/category.png">file:../../../public/img/category.png</a></span>
+
+&#36755;&#20837;&#23436;&#25104;&#21518;, &#20250;&#22522;&#20110;&#24403;&#21069;&#30340;&#26085;&#26399;, &#21019;&#24314;&#25991;&#20214;&#21517;&#20026;"date-title.org"&#30340;&#25991;&#20214;,
+&#24182;&#23558;&#21442;&#25968;&#25554;&#20837;&#21040;&#27169;&#26495;&#30340;title&#21644;category&#30340;&#23545;&#24212;&#20301;&#32622;.  
+
+<span class="org-link"><a href="file:../../../public/img/header.png">file:../../../public/img/header.png</a></span>
+
+<span class="org-level-2">** lx-create-post (date title category)</span>
+&#35813;&#20989;&#25968;&#30340;&#20195;&#30721;&#23454;&#29616;&#22914;&#19979;,
+
+#+BEGIN_SRC elisp
+(defun lx-create-post (date title category)
+  (interactive "Input date title and category: %s %s %s")
+  ;; &#32452;&#35013;&#25991;&#20214;&#21517;
+  (setq whole-filename (concat ORG-PATH "blog/" date "-" title ".org"))
+  ;; &#21019;&#24314;&#25991;&#20214;, &#25171;&#24320;&#25991;&#20214;
+  (setq filebuf (find-file-other-window whole-filename))
+  ;; &#25554;&#20837;&#36890;&#29992;&#22836;&#37096;
+  (lx-create-post-head title category)
+  ;; &#20809;&#26631;&#23450;&#20301;&#22312;&#22836;&#37096;&#19979;&#36793;&#30340;&#31354;&#30333;&#34892;
+  )
+#+END_SRC
+
+&#20195;&#30721;&#35299;&#37322;:
++ &#39318;&#20808;&#25552;&#31034;&#36755;&#20837;"date", "title"&#21644;"category".
++ &#23558;&#26085;&#26399;&#21644;tilte&#32452;&#35013;&#25104;&#25991;&#20214;&#21517;
++ &#35843;&#29992;file-file-other-window&#21019;&#24314;&#24182;&#22312;&#26032;&#31383;&#21475;&#25171;&#24320;&#25991;&#20214;
++ &#35843;&#29992;lx-create-post-head&#25554;&#20837;head&#27169;&#26495;
+
+<span class="org-level-2">** lx-create-post-head (title category)</span>
+&#35813;&#20989;&#25968;&#29992;&#20110;&#25554;&#20837;&#21644;&#20462;&#25913;head&#27169;&#26495;
+#+BEGIN_SRC  elisp
+;; &#26681;&#25454;title&#21644;category&#29983;&#25104;&#22836;&#37096;
+(defun lx-create-post-head (title category)
+  ;;&#35835;&#21462;&#22836;&#37096;&#25991;&#20214;&#20869;&#23481;&#24182;&#25554;&#20837;&#21040;&#25991;&#20214;&#24320;&#22987;
+  (insert-file-contents "~/lx/GoogleDrive/lxorg/blog/header")
+  ;;&#31227;&#21160;&#20809;&#26631;, &#22635;&#20889;&#26631;&#39064;&#21644;category
+  (goto-char (point-max))
+  (forward-line -3)
+  (end-of-line)
+  (insert (concat "[" category "]"))
+  (forward-line -1)
+  (end-of-line)
+  (insert title)
+  )
+
+#+END_SRC
+&#20195;&#30721;&#35299;&#37322;:
++ &#35843;&#29992;insert-file-contents &#25554;&#20837;header&#27169;&#26495;
++ &#31227;&#21160;&#20809;&#26631;&#21040;&#26368;&#21518;&#19968;&#34892;
++ &#31227;&#21160;&#20809;&#26631;&#21040;&#21069;&#19977;&#34892;: category&#30340;&#37027;&#19968;&#34892;
++ &#31227;&#21160;&#21040;&#35813;&#34892;&#23614;&#37096;&#24182;&#25554;&#20837;category&#21442;&#25968;
++ &#21516;&#26679;&#30340;&#26041;&#27861;&#25554;&#20837;title
+</pre>
+  </body>
+</html>

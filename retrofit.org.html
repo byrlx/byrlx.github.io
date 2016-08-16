@@ -1,0 +1,440 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<!-- Created by htmlize-1.43 in css mode. -->
+<html>
+  <head>
+    <title>retrofit.org</title>
+    <style type="text/css">
+    <!--
+      body {
+        color: #DCDCCC;
+        background-color: #3F3F3F;
+      }
+      .bold {
+        /* bold */
+        font-weight: bold;
+      }
+      .italic {
+        /* italic */
+        font-style: italic;
+      }
+      .nxml-attribute-colon {
+      }
+      .nxml-attribute-local-name {
+        /* nxml-attribute-local-name */
+        color: #DFAF8F;
+      }
+      .nxml-attribute-prefix {
+        /* nxml-attribute-prefix */
+        color: #DCDCCC;
+        font-weight: bold;
+      }
+      .nxml-attribute-value {
+        /* nxml-attribute-value */
+        color: #CC9393;
+      }
+      .nxml-attribute-value-delimiter {
+        /* nxml-attribute-value-delimiter */
+        color: #CC9393;
+      }
+      .nxml-element-local-name {
+        /* nxml-element-local-name */
+        color: #93E0E3;
+      }
+      .nxml-tag-delimiter {
+      }
+      .nxml-tag-slash {
+      }
+      .nxml-text {
+      }
+      .org-block {
+        /* org-block */
+        color: #009acd;
+      }
+      .org-block-begin-line {
+        /* org-block-begin-line */
+        color: #7F9F7F;
+      }
+      .org-block-end-line {
+        /* org-block-end-line */
+        color: #7F9F7F;
+      }
+      .org-document-info {
+        /* org-document-info */
+        color: #afeeee;
+      }
+      .org-document-info-keyword {
+        /* org-document-info-keyword */
+        color: #b3b3b3;
+      }
+      .org-document-title {
+        /* org-document-title */
+        color: #afeeee;
+        font-weight: bold;
+      }
+      .org-level-1 {
+        /* org-level-1 */
+        color: #DFAF8F;
+        font-size: 130%;
+        text-decoration: overline;
+      }
+      .org-level-2 {
+        /* org-level-2 */
+        color: #BFEBBF;
+        font-size: 120%;
+      }
+      .org-link {
+        /* org-link */
+        color: #D0BF8F;
+        text-decoration: underline;
+      }
+      .org-meta-line {
+        /* org-meta-line */
+        color: #7F9F7F;
+      }
+      .org-target {
+        /* org-target */
+        text-decoration: underline;
+      }
+
+      a {
+        color: inherit;
+        background-color: inherit;
+        font: inherit;
+        text-decoration: inherit;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    -->
+    </style>
+  </head>
+  <body>
+    <pre>
+<span class="org-meta-line">#+OPTIONS: toc:t H:3</span>
+<span class="org-document-info-keyword">#+AUTHOR:</span> <span class="org-document-info">Zhengchao Xu
+</span><span class="org-document-info-keyword">#+EMAIL:</span> <span class="org-document-info">xuzhengchaojob@gmail.com
+</span>
+<span class="org-document-info-keyword">#+TITLE:</span> <span class="org-document-title">Retrofit&#20043;&#39033;&#30446;&#20171;&#32461;
+</span>(&#25345;&#32493;&#26356;&#26032;)
+
+&#35813;&#39033;&#30446;&#23448;&#32593; <span class="org-link"><a href="http://square.github.io/retrofit/">http://square.github.io/retrofit/</a></span>, github&#22320;&#22336;: <span class="org-link"><a href="https://github.com/square/retrofit">https://github.com/square/retrofit</a></span>
+
+<span class="org-level-1">* &#39033;&#30446;&#20171;&#32461;</span>
+&#23448;&#32593;&#23545;retrofit&#20171;&#32461;&#26159;&#36825;&#26159;&#19968;&#20010;"&#31867;&#22411;&#23433;&#20840;(type-safe)"&#30340;Android/Java http&#23458;&#25143;&#31471;. 
+&#30446;&#21069;retrofit&#30340;&#26368;&#26032;&#27491;&#24335;&#29256;&#26412;&#20026;1.9.0. 2.0&#29256;&#26412;&#39044;&#35745;2015&#24180;&#24213;&#21457;&#24067;, &#30456;&#36739;&#20110;&#20043;&#21069;&#29256;&#26412;, 
+2.0&#29256;&#26412;&#22312;&#26550;&#26500;&#19978;&#20570;&#20102;&#24456;&#22823;&#25913;&#21464;, &#26412;&#25991;&#20195;&#30721;&#30456;&#20851;&#30340;&#20869;&#23481;&#37117;&#26159;&#22522;&#20110;retrofit2.0-beta2.
+
+<span class="italic">/&#27880;: &#22312;&#32534;&#31243;&#35821;&#35328;&#30340;&#35821;&#27861;&#20013;, type-safe&#36890;&#24120;&#25351;&#32534;&#35793;&#22120;&#22312;&#32534;&#35793;&#26102;&#26816;&#26597;&#21464;&#37327;&#30340;&#31867;&#22411;, &#22914;&#26524;&#35797;&#22270;&#21521;/</span>
+<span class="italic">/&#21464;&#37327;&#20998;&#37197;&#19968;&#20010;&#38169;&#35823;&#30340;&#31867;&#22411;,&#32534;&#35793;&#22120;&#23601;&#20250;&#25253;&#38169;./</span>
+
+<span class="org-level-1">* &#22312;&#39033;&#30446;&#20013;&#20351;&#29992;retrofit</span>
+retrofit&#24211;&#21487;&#20197;&#22312;<span class="org-link"><a href="http://search.maven.org/#search%7Cga%7C1%7Cretrofit">maven.org</a></span> &#25214;&#21040;. &#21487;&#20197;&#30452;&#25509;&#28155;&#21152;&#21040;maven&#25110;gradle&#24037;&#31243;&#20013;.
++ Maven
+<span class="org-block-begin-line">  #+BEGIN_EXAMPLE xml
+</span><span class="nxml-tag-delimiter">&lt;</span><span class="nxml-element-local-name">dependency</span><span class="nxml-tag-delimiter">&gt;</span>
+  <span class="nxml-tag-delimiter">&lt;</span><span class="nxml-element-local-name">groupId</span><span class="nxml-tag-delimiter">&gt;</span><span class="nxml-text">com.squareup.retrofit</span><span class="nxml-tag-delimiter">&lt;</span><span class="nxml-tag-slash">/</span><span class="nxml-element-local-name">groupId</span><span class="nxml-tag-delimiter">&gt;</span>
+  <span class="nxml-tag-delimiter">&lt;</span><span class="nxml-element-local-name">artifactId</span><span class="nxml-tag-delimiter">&gt;</span><span class="nxml-text">retrofit</span><span class="nxml-tag-delimiter">&lt;</span><span class="nxml-tag-slash">/</span><span class="nxml-element-local-name">artifactId</span><span class="nxml-tag-delimiter">&gt;</span>
+  <span class="nxml-tag-delimiter">&lt;</span><span class="nxml-element-local-name">version</span><span class="nxml-tag-delimiter">&gt;</span><span class="nxml-text">2.0.0-beta2</span><span class="nxml-tag-delimiter">&lt;</span><span class="nxml-tag-slash">/</span><span class="nxml-element-local-name">version</span><span class="nxml-tag-delimiter">&gt;</span>
+<span class="nxml-tag-delimiter">&lt;</span><span class="nxml-tag-slash">/</span><span class="nxml-element-local-name">dependency</span><span class="nxml-tag-delimiter">&gt;</span>
+<span class="org-block-end-line">  #+END_EXAMPLE
+</span>+ Gradle. &#22914;&#26524;&#19982;&#26381;&#21153;&#31471;&#30340;&#35831;&#27714;&#21644;&#32467;&#26524;&#37117;&#26159;json&#30340;&#35805;,&#38656;&#35201;gson converter&#36827;&#34892;&#36716;&#21270;, &#22240;&#20026;&#35201;&#25226;&#35813;&#24211;&#20063;&#28155;&#21152;&#19978;.
+<span class="org-block-begin-line">  #+BEGIN_EXAMPLE  xml
+</span> compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+ compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2' 
+<span class="org-block-end-line">  #+END_EXAMPLE
+</span>+ &#28151;&#28102;&#37197;&#32622;
+  &#22914;&#26524;&#39033;&#30446;&#20013;&#20351;&#29992;&#28151;&#28102;&#30340;&#35805;, &#38656;&#35201;&#22312;&#28151;&#28102;&#25991;&#20214;&#20013;&#20551;&#22914;&#22914;&#19979;&#37197;&#32622;
+<span class="org-block-begin-line">  #+BEGIN_EXAMPLE 
+</span><span class="org-block">-dontwarn retrofit.**
+-keep class retrofit.** { *; }
+-keepattributes Signature
+-keepattributes Exceptions
+  
+</span><span class="org-block-end-line">  #+END_EXAMPLE
+</span><span class="org-level-1">* &#31243;&#24207;&#31034;&#20363;</span>
+&#36825;&#37096;&#20998;&#20174;&#19968;&#20010;&#31616;&#21333;&#30340;&#31243;&#24207;&#24320;&#22987;, &#23637;&#31034;retrofit&#30340;&#20351;&#29992;,&#24182;&#36890;&#36807;&#23545;&#36825;&#20010;&#31243;&#24207;&#30340;&#36827;&#19968;&#27493;&#20171;&#32461;retrofit&#30340;&#21508;&#31181;&#21151;&#33021;.
+&#36825;&#37096;&#20998;&#20869;&#23481;&#22823;&#22810;&#21442;&#32771;&#33258; <span class="org-link"><a href="https://futurestud.io/blog/retrofit-getting-started-and-android-client/">https://futurestud.io/blog/retrofit-getting-started-and-android-client/</a></span>.
+<span class="org-level-2">** &#19968;&#20010;&#31616;&#21333;&#30340;retrofit&#31243;&#24207;</span>
+&#22330;&#26223;:&#36890;&#36807;GET&#35831;&#27714;&#21521;&#26381;&#21153;&#22120;&#36820;&#22238;&#29992;&#25143;&#20449;&#24687;, &#26381;&#21153;&#22120;&#36890;&#36807;Json&#26684;&#24335;&#36820;&#22238;&#19968;&#20010;&#25110;&#22810;&#20010;&#29992;&#25143;&#30340;&#20449;&#24687;.
+&#22522;&#20110;&#36825;&#20010;&#20363;&#23376;&#20171;&#32461;&#19968;&#19979;retrofit&#30340;&#20351;&#29992;&#27493;&#39588;:
+1. &#29992;&#25143;&#31867;. &#36825;&#27573;&#20195;&#30721;&#23450;&#20041;&#20102;&#29992;&#25143;&#31867;User, &#27599;&#20010;&#29992;&#25143;&#21253;&#21547;&#19977;&#20010;&#22522;&#26412;&#20449;&#24687;:id, name, age; 
+   &#36890;&#36807;retrofit&#35831;&#27714;&#29992;&#25143;&#20449;&#24687;&#26102;, &#23458;&#25143;&#31471;&#36820;&#22238;&#29992;&#25143;&#30340;json&#20449;&#24687;, retrofit&#21487;&#20197;&#30452;&#25509;&#23558;json&#20449;&#24687;&#36716;&#21270;&#20026;&#29992;&#25143;&#31867;.
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">public class User {
+    private int id;
+    private String name;
+    private int age;
+}
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>2. &#23450;&#20041;Client&#21644;GET&#35831;&#27714;&#25509;&#21475;
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">public interface Client {
+    @GET("users")
+    Call&lt;List&lt;User&gt;&gt;  getUsers();
+}
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>   &#36825;&#27573;&#20195;&#30721;&#23450;&#20041;&#20102;&#19968;&#20010;&#25509;&#21475;Client, &#24182;&#23450;&#20041;&#20102;&#19968;&#20010;GET&#20989;&#25968;getUsers(), &#35813;&#20989;&#25968;&#29992;&#25143;&#21521;&#26381;&#21153;&#22120;&#21457;&#36865;get&#35831;&#27714;&#33719;&#21462;&#25152;&#26377;&#30340;
+   &#29992;&#25143;&#20449;&#24687;. &#23450;&#20041;GET&#35831;&#27714;&#38656;&#35201;&#29992;GET&#27880;&#35299;&#26469;&#20462;&#39280;&#20989;&#25968;, &#27880;&#35299;&#30340;&#21442;&#25968;&#20026;uri&#30340;&#30456;&#23545;&#36335;&#24452;, &#19979;&#19968;&#37096;&#20998;&#20250;&#23450;&#20041;URL&#30340;&#22320;&#22336;, &#22312;
+   &#21457;&#36865;GET&#35831;&#27714;&#26102;, retrofit&#20250;&#23558;GET&#30340;&#21442;&#25968;&#21644;&#26381;&#21153;&#22120;&#25340;&#25509;.
+   &#21518;&#38754;&#20250;&#22312;&#35813;&#25509;&#21475;&#20013;&#23454;&#29616;&#20854;&#20182;&#30340;POST&#21644;GET&#20989;&#25968;.
+
+   <span class="bold">*&#27880;:*</span> &#22312;retrofit2.0&#20013;,&#35201;&#27880;&#24847;GET&#21644;POST&#27880;&#35299;&#30340;&#21442;&#25968;,&#22914;&#26524;&#21442;&#25968;&#20197;"/"&#24320;&#22836;,&#37027;&#20040;&#22312;&#36319;base&#22320;&#22336;&#25340;&#25509;&#26102;,&#20250;&#23558;base&#22320;&#22336;&#20013;
+   &#30340;&#30456;&#23545;&#22320;&#22336;&#20840;&#37096;&#35206;&#30422;&#25481;. &#20030;&#20363;: base&#22320;&#22336;&#20026;"<span class="org-link"><a href="http://a/b">http://a/b</a></span>", GET&#21442;&#25968;&#20026;"/c/d", &#37027;&#20040;&#26368;&#21518;&#30340;&#35831;&#27714;&#22320;&#22336;&#20026;"<span class="org-link"><a href="http://a/c/d">http://a/c/d</a></span>",
+   &#22240;&#27492;,&#22914;&#26524;base&#22320;&#22336;&#26412;&#36523;&#24050;&#32463;&#26159;&#30456;&#23545;&#22320;&#22336;, &#37027;&#20040;GET/POST&#30340;&#21442;&#25968;&#19981;&#33021;&#20197;"/"&#24320;&#22836;.
+3. <span class="org-target">&lt;&lt;&#20027;&#31243;&#24207;&#20013;&#23454;&#29616;get&#35831;&#27714;&gt;&gt;</span>
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE  
+</span><span class="org-block">public class MainActivity {
+    ....
+    public static final String SERVER_URL = "<a href="http://10.10.10.10/account">http://10.10.10.10/account</a>";
+    private OkHttpClient okHttpClient = new OkHttpClient();
+    private Retrofit.Builder builder = new Retrofit.Builder()
+        .base_url(SERVER_URL)
+        .client(okHttpClient)
+        .addConvertFactory(GsonConvertFactory.create());
+
+    Retrofit retrofit = builder.build();
+    Client client = retrofit.create(Client.class);
+    Call&lt;List&lt;Users&gt;&gt; call = client.getUsers();
+    List&lt;Users&gt; result = call.execute().body();
+    ....
+}
+   
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>   &#19978;&#36848;&#20195;&#30721;&#29992;&#26469;&#20570;&#23454;&#38469;&#30340;&#35831;&#27714;&#21160;&#20316;, &#39318;&#20808;&#36890;&#36807;Retrofit Builder&#26469;&#22522;&#20110;&#21508;&#31181;&#21442;&#25968;(&#26381;&#21153;&#22120;&#22320;&#22336;, httpclient, converter)
+   &#29983;&#25104;&#19968;&#20010;builder&#23545;&#35937;, &#35753;&#21518;&#35843;&#29992;builder&#30340;build()&#20989;&#25968;&#29983;&#25104;&#19968;&#20010;retrofit&#23545;&#35937;.
+   
+   &#25509;&#30528;,&#35843;&#29992;retrofit&#30340;create()&#20989;&#25968;,&#20256;&#20837;&#19978;&#19968;&#27493;&#20013;&#23450;&#20041;&#30340;&#25509;&#21475;&#20316;&#20026;&#21442;&#25968;&#26469;&#23454;&#20363;&#21270;&#19968;&#20010;&#20855;&#20307;&#30340;&#25509;&#21475;&#23545;&#35937;, &#28982;&#21518;&#35843;&#29992;
+   &#35813;&#23545;&#35937;&#30340;&#20855;&#20307;http&#35831;&#27714;&#20989;&#25968;(&#36825;&#37324;&#20026;getUsers())&#26469;&#23454;&#29616;http&#35831;&#27714;. &#35831;&#27714;&#30340;&#32467;&#26524;&#26159;Json&#25968;&#25454;,&#20250;&#36890;&#36807;GsonConverter&#36716;&#21270;&#20026;&#20855;&#20307;&#30340;
+   &#23545;&#35937;(&#21363;User). &#30001;&#20110;&#26159;&#22810;&#20010;&#23545;&#35937;,&#25152;&#20197;&#38656;&#35201;&#25918;&#21040;&#19968;&#20010;List&#20013;.
+&#19978;&#36848;&#19977;&#27493;&#21363;&#20026;retrofit&#30340;&#22522;&#26412;&#20351;&#29992;&#26041;&#27861;.
+<span class="org-level-2">** &#21019;&#24314;&#19968;&#20010;Service generator&#31867;</span>
+&#22914;&#26524;&#39033;&#30446;&#20013; <span class="bold">*&#38024;&#23545;&#21516;&#19968;&#20010;server&#22320;&#22336;*</span> &#38656;&#35201;&#21019;&#24314;&#22810;&#20010;Retrofit Interface service,&#37027;&#20040;&#21487;&#20197;&#21019;&#24314;&#19968;&#20010;&#36890;&#29992;&#30340;ServiceGenerator&#31867;
+&#26469;&#29983;&#25104;service&#23454;&#20363;.
+
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">public class ServiceGenerator {
+    public static final String BASE_URL = "";
+
+    private static OkHttpClient httpClient = new OkHttpClient();
+    private static Retrofit.Builder builder =
+        new Retrofit.Builder()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create());
+
+    public static &lt;T&gt; T createService(Class&lt;T&gt; serviceClass){
+        //&#25226;&#35774;&#32622;client&#25918;&#21040;&#36825;&#37324;&#26159;&#22240;&#20026;&#21518;&#32493;&#26377;&#23545;client&#36827;&#34892;&#37197;&#32622;&#30340;&#38656;&#27714;
+        Retrofit retrofit = builder.client(httpClient).build(); 
+        return retrofit.create(serviceClass);
+    }
+                                      
+}
+
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>
+&#36825;&#26679;&#22312;&#19978;&#19968;&#33410;&#30340;MainActivity&#20013;,&#21487;&#20197;&#30452;&#25509;&#20351;&#29992;ServiceGenerator&#26469;&#21019;&#24314;Client&#23454;&#20363;
+
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">
+    Client client = ServiceGenerator.create(Client.class);
+    Client call = client.getUsers();
+    List&lt;Users&gt; result = call.execute().body();
+
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span><span class="org-level-2">** &#24080;&#21495;&#23494;&#30721;&#35748;&#35777;&#30340;ServiceGenerator&#31867;</span>
+&#24080;&#21495;&#23494;&#30721;&#26159;&#19968;&#31181;&#24120;&#35265;&#30340;&#35748;&#35777;&#26041;&#24335;, &#36890;&#24120;&#23558;&#20854;&#21152;&#23494;&#21518;&#20197;&#25918;&#20837;&#21040;http&#22836;&#37096;&#30340;Authorization&#20013;
+&#36827;&#34892;&#35831;&#27714;&#35748;&#35777;.&#36890;&#36807;&#23545;OkHttpClient&#36827;&#34892;&#37197;&#32622;&#21487;&#20197;&#22312;retrofit&#20013;&#23454;&#29616;&#35813;&#26041;&#24335;. 
+
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">    public static &lt;T&gt; T createService(Class&lt;T&gt; serviceClass){
+        createService(serviceClass, null, null);
+    }
+
+    pubic static &lt;T&gt; T createService(Class&lt;T&gt; serviceCls, String userName, String passWord)  {
+        if (userName != null &amp;&amp; passWord != null) {
+            //&#23545;&#29992;&#25143;&#21517;&#21644;&#23494;&#30721;&#36827;&#34892;&#21152;&#23494;(&#19981;&#21516;&#30340;&#38656;&#27714;&#21152;&#23494;&#26041;&#24335;&#19981;&#19968;&#26679;, &#36825;&#37324;&#21482;&#25552;&#20379;&#21442;&#32771;)
+            String credentials = userName + ":" + passWord;
+            final String base64Str = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+
+            httpClient.interceptors().clear();
+            httpClient.interceptors().add(new Interceptor() {
+                    @Override
+                    public Response intercept(Interceptor.Chain chain) throws IOException {
+                        Request original = chain.request();
+
+                        Request.Builder requestBuilder = original.newBuilder()
+                            .header("Authorization", basic);
+                        .header("Accept", "applicaton/json");
+                        .method(original.method(), original.body());
+
+                        Request request = requestBuilder.build();
+                        return chain.proceed(request);
+                    }
+                });
+        }
+
+        Retrofit retrofit = builder.client(httpClient).build();
+        return retrofit.create(serverClass);
+    }
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>
+&#19978;&#36848;&#20195;&#30721;&#36890;&#36807;&#20462;&#25913;OkHttpClient&#30340;&#30456;&#20851;&#21442;&#25968;&#26469;&#20462;&#25913;API&#35831;&#27714;&#30340;&#22836;&#37096;, &#35762;&#21152;&#23494;&#21518;&#30340;&#24080;&#21495;&#21644;&#23494;&#30721;&#25918;&#20837;&#21040;
+Authorization&#20013;&#23454;&#29616;&#39564;&#35777;.
+
+&#27880;: Interceptors&#26159;&#23646;&#20110;OkHttp&#30340;&#30456;&#20851;&#20869;&#23481;, &#36825;&#37096;&#20998;&#22312;&#21518;&#38754;&#23398;&#20064;OkHttp&#26102;&#20250;&#20171;&#32461;.
+
+<span class="org-level-2">** OAuth&#35748;&#35777;&#25509;&#21475;&#30340;ServiceGenerator&#31867;</span>
+&#25972;&#21512;&#36807;&#31532;&#19977;&#26041;API&#30340;&#21516;&#23398;&#32943;&#23450;&#23545;OAuth&#25509;&#21475;&#19981;&#38476;&#29983;, &#22823;&#37096;&#20998;&#24773;&#20917;&#19979;&#20320;&#37117;&#38656;&#35201;&#21435;&#31532;&#19977;&#26041;&#24320;&#21457;&#32773;
+&#24179;&#21488;&#27880;&#20876;&#20320;&#30340;app&#21435;&#33719;&#21462;&#19968;&#20010;id&#21644;secret, &#36825;&#26679;&#25165;&#21487;&#20197;&#35775;&#38382;&#31532;&#19977;&#26041;&#30340;&#25509;&#21475;.
+
+&#27880;: &#20851;&#20110;oauth&#30340;&#20171;&#32461;&#21487;&#20197;&#21442;&#32771;&#38446;&#19968;&#23792;&#32769;&#24072;&#30340;&#25991;&#31456; <span class="org-link"><a href="http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html">&#29702;&#35299;OAuth2.0</a></span>.
+
+&#22522;&#20110;&#21069;&#38754;&#30340;&#20195;&#30721;, &#37325;&#26032;&#20889;&#19968;&#20010;OAuth&#30456;&#20851;&#30340;createService()&#20989;&#25968;.
+<span class="org-block-begin-line">#+BEGIN_EXAMPLE
+</span><span class="org-block">public static &lt;T&gt; T createService(Class&lt;T&gt; serviceClass, AccessToken token) {
+    if (token != null) {
+        httpClient.interceptors().clear();
+        httpClient.interceptors().add(new Interceptor() {
+                @Override
+                public Response intercept(Interceptor.Chain chain) throws IOException {
+                    Request original = chain.request();
+                    Request.Builder builder2 = original.newBuilder()
+                        .header("Accept", "application/json")
+                        .header("Authorization", token.getTokenType()+ " " + token.getAccessToken())
+                        .method(original.method(), original.body());
+                    Request request = builder2.build();
+                    return chain.proceed(request);
+                }
+            });
+
+        Retrofit retrofit = builder.client(httpClient).build();
+        return retrofit.create(serverClass);
+    }
+}
+</span><span class="org-block-end-line">#+END_EXAMPLE
+</span>
+&#19978;&#38754;&#30340;&#20195;&#30721;&#36890;&#36807;&#21019;&#24314;&#19968;&#20010;&#23450;&#21046;&#30340; <span class="bold">*RequestInterceptor*</span> &#23545;&#35937;&#26469;&#37197;&#32622;httpClient, &#22312;&#23450;&#21046;&#30340;&#23545;&#35937;&#20013;&#23558;token&#20449;&#24687;
+&#28155;&#21152;&#21040;Http&#34920;&#22836;&#30340;Authorization&#22495;. &#19981;&#36807;&#19968;&#33324;&#24773;&#20917;&#19979;, Access Token&#24182;&#19981;&#26159;&#30452;&#25509;&#21487;&#20197;&#20174;&#26381;&#21153;&#22120;&#33719;&#21462;&#30340;, 
+&#19979;&#38754;&#23601;&#20250;&#35762;&#35299;&#19968;&#19979;&#33719;&#21462;Access Token&#30340;&#24120;&#29992;&#26041;&#27861;. 
+
+&#22330;&#26223;: &#20551;&#35774;&#20320;&#24050;&#32463;&#22312;&#31532;&#19977;&#26041;&#32593;&#31449;&#27880;&#20876;&#20102;&#20320;&#30340;app, &#33719;&#21462;&#20102;&#19968;&#20010;clientId &#21644; secret, &#20320;&#20351;&#29992;&#36825;&#20010;&#24080;&#21495;&#26469;&#24819;&#27880;&#20876;&#26381;&#21153;&#22120;&#33719;&#21462;
+&#25480;&#26435;&#30721;(&#19968;&#33324;&#26159;&#36339;&#36716;&#21040;&#19968;&#20010;&#32593;&#39029;, &#28857;&#20987;&#20801;&#35768;&#25805;&#20316;), &#28982;&#21518;&#20877;&#36890;&#36807;&#25480;&#26435;&#30721;&#33719;&#21462;Access Token, &#19979;&#38754;&#26159;&#20027;&#35201;&#27969;&#31243;.
+
+1. &#33719;&#21462;&#25480;&#26435;&#30721;
+   &#25480;&#26435;&#30721;&#30340;&#33719;&#21462;&#19968;&#33324;&#38656;&#35201;&#36339;&#36716;&#21040;&#31532;&#19977;&#26041;api&#30340;&#19968;&#20010;&#30456;&#20851;&#30340;&#32593;&#39029;,&#32593;&#39029;&#20013;&#20250;&#35810;&#38382;&#29992;&#25143;&#26159;&#21542;&#20801;&#35768;&#29992;&#25143;
+   app&#33719;&#21462;&#20854;&#22312;&#35813;&#32593;&#31449;&#30340;&#20449;&#24687;.&#22914;&#26524;&#29992;&#25143;&#28857;&#20987;&#20801;&#35768;, &#31532;&#19977;&#26041;&#26381;&#21153;&#22120;&#23601;&#20250;&#29983;&#25104;&#19968;&#20010;&#25480;&#26435;&#30721;&#36820;&#22238;&#32473;&#29992;&#25143;.
+   &#31532;&#19968;&#27493;&#20808;&#21019;&#24314;&#31243;&#24207;&#20027;&#30028;&#38754;:
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">public class LoginActivity extends Activity {
+    //&#22312;&#31532;&#19977;&#26041;&#24179;&#21488;&#27880;&#20876;&#24212;&#29992;&#33719;&#21462;&#30340;clientId&#21644;secret
+    private final String clientId = "your-client-id";
+    private final String clientSecret = "your-client-secret";
+    //&#33719;&#21462;&#36339;&#36716;&#30721;&#21518;&#30340;&#36339;&#36716;url, &#22312;&#30003;&#35831;&#25480;&#26435;&#30721;&#26102;&#38656;&#35201;&#19968;&#24182;&#20256;&#32473;&#31532;&#19977;&#26041;&#26381;&#21153;&#22120;
+    private final String redirectUri = "your://redirecturi";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        Button loginButton (Button) findViewById(R.id.loginbutton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(ServiceGenerator.API_BASE_URL + "/login" + "?client_id=" + clientId + "&amp;redirect_uri=" + redirectUri));
+                startActivity(intent);
+            }
+        });
+    }
+}
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>
+   &#19978;&#36848;&#20195;&#30721;&#23450;&#20041;&#20102;&#19968;&#20010;&#22522;&#26412;&#30340;Android&#30028;&#38754;, &#30028;&#38754;&#21482;&#26377;&#19968;&#20010;&#25353;&#38062;, &#28857;&#20987;&#25353;&#38062;&#20250;&#35831;&#27714;&#25480;&#26435;&#30721;(&#19968;&#33324;&#20250;&#36339;&#36716;&#21040;&#19968;&#20010;&#25480;&#26435;&#30028;&#38754;).
+   &#22312;&#35831;&#27714;&#20013;&#20256;&#20837;&#19968;&#20010;&#20102;&#22238;&#35843;&#22320;&#22336;, &#22914;&#26524;&#29992;&#25143;&#25480;&#26435;&#19968;&#33324;&#31532;&#19977;&#26041;&#26381;&#21153;&#22120;&#24102;&#30528;&#25480;&#26435;&#30721;&#20250;&#36339;&#21040;&#36825;&#20010;&#22320;&#22336;, &#25152;&#20197;&#24517;&#39035;&#22312;&#35831;&#27714;&#25480;&#26435;&#30721;
+   &#26102;&#20256;&#20837;&#22238;&#35843;&#22320;&#22336;. &#36825;&#22312;Android&#20013;&#20250;&#34920;&#29616;&#21457;&#36865;&#22238;&#35843;Uri&#30340;&#24191;&#25773;,&#24182;&#23558;&#25480;&#26435;&#30721;&#36890;&#36807;intent&#20256;&#36882;&#20986;&#21435;.
+   &#25152;&#20197;app&#20013;&#38656;&#35201;&#22312;&#27880;&#20876;&#19968;&#20010;&#21487;&#20197;&#25509;&#21463;&#35813;intent&#30340;&#30028;&#38754;,&#36825;&#37324;&#36824;&#26159;&#20351;&#29992;&#20027;&#30028;&#38754;. &#22312;AndroidMainfest.xml&#20013;&#35774;&#32622;intent-filter
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE xml
+</span><span class="nxml-tag-delimiter">&lt;</span><span class="nxml-element-local-name">activity</span>  
+    <span class="nxml-attribute-prefix">android</span><span class="nxml-attribute-colon">:</span><span class="nxml-attribute-local-name">name</span>=<span class="nxml-attribute-value-delimiter">"</span><span class="nxml-attribute-value">com.futurestudio.oauthexample.LoginActivity</span><span class="nxml-attribute-value-delimiter">"</span>
+    <span class="nxml-attribute-prefix">android</span><span class="nxml-attribute-colon">:</span><span class="nxml-attribute-local-name">label</span>=<span class="nxml-attribute-value-delimiter">"</span><span class="nxml-attribute-value">@string/app_name</span><span class="nxml-attribute-value-delimiter">"</span>
+    <span class="nxml-attribute-prefix">android</span><span class="nxml-attribute-colon">:</span><span class="nxml-attribute-local-name">configChanges</span>=<span class="nxml-attribute-value-delimiter">"</span><span class="nxml-attribute-value">keyboard|orientation|screenSize</span><span class="nxml-attribute-value-delimiter">"</span><span class="nxml-tag-delimiter">&gt;</span>
+    <span class="nxml-tag-delimiter">&lt;</span><span class="nxml-element-local-name">intent-filter</span><span class="nxml-tag-delimiter">&gt;</span>
+        <span class="nxml-tag-delimiter">&lt;</span><span class="nxml-element-local-name">action</span> <span class="nxml-attribute-prefix">android</span><span class="nxml-attribute-colon">:</span><span class="nxml-attribute-local-name">name</span>=<span class="nxml-attribute-value-delimiter">"</span><span class="nxml-attribute-value">android.intent.action.VIEW</span><span class="nxml-attribute-value-delimiter">"</span> <span class="nxml-tag-slash">/</span><span class="nxml-tag-delimiter">&gt;</span>
+        <span class="nxml-tag-delimiter">&lt;</span><span class="nxml-element-local-name">category</span> <span class="nxml-attribute-prefix">android</span><span class="nxml-attribute-colon">:</span><span class="nxml-attribute-local-name">name</span>=<span class="nxml-attribute-value-delimiter">"</span><span class="nxml-attribute-value">android.intent.category.DEFAULT</span><span class="nxml-attribute-value-delimiter">"</span> <span class="nxml-tag-slash">/</span><span class="nxml-tag-delimiter">&gt;</span>
+        <span class="nxml-tag-delimiter">&lt;</span><span class="nxml-element-local-name">category</span> <span class="nxml-attribute-prefix">android</span><span class="nxml-attribute-colon">:</span><span class="nxml-attribute-local-name">name</span>=<span class="nxml-attribute-value-delimiter">"</span><span class="nxml-attribute-value">android.intent.category.BROWSABLE</span><span class="nxml-attribute-value-delimiter">"</span> <span class="nxml-tag-slash">/</span><span class="nxml-tag-delimiter">&gt;</span>
+        <span class="nxml-tag-delimiter">&lt;</span><span class="nxml-element-local-name">data</span>
+            <span class="nxml-attribute-prefix">android</span><span class="nxml-attribute-colon">:</span><span class="nxml-attribute-local-name">host</span>=<span class="nxml-attribute-value-delimiter">"</span><span class="nxml-attribute-value">redirecturi</span><span class="nxml-attribute-value-delimiter">"</span>
+            <span class="nxml-attribute-prefix">android</span><span class="nxml-attribute-colon">:</span><span class="nxml-attribute-local-name">scheme</span>=<span class="nxml-attribute-value-delimiter">"</span><span class="nxml-attribute-value">your</span><span class="nxml-attribute-value-delimiter">"</span> <span class="nxml-tag-slash">/</span><span class="nxml-tag-delimiter">&gt;</span>
+    <span class="nxml-tag-delimiter">&lt;</span><span class="nxml-tag-slash">/</span><span class="nxml-element-local-name">intent-filter</span><span class="nxml-tag-delimiter">&gt;</span>
+<span class="nxml-tag-delimiter">&lt;</span><span class="nxml-tag-slash">/</span><span class="nxml-element-local-name">activity</span><span class="nxml-tag-delimiter">&gt;</span>  
+<span class="org-block-end-line">   #+END_EXAMPLE
+</span>
+   &#22312;onResume&#22788;&#29702;&#25509;&#21463;&#21040;&#30340;Intent.
+   &#36825;&#37324;&#20551;&#35774;&#25480;&#26435;&#30721;&#22312;intent&#20013;&#20256;&#36882;&#24182;&#19988;key&#20540;&#20026;code(&#31532;&#19977;&#26041;&#24179;&#21488;&#30340;&#22238;&#35843;&#26041;&#24335;&#38656;&#35201;&#21442;&#32771;&#20182;&#20204;&#30340;&#25991;&#26723;).
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">@Override
+protected void onResume() {  
+    super.onResume();
+
+    Uri uri = getIntent().getData();
+    if (uri != null &amp;&amp; uri.toString().startsWith(redirectUri)) {
+        String code = uri.getQueryParameter("code");
+        if (code != null) {
+            //&#22788;&#29702;&#25480;&#26435;&#30721;
+        } else if (uri.getQueryParameter("error") != null) {
+            //&#22788;&#29702;&#38169;&#35823;
+        }
+    }
+} 
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>
+   &#22909;, &#21040;&#27492;&#20026;&#27490;,&#25105;&#20204;&#23601;&#24050;&#32463;&#33719;&#21462;&#21040;&#20102;&#25480;&#26435;&#30721;,&#19979;&#19968;&#27493;&#23601;&#26159;&#36890;&#36807;&#25480;&#26435;&#30721;&#33719;&#21462;Access Token. 
+2. &#33719;&#21462;Access Token
+   &#19978;&#19968;&#27493;&#33719;&#21462;&#21040;&#25480;&#26435;&#30721;&#21518;, &#23601;&#21487;&#20197;&#21521;&#31532;&#19977;&#26041;&#30340;Access Token&#26381;&#21153;&#22120;&#21457;&#36865;&#35831;&#27714;&#33719;&#21462;token. &#25105;&#20204;&#21487;&#20197;&#20889;&#19968;&#20010;retrofit&#26381;&#21153;
+   &#26469;&#23454;&#29616;&#36825;&#20010;&#21151;&#33021;. 
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">   public interface LoginService {  
+    @POST("/token")
+    Call&lt;AccessToken&gt; getAccessToken(
+            @Query("code") String code,
+            @Query("grant_type") String grantType);
+}
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>
+   &#36825;&#37324;&#30340;code&#23601;&#26159;&#19978;&#19968;&#27493;&#33719;&#21462;&#30340;&#25480;&#26435;&#30721;, grantType&#26159;&#25480;&#26435;&#31867;&#22411;. &#28982;&#21518;&#29992;&#19979;&#38754;&#30340;&#20195;&#30721;&#21152;&#20837;&#21040;onResume&#33719;&#21462;&#25104;&#21151;&#30340;&#20195;&#30721;&#27573;&#20013;
+<span class="org-block-begin-line">   #+BEGIN_EXAMPLE
+</span><span class="org-block">   if (code != null) {
+            // get access token
+            LoginService loginService = 
+                ServiceGenerator.createService(LoginService.class, clientId, clientSecret);
+            Call&lt;AccessToken&gt; call = loginService.getAccessToken(code, "authorization_code");
+            AccessToken accessToken = call.execute().body();
+   } 
+</span><span class="org-block-end-line">   #+END_EXAMPLE
+</span>
+&#20197;&#19978;&#37117;&#26159;&#31034;&#20363;, &#20195;&#30721;&#20855;&#20307;&#20889;&#27861;&#35831;&#21442;&#32771;&#30456;&#20851;&#31532;&#19977;&#26041;&#25991;&#26723;.
+   
+<span class="org-level-2">** &#21516;&#27493;&#35831;&#27714; vs &#24322;&#27493;&#35831;&#27714;</span>
+Retrofit&#25903;&#25345;&#21516;&#27493;&#21644;&#24322;&#27493;&#35831;&#27714;, &#19981;&#36807;Retrofit2&#30340;&#21516;&#27493;/&#24322;&#27493;&#26550;&#26500;&#21151;&#33021;&#19982;1&#26377;
+&#24456;&#22823;&#19981;&#21516;, &#20855;&#20307;&#35831;&#21442;&#32771;&#30456;&#20851;&#25991;&#26723;.
+1. &#21516;&#27493;&#35831;&#27714;
+   &#30452;&#25509;&#35843;&#29992;execute()&#20989;&#25968;, &#26412;&#25991;&#20013;&#30340;&#23454;&#20363;&#23601;&#26159;&#21516;&#27493;&#35831;&#27714;&#30340;&#20363;&#23376;.
+
+   &#27880;&#24847;&#20107;&#39033;:
+   + &#19981;&#35201;&#22312;Android&#30340;&#20027;&#32447;&#31243;&#20013;&#35843;&#29992;execute(),&#26377;&#21487;&#33021;&#25253;&#38169;&#25110;&#23548;&#33268;ANR.
+2. &#24322;&#27493;&#35831;&#27714;
+   &#24322;&#27493;&#35831;&#27714;&#30340;&#35805;&#35843;&#29992;enque()&#20989;&#25968;, &#24182;&#21521;enque()&#20256;&#20837;&#19968;&#20010;Callback&#30340;&#21442;&#25968;.
+   &#24182;&#38656;&#35201;&#35201;&#23454;&#29616;Callback&#30340;onSuccess&#21644;onFailure&#20989;&#25968;.
+<span class="org-level-2">** &#35831;&#27714;&#32467;&#26524;Response&#31867;</span>
+&#24403;&#35843;&#29992;execute()&#25110;enqueue()&#20989;&#25968;&#26102;, &#20250;&#36820;&#22238;&#19968;&#20010;Reponse&#23545;&#35937;&#34920;&#31034;&#35831;&#27714;&#32467;&#26524;.
+&#35813;&#35831;&#27714;&#32467;&#26524;&#21253;&#21547;&#20102;&#20197;&#19979;&#20449;&#24687;:
++ &#32467;&#26524;&#30721;: &#35843;&#29992;code()&#20989;&#25968;&#33719;&#24471;
++ &#32467;&#26524;&#23545;&#35937;: &#35843;&#29992;body()&#20989;&#25968;&#33719;&#24471;, &#22914;<span class="org-link"><a href="&#20027;&#31243;&#24207;&#20013;&#23454;&#29616;get&#35831;&#27714;">&#31034;&#20363;</a></span>&#25152;&#31034;.
++ &#22836;&#37096;: &#35843;&#29992;headers
++ &#21407;&#22987;&#36820;&#22238;&#32467;&#26524;: &#35843;&#29992;rawResponse()&#20989;&#25968;, &#36820;&#22238;&#19968;&#20010;OkHttp&#30340;Response&#23545;&#35937;.
+<span class="org-level-1">* Tips</span>
+1. &#35831;&#27714;&#22833;&#36133;, body()&#36820;&#22238;&#20540;&#20026;null
+</pre>
+  </body>
+</html>

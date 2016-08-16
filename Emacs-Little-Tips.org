@@ -1,0 +1,7 @@
+# Created 2016-08-16 Tue 16:19
+#+OPTIONS: toc:t H:3
+#+TITLE: Emacs Little Tips
+#+AUTHOR: Zhengchao Xu
+* Tips
+1. 绑定快捷键 (global-set-key (kbd "<f9>") '函数名)
+** org mode 求一列的和: C-c +

@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-08-16 Tue 16:19 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>Emacs gnus 的日常使用* 读取Gmail邮件</title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Zhengchao Xu" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+<h1 class="title">Emacs gnus 的日常使用* 读取Gmail邮件</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">offlineimap配置</a></li>
+<li><a href="#orgheadline2">配置</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline3">订阅RSS</a>
+<ul>
+<li><a href="#orgheadline4">订阅atom文件</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline5">gnus 快捷键</a></div>
+</div>
+<p>
+主要架构: offlineimap同步邮件, gnus读邮件
+</p>
+<div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1">offlineimap配置</h3>
+<div class="outline-text-3" id="text-orgheadline1">
+<ol class="org-ol">
+<li>mac安装:  brew install offlineimap</li>
+<li>配置 ~/.offlineimaprc</li>
+</ol>
+<pre class="example">
+[general]
+ui = ttyui
+accounts = Gmail
+
+[Account Gmail]
+localrepository = Gmail-Local
+remoterepository = Gmail-Remote
+
+[Repository Gmail-Local]
+type = Maildir
+localfolders = ~/lx/Gmail
+
+[Repository Gmail-Remote]
+type = Gmail
+remoteuser = 邮箱
+remotepass = 密码
+realdelete = no
+maxconnections = 3
+# 下面这行使用与OS X系统
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+</pre>
+<ol class="org-ol">
+<li>同步命令: offlineimap -o
+第一次运行这个命令有可能会报错, 显示 "Gmail SMTP debug: error “please log in via your web browser" 这样的内容,
+可以去<a href="https://www.google.com/settings/security/lesssecureapps">https://www.google.com/settings/security/lesssecureapps</a> 打开enable on这个选项, 就可以了.
+第一次同步可能很长时间, 尤其是对国人来说. 耐心等候啦.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">配置</h3>
+<div class="outline-text-3" id="text-orgheadline2">
+<pre class="example">
+  ;; Gnus配置
+(setq gnus-select-method
+   '(nnmaildir "Gmail" (directory "~/lx/Gmail")))
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">订阅RSS</h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<p>
+在Gnus页面可以使用快捷键"G R"来订阅RSS.通过"u"取消订阅.
+</p>
+</div>
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">订阅atom文件</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
+gnus对于atom类型的RSS支持不好, 可以通过在以下方式解决
+</p>
+<ol class="org-ol">
+<li>Install xsltproc (Debian: apt-get install xsltproc)</li>
+<li>Get the file atom2rss.xsl from <a href="http://atom.geekhood.net/">http://atom.geekhood.net/</a> and save it.</li>
+<li><p>
+Put the following code into your .gnus:
+</p>
+<pre class="example">
+(require 'mm-url)
+(defadvice mm-url-insert 
+   (after DE-convert-atom-to-rss () )  
+   "Converts atom to RSS by calling xsltproc."  
+   (when 
+      (re-search-forward
+         "xmlns=\"http://www.w3.org/.*/Atom\"" 
+          nil t)
+      (goto-char (point-min))    
+      (message "Converting Atom to RSS... ")    
+      (call-process-region 
+         (point-min) 
+         (point-max) 
+         "xsltproc" 
+         t t nil 
+         (expand-file-name 
+            "~/.emacs.d/atom2rss.xsl") "-")    
+      (goto-char (point-min))    
+      (message 
+         "Converting Atom to RSS... done")))
+(ad-activate 'mm-url-insert)
+</pre></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">gnus 快捷键</h2>
+<div class="outline-text-2" id="text-orgheadline5">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C-u N ret</td>
+<td class="org-left">在目录上使用,显示目录(N封)所有邮件</td>
+</tr>
+
+<tr>
+<td class="org-left">c</td>
+<td class="org-left">标记未读为已读</td>
+</tr>
+
+<tr>
+<td class="org-left">C</td>
+<td class="org-left">标记所有为已读</td>
+</tr>
+
+<tr>
+<td class="org-left">l</td>
+<td class="org-left">只显示有未读邮件的group</td>
+</tr>
+
+<tr>
+<td class="org-left">L</td>
+<td class="org-left">显示所有group</td>
+</tr>
+
+<tr>
+<td class="org-left">B DEL</td>
+<td class="org-left">永久删除</td>
+</tr>
+
+<tr>
+<td class="org-left">B m</td>
+<td class="org-left">移动邮件</td>
+</tr>
+
+<tr>
+<td class="org-left">E</td>
+<td class="org-left">设置邮件为Expirable</td>
+</tr>
+
+<tr>
+<td class="org-left">u</td>
+<td class="org-left">标记重要邮件</td>
+</tr>
+
+<tr>
+<td class="org-left">u放到link上</td>
+<td class="org-left">复制链接地址</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="show_source"><input type="button" value="Show Org source" onClick='show_org_source()'></div><div id="license"><p>Documentation from the http://orgmode.org/worg/ website (either in its HTML format or in its Org format) is licensed under the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License version 1.3</a> or later.  The code examples and css stylesheets are licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a> or later.</p></div>
+</div>
+</body>
+</html>

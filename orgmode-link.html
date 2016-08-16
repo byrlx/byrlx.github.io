@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2016-08-16 Tue 16:18 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>Orgmode手册3:链接</title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Zhengchao Xu" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+<h1 class="title">Orgmode手册3:链接</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">链接格式</a></li>
+<li><a href="#orgheadline2">内部链接</a></li>
+<li><a href="#orgheadline3">外表链接</a></li>
+<li><a href="#orgheadline4">短链接</a></li>
+</ul>
+</div>
+</div>
+<p>
+在Org mode里可以创建通过创建链接的方式引用其他的内容,
+目前Org 支持如下链接方式: 文件内部, 外部文件, Usenet文章, 邮件及其他.
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">链接格式</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+Org的链接格式为:
+</p>
+<pre class="example">
+[[链接地址][描述]] 或 [[链接地址]]
+</pre>
+<p>
+当最后一个"]"写完时, org会将该链接显示为(带下划线的"描述", 该显示格式对应face "org-link"),
+如果想要编辑链接, 可以在链接上使用快捷键 "C-c C-l", 在显示内容前后使用"delete"键
+会破坏链接的语法(也可以这样编辑链接). 
+</p>
+
+<p>
+下面是一些链接的快捷键
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C-c l</td>
+<td class="org-left">将当前位置存为一个link</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-l</td>
+<td class="org-left">编辑/插入链接</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-o</td>
+<td class="org-left">打开(跳转)</td>
+</tr>
+
+<tr>
+<td class="org-left">C-u C-c C-l</td>
+<td class="org-left">插入文件</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x C-v</td>
+<td class="org-left">开关图片显示</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c %</td>
+<td class="org-left">将当前位置放入mark ring</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c &amp;</td>
+<td class="org-left">返回mark ring</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x C-n</td>
+<td class="org-left">next link</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x C-p</td>
+<td class="org-left">上一个link</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">内部链接</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<p>
+如果一个链接不是一该URL, org会将其看做内部链接, org寻找内部链接的方式为:
+</p>
+<ol class="org-ol">
+<li><p>
+跳转到被 "&lt;&lt;&gt;&gt;"定义的地方. 如下面的例子,在第一个链接上用C-c C-o 会
+跳转到test出现的地方. 
+</p>
+<pre class="example">
+loc1: [[test]] 
+loc2  this is a &lt;&lt;test&gt;&gt;
+</pre></li>
+<li>如果1)不存在, 会跳转到 "#+NAME" 命名和链接相同的地方.</li>
+<li>前两步都失败, 会尝试寻找精确匹配的 <b>标题</b>.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">外表链接</h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<p>
+org mode支持的外部链接包括:
+</p>
+<pre class="example">
+|                             | 描述                  |
+|-----------------------------+-----------------------|
+| http://web                  | 网站                  |
+| doi:10.1000/182             | doi链接               |
+| file://path                 | 文件相对/绝对地址     |
+| file:/a@b:x/y.pdf           | 远程文件地址          |
+| file:orgmode-learn.org::111 | 跳转到文件NNN行       |
+| file:org-file::key/*title   | 支持org文件的标题搜索 |
+| file+sys:/path              | 使用系统打开          |
+| docview:path::NNN           | 使用docview模式打开   |
+| news:comp.emacs             | Usenet 链接           |
+| mailto:a@b                  | mail                  |
+| gnus:group                  | gnus链接              |
+| irc:/irc.com/#emacs         | irc链接               |
+| shell:cmd                   | shell 命令            |
+| elisp:cmd                   | elisp cmd             |
+</pre>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">短链接</h2>
+<div class="outline-text-2" id="text-orgheadline4">
+<p>
+如果链接太长且在文件中经常使用, 可以将其设置为"链接关键字",
+可以用 "#+LINK"关键字来实现这个功能, 或者设置"org-link-abbrev-alist"变量:
+</p>
+<pre class="example">
+#+LINK: bugzilla  http://10.1.2.9/bugzilla/show_bug.cgi?id=
+#+LINK: google    http://www.google.com/search?q=%s
+或者
+(setq org-link-abbrev-alist
+  '(("bugzilla"  . "http://10.1.2.9/bugzilla/show_bug.cgi?id=")
+    ("url-to-ja" . "http://translate.google.fr/translate?sl=en&amp;tl=ja&amp;u=%h")
+    ("google"    . "http://www.google.com/search?q=")
+    ("gmap"      . "http://maps.google.com/maps?q=%s")
+    ("omap"      . "http://nominatim.openstreetmap.org/search?q=%s&amp;polygon=1")
+    ("ads"       . "http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?author=%s&amp;db_key=AST")))
+</pre>
+
+<p>
+短链接的格式为, 如果链接中有"%s", 会被tag替代, "%h"则会将tag进行url编码.
+%(function)会调用函数并将结果添加. 什么都没有的话直接在尾部添加. 例如
+</p>
+<pre class="example">
+[[bugzilla:129][description]] ;;  http://10.1.2.9/bugzilla/show_bug.cgi?id=129
+</pre>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<div id="show_source"><input type="button" value="Show Org source" onClick='show_org_source()'></div><div id="license"><p>Documentation from the http://orgmode.org/worg/ website (either in its HTML format or in its Org format) is licensed under the <a href="http://www.gnu.org/copyleft/fdl.html">GNU Free Documentation License version 1.3</a> or later.  The code examples and css stylesheets are licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a> or later.</p></div>
+</div>
+</body>
+</html>
