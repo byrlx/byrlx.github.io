@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-17 Wed 06:31 -->
+<!-- 2016-08-17 Wed 06:49 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Android liblog</title>
@@ -60,28 +60,6 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        displayAlign: "center",
-        displayIndent: "0em",
-
-        "HTML-CSS": { scale: 100,
-                        linebreaks: { automatic: "false" },
-                        webFont: "TeX"
-                       },
-        SVG: {scale: 100,
-              linebreaks: { automatic: "false" },
-              font: "TeX"},
-        NativeMML: {scale: 100},
-        TeX: { equationNumbers: {autoNumber: "AMS"},
-               MultLineWidth: "85%",
-               TagSide: "right",
-               TagIndent: ".8em"
-             }
-});
-</script>
-<script type="text/javascript"
-        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="preamble" class="status">
@@ -127,215 +105,166 @@ Androi系统提供了一套完整的API供其他程序调用输出log,这套API�
 <p>
 以native层为例,如果我们要开发'.cpp'或'.c'程序,那么可以call下列API之以写出不同level的log
 </p>
-
-<p>
+<pre class="example">
 #define LOG_TAG "HeloWorld"
 ALOGV("hello world,level verbose");
 ALOGD("hello world,level debug");
 ALOGI("hello world,level info");
 ALOGE("hello world,level error");
 ALOGW("hello world,level warning");
-</p>
-
+</pre>
 <p>
 这里通常都需要定义一个LOG_TAG, 作为一个完整log的一部分,可以唯一的定位一个module. ALOGX()系列API的实现通过宏定位到共同的一组函数.
 </p>
-
-<p>
+<pre class="example">
 #ifndef ALOGE
-#define ALOGE(&#x2026;) ((void)ALOG(LOG_ERROR, LOG_TAG, <span class="underline"><span class="underline">VA_ARGS</span></span>))
+#define ALOGE(...) ((void)ALOG(LOG_ERROR, LOG_TAG, __VA_ARGS__))
 #endif
-</p>
 
-<p>
 #ifndef ALOG
-#define ALOG(priority, tag, &#x2026;) \
-    LOG_PRI(ANDROID_##priority, tag, <span class="underline"><span class="underline">VA_ARGS</span></span>)
+#define ALOG(priority, tag, ...) \
+    LOG_PRI(ANDROID_##priority, tag, __VA_ARGS__)
 #endif
-</p>
 
-<p>
 #ifndef LOG_PRI
-#define LOG_PRI(priority, tag, &#x2026;) \
-    android_printLog(priority, tag, <span class="underline"><span class="underline">VA_ARGS</span></span>)
+#define LOG_PRI(priority, tag, ...) \
+    android_printLog(priority, tag, __VA_ARGS__)
 #endif
-</p>
 
-<p>
-#define android_printLog(prio, tag, fmt&#x2026;) \
+#define android_printLog(prio, tag, fmt...) \
     __android_log_print(prio, tag, fmt)
-</p>
 
-<p>
-int __android_log_print(int prio, const char *tag, const char *fmt, &#x2026;)
+int __android_log_print(int prio, const char *tag, const char *fmt, ...)
 {
     va_list ap;
     char buf[LOG_BUF_SIZE];
-</p>
 
-<p>
-va_start(ap, fmt);
-vsnprintf(buf, LOG_BUF_SIZE, fmt, ap);
-va_end(ap);
-</p>
+    va_start(ap, fmt);
+    vsnprintf(buf, LOG_BUF_SIZE, fmt, ap);
+    va_end(ap);
 
-<p>
     return __android_log_write(prio, tag, buf);
 }
-</p>
-
+</pre>
 <p>
 __android_log_print()通过va_list变量把format形式字符串生成最终的字符串,然后调用__android_log_write(),这里的参数tag就是之前定义的 LOG_TAG. 而prio是一个整数值,中[logcat](../Android-logcat/)讲到过,最后通过logcat抓出来后,会将整形log level转换为字符型.
 </p>
 
-<p>
+<pre class="example">
 int __android_log_write(int prio, const char *tag, const char *msg)
 {
-    struct iovec vec<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>;
+    struct iovec vec[3];
     log_id_t log_id = LOG_ID_MAIN;
-</p>
 
-<p>
-if (!tag)
-    tag = "";
-</p>
+    if (!tag)
+	tag = "";
 
-<p>
-<i>* XXX: This needs to go! *</i>
-if (!strcmp(tag, "HTC_RIL") ||
-    !strncmp(tag, "RIL", 3) || <i>* Any log tag with "RIL" as the prefix *</i>
-    !strncmp(tag, "IMS", 3) || <i>* Any log tag with "IMS" as the prefix *</i>
-    !strcmp(tag, "AT") ||
-    !strcmp(tag, "GSM") ||
-    !strcmp(tag, "STK") ||
-    !strcmp(tag, "CDMA") ||
-    !strcmp(tag, "PHONE") ||
-    !strcmp(tag, "SMS"))
-        log_id = LOG_ID_RADIO;
-</p>
+    /* XXX: This needs to go! */
+    if (!strcmp(tag, "HTC_RIL") ||
+	!strncmp(tag, "RIL", 3) || /* Any log tag with "RIL" as the prefix */
+	!strncmp(tag, "IMS", 3) || /* Any log tag with "IMS" as the prefix */
+	!strcmp(tag, "AT") ||
+	!strcmp(tag, "GSM") ||
+	!strcmp(tag, "STK") ||
+	!strcmp(tag, "CDMA") ||
+	!strcmp(tag, "PHONE") ||
+	!strcmp(tag, "SMS"))
+	    log_id = LOG_ID_RADIO;
 
-<p>
-vec<sup><a id="fnr.2" class="footref" href="#fn.2">2</a></sup>.iov_base   = (unsigned char *) &amp;prio;
-vec<sup><a id="fnr.2.100" class="footref" href="#fn.2">2</a></sup>.iov_len    = 1;
-vec<sup><a id="fnr.3" class="footref" href="#fn.3">3</a></sup>.iov_base   = (void *) tag;
-vec<sup><a id="fnr.3.100" class="footref" href="#fn.3">3</a></sup>.iov_len    = strlen(tag) + 1;
-vec<sup><a id="fnr.4" class="footref" href="#fn.4">4</a></sup>.iov_base   = (void *) msg;
-vec<sup><a id="fnr.4.100" class="footref" href="#fn.4">4</a></sup>.iov_len    = strlen(msg) + 1;
-</p>
+    vec[0].iov_base   = (unsigned char *) &amp;prio;
+    vec[0].iov_len    = 1;
+    vec[1].iov_base   = (void *) tag;
+    vec[1].iov_len    = strlen(tag) + 1;
+    vec[2].iov_base   = (void *) msg;
+    vec[2].iov_len    = strlen(msg) + 1;
 
-<p>
     return write_to_log(log_id, vec, 3);
 }
-</p>
-
+</pre>
 <p>
 Android log 系统目前有四种类型的log:main,system,radio,events. 后三种一般都是系统的一些特殊的log,除此之外,自己开发的程序,log都默认写到main中. 所以程序最开始把 log_id 设为 LOG_ID_MAIN. 不过程序接下来会判断tag参数,如果tag符合radio log的规则的话,则将log_id改为 LOG_ID_RADIO. 接着把传入的三个参数放到一个iovec变量中. 并调用write_to_log()
 </p>
 
-<p>
+<pre class="example">
 struct iovec {
     const void*  iov_base;
     size_t       iov_len;
 };
-</p>
 
-<p>
 static int (*write_to_log)(log_id_t, struct iovec *vec, size_t nr) = __write_to_log_init;
-</p>
-
+</pre>
 <p>
 write_to_log()是一个指针函数,这里的实现用了一点小伎俩. 最开始这个指针就被赋值为__write_to_log_init, 所以,在第一次调用该函数的时候,调用的就是 __write_to_log_init()
 </p>
 
-<p>
+<pre class="example">
 static int __write_to_log_init(log_id_t log_id, struct iovec *vec, size_t nr)
 {
 #ifdef HAVE_PTHREADS
     pthread_mutex_lock(&amp;log_init_lock);
 #endif
-</p>
 
-<p>
-if (write_to_log == __write_to_log_init) {
-    log_fds[LOG_ID_MAIN] = log_open("<i>dev</i>"LOGGER_LOG_MAIN, O_WRONLY);
-    log_fds[LOG_ID_RADIO] = log_open("<i>dev</i>"LOGGER_LOG_RADIO, O_WRONLY);
-    log_fds[LOG_ID_EVENTS] = log_open("<i>dev</i>"LOGGER_LOG_EVENTS, O_WRONLY);
-    log_fds[LOG_ID_SYSTEM] = log_open("<i>dev</i>"LOGGER_LOG_SYSTEM, O_WRONLY);
-</p>
+    if (write_to_log == __write_to_log_init) {
+	log_fds[LOG_ID_MAIN] = log_open("/dev/"LOGGER_LOG_MAIN, O_WRONLY);
+	log_fds[LOG_ID_RADIO] = log_open("/dev/"LOGGER_LOG_RADIO, O_WRONLY);
+	log_fds[LOG_ID_EVENTS] = log_open("/dev/"LOGGER_LOG_EVENTS, O_WRONLY);
+	log_fds[LOG_ID_SYSTEM] = log_open("/dev/"LOGGER_LOG_SYSTEM, O_WRONLY);
 
-<p>
-write_to_log = __write_to_log_kernel;
-</p>
+	write_to_log = __write_to_log_kernel;
 
-<p>
-if (log_fds[LOG_ID_MAIN] &lt; 0 || log_fds[LOG_ID_RADIO] &lt; 0 ||
-        log_fds[LOG_ID_EVENTS] &lt; 0) {
-    log_close(log_fds[LOG_ID_MAIN]);
-    log_close(log_fds[LOG_ID_RADIO]);
-    log_close(log_fds[LOG_ID_EVENTS]);
-    log_fds[LOG_ID_MAIN] = -1;
-    log_fds[LOG_ID_RADIO] = -1;
-    log_fds[LOG_ID_EVENTS] = -1;
-    write_to_log = __write_to_log_null;
-}
-</p>
+	if (log_fds[LOG_ID_MAIN] &lt; 0 || log_fds[LOG_ID_RADIO] &lt; 0 ||
+	        log_fds[LOG_ID_EVENTS] &lt; 0) {
+	    log_close(log_fds[LOG_ID_MAIN]);
+	    log_close(log_fds[LOG_ID_RADIO]);
+	    log_close(log_fds[LOG_ID_EVENTS]);
+	    log_fds[LOG_ID_MAIN] = -1;
+	    log_fds[LOG_ID_RADIO] = -1;
+	    log_fds[LOG_ID_EVENTS] = -1;
+	    write_to_log = __write_to_log_null;
+	}
 
-<p>
-    if (log_fds[LOG_ID_SYSTEM] &lt; 0) {
-        log_fds[LOG_ID_SYSTEM] = log_fds[LOG_ID_MAIN];
+	if (log_fds[LOG_ID_SYSTEM] &lt; 0) {
+	    log_fds[LOG_ID_SYSTEM] = log_fds[LOG_ID_MAIN];
+	}
     }
-}
-</p>
 
-<p>
 #ifdef HAVE_PTHREADS
     pthread_mutex_unlock(&amp;log_init_lock);
 #endif
-</p>
 
-<p>
     return write_to_log(log_id, vec, nr);
 }
-</p>
-
+</pre>
 <p>
 之所以要这样做,是因为在系统开启后第一次写通过ALOGX函数写log的时候,kernel 层的logger device还未被打开,所以要将这些device都打开,然后,将write_to_log改成__write_to_log_kernel. 在函数的最后,接着再调用一次write_to_log(),这次调用的就是__write_log_log_kernel 了.
 </p>
 
-<p>
+<pre class="example">
 static int __write_to_log_kernel(log_id_t log_id, struct iovec *vec, size_t nr)
 {
     ssize_t ret;
     int log_fd;
-</p>
 
-<p>
-if (<i><b>(int)log_id &gt;= 0 &amp;&amp;</b></i> (int)log_id &lt; (int)LOG_ID_MAX) {
-    log_fd = log_fds[(int)log_id];
-} else {
-    return EBADF;
-}
-</p>
+    if (/*(int)log_id &gt;= 0 &amp;&amp;*/ (int)log_id &lt; (int)LOG_ID_MAX) {
+	log_fd = log_fds[(int)log_id];
+    } else {
+	return EBADF;
+    }
 
-<p>
-do {
-    ret = log_writev(log_fd, vec, nr);
-} while (ret &lt; 0 &amp;&amp; errno == EINTR);
-</p>
+    do {
+	ret = log_writev(log_fd, vec, nr);
+    } while (ret &lt; 0 &amp;&amp; errno == EINTR);
 
-<p>
     return ret;
 }
-</p>
-
+</pre>
 <p>
 函数将log_id转为log_fd后,就直接调用 log_writev()函数
 </p>
 
-<p>
+<pre class="example">
 #define log_writev(filedes, vector, count) writev(filedes, vector, count)
-</p>
-
+</pre>
 <p>
 log_writev()就被映射到具体的driver层的writev()函数.这样,一条log就被写入到了kernel层的device中.
 </p>
@@ -349,69 +278,52 @@ log_writev()就被映射到具体的driver层的writev()函数.这样,一条log�
 SLOGX()API族用于生成system log,log被写到system这个logger device中,SLOGX的实现跟main log基本相同,只是默认的log id是system而不是main
 </p>
 
-<p>
-#define SLOGV(&#x2026;) ((void)__android_log_buf_print(LOG_ID_SYSTEM, ANDROID_LOG_VERBOSE, LOG_TAG, <span class="underline"><span class="underline">VA_ARGS</span></span>))
-</p>
+<pre class="example">
+#define SLOGV(...) ((void)__android_log_buf_print(LOG_ID_SYSTEM, ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__))
 
-<p>
-int __android_log_buf_print(int bufID, int prio, const char *tag, const char *fmt, &#x2026;)
+int __android_log_buf_print(int bufID, int prio, const char *tag, const char *fmt, ...)
 {
     va_list ap;
     char buf[LOG_BUF_SIZE];
-</p>
 
-<p>
-va_start(ap, fmt);
-vsnprintf(buf, LOG_BUF_SIZE, fmt, ap);
-va_end(ap);
-</p>
+    va_start(ap, fmt);
+    vsnprintf(buf, LOG_BUF_SIZE, fmt, ap);
+    va_end(ap);
 
-<p>
     return __android_log_buf_write(bufID, prio, tag, buf);
 }
-</p>
 
-<p>
 int __android_log_buf_write(int bufID, int prio, const char *tag, const char *msg)
 {
-    struct iovec vec<sup><a id="fnr.1.100" class="footref" href="#fn.1">1</a></sup>;
-</p>
+    struct iovec vec[3];
 
-<p>
-if (!tag)
-    tag = "";
-</p>
+    if (!tag)
+	tag = "";
 
-<p>
-<i>* XXX: This needs to go! *</i>
-if (!strcmp(tag, "HTC_RIL") ||
-    !strncmp(tag, "RIL", 3) || <i>* Any log tag with "RIL" as the prefix *</i>
-    !strncmp(tag, "IMS", 3) || <i>* Any log tag with "IMS" as the prefix *</i>
-    !strcmp(tag, "AT") ||
-    !strcmp(tag, "GSM") ||
-    !strcmp(tag, "STK") ||
-    !strcmp(tag, "CDMA") ||
-    !strcmp(tag, "PHONE") ||
-    !strcmp(tag, "SMS"))
-        bufID = LOG_ID_RADIO;
-</p>
+    /* XXX: This needs to go! */
+    if (!strcmp(tag, "HTC_RIL") ||
+	!strncmp(tag, "RIL", 3) || /* Any log tag with "RIL" as the prefix */
+	!strncmp(tag, "IMS", 3) || /* Any log tag with "IMS" as the prefix */
+	!strcmp(tag, "AT") ||
+	!strcmp(tag, "GSM") ||
+	!strcmp(tag, "STK") ||
+	!strcmp(tag, "CDMA") ||
+	!strcmp(tag, "PHONE") ||
+	!strcmp(tag, "SMS"))
+	    bufID = LOG_ID_RADIO;
 
-<p>
-vec<sup><a id="fnr.2.100" class="footref" href="#fn.2">2</a></sup>.iov_base   = (unsigned char *) &amp;prio;
-vec<sup><a id="fnr.2.100" class="footref" href="#fn.2">2</a></sup>.iov_len    = 1;
-vec<sup><a id="fnr.3.100" class="footref" href="#fn.3">3</a></sup>.iov_base   = (void *) tag;
-vec<sup><a id="fnr.3.100" class="footref" href="#fn.3">3</a></sup>.iov_len    = strlen(tag) + 1;
-vec<sup><a id="fnr.4.100" class="footref" href="#fn.4">4</a></sup>.iov_base   = (void *) msg;
-vec<sup><a id="fnr.4.100" class="footref" href="#fn.4">4</a></sup>.iov_len    = strlen(msg) + 1;
-</p>
+    vec[0].iov_base   = (unsigned char *) &amp;prio;
+    vec[0].iov_len    = 1;
+    vec[1].iov_base   = (void *) tag;
+    vec[1].iov_len    = strlen(tag) + 1;
+    vec[2].iov_base   = (void *) msg;
+    vec[2].iov_len    = strlen(msg) + 1;
 
-<p>
     return write_to_log(bufID, vec, 3);
 }
-</p>
+</pre>
 </div>
 </div>
-
 <div id="outline-container-orgheadline3" class="outline-2">
 <h2 id="orgheadline3">Events Log</h2>
 <div class="outline-text-2" id="text-orgheadline3">
@@ -423,114 +335,91 @@ Events log是一种特殊的log,经常被用来记录系统的一些参数:例�
 Java层写event log的api为 writeEvent(),不过系统有四种该函数的实现.
 </p>
 
-<p>
+<pre class="example">
 public static native int writeEvent(int tag, int value);
 public static native int writeEvent(int tag, long value);
 public static native int writeEvent(int tag, String str);
-public static native int writeEvent(int tag, Object&#x2026; list);
-</p>
-
+public static native int writeEvent(int tag, Object... list);
+</pre>
 <p>
 系统会根据模块中call api时传入的参数对应调用不同的writeEvent()函数.这些函数分别对应到不同的JNI实现.首先看下参数为int/long时的JNI实现.
 </p>
 
-<p>
+<pre class="example">
 static jint android_util_EventLog_writeEvent_Integer(JNIEnv* env, jobject clazz,
-                                                     jint tag, jint value)
+	                                             jint tag, jint value)
 {
     return android_btWriteLog(tag, EVENT_TYPE_INT, &amp;value, sizeof(value));
 }
-</p>
 
-<p>
 static jint android_util_EventLog_writeEvent_Long(JNIEnv* env, jobject clazz,
-                                                  jint tag, jlong value)
+	                                          jint tag, jlong value)
 {
     return android_btWriteLog(tag, EVENT_TYPE_LONG, &amp;value, sizeof(value));
 }
-</p>
-
+</pre>
 <p>
 这两个函数调用了一个共同的函数 android_btWriteLog()
 </p>
 
-<p>
+<pre class="example">
 #define android_btWriteLog(tag, type, payload, len)  __android_log_btwrite(tag, type, payload, len)
-</p>
 
-<p>
 int __android_log_btwrite(int32_t tag, char type, const void *payload,
     size_t len)
 {
-    struct iovec vec<sup><a id="fnr.1.100" class="footref" href="#fn.1">1</a></sup>;
-</p>
+    struct iovec vec[3];
 
-<p>
-vec<sup><a id="fnr.2.100" class="footref" href="#fn.2">2</a></sup>.iov_base = &amp;tag;
-vec<sup><a id="fnr.2.100" class="footref" href="#fn.2">2</a></sup>.iov_len = sizeof(tag);
-vec<sup><a id="fnr.3.100" class="footref" href="#fn.3">3</a></sup>.iov_base = &amp;type;
-vec<sup><a id="fnr.3.100" class="footref" href="#fn.3">3</a></sup>.iov_len = sizeof(type);
-vec<sup><a id="fnr.4.100" class="footref" href="#fn.4">4</a></sup>.iov_base = (void*)payload;
-vec<sup><a id="fnr.4.100" class="footref" href="#fn.4">4</a></sup>.iov_len = len;
-</p>
+    vec[0].iov_base = &amp;tag;
+    vec[0].iov_len = sizeof(tag);
+    vec[1].iov_base = &amp;type;
+    vec[1].iov_len = sizeof(type);
+    vec[2].iov_base = (void*)payload;
+    vec[2].iov_len = len;
 
-<p>
     return write_to_log(LOG_ID_EVENTS, vec, 3);
 }
-</p>
-
+</pre>
 <p>
 是不是很熟悉?没错,最后跟main log流程一样,都调用write_to_log(0函数. 下面是参数为string时的JNI实现:
 </p>
 
-<p>
+<pre class="example">
 static jint android_util_EventLog_writeEvent_String(JNIEnv* env, jobject clazz,
-                                                    jint tag, jstring value) {
+	                                            jint tag, jstring value) {
     uint8_t buf[MAX_EVENT_PAYLOAD];
-</p>
 
-<p>
-const char *str = value != NULL ? env-&gt;GetStringUTFChars(value, NULL) : "NULL";
-jint len = strlen(str);
-const int max = sizeof(buf) - sizeof(len) - 2;  // Type byte, final newline
-if (len &gt; max) len = max;
-</p>
+    const char *str = value != NULL ? env-&gt;GetStringUTFChars(value, NULL) : "NULL";
+    jint len = strlen(str);
+    const int max = sizeof(buf) - sizeof(len) - 2;  // Type byte, final newline
+    if (len &gt; max) len = max;
 
-<p>
-buf<sup><a id="fnr.2.100" class="footref" href="#fn.2">2</a></sup> = EVENT_TYPE_STRING;
-memcpy(&amp;buf<sup><a id="fnr.3.100" class="footref" href="#fn.3">3</a></sup>, &amp;len, sizeof(len));
-memcpy(&amp;buf[1 + sizeof(len)], str, len);
-buf[1 + sizeof(len) + len] = '\n';
-</p>
+    buf[0] = EVENT_TYPE_STRING;
+    memcpy(&amp;buf[1], &amp;len, sizeof(len));
+    memcpy(&amp;buf[1 + sizeof(len)], str, len);
+    buf[1 + sizeof(len) + len] = '\n';
 
-<p>
     if (value != NULL) env-&gt;ReleaseStringUTFChars(value, str);
     return android_bWriteLog(tag, buf, 2 + sizeof(len) + len);
 }
-</p>
-
+</pre>
 <p>
 该函数把type,string长度,string都放到了同一个buffer中,然后call android_bWriteLog()
 </p>
 
-<p>
+<pre class="example">
 int __android_log_bwrite(int32_t tag, const void *payload, size_t len)
 {
-    struct iovec vec<sup><a id="fnr.4.100" class="footref" href="#fn.4">4</a></sup>;
-</p>
+    struct iovec vec[2];
 
-<p>
-vec<sup><a id="fnr.2.100" class="footref" href="#fn.2">2</a></sup>.iov_base = &amp;tag;
-vec<sup><a id="fnr.2.100" class="footref" href="#fn.2">2</a></sup>.iov_len = sizeof(tag);
-vec<sup><a id="fnr.3.100" class="footref" href="#fn.3">3</a></sup>.iov_base = (void*)payload;
-vec<sup><a id="fnr.3.100" class="footref" href="#fn.3">3</a></sup>.iov_len = len;
-</p>
+    vec[0].iov_base = &amp;tag;
+    vec[0].iov_len = sizeof(tag);
+    vec[1].iov_base = (void*)payload;
+    vec[1].iov_len = len;
 
-<p>
     return write_to_log(LOG_ID_EVENTS, vec, 2);
 }
-</p>
-
+</pre>
 <p>
 该函数与__android_log_bwrite的不同是后者是把type(int/long)跟payload分开的,而该函数放到了一起.
 </p>
@@ -539,89 +428,60 @@ vec<sup><a id="fnr.3.100" class="footref" href="#fn.3">3</a></sup>.iov_len = len
 writeEvent的第四种形式:写入的是int/long/string的组合体,则会循环遍历该组合,转换成格式化字符串放到同一个buffer中.
 </p>
 
-<p>
+<pre class="example">
 static jint android_util_EventLog_writeEvent_Array(JNIEnv* env, jobject clazz,
-                                                   jint tag, jobjectArray value) {
-</p>
+	                                           jint tag, jobjectArray value) {
 
-<p>
-uint8_t buf[MAX_EVENT_PAYLOAD];
-const size_t max = sizeof(buf) - 1;  <i>/ leave room for final newline
-size_t pos = 2;  /</i> Save room for type tag &amp; array count
-</p>
+    uint8_t buf[MAX_EVENT_PAYLOAD];
+    const size_t max = sizeof(buf) - 1;  // leave room for final newline
+    size_t pos = 2;  // Save room for type tag &amp; array count
 
-<p>
-jsize copied = 0, num = env-&gt;GetArrayLength(value);
-for (; copied &lt; num &amp;&amp; copied &lt; 255; ++copied) {
-    jobject item = env-&gt;GetObjectArrayElement(value, copied);
-    if (item == NULL || env-&gt;IsInstanceOf(item, gStringClass)) {
-        if (pos + 1 + sizeof(jint) &gt; max) break;
-        const char *str = item != NULL ? env-&gt;GetStringUTFChars((jstring) item, NULL) : "NULL";
-        jint len = strlen(str);
-        if (pos + 1 + sizeof(len) + len &gt; max) len = max - pos - 1 - sizeof(len);
-        buf[pos++] = EVENT_TYPE_STRING;
-        memcpy(&amp;buf[pos], &amp;len, sizeof(len));
-        memcpy(&amp;buf[pos + sizeof(len)], str, len);
-        pos += sizeof(len) + len;
-        if (item != NULL) env-&gt;ReleaseStringUTFChars((jstring) item, str);
-    } else if (env-&gt;IsInstanceOf(item, gIntegerClass)) {
-        jint intVal = env-&gt;GetIntField(item, gIntegerValueID);
-        if (pos + 1 + sizeof(intVal) &gt; max) break;
-        buf[pos++] = EVENT_TYPE_INT;
-        memcpy(&amp;buf[pos], &amp;intVal, sizeof(intVal));
-        pos += sizeof(intVal);
-    } else if (env-&gt;IsInstanceOf(item, gLongClass)) {
-        jlong longVal = env-&gt;GetLongField(item, gLongValueID);
-        if (pos + 1 + sizeof(longVal) &gt; max) break;
-        buf[pos++] = EVENT_TYPE_LONG;
-        memcpy(&amp;buf[pos], &amp;longVal, sizeof(longVal));
-        pos += sizeof(longVal);
-    } else {
-        jniThrowException(env,
-                "java/lang/IllegalArgumentException",
-                "Invalid payload item type");
-        return -1;
+    jsize copied = 0, num = env-&gt;GetArrayLength(value);
+    for (; copied &lt; num &amp;&amp; copied &lt; 255; ++copied) {
+	jobject item = env-&gt;GetObjectArrayElement(value, copied);
+	if (item == NULL || env-&gt;IsInstanceOf(item, gStringClass)) {
+	    if (pos + 1 + sizeof(jint) &gt; max) break;
+	    const char *str = item != NULL ? env-&gt;GetStringUTFChars((jstring) item, NULL) : "NULL";
+	    jint len = strlen(str);
+	    if (pos + 1 + sizeof(len) + len &gt; max) len = max - pos - 1 - sizeof(len);
+	    buf[pos++] = EVENT_TYPE_STRING;
+	    memcpy(&amp;buf[pos], &amp;len, sizeof(len));
+	    memcpy(&amp;buf[pos + sizeof(len)], str, len);
+	    pos += sizeof(len) + len;
+	    if (item != NULL) env-&gt;ReleaseStringUTFChars((jstring) item, str);
+	} else if (env-&gt;IsInstanceOf(item, gIntegerClass)) {
+	    jint intVal = env-&gt;GetIntField(item, gIntegerValueID);
+	    if (pos + 1 + sizeof(intVal) &gt; max) break;
+	    buf[pos++] = EVENT_TYPE_INT;
+	    memcpy(&amp;buf[pos], &amp;intVal, sizeof(intVal));
+	    pos += sizeof(intVal);
+	} else if (env-&gt;IsInstanceOf(item, gLongClass)) {
+	    jlong longVal = env-&gt;GetLongField(item, gLongValueID);
+	    if (pos + 1 + sizeof(longVal) &gt; max) break;
+	    buf[pos++] = EVENT_TYPE_LONG;
+	    memcpy(&amp;buf[pos], &amp;longVal, sizeof(longVal));
+	    pos += sizeof(longVal);
+	} else {
+	    jniThrowException(env,
+	            "java/lang/IllegalArgumentException",
+	            "Invalid payload item type");
+	    return -1;
+	}
+	env-&gt;DeleteLocalRef(item);
     }
-    env-&gt;DeleteLocalRef(item);
-}
-</p>
 
-<p>
-    buf<sup><a id="fnr.2.100" class="footref" href="#fn.2">2</a></sup> = EVENT_TYPE_LIST;
-    buf<sup><a id="fnr.3.100" class="footref" href="#fn.3">3</a></sup> = copied;
+    buf[0] = EVENT_TYPE_LIST;
+    buf[1] = copied;
     buf[pos++] = '\n';
     return android_bWriteLog(tag, buf, pos);
 }
-</p>
-
+</pre>
 <p>
 最后同样是调用函数 android_bWriteLog()
 </p>
 </div>
 </div>
-<div id="footnotes">
-<h2 class="footnotes">Footnotes: </h2>
-<div id="text-footnotes">
-
-<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
-ignore
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.2" class="footnum" href="#fnr.2">2</a></sup> <div class="footpara"><p class="footpara">
-ignore
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.3" class="footnum" href="#fnr.3">3</a></sup> <div class="footpara"><p class="footpara">
-ignore
-</p></div></div>
-
-<div class="footdef"><sup><a id="fn.4" class="footnum" href="#fnr.4">4</a></sup> <div class="footpara"><p class="footpara">
-ignore
-</p></div></div>
-
-
 </div>
-</div></div>
 <div id="postamble" class="status">
 The code examples and css stylesheets are licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a> or later.</p></div>
 </div>

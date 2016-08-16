@@ -3,12 +3,12 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-17 Wed 06:31 -->
+<!-- 2016-08-17 Wed 06:49 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
-<title></title>
+<title>项目总结</title>
 <meta  name="generator" content="Org-mode" />
-<meta  name="author" content="lx" />
+<meta  name="author" content="Zhengchao Xu" />
 <link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
 <link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
 <link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
@@ -84,24 +84,26 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
-<p>
-&#x2014;
-layout: post
-title: 项目总结
-category: Life
-tag: [Tech]
-description: [Thought about my recent project]
-&#x2014;
-</p>
-
+<h1 class="title">项目总结</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">1. 做好前期规划</a></li>
+<li><a href="#orgheadline2">2. 用Git维护代码库</a></li>
+<li><a href="#orgheadline3">3. 写好Test Case</a></li>
+<li><a href="#orgheadline4">4. 使用可变参数宏</a></li>
+<li><a href="#orgheadline5">5. 多线程编程的注意事项</a></li>
+</ul>
+</div>
+</div>
 <p>
 今年做过的一个项目的总结，记下有用的经验。
 </p>
 
-<p>
-#### 1. 做好前期规划
-</p>
-
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">1. 做好前期规划</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
 一定对你即将做的东西有一个整体的轮廓，首先要明确这个东西是什么，具有什么样的功能。然后，划分模块，每个模块要做什么事情，最大化实现模块之间的低耦合度，模块之间尽量用最少的API。定义每个模块的API，最好能细化到应该用几个线程或函数实现该模块。
 </p>
@@ -109,11 +111,12 @@ description: [Thought about my recent project]
 <p>
 我觉得这个过程是非常重要的，如果是一个team共同做这个东西，一定要经常性的开会讨论，反复修改。如果是一个人做，也要把架构图完整的描述出来，并不断的review。虽然很多人（包括我）都喜欢上来就直接写代码，但是这次项目经验让我了解到，前期架构描述的越完整，后期的改动就会越小。
 </p>
+</div>
+</div>
 
-<p>
-#### 2. 用Git维护代码库
-</p>
-
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">2. 用Git维护代码库</h2>
+<div class="outline-text-2" id="text-orgheadline2">
 <p>
 当然也可以用别的版本库工具，但是人人都爱git。
 </p>
@@ -129,11 +132,12 @@ description: [Thought about my recent project]
 <p>
 用好git tag。
 </p>
+</div>
+</div>
 
-<p>
-#### 3. 写好Test Case
-</p>
-
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">3. 写好Test Case</h2>
+<div class="outline-text-2" id="text-orgheadline3">
 <p>
 前辈经常教育我们：你的代码，只有你自己最懂。写好test case的一个好处就是：不用每次写完一段代码都要人工测试。
 </p>
@@ -150,11 +154,12 @@ description: [Thought about my recent project]
 另一方面，你可以像老顽童一样，玩“左右互搏”的游戏：写一些变态的Test Case对模块进行“狂轰乱炸”，看看你的模块能否抵挡住袭击。
 然后，你就知道哪方面需要改进了。
 </p>
+</div>
+</div>
 
-<p>
-#### 4. 使用可变参数宏
-</p>
-
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">4. 使用可变参数宏</h2>
+<div class="outline-text-2" id="text-orgheadline4">
 <p>
 项目前期，开始写代码之后，总需要在代码中添加一些调试手段。后期需要发布时，需要把这些调试手段关掉，如果通过添/删代码的方式来做，
 那一条条删除的工作量会很大，而且未必能删的干净。
@@ -167,40 +172,33 @@ description: [Thought about my recent project]
 <p>
 宏开关基本就是if else语法，如果定义了这个宏，那么就执行A段代码，否则执行B段代码。可以通过在gcc中使用“-D”定义宏，例如
 </p>
-
-<p>
+<pre class="example">
 gcc -o helloworld -DHELLO helloword.c
-</p>
 
-<p>
 代码实现：
 #ifdefine TEST
   printf("hello world");
 #else
   printf("NO hello world");
 #endif
-</p>
-
+</pre>
 <p>
 宏方法主要是指使用宏封装函数或代码，常见的一个场景是log输出，在实际项目中，经常会定义一组通用的宏API代替printf()系列函数。
 例如我们定义了一个函数__lxlog(type, msg)，而且要msg支持format格式，即__lxlog(type, format, str&#x2026;),
 那我们可以用宏来封装这个函数：
 </p>
-
-<p>
-#define LXLOG(type,format,str&#x2026;) __lxlog(type, format, str&#x2026;)
-</p>
-
+<pre class="example">
+#define LXLOG(type,format,str...) __lxlog(type, format, str...)
+</pre>
 <p>
 在宏中可以对参数进行简化，用省略号代替，例如上面语句可以写成
 </p>
 
-<p>
-#define LXLOG(type, format, &#x2026;)      <span class="underline"><span class="underline">lxlog(type, format, __VA_ARGS</span></span>)
+<pre class="example">
+#define LXLOG(type, format, ...)      __lxlog(type, format, __VA_ARGS__)
 或者
-#define LXLOG(type, format, &#x2026;)      <span class="underline"><span class="underline">lxlog(type, format, ##__VAR_ARGS</span></span>)
-</p>
-
+#define LXLOG(type, format, ...)      __lxlog(type, format, ##__VAR_ARGS__)
+</pre>
 <p>
 第二种表示方式的好处是，当可变参数为空，它会自动将__VAR_ARGS__前面的逗号去掉。例如，
 如果使用第一种方法调用LXLOG(ERROR, "err"),则会编译失败，因为展开后函数__lx_log()里多了一个逗号。
@@ -210,21 +208,20 @@ gcc -o helloworld -DHELLO helloword.c
 <p>
 如果觉得每次都要输入type麻烦，也可以继续对LXLOG进行封装。
 </p>
-
-<p>
-#define LXERROR(&#x2026;)    LXLOG(ERROR, ##__VA_ARGS__)
-#define LXDEBUG(&#x2026;)    LXLOG(ERROR, ##__VA_ARGS__)
-&#x2026;
-</p>
-
+<pre class="example">
+#define LXERROR(...)    LXLOG(ERROR, ##__VA_ARGS__)
+#define LXDEBUG(...)    LXLOG(ERROR, ##__VA_ARGS__)
+...
+</pre>
 <p>
 善用宏开关和宏参数，会使代码维护变得简单可靠。
 </p>
+</div>
+</div>
 
-<p>
-#### 5. 多线程编程的注意事项
-</p>
-
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">5. 多线程编程的注意事项</h2>
+<div class="outline-text-2" id="text-orgheadline5">
 <p>
 (1). 创建线程时，传给线程的参数尽量使用全局变量或静态变量。如果使用局部变量作为传给线程的参数（尽量不要这么做！），那么创建线程的函数调用完pthread_create()后如果立即返回，会导致静态变量被释放，其指向的内容在线程中就变得未知，可能导致非法访问。当然可以让函数调用完pthread_create() sleep一段时间来解决这个问题，但是这并不是良好的编程风格（个人观点）。因为永远kernel的调度行为是无法预知的，通常情况sleep几秒可能会解决这个问题，但如果系统loading太重，几秒的时间未必会够用。另一方面，如果sleep时间太长，则可能会影响父线程的行为。
 </p>
@@ -236,6 +233,8 @@ gcc -o helloworld -DHELLO helloword.c
 <p>
 (3). pthread_kill()的使用，如果在代码中用到这个函数。对于可能用到的每个signal(除非你只是用来检查线程是否存在)，一定要在线程里设计好相关的signal handler，不然该函数发送的signal会被整个进程接受并处理。
 </p>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 The code examples and css stylesheets are licensed under the <a href="http://www.gnu.org/licenses/gpl.html">GNU General Public License v3</a> or later.</p></div>
