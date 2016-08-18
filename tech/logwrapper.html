@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-18 Thu 22:03 -->
+<!-- 2016-08-18 Thu 22:12 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Android logwrapper</title>
@@ -94,10 +94,12 @@ for the JavaScript code in this tag.
 </div>
 </div>
 <p>
+<i>(date:2013-12-28)</i>
+</p>
+
+<p>
 严格来讲，logwrapper并不属于之前写的Android的Log体系（
-[logger](../Android-logger)、
-[liblog](../Android-liblog)、
-[logcat](../Android-logcat)
+<a href="logger.html">logger.html</a>、 <a href="liblog.html">liblog.html</a>、 <a href="logcat.html">logcat.html</a>
 ），但是呢，它多多少少又与这套体系有些关系，所以将其称之为“外传”。
 </p>
 
@@ -118,13 +120,23 @@ for the JavaScript code in this tag.
 
 <p>
 使用logwrapper后，ls的结果没有输出到标准输出。
-![ls with logwrapper]({{root_url}}/public/img/ls.png "lslogwrapper")
 </p>
+
+
+<div class="figure">
+<p><img src="../img/ls.png" alt="ls.png" />
+</p>
+</div>
 
 <p>
 在logcat抓的log中发现了上面ls命令的结果。
-![logcat with logwrapper]({{root_url}}/public/img/logwrapper.png "logwrapper")
 </p>
+
+
+<div class="figure">
+<p><img src="../img/logwrapper.png" alt="logwrapper.png" />
+</p>
+</div>
 
 <div id="outline-container-orgheadline1" class="outline-2">
 <h2 id="orgheadline1">clogwrapper 代码</h2>
