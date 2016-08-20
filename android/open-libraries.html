@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-20 Sat 00:10 -->
+<!-- 2016-08-21 Sun 01:31 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>【翻译】当我开始Android开发时，希望能早点认识的一些开源库</title>
@@ -89,14 +89,39 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline7">第一步：构造、使用view - Butter Knife</a>
+<li><a href="#orgheadline1">第一步：构造、使用view - Butter Knife</a>
 <ul>
-<li><a href="#orgheadline1">基本使用</a></li>
-<li><a href="#orgheadline2">绑定、解绑fragment中的view</a></li>
-<li><a href="#orgheadline3">注册监听函数</a></li>
-<li><a href="#orgheadline4">绑定资源</a></li>
-<li><a href="#orgheadline5">给多个组件设置同一个监听函数</a></li>
-<li><a href="#orgheadline6">操作view的属性</a></li>
+<li><a href="#orgheadline2">基本使用</a></li>
+<li><a href="#orgheadline3">绑定、解绑fragment中的view</a></li>
+<li><a href="#orgheadline4">注册监听函数</a></li>
+<li><a href="#orgheadline5">绑定资源</a></li>
+<li><a href="#orgheadline6">给多个组件设置同一个监听函数</a></li>
+<li><a href="#orgheadline7">操作view的属性</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline8">第二步：加载网络图片 - Picasso</a>
+<ul>
+<li><a href="#orgheadline9">基本介绍</a></li>
+<li><a href="#orgheadline10">更多特性</a></li>
+<li><a href="#orgheadline11">一个完整的代码片段</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline12">第三步: json转换 - Gson</a>
+<ul>
+<li><a href="#orgheadline13">基本介绍</a></li>
+<li><a href="#orgheadline14">高级用法</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline15">第四步: 请求网络数据 - Retrofit (请不要再使用AsyncTask了, 真的, 停下来吧)</a>
+<ul>
+<li><a href="#orgheadline16">基本介绍</a></li>
+<li><a href="#orgheadline17">典型使用</a></li>
+<li><a href="#orgheadline18">小技巧</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline19">第五步: 存储数据 - Realm (sqlite的替代品)</a>
+<ul>
+<li><a href="#orgheadline20">基本介绍</a></li>
 </ul>
 </li>
 </ul>
@@ -124,15 +149,20 @@ There’s no sense in re-inventing the wheel when you’re working on Android ap
 
 <p>
 本文是翻译的Groupon工程师<a href="https://speakerdeck.com/chrisguzman">Chris Guzman</a>的一个演讲PPT。作者以一个45分钟“hackathon”的方式，
-从零开始构造一个App "TAaSKY", 然后逐步介绍在开发过程中使用到的开源库。
+从零开始构造一个App "TAaSKY", 这个App用于展示做"土豆"的食谱.
+作者逐步介绍在开发这个app过程中使用到的开源库。
 </p>
 
-<div id="outline-container-orgheadline7" class="outline-2">
-<h2 id="orgheadline7">第一步：构造、使用view - Butter Knife</h2>
-<div class="outline-text-2" id="text-orgheadline7">
-</div><div id="outline-container-orgheadline1" class="outline-3">
-<h3 id="orgheadline1">基本使用</h3>
-<div class="outline-text-3" id="text-orgheadline1">
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">第一步：构造、使用view - Butter Knife</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+这一步是用来构造TAaSKY应用的UI界面.
+</p>
+</div>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">基本使用</h3>
+<div class="outline-text-3" id="text-orgheadline2">
 <p>
 下面的内容是activity的一个简略的layout文件，这是开发App过程中
 必不可少的东西，当写完layout之后，大部分情况下都需要在代码中
@@ -194,9 +224,9 @@ public void bind(MainActivity activity) {
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2">绑定、解绑fragment中的view</h3>
-<div class="outline-text-3" id="text-orgheadline2">
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">绑定、解绑fragment中的view</h3>
+<div class="outline-text-3" id="text-orgheadline3">
 <pre class="example">
 public class TacoFragment extends Fragment {
  @BindView(R.id.tag) EditText tag;
@@ -221,9 +251,9 @@ public class TacoFragment extends Fragment {
 </pre>
 </div>
 </div>
-<div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3">注册监听函数</h3>
-<div class="outline-text-3" id="text-orgheadline3">
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">注册监听函数</h3>
+<div class="outline-text-3" id="text-orgheadline4">
 <p>
 ButterKnife支持大部分常用的监听函数。
 </p>
@@ -235,9 +265,9 @@ public void saveTaco(Button button) {
 </pre>
 </div>
 </div>
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4">绑定资源</h3>
-<div class="outline-text-3" id="text-orgheadline4">
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">绑定资源</h3>
+<div class="outline-text-3" id="text-orgheadline5">
 <pre class="example">
 class MainActivity extends Activity {
  @BindString(R.string.title) String title;
@@ -250,9 +280,9 @@ class MainActivity extends Activity {
 </pre>
 </div>
 </div>
-<div id="outline-container-orgheadline5" class="outline-3">
-<h3 id="orgheadline5">给多个组件设置同一个监听函数</h3>
-<div class="outline-text-3" id="text-orgheadline5">
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">给多个组件设置同一个监听函数</h3>
+<div class="outline-text-3" id="text-orgheadline6">
 <pre class="example">
 @OnClick({ R.id.save, R.id.reject})
 public void actOnTaco(View view) {
@@ -268,9 +298,9 @@ public void actOnTaco(View view) {
 </pre>
 </div>
 </div>
-<div id="outline-container-orgheadline6" class="outline-3">
-<h3 id="orgheadline6">操作view的属性</h3>
-<div class="outline-text-3" id="text-orgheadline6">
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">操作view的属性</h3>
+<div class="outline-text-3" id="text-orgheadline7">
 <pre class="example">
 //下面的代码将两个button绑定到一个list中， 并通过操作这个list来
 //操作这些按钮的属性。
@@ -291,6 +321,346 @@ static final ButterKnife.Setter&lt;View, Boolean&gt; ENABLED = new ButterKnife.S
  }
 };
 </pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-2">
+<h2 id="orgheadline8">第二步：加载网络图片 - Picasso</h2>
+<div class="outline-text-2" id="text-orgheadline8">
+<p>
+这一步用于在应用显示土豆的照片, 照片可能是网络或本地图片.
+</p>
+
+<p>
+通过<a href="#orgheadline1">第一步</a>的代码，UI部分基本已经写完了。然后接下来要实现APP的一个功能,
+从网络下载图片并显示. 这里用到了一个同样有名的开源库: Picasso. <br  />
+</p>
+</div>
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">基本介绍</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+<p>
+该库的一些特点包括:
+</p>
+<ol class="org-ol">
+<li>进行HTTP请求.</li>
+<li>缓存图片.</li>
+<li>简单的"resize/裁剪/居中/放大"操作.</li>
+<li>负责在主线程之外进行http请求.</li>
+<li>对RecyclerView的view进行合理回收.</li>
+</ol>
+<p>
+在介绍Picasso之前, 先看一下比较通用的"自己写"的下载图片代码:<br  />
+这段代码通过http请求获取图片的stream, 然后再调用Android的BitmapFactory
+类来将stream转化成bitmap. 其中 OpenHttpGETConnection()函数还要考虑在
+子线程中进行http请求操作.
+</p>
+<pre class="example">
+private Bitmap DownloadImage(String url)
+{
+ Bitmap bitmap = null;
+ InputStream in = null;
+ try {
+    in = OpenHttpGETConnection(url);
+    bitmap = BitmapFactory.decodeStream(in); in.close();
+ } catch (Exception e) {
+    Log.d("DownloadImage", e.getLocalizedMessage());
+ }
+ return bitmap;
+}
+</pre>
+
+<p>
+如果使用Picasso,则上面的代码就变为:
+</p>
+<pre class="example">
+Picasso.with(context)
+ .load("http://placekitten.com/200/300")
+ .into(imageView);
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">更多特性</h3>
+<div class="outline-text-3" id="text-orgheadline10">
+<p>
+上面展示了Picasso的一个典型使用方式, 该库还包含其他的对图片的操作,
+例如:
+</p>
+<ol class="org-ol">
+<li>placeholder(R.mipmap.loading) 
+占位图片, 可以是一个资源或者drawable</li>
+<li>error(R.drawable.sad_taco) 
+如果加载失败显示的图片</li>
+<li>fit() //reduce the image size to the dimensions of imageView
+将图片大小缩减到imageView的大小.</li>
+<li>resize(imgWidth, imgHeight) //resizes the image in pixels
+缩减到指定图片大小. 单位是px</li>
+<li>centerCrop() //or .centerInside()
+居中裁剪.</li>
+<li>rotate(90f) 
+旋转图片. 或者也可以使用函数 rotate(degrees, pivotX, pivotY)</li>
+</ol>
+
+<p>
+除了网络下载图片, Picasso也支持加载本地图片. 例如下面的代码:
+</p>
+<pre class="example">
+Picasso.with(context).load(R.drawable.salsa).into(imageView1);
+Picasso.with(context).load("file:///asset/salsa.png").into(imageView2);
+Picasso.with(context).load(new File(...)).into(imageView3);
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11">一个完整的代码片段</h3>
+<div class="outline-text-3" id="text-orgheadline11">
+<p>
+下面是Picasso和ButterKnife一起用的场景, 在通过Picasso下载图片时, 使用
+ButterKnife的apply函数来使按钮不可用. 
+</p>
+<pre class="example">
+//Butter Knife!
+@BindView(R.id.taco_img) ImageView tacoImg;
+private void setTacoImage() {
+ Picasso.with(context)
+ .load("http://tacoimages.com/random.jpg")
+ .into(tacoImg);
+}
+private void getNextTaco() {
+ ButterKnife.apply(actionButtons, DISABLE);
+ setTacoImage();
+ //TODO: implement
+ loadTacoDescription();
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-2">
+<h2 id="orgheadline12">第三步: json转换 - Gson</h2>
+<div class="outline-text-2" id="text-orgheadline12">
+<p>
+这一步用于对服务器返回的json格式数据转化成类对象, 或者反过来.
+</p>
+</div>
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">基本介绍</h3>
+<div class="outline-text-3" id="text-orgheadline13">
+<p>
+Gson的一些特点:
+</p>
+<ol class="org-ol">
+<li>(可以)不需要在类中使用注解.</li>
+<li>性能好.</li>
+<li>使用广泛.</li>
+<li>默认包含类(包括父类)的所有域.</li>
+<li>支持多维数组.</li>
+<li>当序列化时, 类的值为null的变量会被跳过.</li>
+<li>反序列化时, json中没有的域会在对象中生成一个null值.</li>
+</ol>
+
+<p>
+例如下面的例子对类Taco使用Gson进行Json的序列化和反序列化.
+</p>
+<pre class="example">
+class Taco {
+ private String description;
+ private String imageUrl;
+ private String tag;
+ //not included in JSON serialization or deserialization
+ private transient boolean favorite;
+ Taco(String description, String imageUrl, String tag, boolean favorite) {
+ ....
+ }
+}
+
+// Serialize to JSON
+Taco breakfastTaco = new Taco("Eggs with syrup on pancake", "imgur.com/123", "breakfast", true);
+Gson gson = new Gson();
+String json = gson.toJson(breakfastTaco);
+// ==&gt; json is {description:"Eggs with syrup on pancake", imageUrl:"imgur.com/123", tag:"breakfast"}
+// Deserialize to POJO
+Taco yummyTaco = gson.fromJson(json, Taco.class);
+// ==&gt; yummyTaco is just like breakfastTaco except for the favorite boolean
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14">高级用法</h3>
+<div class="outline-text-3" id="text-orgheadline14">
+<ol class="org-ol">
+<li><p>
+如果变量名和json的域名不同, 可以使用 <code>@SerializeName()</code> 注解修饰.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Taco</span> {
+    <span style="color: #BFEBBF;">@SerializedName</span>(<span style="color: #CC9393;">"serialized_labels"</span>)
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">tag</span>;
+}
+</pre>
+</div></li>
+<li><p>
+通过Gson的API客制化输出.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java">   <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#22914;&#26524;&#21464;&#37327;&#20540;&#20026;null,&#21017;&#36755;&#20986;&#20013;&#20063;&#36755;&#20986;null,&#32780;&#19981;&#26159;&#24573;&#30053;.</span>
+<span style="color: #7CB8BB;">Gson</span> <span style="color: #DFAF8F;">gson</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">GsonBuilder</span>().serializeNulls().create();
+<span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#20445;&#30041;&#31354;&#26684;</span>
+<span style="color: #7CB8BB;">Gson</span> <span style="color: #DFAF8F;">gson</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">GsonBuilder</span>().setPrettyPrinting().create();
+</pre>
+</div></li>
+<li><p>
+设置日期格式
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">DATE_FORMAT</span> = <span style="color: #CC9393;">"yyyy-MM-dd"</span>;
+<span style="color: #7CB8BB;">GsonBuilder</span> <span style="color: #DFAF8F;">gsonBuilder</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">GsonBuilder</span>();
+gsonBuilder.setDateFormat(DATE_FORMAT);
+<span style="color: #7CB8BB;">Gson</span> <span style="color: #DFAF8F;">gson</span> = gsonBuilder.create();
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline15" class="outline-2">
+<h2 id="orgheadline15">第四步: 请求网络数据 - Retrofit (请不要再使用AsyncTask了, 真的, 停下来吧)</h2>
+<div class="outline-text-2" id="text-orgheadline15">
+<p>
+这一步用于从服务器上获取数据.
+</p>
+</div>
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16">基本介绍</h3>
+<div class="outline-text-3" id="text-orgheadline16">
+<p>
+Retrofit的一些特点:
+</p>
+<ol class="org-ol">
+<li>类型安全.</li>
+<li>支持认证.</li>
+<li>支持json的序列化和反序列化.</li>
+<li>支持RxJava</li>
+<li>支持同步和异步请求.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17">典型使用</h3>
+<div class="outline-text-3" id="text-orgheadline17">
+<p>
+下面是Retrofit的一个典型应用, (更多介绍可以看<a href="../retrofit.html">这里</a>):
+</p>
+<ol class="org-ol">
+<li>定义API</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">interface</span> <span style="color: #7CB8BB;">TacoApi</span> {
+ <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Request method and URL specified in the annotation</span>
+ <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Callback for the parsed response is the last parameter</span>
+ <span style="color: #BFEBBF;">@GET</span>(<span style="color: #CC9393;">"random/"</span>)
+ <span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">Taco</span>&gt; <span style="color: #93E0E3;">randomTaco</span>(<span style="color: #BFEBBF;">@Query</span>(<span style="color: #CC9393;">"full-taco"</span>) <span style="color: #7CB8BB;">boolean</span> <span style="color: #DFAF8F;">full</span>);
+ <span style="color: #BFEBBF;">@GET</span>(<span style="color: #CC9393;">"contributions/"</span>)
+ <span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">List</span>&lt;<span style="color: #7CB8BB;">Contributor</span>&gt;&gt; <span style="color: #93E0E3;">getContributors</span>();
+ <span style="color: #BFEBBF;">@GET</span>(<span style="color: #CC9393;">"contributions/{name}"</span>)
+ <span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">Contributor</span>&gt; <span style="color: #93E0E3;">getContributors</span>(<span style="color: #BFEBBF;">@Path</span>(<span style="color: #CC9393;">"name"</span>) <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">username</span>));
+ <span style="color: #BFEBBF;">@POST</span>(<span style="color: #CC9393;">"recipe/new"</span>)
+ <span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">Recipe</span>&gt; <span style="color: #93E0E3;">createRecipe</span>(<span style="color: #BFEBBF;">@Body</span> <span style="color: #7CB8BB;">Recipe</span> <span style="color: #DFAF8F;">recipe</span>);
+}
+</pre>
+</div>
+<ol class="org-ol">
+<li>使用api进行请求
+<ol class="org-ol">
+<li><p>
+同步请求:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">Retrofit</span> <span style="color: #DFAF8F;">retrofit</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">Retrofit</span>.<span style="color: #7CB8BB;">Builder</span>()
+    .baseUrl(<span style="color: #CC9393;">"http://taco-randomizer.herokuapp.com/"</span>)
+    .addConverterFactory(GsonConverterFactory.create())
+    .build();
+
+    <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">&#21019;&#24314;api&#23454;&#20363;</span>
+    <span style="color: #7CB8BB;">TacoApi</span> <span style="color: #DFAF8F;">tacoApi</span> = retrofit.create(TacoApi.<span style="color: #F0DFAF; font-weight: bold;">class</span>);
+    <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">&#21019;&#24314;&#35831;&#27714;</span>
+    <span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">Taco</span>&gt; <span style="color: #DFAF8F;">call</span> = tacoApi.randomTaco(<span style="color: #BFEBBF;">true</span>);
+    <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">&#25191;&#34892;&#35831;&#27714;</span>
+    <span style="color: #7CB8BB;">Taco</span> <span style="color: #DFAF8F;">taco</span> = call.execute().body();
+</pre>
+</div></li>
+
+<li><p>
+异步请求
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">Recipe</span> <span style="color: #DFAF8F;">recipe</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Recipe</span>();
+<span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">Recipe</span>&gt; <span style="color: #DFAF8F;">call</span> = tacoApi.createRecipe(recipe);
+call.enqueue(<span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Callback</span>&lt;<span style="color: #7CB8BB;">Recipe</span>&gt;() {
+    <span style="color: #BFEBBF;">@Override</span>
+    <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">onResponse</span>(<span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">Recipe</span>&gt; <span style="color: #DFAF8F;">call</span>, <span style="color: #7CB8BB;">Response</span>&lt;<span style="color: #7CB8BB;">Recipe</span>&gt; <span style="color: #DFAF8F;">response</span>) {}
+    <span style="color: #BFEBBF;">@Override</span>
+    <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">onFailure</span>(<span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">Recipe</span>&gt; <span style="color: #DFAF8F;">call</span>, <span style="color: #7CB8BB;">Throwable</span> <span style="color: #DFAF8F;">t</span>) {}
+</pre>
+</div></li>
+</ol></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-3">
+<h3 id="orgheadline18">小技巧</h3>
+<div class="outline-text-3" id="text-orgheadline18">
+<ol class="org-ol">
+<li><p>
+通过注解修改请求的url
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #BFEBBF;">@POST</span>(<span style="color: #CC9393;">"http://taco-randomizer.herokuapp.com/v2/taco"</span>)
+<span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">Taco</span>&gt; <span style="color: #93E0E3;">getFromNewAPI</span>();
+</pre>
+</div></li>
+<li><p>
+添加请求头部
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #BFEBBF;">@Headers</span>({<span style="color: #CC9393;">"User-Agent: tacobot"</span>})
+<span style="color: #BFEBBF;">@GET</span>(<span style="color: #CC9393;">"contributions/"</span>)
+<span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">List</span>&lt;<span style="color: #7CB8BB;">Contributor</span>&gt;&gt; <span style="color: #93E0E3;">getContributors</span>();
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline19" class="outline-2">
+<h2 id="orgheadline19">第五步: 存储数据 - Realm (sqlite的替代品)</h2>
+<div class="outline-text-2" id="text-orgheadline19">
+<p>
+这一步用于将服务器返回的数据(如食谱)存储起来.
+</p>
+</div>
+<div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="orgheadline20">基本介绍</h3>
+<div class="outline-text-3" id="text-orgheadline20">
+<p>
+Realm的一些特点:
+</p>
+<ol class="org-ol">
+<li>为手机而生.</li>
+<li>可以快到使用同步.</li>
+<li>支持一个应用包含多个Realm数据库.(Sqlite只有一个).</li>
+</ol>
 </div>
 </div>
 </div>
