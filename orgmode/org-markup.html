@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Orgmode手册6:富文本标记(导出前准备)</title>
@@ -133,8 +133,10 @@ org mode默认只导出三层标题, 举例来说, 导出为HTML时, 只会导�
 四层及以下的标题都生成为列表. 如果想要修改导出的层级, 可以设置全局变量
 <b>org-export-headline-levels</b>, 或者在文本内设置OPTIONS设置 <b>H</b> 配置: 
 </p>
-<pre class="example">
-</pre>
+<div class="org-src-container">
+
+<pre class="src src-elisp"></pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline3" class="outline-3">
@@ -145,25 +147,31 @@ org mode默认会导出目录, 将其放在第一个标题的前面,目录深度
 不过可以通过设置 <b>org-export-with-toc</b> 或修改OPTIONS的 <b>toc</b> 来修改目录
 深度或将其关闭. 例如
 </p>
-<pre class="example">
-</pre>
+<div class="org-src-container">
+
+<pre class="src src-elisp"></pre>
+</div>
 
 <p>
 如果想改变目录的导出位置, 先将默认导出关闭, 然后使用 <b>#+TOC: headlines N</b>
 配置到想插入的地方. 例如:
 </p>
-<pre class="example">
-...
+<div class="org-src-container">
+
+<pre class="src src-elisp">...
 #+TOC: headlines 2        (insert TOC here, with two headline levels)
 </pre>
+</div>
 
 <p>
 同时, org mode还支持列表和表格的导出.
 </p>
-<pre class="example">
-#+TOC: listings           (build a list of listings)
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+TOC: listings           (build a list of listings)
 #+TOC: tables             (build a list of tables)
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline4" class="outline-3">
@@ -178,8 +186,9 @@ orgmode中,段落之间用空白行来分割,如果需要段落内换行, 在该
 如果想在该段落部分内容保持换行, 可以使用 <code>#+BEGIN_VERSE</code> 关键字, 写诗的人肯定需要这个功能, 
 例如:
 </p>
-<pre class="example">
-#+BEGIN_VERSE
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+BEGIN_VERSE
       Great clouds overhead
       Tiny black birds rise and fall
       Snow covers Emacs
@@ -187,25 +196,30 @@ orgmode中,段落之间用空白行来分割,如果需要段落内换行, 在该
           -- AlexSchroeder
 #+END_VERSE
 </pre>
+</div>
 
 <p>
 引用他人内容可以使用 <code>#+BEGIN_QUOTE</code>, 这样可以保持缩进
 </p>
-<pre class="example">
-#+BEGIN_QUOTE
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+BEGIN_QUOTE
      Everything should be made as simple as possible,
      but not any simpler -- Albert Einstein
 #+END_QUOTE
 </pre>
+</div>
 
 <p>
 想要内容居中可以使用 <code>#+BEGIN_CENTER</code>
 </p>
-<pre class="example">
-#+BEGIN_CENTER
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+BEGIN_CENTER
 Keep me in the center!!!!
 #+END_CENTER
 </pre>
+</div>
 </div>
 </div>
 
@@ -217,9 +231,11 @@ org mode提供了一些字符串的修饰符号, 这些修饰符都是成对出�
 用于修饰其包含的内容.<br  />
 包括以下几种:
 </p>
-<pre class="example">
-*粗体*, /斜体/, _下划线_, =原文=, ~代码~, +删除线+.
+<div class="org-src-container">
+
+<pre class="src src-elisp">*&#31895;&#20307;*, /&#26012;&#20307;/, _&#19979;&#21010;&#32447;_, =&#21407;&#25991;=, ~&#20195;&#30721;~, +&#21024;&#38500;&#32447;+.
 </pre>
+</div>
 
 
 <p>
@@ -243,16 +259,18 @@ org mode提供了一些字符串的修饰符号, 这些修饰符都是成对出�
 <p>
 下面是示例, 下面的内容不会被导出
 </p>
-<pre class="example">
-# 注释
+<div class="org-src-container">
 
-* COMMENT 注释子树
-** 二级目录
+<pre class="src src-elisp"># &#27880;&#37322;
+
+* COMMENT &#27880;&#37322;&#23376;&#26641;
+** &#20108;&#32423;&#30446;&#24405;
 
 #+BEGIN_COMMENT
  test
 #+END_COMMENT
 </pre>
+</div>
 </div>
 </div>
 </div>
@@ -265,27 +283,31 @@ Orgmode提供了几种方式, 可以使位子内容不受org mode的处理, 即�
 </p>
 <ul class="org-ul">
 <li><p>
-#+BEGIN_EXAMPLE..#+END_EXAMPLE <br  />
+#+BEGIN_SRC elisp..#+END_SRC <br  />
 例如:
 </p>
-<pre class="example">
-#+BEGIN_EXAMPLE 
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+BEGIN_SRC elisp 
 This is an example, *nothing works* 
-`#+END_EXAMPLE
+`#+END_SRC
 </pre>
+</div>
 <p>
 如果内容特别短, 也可以使用"空格:空格"字符串修饰
 </p></li>
 <li><p>
-#+BEGIN_EXAMPLE..#+END_EXAMPLE <br  />
+#+BEGIN_SRC elisp..#+END_SRC <br  />
 如果示例是一段程序, 可以使用这对关键字, 例如
 </p>
-<pre class="example">
-<span class="linenr">1: </span>#+BEGIN_EXAMPLE elisp
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="linenr">1: </span>#+BEGIN_SRC elisp elisp
 <span class="linenr">2: </span>(+ 1 1)
-<span id="coderef-lxxtest" class="coderef-off"><span class="linenr">3: </span>(concat "helo" "wold")</span>
-<span class="linenr">4: </span>#+END_EXAMPLE
-</pre></li>
+<span id="coderef-lxxtest" class="coderef-off"><span class="linenr">3: </span>(concat <span style="color: #CC9393;">"helo"</span> <span style="color: #CC9393;">"wold"</span>)</span>
+<span class="linenr">4: </span>#+END_SRC
+</pre>
+</div></li>
 </ul>
 
 <p>
@@ -311,18 +333,22 @@ This is an example, *nothing works*
 部分 如果被引用文件也有标题的话, 这些标题会被设置为当前章节的子标题. 
 如果你想修改这种设置, 修改被引用文件的标题级别, 可以通过设置 minlevel参数.
 </p>
-<pre class="example">
-#+INCLUDE: file :minlevel N
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+INCLUDE: file <span style="color: #DCDCCC; font-weight: bold;">:minlevel</span> N
 </pre>
+</div>
 
 <p>
 也可以通过 <b>:lines</b> 来引用该文件的一部分, 例如:
 </p>
-<pre class="example">
-#+INCLUDE: file :minlevel N :lines "5-10" ;; 5到10行
-#+INCLUDE: file :minlevel N :lines "5-" ;; 5到结尾
-#+INCLUDE: file :minlevel N :lines "-10" ;; 1到9行
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+INCLUDE: file <span style="color: #DCDCCC; font-weight: bold;">:minlevel</span> N <span style="color: #DCDCCC; font-weight: bold;">:lines</span> <span style="color: #CC9393;">"5-10"</span> <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">5&#21040;10&#34892;</span>
+#+INCLUDE: file <span style="color: #DCDCCC; font-weight: bold;">:minlevel</span> N <span style="color: #DCDCCC; font-weight: bold;">:lines</span> <span style="color: #CC9393;">"5-"</span> <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">5&#21040;&#32467;&#23614;</span>
+#+INCLUDE: file <span style="color: #DCDCCC; font-weight: bold;">:minlevel</span> N <span style="color: #DCDCCC; font-weight: bold;">:lines</span> <span style="color: #CC9393;">"-10"</span> <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">1&#21040;9&#34892;</span>
 </pre>
+</div>
 
 <p>
 也可以通过在后面使用 <b>src language</b> 或 <b>example</b> 来将被引用内容转化为
@@ -345,11 +371,13 @@ orgmode同样支持宏定义, 使用关键字 <b>#+MACRO name body</b> 来定义
 <b>{% raw %}{{{}}}{% endraw %}</b> 的方式调用宏, 可以在宏定义中使用 "$N" 定义多个参数. 
 </p>
 
-<pre class="example">
-#+MACRO: awesome Hi, $, you are an awesome guy.
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+MACRO: awesome Hi, $, you are an awesome guy.
 
 {% raw %}{{{awesome(Jake Wharton)}}}{% endraw %}
 </pre>
+</div>
 <p>
 系统也提供了一些预定义的宏, 同样可以调用, 例如 <code>{% raw %}{{{title}}}{% endraw %}</code> , <code>{% raw %}{{{author}}}{% endraw %}</code> ,
 <code>{% raw %}{{{time(FORMAT)}}}{% endraw %}</code> 等.

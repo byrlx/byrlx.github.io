@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Orgmode手册4:任务功能</title>
@@ -173,10 +173,12 @@ for the JavaScript code in this tag.
 通过 "|"来区分划分这两个阶段. 当使用"C-c C-t"时, 标题会轮番在这几个关键字
 之间修改.
 </p>
-<pre class="example">
-(setq org-todo-keywords
-   '((sequence "TODO" "FEEDBACK" "VERIFY" "|" "DONE" "DELEGATED")))
+<div class="org-src-container">
+
+<pre class="src src-elisp">(setq org-todo-keywords
+   '((sequence <span style="color: #CC9393;">"TODO"</span> <span style="color: #CC9393;">"FEEDBACK"</span> <span style="color: #CC9393;">"VERIFY"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"DONE"</span> <span style="color: #CC9393;">"DELEGATED"</span>)))
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline4" class="outline-3">
@@ -188,12 +190,14 @@ for the JavaScript code in this tag.
 关键字来实现这个功能, 如下例, 该例创建了三组关键字, 状态修改只能在本组的
 关键字之间变化, 而不能跨组变化.
 </p>
-<pre class="example">
-(setq org-todo-keywords
-       '((sequence "TODO(t)" "|" "DONE(d)")
-         (sequence "REPORT" "BUG" "KNOWNCAUSE" "|" "FIXED")
-         (sequence "|" "CANCELED")))
+<div class="org-src-container">
+
+<pre class="src src-elisp">(setq org-todo-keywords
+       '((sequence <span style="color: #CC9393;">"TODO(t)"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"DONE(d)"</span>)
+         (sequence <span style="color: #CC9393;">"REPORT"</span> <span style="color: #CC9393;">"BUG"</span> <span style="color: #CC9393;">"KNOWNCAUSE"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"FIXED"</span>)
+         (sequence <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"CANCELED"</span>)))
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline5" class="outline-3">
@@ -203,9 +207,11 @@ for the JavaScript code in this tag.
 该变量可以将TODO设置为不同的类型, 如下例, 这样可以实现将任务分配给不同的人,
 分配完成后, C-c C-t修改状态时不会在这三个type之间滚动.而是直接设为done
 </p>
-<pre class="example">
-(setq org-todo-keywords '((type "Fred" "Sara" "Lucy" "|" "DONE")))
+<div class="org-src-container">
+
+<pre class="src src-elisp">(setq org-todo-keywords '((type <span style="color: #CC9393;">"Fred"</span> <span style="color: #CC9393;">"Sara"</span> <span style="color: #CC9393;">"Lucy"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"DONE"</span>)))
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline6" class="outline-3">
@@ -215,16 +221,18 @@ for the JavaScript code in this tag.
 上面几节讲到都是在全局配置文件中配置关键字, 
 如果想只把配置限制在当前文件, 可以在文件开头配置相关关键字, 如下例:
 </p>
-<pre class="example">
-#+TODO: TODO FEEDBACK VERIFY | DONE CANCELED ;; 拓展关键字
+<div class="org-src-container">
 
-#+TYP_TODO: Fred Sara Lucy Mike | DONE ;; 设置type
+<pre class="src src-elisp">#+TODO: TODO FEEDBACK VERIFY | DONE CANCELED <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">&#25299;&#23637;&#20851;&#38190;&#23383;</span>
 
-;;设置多组
+#+TYP_TODO: Fred Sara Lucy Mike | DONE <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">&#35774;&#32622;type</span>
+
+<span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">&#35774;&#32622;&#22810;&#32452;</span>
 #+TODO: TODO | DONE
 #+TODO: REPORT BUG KNOWNCAUSE | FIXED
 #+TODO: | CANCELED
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline7" class="outline-3">
@@ -233,11 +241,13 @@ for the JavaScript code in this tag.
 <p>
 如果嫌弃官方的关键字颜色不好看, 可以通过设置"org-todo-keyword-faces"变量可以设置不同关键字的表现形式,例如:
 </p>
-<pre class="example">
-(setq org-todo-keyword-faces
-      '(("TODO" . org-warning) ("STARTED" . "yellow")
-        ("CANCELED" . (:foreground "blue" :weight bold))))
+<div class="org-src-container">
+
+<pre class="src src-elisp">(setq org-todo-keyword-faces
+      '((<span style="color: #CC9393;">"TODO"</span> . org-warning) (<span style="color: #CC9393;">"STARTED"</span> . <span style="color: #CC9393;">"yellow"</span>)
+        (<span style="color: #CC9393;">"CANCELED"</span> . (<span style="color: #DCDCCC; font-weight: bold;">:foreground</span> <span style="color: #CC9393;">"blue"</span> <span style="color: #DCDCCC; font-weight: bold;">:weight</span> bold))))
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline8" class="outline-3">
@@ -253,23 +263,27 @@ for the JavaScript code in this tag.
 org-enforce-todo-dependencies.
 通过设置该变量, 可以设置在所有的子标题都完成之前, 父标题不能将状态设置为DONE.
 </p>
-<pre class="example">
-(setq org-enforce-todo-dependencies t)
-</pre></li>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(setq org-enforce-todo-dependencies t)
+</pre>
+</div></li>
 <li><p>
 按顺序修改状态.
 通过设置属性"ORDERED"来控制同级标题之前按顺序修改状态, 在前面的标题完成之前
 后面的标题不能将属性设为DONE.
 </p>
-<pre class="example">
-* Parent
-  :PROPERTIES:
-  :ORDERED: t
-  :END:
+<div class="org-src-container">
+
+<pre class="src src-elisp">* Parent
+  <span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+  <span style="color: #DCDCCC; font-weight: bold;">:ORDERED:</span> t
+  <span style="color: #DCDCCC; font-weight: bold;">:END:</span>
 ** TODO a
 ** TODO b, needs to wait for (a)
 ** TODO c, needs to wait for (a) and (b)
-</pre></li>
+</pre>
+</div></li>
 </ol>
 </div>
 </div>
@@ -290,10 +304,12 @@ org-enforce-todo-dependencies.
 可以加入设置下面两个配置之一来自动在状态改成DONE的时候加入当前时间戳:
 其中第二个配置还会要求你写一段完成的note.
 </p>
-<pre class="example">
-(setq org-log-done 'time)
+<div class="org-src-container">
+
+<pre class="src src-elisp">(setq org-log-done 'time)
 (setq org-log-done 'note)
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline11" class="outline-3">
@@ -308,10 +324,12 @@ org-enforce-todo-dependencies.
 <li>"@" 表示带时间的note</li>
 <li>"/!" 当跳转到一个没有附加属性的状态时, 记录时间或note</li>
 </ul>
-<pre class="example">
-(setq org-todo-keywords
-  '((sequence "TODO(t)" "WAIT(w@/!)" "|" "DONE(d!)" "CANCELED(c@)")))
+<div class="org-src-container">
+
+<pre class="src src-elisp">(setq org-todo-keywords
+  '((sequence <span style="color: #CC9393;">"TODO(t)"</span> <span style="color: #CC9393;">"WAIT(w@/!)"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"DONE(d!)"</span> <span style="color: #CC9393;">"CANCELED(c@)"</span>)))
 </pre>
+</div>
 
 <p>
 也可以使用PROPERTIES属性 "LOGGING" 来修改某个标题的TODO附加属性, 
@@ -319,12 +337,14 @@ org-enforce-todo-dependencies.
 "lognotedone" 使用默认属性, 例如下例, 这个配置会修改TODO只添加时间戳,
 WAIT需要note, 其他的属性使用STARTUP的默认值.
 </p>
-<pre class="example">
-* TODO Log each state with only a time
-  :PROPERTIES:
-  :LOGGING: TODO(!) WAIT(@) logrepeat
-  :END:
+<div class="org-src-container">
+
+<pre class="src src-elisp">* TODO Log each state with only a time
+  <span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+  <span style="color: #DCDCCC; font-weight: bold;">:LOGGING:</span> TODO(!) WAIT(@) logrepeat
+  <span style="color: #DCDCCC; font-weight: bold;">:END:</span>
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline12" class="outline-3">
@@ -334,13 +354,15 @@ WAIT需要note, 其他的属性使用STARTUP的默认值.
 使用属性STYLE habit来设置持久性行为, 如下例, 表示至少4天或至多2天
 <b>刮一次胡子</b>.
 </p>
-<pre class="example">
-** TODO Shave
+<div class="org-src-container">
+
+<pre class="src src-elisp">** TODO Shave
  'S CHEDULEd: &lt;2015-12-08 Tue .+2d/4d&gt;
-:PROPERTIES:
-:STYLE:    habit
-:END:
+<span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+<span style="color: #DCDCCC; font-weight: bold;">:STYLE:</span>    habit
+<span style="color: #DCDCCC; font-weight: bold;">:END:</span>
 </pre>
+</div>
 </div>
 </div>
 </div>
@@ -351,9 +373,11 @@ WAIT需要note, 其他的属性使用STARTUP的默认值.
 Org支持TODO项目的优先级, 默认支持的优先级有三个:A, B, C. A最高.
 如下所示, 无优先级表示的项目优先级是B.
 </p>
-<pre class="example">
-** TODO [#A]
+<div class="org-src-container">
+
+<pre class="src src-elisp">** TODO [#A]
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline14" class="outline-2">
@@ -365,24 +389,28 @@ Org支持TODO项目的优先级, 默认支持的优先级有三个:A, B, C. A最
 "org-hierarchical-todo-statistics", 或者在PROPERTIES中设置
 "COOKIE_DATA", 如下所示;
 </p>
-<pre class="example">
-* Parent capturing statistics [2/20]
-  :PROPERTIES:
-  :COOKIE_DATA: todo recursive
-  :END:
+<div class="org-src-container">
+
+<pre class="src src-elisp">* Parent capturing statistics [2/20]
+  <span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+  <span style="color: #DCDCCC; font-weight: bold;">:COOKIE_DATA:</span> todo recursive
+  <span style="color: #DCDCCC; font-weight: bold;">:END:</span>
 </pre>
+</div>
 
 <p>
 如果当子任务都完成时, 父任务自动标记为DONE, 可以在.emacs中加入
 如下代码:
 </p>
-<pre class="example">
-(defun org-summary-todo (n-done n-not-done)
-  "Switch entry to DONE when all subentries are done, to TODO otherwise."
-  (let (org-log-done org-log-states)   ; turn off logging
-    (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">org-summary-todo</span> (n-done n-not-done)
+  <span style="color: #9FC59F;">"Switch entry to DONE when all subentries are done, to TODO otherwise."</span>
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> (org-log-done org-log-states)   <span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">turn off logging</span>
+    (org-todo (<span style="color: #F0DFAF; font-weight: bold;">if</span> (= n-not-done 0) <span style="color: #CC9393;">"DONE"</span> <span style="color: #CC9393;">"TODO"</span>))))
 (add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline15" class="outline-2">

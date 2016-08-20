@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>【翻译】当我开始Android开发时，希望能早点认识的一些开源库</title>
@@ -170,18 +170,20 @@ There’s no sense in re-inventing the wheel when you’re working on Android ap
 Butter Knife。
 </p>
 
-<pre class="example">
-&lt;LinearLayout ... android:orientation="vertical"&gt;
-&lt;ImageView android:id="@+id/taco_img" .../&gt;
-&lt;TextView android:id="@+id/description" .../&gt;
-&lt;LinearLayout android:orientation="horizontal" .../&gt;
-&lt;Button android:id="@+id/reject" .../&gt;
-&lt;Button android:id="@+id/info" .../&gt;
-&lt;Button android:id="@+id/save" .../&gt;
+<div class="org-src-container">
+
+<pre class="src src-java">&lt;LinearLayout ... android:orientation=<span style="color: #CC9393;">"vertical"</span>&gt;
+&lt;ImageView android:id=<span style="color: #CC9393;">"@+id/taco_img"</span> .../&gt;
+&lt;TextView android:id=<span style="color: #CC9393;">"@+id/description"</span> .../&gt;
+&lt;LinearLayout android:orientation=<span style="color: #CC9393;">"horizontal"</span> .../&gt;
+&lt;Button android:id=<span style="color: #CC9393;">"@+id/reject"</span> .../&gt;
+&lt;Button android:id=<span style="color: #CC9393;">"@+id/info"</span> .../&gt;
+&lt;Button android:id=<span style="color: #CC9393;">"@+id/save"</span> .../&gt;
 &lt;/LinearLayout&gt;
-&lt;EditText android:id="@+id/tag" .../&gt;
+&lt;EditText android:id=<span style="color: #CC9393;">"@+id/tag"</span> .../&gt;
 &lt;/LinearLayout&gt;
 </pre>
+</div>
 
 <p>
 Butter Knife通过注解的方式将代码和xml文件绑定到一起，无需在
@@ -193,31 +195,35 @@ Butter Knife通过注解的方式将代码和xml文件绑定到一起，无需�
 <li>改善监听函数注册。</li>
 <li>改善资源查找。</li>
 </ol>
-<pre class="example">
-&lt;TextView android:id="@+id/description"
+<div class="org-src-container">
+
+<pre class="src src-java">&lt;<span style="color: #7CB8BB;">TextView</span> android:id=<span style="color: #CC9393;">"@+id/description"</span>
  ...
  /&gt;
-public class MainActivity extends Activity {
-   @BindView(R.id.description) TextView description;
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> MainActivity <span style="color: #F0DFAF; font-weight: bold;">extends</span> <span style="color: #7CB8BB;">Activity</span> {
+   <span style="color: #BFEBBF;">@BindView</span>(R.id.<span style="color: #7CB8BB;">description</span>) <span style="color: #7CB8BB;">TextView</span> <span style="color: #DFAF8F;">description</span>;
 
-   @Override
-   protected void onCreate(Bundle bundle) {
+   <span style="color: #BFEBBF;">@Override</span>
+   <span style="color: #F0DFAF; font-weight: bold;">protected</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">onCreate</span>(<span style="color: #7CB8BB;">Bundle</span> <span style="color: #DFAF8F;">bundle</span>) {
       ...
-      ButterKnife.bind(this);
-      description.setText("Tofu with Cheese on a tortilla");
+      ButterKnife.bind(<span style="color: #F0DFAF; font-weight: bold;">this</span>);
+      description.setText(<span style="color: #CC9393;">"Tofu with Cheese on a tortilla"</span>);
    }
 }
 </pre>
+</div>
 <p>
 下面是一个通常的Butter Knife用法, <code>ButterKnife.bind(this)</code> 函数
 会自动生成代码寻找相关的view、资源并把它们保存到activity代码中。
 类似这样：
 </p>
-<pre class="example">
-public void bind(MainActivity activity) {
-   activity.description = (android.widget.TextView) activity.findViewById(2130968577);
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">bind</span>(<span style="color: #7CB8BB;">MainActivity</span> <span style="color: #DFAF8F;">activity</span>) {
+   activity.description = (<span style="color: #BFEBBF;">android</span>.<span style="color: #BFEBBF;">widget</span>.<span style="color: #7CB8BB;">TextView</span>) activity.findViewById(2130968577);
 }
 </pre>
+</div>
 
 <p>
 下面是一些更高级的用法：
@@ -227,28 +233,30 @@ public void bind(MainActivity activity) {
 <div id="outline-container-orgheadline3" class="outline-3">
 <h3 id="orgheadline3">绑定、解绑fragment中的view</h3>
 <div class="outline-text-3" id="text-orgheadline3">
-<pre class="example">
-public class TacoFragment extends Fragment {
- @BindView(R.id.tag) EditText tag;
- private Unbinder unbinder;
+<div class="org-src-container">
 
- @Override
- public View onCreateView(LayoutInflater inflater, ViewGroup group, Bundle bundle) {
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">TacoFragment</span> <span style="color: #F0DFAF; font-weight: bold;">extends</span> <span style="color: #7CB8BB;">Fragment</span> {
+ <span style="color: #BFEBBF;">@BindView</span>(R.id.<span style="color: #7CB8BB;">tag</span>) <span style="color: #7CB8BB;">EditText</span> <span style="color: #DFAF8F;">tag</span>;
+ <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">Unbinder</span> <span style="color: #DFAF8F;">unbinder</span>;
+
+ <span style="color: #BFEBBF;">@Override</span>
+ <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">View</span> <span style="color: #93E0E3;">onCreateView</span>(<span style="color: #7CB8BB;">LayoutInflater</span> <span style="color: #DFAF8F;">inflater</span>, <span style="color: #7CB8BB;">ViewGroup</span> <span style="color: #DFAF8F;">group</span>, <span style="color: #7CB8BB;">Bundle</span> <span style="color: #DFAF8F;">bundle</span>) {
       ...
-      //Important!
-      unbinder = ButterKnife.bind(this, parentView);
-      tag.setHint("Add tag. Eg: Tasty!, Want to try")
-      return view;
+      <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">Important!</span>
+      unbinder = ButterKnife.bind(<span style="color: #F0DFAF; font-weight: bold;">this</span>, parentView);
+      tag.setHint(<span style="color: #CC9393;">"Add tag. Eg: Tasty!, Want to try"</span>)
+      <span style="color: #F0DFAF; font-weight: bold;">return</span> view;
  }
 
- @Override
- public void onDestroyView() {
-      super.onDestroyView();
-      //sets the views to null
+ <span style="color: #BFEBBF;">@Override</span>
+ <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">onDestroyView</span>() {
+      <span style="color: #F0DFAF; font-weight: bold;">super</span>.onDestroyView();
+      <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">sets the views to null</span>
       unbinder.unbind();
  }
 }
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline4" class="outline-3">
@@ -257,70 +265,78 @@ public class TacoFragment extends Fragment {
 <p>
 ButterKnife支持大部分常用的监听函数。
 </p>
-<pre class="example">
-@OnClick(R.id.save)
-public void saveTaco(Button button) {
- button.setText("Saved!");
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #BFEBBF;">@OnClick</span>(R.id.<span style="color: #7CB8BB;">save</span>)
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">saveTaco</span>(<span style="color: #7CB8BB;">Button</span> <span style="color: #DFAF8F;">button</span>) {
+ button.setText(<span style="color: #CC9393;">"Saved!"</span>);
 }
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline5" class="outline-3">
 <h3 id="orgheadline5">绑定资源</h3>
 <div class="outline-text-3" id="text-orgheadline5">
-<pre class="example">
-class MainActivity extends Activity {
- @BindString(R.string.title) String title;
- @BindDrawable(R.drawable.star) Drawable star;
- // int or ColorStateList
- @BindColor(R.color.guac_green) int guacGreen;
- // int (in pixels) or float (for exact value)
- @BindDimen(R.dimen.spacer) Float spacer;
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">MainActivity</span> <span style="color: #F0DFAF; font-weight: bold;">extends</span> <span style="color: #7CB8BB;">Activity</span> {
+ <span style="color: #BFEBBF;">@BindString</span>(R.string.<span style="color: #7CB8BB;">title</span>) <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">title</span>;
+ <span style="color: #BFEBBF;">@BindDrawable</span>(R.drawable.<span style="color: #7CB8BB;">star</span>) <span style="color: #7CB8BB;">Drawable</span> <span style="color: #DFAF8F;">star</span>;
+ <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">int or ColorStateList</span>
+ <span style="color: #BFEBBF;">@BindColor</span>(R.color.<span style="color: #7CB8BB;">guac_green</span>) <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">guacGreen</span>;
+ <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">int (in pixels) or float (for exact value)</span>
+ <span style="color: #BFEBBF;">@BindDimen</span>(R.dimen.<span style="color: #7CB8BB;">spacer</span>) <span style="color: #7CB8BB;">Float</span> <span style="color: #DFAF8F;">spacer</span>;
 }
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline6" class="outline-3">
 <h3 id="orgheadline6">给多个组件设置同一个监听函数</h3>
 <div class="outline-text-3" id="text-orgheadline6">
-<pre class="example">
-@OnClick({ R.id.save, R.id.reject})
-public void actOnTaco(View view) {
- if (view.getId() == R.reject) {
-    Toast.makeText(this, "Ew Gross!", LENGTH_SHORT).show();
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #BFEBBF;">@OnClick</span>({ R.id.save, R.id.reject})
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">actOnTaco</span>(<span style="color: #7CB8BB;">View</span> <span style="color: #DFAF8F;">view</span>) {
+ <span style="color: #F0DFAF; font-weight: bold;">if</span> (view.getId() == R.reject) {
+    Toast.makeText(<span style="color: #F0DFAF; font-weight: bold;">this</span>, <span style="color: #CC9393;">"Ew Gross!"</span>, LENGTH_SHORT).show();
  }
- else {
-    Toast.makeText(this, "Yummy :)", LENGTH_SHORT).show();
+ <span style="color: #F0DFAF; font-weight: bold;">else</span> {
+    Toast.makeText(<span style="color: #F0DFAF; font-weight: bold;">this</span>, <span style="color: #CC9393;">"Yummy :)"</span>, LENGTH_SHORT).show();
  }
- //TODO: implement
+ <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">TODO: implement</span>
  getNextTaco();
 }
 </pre>
 </div>
 </div>
+</div>
 <div id="outline-container-orgheadline7" class="outline-3">
 <h3 id="orgheadline7">操作view的属性</h3>
 <div class="outline-text-3" id="text-orgheadline7">
-<pre class="example">
-//下面的代码将两个button绑定到一个list中， 并通过操作这个list来
-//操作这些按钮的属性。
-@BindViews({R.id.save, R.id.reject})
-List&lt;Button&gt; actionButtons;
-ButterKnife.apply(actionButtons, View.ALPHA, 0.0f);
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#19979;&#38754;&#30340;&#20195;&#30721;&#23558;&#20004;&#20010;button&#32465;&#23450;&#21040;&#19968;&#20010;list&#20013;&#65292; &#24182;&#36890;&#36807;&#25805;&#20316;&#36825;&#20010;list&#26469;</span>
+<span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#25805;&#20316;&#36825;&#20123;&#25353;&#38062;&#30340;&#23646;&#24615;&#12290;</span>
+<span style="color: #BFEBBF;">@BindViews</span>({R.id.save, R.id.reject})
+<span style="color: #7CB8BB;">List</span>&lt;<span style="color: #7CB8BB;">Button</span>&gt; <span style="color: #DFAF8F;">actionButtons</span>;
+ButterKnife.apply(actionButtons, <span style="color: #BFEBBF;">View</span>.ALPHA, 0.0f);
 
 ButterKnife.apply(actionButtons, DISABLE);
-ButterKnife.apply(actionButtons, ENABLED, false);
-static final ButterKnife.Action&lt;View&gt; DISABLE = new ButterKnife.Action&lt;View&gt;() {
- @Override public void apply(View view, int index) {
-    view.setEnabled(false);
+ButterKnife.apply(actionButtons, ENABLED, <span style="color: #BFEBBF;">false</span>);
+<span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #BFEBBF;">ButterKnife</span>.<span style="color: #7CB8BB;">Action</span>&lt;<span style="color: #7CB8BB;">View</span>&gt; <span style="color: #DFAF8F;">DISABLE</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">ButterKnife</span>.<span style="color: #7CB8BB;">Action</span>&lt;<span style="color: #7CB8BB;">View</span>&gt;() {
+ <span style="color: #BFEBBF;">@Override</span> <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">apply</span>(<span style="color: #7CB8BB;">View</span> <span style="color: #DFAF8F;">view</span>, <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>) {
+    view.setEnabled(<span style="color: #BFEBBF;">false</span>);
  }
 };
-static final ButterKnife.Setter&lt;View, Boolean&gt; ENABLED = new ButterKnife.Setter&lt;View, Boolean&gt;() {
- @Override public void set(View view, Boolean value, int index) {
+<span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #BFEBBF;">ButterKnife</span>.<span style="color: #7CB8BB;">Setter</span>&lt;<span style="color: #7CB8BB;">View</span>, <span style="color: #7CB8BB;">Boolean</span>&gt; <span style="color: #DFAF8F;">ENABLED</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">ButterKnife</span>.<span style="color: #7CB8BB;">Setter</span>&lt;<span style="color: #7CB8BB;">View</span>, <span style="color: #7CB8BB;">Boolean</span>&gt;() {
+ <span style="color: #BFEBBF;">@Override</span> <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">set</span>(<span style="color: #7CB8BB;">View</span> <span style="color: #DFAF8F;">view</span>, <span style="color: #7CB8BB;">Boolean</span> <span style="color: #DFAF8F;">value</span>, <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>) {
     view.setEnabled(value);
  }
 };
 </pre>
+</div>
 </div>
 </div>
 </div>
@@ -355,29 +371,33 @@ static final ButterKnife.Setter&lt;View, Boolean&gt; ENABLED = new ButterKnife.S
 类来将stream转化成bitmap. 其中 OpenHttpGETConnection()函数还要考虑在
 子线程中进行http请求操作.
 </p>
-<pre class="example">
-private Bitmap DownloadImage(String url)
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">Bitmap</span> <span style="color: #93E0E3;">DownloadImage</span>(<span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">url</span>)
 {
- Bitmap bitmap = null;
- InputStream in = null;
- try {
+ <span style="color: #7CB8BB;">Bitmap</span> <span style="color: #DFAF8F;">bitmap</span> = <span style="color: #BFEBBF;">null</span>;
+ <span style="color: #7CB8BB;">InputStream</span> <span style="color: #DFAF8F;">in</span> = <span style="color: #BFEBBF;">null</span>;
+ <span style="color: #F0DFAF; font-weight: bold;">try</span> {
     in = OpenHttpGETConnection(url);
     bitmap = BitmapFactory.decodeStream(in); in.close();
- } catch (Exception e) {
-    Log.d("DownloadImage", e.getLocalizedMessage());
+ } <span style="color: #F0DFAF; font-weight: bold;">catch</span> (<span style="color: #7CB8BB;">Exception</span> <span style="color: #DFAF8F;">e</span>) {
+    Log.d(<span style="color: #CC9393;">"DownloadImage"</span>, e.getLocalizedMessage());
  }
- return bitmap;
+ <span style="color: #F0DFAF; font-weight: bold;">return</span> bitmap;
 }
 </pre>
+</div>
 
 <p>
 如果使用Picasso,则上面的代码就变为:
 </p>
-<pre class="example">
-Picasso.with(context)
- .load("http://placekitten.com/200/300")
+<div class="org-src-container">
+
+<pre class="src src-java">Picasso.with(context)
+ .load(<span style="color: #CC9393;">"http://placekitten.com/200/300"</span>)
  .into(imageView);
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline10" class="outline-3">
@@ -405,11 +425,13 @@ Picasso.with(context)
 <p>
 除了网络下载图片, Picasso也支持加载本地图片. 例如下面的代码:
 </p>
-<pre class="example">
-Picasso.with(context).load(R.drawable.salsa).into(imageView1);
-Picasso.with(context).load("file:///asset/salsa.png").into(imageView2);
-Picasso.with(context).load(new File(...)).into(imageView3);
+<div class="org-src-container">
+
+<pre class="src src-java">Picasso.with(context).load(R.drawable.salsa).into(imageView1);
+Picasso.with(context).load(<span style="color: #CC9393;">"file:///asset/salsa.png"</span>).into(imageView2);
+Picasso.with(context).load(<span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">File</span>(...)).into(imageView3);
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline11" class="outline-3">
@@ -419,21 +441,23 @@ Picasso.with(context).load(new File(...)).into(imageView3);
 下面是Picasso和ButterKnife一起用的场景, 在通过Picasso下载图片时, 使用
 ButterKnife的apply函数来使按钮不可用. 
 </p>
-<pre class="example">
-//Butter Knife!
-@BindView(R.id.taco_img) ImageView tacoImg;
-private void setTacoImage() {
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">Butter Knife!</span>
+<span style="color: #BFEBBF;">@BindView</span>(R.id.<span style="color: #7CB8BB;">taco_img</span>) <span style="color: #7CB8BB;">ImageView</span> <span style="color: #DFAF8F;">tacoImg</span>;
+<span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">setTacoImage</span>() {
  Picasso.with(context)
- .load("http://tacoimages.com/random.jpg")
+ .load(<span style="color: #CC9393;">"http://tacoimages.com/random.jpg"</span>)
  .into(tacoImg);
 }
-private void getNextTaco() {
+<span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">getNextTaco</span>() {
  ButterKnife.apply(actionButtons, DISABLE);
  setTacoImage();
- //TODO: implement
+ <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">TODO: implement</span>
  loadTacoDescription();
 }
 </pre>
+</div>
 </div>
 </div>
 </div>
@@ -464,27 +488,29 @@ Gson的一些特点:
 <p>
 例如下面的例子对类Taco使用Gson进行Json的序列化和反序列化.
 </p>
-<pre class="example">
-class Taco {
- private String description;
- private String imageUrl;
- private String tag;
- //not included in JSON serialization or deserialization
- private transient boolean favorite;
- Taco(String description, String imageUrl, String tag, boolean favorite) {
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Taco</span> {
+ <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">description</span>;
+ <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">imageUrl</span>;
+ <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">tag</span>;
+ <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">not included in JSON serialization or deserialization</span>
+ <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">transient</span> <span style="color: #7CB8BB;">boolean</span> <span style="color: #DFAF8F;">favorite</span>;
+ <span style="color: #93E0E3;">Taco</span>(<span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">description</span>, <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">imageUrl</span>, <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">tag</span>, <span style="color: #7CB8BB;">boolean</span> <span style="color: #DFAF8F;">favorite</span>) {
  ....
  }
 }
 
-// Serialize to JSON
-Taco breakfastTaco = new Taco("Eggs with syrup on pancake", "imgur.com/123", "breakfast", true);
-Gson gson = new Gson();
-String json = gson.toJson(breakfastTaco);
-// ==&gt; json is {description:"Eggs with syrup on pancake", imageUrl:"imgur.com/123", tag:"breakfast"}
-// Deserialize to POJO
-Taco yummyTaco = gson.fromJson(json, Taco.class);
-// ==&gt; yummyTaco is just like breakfastTaco except for the favorite boolean
+<span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Serialize to JSON</span>
+<span style="color: #7CB8BB;">Taco</span> <span style="color: #DFAF8F;">breakfastTaco</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Taco</span>(<span style="color: #CC9393;">"Eggs with syrup on pancake"</span>, <span style="color: #CC9393;">"imgur.com/123"</span>, <span style="color: #CC9393;">"breakfast"</span>, <span style="color: #BFEBBF;">true</span>);
+<span style="color: #7CB8BB;">Gson</span> <span style="color: #DFAF8F;">gson</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Gson</span>();
+<span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">json</span> = gson.toJson(breakfastTaco);
+<span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">==&gt; json is {description:"Eggs with syrup on pancake", imageUrl:"imgur.com/123", tag:"breakfast"}</span>
+<span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Deserialize to POJO</span>
+<span style="color: #7CB8BB;">Taco</span> <span style="color: #DFAF8F;">yummyTaco</span> = gson.fromJson(json, Taco.<span style="color: #F0DFAF; font-weight: bold;">class</span>);
+<span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">==&gt; yummyTaco is just like breakfastTaco except for the favorite boolean</span>
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline14" class="outline-3">

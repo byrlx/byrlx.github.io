@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>使用OrgMode撰写博客</title>
@@ -172,23 +172,25 @@ for the JavaScript code in this tag.
 所以我写了一个 lisp 程序来自动创建文章, 并在创建过程中自动添加文章的配置 "header".
 这段程序在 <a href="http://xuzhengchao.com/lisp/create-post-and-input-header.html">这篇文章</a> 做了介绍. 
 </p>
-<pre class="example">
-;; =============== Org Publish =====================
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">=============== Org Publish =====================</span>
 (setq org-publish-project-alist
-      '(("github-blog"
-	 :base-directory "/Users/douhua/lx/github/blog/org/post/"
-	 :publishing-directory "/Users/douhua/lx/github/blog/_posts/"
-	 ;;:base-directory "/Users/douhua/lx/org/post/"
-	 ;;:publishing-directory "/Users/douhua/lx/org/_posts/"
-	 :prepare-function nil
-	 :completion-function nil
-	 :exclude "*.html"
-	 :recursive nil
-	 :base-extension "org"
-	 :publishing-function org-html-publish-to-html
-	 :body-only t
-	 )))
+      '((<span style="color: #CC9393;">"github-blog"</span>
+         <span style="color: #DCDCCC; font-weight: bold;">:base-directory</span> <span style="color: #CC9393;">"/Users/douhua/lx/github/blog/org/post/"</span>
+         <span style="color: #DCDCCC; font-weight: bold;">:publishing-directory</span> <span style="color: #CC9393;">"/Users/douhua/lx/github/blog/_posts/"</span>
+         <span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">:base-directory "/Users/douhua/lx/org/post/"</span>
+         <span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">:publishing-directory "/Users/douhua/lx/org/_posts/"</span>
+         <span style="color: #DCDCCC; font-weight: bold;">:prepare-function</span> nil
+         <span style="color: #DCDCCC; font-weight: bold;">:completion-function</span> nil
+         <span style="color: #DCDCCC; font-weight: bold;">:exclude</span> <span style="color: #CC9393;">"*.html"</span>
+         <span style="color: #DCDCCC; font-weight: bold;">:recursive</span> nil
+         <span style="color: #DCDCCC; font-weight: bold;">:base-extension</span> <span style="color: #CC9393;">"org"</span>
+         <span style="color: #DCDCCC; font-weight: bold;">:publishing-function</span> org-html-publish-to-html
+         <span style="color: #DCDCCC; font-weight: bold;">:body-only</span> t
+         )))
 </pre>
+</div>
 </div>
 </div>
 
@@ -200,14 +202,16 @@ for the JavaScript code in this tag.
 的程序员, 怎么能够忍受每次写完文章都要输入一堆的 git 命令. 故写了个小程序并将其
 绑定到了Emacs的 <b>F9</b> 快捷键.
 </p>
-<pre class="example">
-;;自动更新blog
-(defun lx-update-blog ()
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">&#33258;&#21160;&#26356;&#26032;blog</span>
+(<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">lx-update-blog</span> ()
   (interactive)
-  (org-publish "github-blog")
-  (shell-command (concat "cd " LXBLOG " &amp;&amp; git add -A &amp;&amp; git ci -m 'update blog' &amp;&amp; git push")))
-(global-set-key (kbd "&lt;f9&gt;") 'lx-update-blog)
+  (org-publish <span style="color: #CC9393;">"github-blog"</span>)
+  (shell-command (concat <span style="color: #CC9393;">"cd "</span> LXBLOG <span style="color: #CC9393;">" &amp;&amp; git add -A &amp;&amp; git ci -m 'update blog' &amp;&amp; git push"</span>)))
+(global-set-key (kbd <span style="color: #CC9393;">"&lt;f9&gt;"</span>) 'lx-update-blog)
 </pre>
+</div>
 
 <p>
 OK, 现在每次写完文章, 只要按一下F9, 等几秒, 就可以在网站上看到了.

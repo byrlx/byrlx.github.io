@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Orgmode手册7:运行代码</title>
@@ -136,24 +136,28 @@ Org babel就是这个通天塔, 你可以同一个org文件中运行各种代码
 下面是一个简单的在org文件中运行代码的例子. 在orgmode的任意位置添加
 下面这段python代码. 
 </p>
-<pre class="example">
-#+BEGIN_SRC python
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+BEGIN_SRC python
 def x():
      s = 1 + 1
      return s
 
 return x()
-#+END_SRC
 </pre>
+</div>
 <p>
+#+END_SRC
 添加完成后, 在代码块上使用快捷键"C-c C-c", 会看到代码块下面会显示如下的
 内容, 即这段代码的运行结果. 这就是一个简单的在orgmode中使用代码的例子, 
 是不是觉得很酷?
 </p>
-<pre class="example">
-#+RESULTS:
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+RESULTS:
 : 2
 </pre>
+</div>
 
 <p>
 上面的例子简单展示了在org mode中使用代码. 一般而言, 在org中插入的代码格式为
@@ -163,18 +167,26 @@ return x()
 代码块.
 可以使用 <code>#+NAME</code> 为当前代码块命名, 然后在其他地方引用. 
 </p>
-<pre class="example">
-#+NAME: &lt;name&gt;
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+NAME: &lt;name&gt;
 #+BEGIN_SRC &lt;language&gt; &lt;switches&gt; &lt;header arguments&gt;
  &lt;body&gt;
+</pre>
+</div></li>
+</ol>
+<p>
 #+END_SRC
-</pre></li>
+</p>
+<ol class="org-ol">
 <li><p>
 在行内使用代码, 格式为 <code>src_&lt;language&gt;{body}</code> 的方式. 如下例
 </p>
-<pre class="example">
-hi src_elisp{(print "jack")}
-</pre></li>
+<div class="org-src-container">
+
+<pre class="src src-elisp">hi src_elisp{(print <span style="color: #CC9393;">"jack"</span>)}
+</pre>
+</div></li>
 </ol>
 </div>
 </div>
@@ -202,21 +214,27 @@ hi src_elisp{(print "jack")}
 org mode同样支持在一处定义代码块, 然后在文件的其他地方进行引用, 这需要对代码块
 设置名称, 例如下面定义了一个名称为"helowold"的代码块.
 </p>
-<pre class="example">
-#+NAME: helowold
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+NAME: helowold
 #+BEGIN_SRC elisp
-(print "helowold")
-#+END_SRC
+(print <span style="color: #CC9393;">"helowold"</span>)
 </pre>
+</div>
+<p>
+#+END_SRC
+</p>
 
 <p>
 这样可以在文件的其他地方使用下面的方式调用该代码块:
 </p>
-<pre class="example">
-#+CALL: helowold()
-或者在一行中间使用
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+CALL: helowold()
+&#25110;&#32773;&#22312;&#19968;&#34892;&#20013;&#38388;&#20351;&#29992;
 call_helowold()
 </pre>
+</div>
 </div>
 </div>
 
@@ -227,19 +245,25 @@ call_helowold()
 可以在 <code>#+BEGIN_SRC</code> 后面接 ":var name=value"的方式来向给代码块设置参数,
 如下例:
 </p>
-<pre class="example">
-#+NAME: lxxxx
-#+BEGIN_SRC elisp :var n=5
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+NAME: lxxxx
+#+BEGIN_SRC elisp <span style="color: #DCDCCC; font-weight: bold;">:var</span> n=5
 (+ 1 n)
-#+END_SRC
 </pre>
+</div>
+<p>
+#+END_SRC
+</p>
 
 <p>
 在其他地方使用 <code>#+CALL</code> 调用代码时, 可以想其中传入参数替代默认参数, 例如
 </p>
-<pre class="example">
-#+CALL: lxxxx(9)
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+CALL: lxxxx(9)
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline5" class="outline-2">
@@ -300,12 +324,16 @@ orgmode支持以下方式的代码导出
 <p>
 例如下面的代码:
 </p>
-<pre class="example">
-#+NAME: lxxxx
-#+BEGIN_SRC elisp :var n=5 :exports results
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+NAME: lxxxx
+#+BEGIN_SRC elisp <span style="color: #DCDCCC; font-weight: bold;">:var</span> n=5 <span style="color: #DCDCCC; font-weight: bold;">:exports</span> results
 (+ 1 n)
-#+END_SRC
 </pre>
+</div>
+<p>
+#+END_SRC
+</p>
 </div>
 </div>
 
@@ -325,15 +353,18 @@ orgmode支持将org文件中的代码块提取到代码原文件中,
 也可以将其设置为文件名,这样可以将代码导出到该文件,
 使用命令"org-babel-tangle-file"或"C-c C-v f"也可以.
 </p>
-<pre class="example">
-  :PROPERTIES:
-  :header-args: :exports results :tangle yes
-  :END:
-或者
-#+BEGIN_SRC elisp :tangle yes/filename
+<div class="org-src-container">
 
-#+END_SRC
+<pre class="src src-elisp">  <span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+  <span style="color: #DCDCCC; font-weight: bold;">:header-args:</span> <span style="color: #DCDCCC; font-weight: bold;">:exports</span> results <span style="color: #DCDCCC; font-weight: bold;">:tangle</span> yes
+  <span style="color: #DCDCCC; font-weight: bold;">:END:</span>
+&#25110;&#32773;
+#+BEGIN_SRC elisp <span style="color: #DCDCCC; font-weight: bold;">:tangle</span> yes/filename
 </pre>
+</div>
+<p>
+#+END_SRC
+</p>
 </div>
 </div>
 
@@ -352,19 +383,23 @@ Emacs自带的org mode中默认并没有安装babel库, 如果想使用带babel�
 可以从orgmode的elpa中获取, 在配置文件中加入如下配置, 使用"eval-buffer"更新
 配置, 然后调用 "package-refresh-content", 接着安装 "org-plus-contrib"包.
 </p>
-<pre class="example">
-(require 'package)
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">require</span> '<span style="color: #BFEBBF;">package</span>)
+(add-to-list 'package-archives '(<span style="color: #CC9393;">"org"</span> . <span style="color: #CC9393;">"http://orgmode.org/elpa/"</span>) t)
 </pre>
+</div>
 
 <p>
 安装完成后, 如果想使用那个包, 可以在配置文件中使用 <b>require</b> 引用:
 </p>
-<pre class="example">
-(require 'org-mac-iCal)
-;;在 org 文件调用
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">require</span> '<span style="color: #BFEBBF;">org-mac-iCal</span>)
+<span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">&#22312; org &#25991;&#20214;&#35843;&#29992;</span>
 #+CALL: org-mac-iCal()
 </pre>
+</div>
 </div>
 </div>
 
@@ -388,11 +423,13 @@ orgmode可以设置各种范围的header参数, 下面会逐一介绍, 一般来
 可以通过设置"org-babel-default-header-args"变量来设置全局的header参数. 
 例如下面的例子将":noweb"设置为"yes". ":noweb"功能会在后面介绍.
 </p>
-<pre class="example">
-(setq org-babel-default-header-args
-       (cons '(:noweb . "yes")
-             (assq-delete-all :noweb org-babel-default-header-args)))
+<div class="org-src-container">
+
+<pre class="src src-elisp">(setq org-babel-default-header-args
+       (cons '(<span style="color: #DCDCCC; font-weight: bold;">:noweb</span> . <span style="color: #CC9393;">"yes"</span>)
+             (assq-delete-all <span style="color: #DCDCCC; font-weight: bold;">:noweb</span> org-babel-default-header-args)))
 </pre>
+</div>
 <p>
 也可以通过设置 `org-babel-default-header-args:&lt;lang&gt;'为某个语言设置header参数.
 可以参考<a href="#orgheadline9">支持的语言</a>一节.
@@ -406,10 +443,12 @@ orgmode可以设置各种范围的header参数, 下面会逐一介绍, 一般来
 可以通过设置 <code>#+PROPERTY</code> 来设置文件级的header参数, 这个变量可以设置多次.
 例如下面的例子设置"R"语言的seesion为"R", 并设置result为silent.
 </p>
-<pre class="example">
-#+PROPERTY: header-args:R  :session *R*
-#+PROPERTY: header-args    :results silent
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+PROPERTY: header-args:R  <span style="color: #DCDCCC; font-weight: bold;">:session</span> *R*
+#+PROPERTY: header-args    <span style="color: #DCDCCC; font-weight: bold;">:results</span> silent
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline12" class="outline-3">
@@ -418,26 +457,30 @@ orgmode可以设置各种范围的header参数, 下面会逐一介绍, 一般来
 <p>
 可以为标题及所有子树设置header参数, 例如
 </p>
-<pre class="example">
-* outline header
-  :PROPERTIES:
-  :header-args:    :cache yes
-  :END:
+<div class="org-src-container">
+
+<pre class="src src-elisp">* outline header
+  <span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+  <span style="color: #DCDCCC; font-weight: bold;">:header-args:</span>    <span style="color: #DCDCCC; font-weight: bold;">:cache</span> yes
+  <span style="color: #DCDCCC; font-weight: bold;">:END:</span>
 </pre>
+</div>
 <p>
 也可以给具体语言设置header参数, 例如
 </p>
-<pre class="example">
-* Heading
-  :PROPERTIES:
-  :header-args:clojure:    :session *clojure-1*
-  :header-args:R:          :session *R*
-  :END:
+<div class="org-src-container">
+
+<pre class="src src-elisp">* Heading
+  <span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+  <span style="color: #DCDCCC; font-weight: bold;">:header-args:clojure:</span>    <span style="color: #DCDCCC; font-weight: bold;">:session</span> *clojure-1*
+  <span style="color: #DCDCCC; font-weight: bold;">:header-args:R:</span>          <span style="color: #DCDCCC; font-weight: bold;">:session</span> *R*
+  <span style="color: #DCDCCC; font-weight: bold;">:END:</span>
 ** Subheading
-  :PROPERTIES:
-  :header-args:clojure:    :session *clojure-2*
-  :END:
+  <span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+  <span style="color: #DCDCCC; font-weight: bold;">:header-args:clojure:</span>    <span style="color: #DCDCCC; font-weight: bold;">:session</span> *clojure-2*
+  <span style="color: #DCDCCC; font-weight: bold;">:END:</span>
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline13" class="outline-3">
@@ -450,26 +493,34 @@ orgmode可以设置各种范围的header参数, 下面会逐一介绍, 一般来
 <li><p>
 在 <code>#+BEGIN_SRC</code> 后面.
 </p>
-<pre class="example">
-#+NAME: factorial
-#+BEGIN_SRC haskell :results silent :exports code :var n=0
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+NAME: factorial
+#+BEGIN_SRC haskell <span style="color: #DCDCCC; font-weight: bold;">:results</span> silent <span style="color: #DCDCCC; font-weight: bold;">:exports</span> code <span style="color: #DCDCCC; font-weight: bold;">:var</span> n=0
 fac 0 = 1
 fac n = n * fac (n-1)
+</pre>
+</div>
+<p>
 #+END_SRC
-</pre></li>
+</p></li>
 <li><p>
 使用 <code>#+HEADERS</code> 关键字
 </p>
-<pre class="example">
-   #+HEADERS: :var data1=1
-   #+BEGIN_SRC emacs-lisp :var data2=2
-     (message "data1:%S, data2:%S" data1 data2)
-   #+END_SRC
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+HEADERS: <span style="color: #DCDCCC; font-weight: bold;">:var</span> data1=1
+#+BEGIN_SRC emacs-lisp <span style="color: #DCDCCC; font-weight: bold;">:var</span> data2=2
+  (message <span style="color: #CC9393;">"data1:%S, data2:%S"</span> data1 data2)
+</pre>
+</div>
+<p>
 或者使用多岗
-   #+NAME: named-block
-   #+HEADER: :var data=2
-   #+BEGIN_SRC emacs-lisp
-</pre></li>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp" id="orgsrcblock1"></pre>
+</div></li>
 </ol>
 </div>
 </div>
@@ -650,12 +701,14 @@ fac n = n * fac (n-1)
 </tbody>
 </table>
 
-<pre class="example">
-(org-babel-do-load-languages
+<div class="org-src-container">
+
+<pre class="src src-elisp">(org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . nil)
    (R . t)))
 </pre>
+</div>
 </div>
 </div>
 </div>

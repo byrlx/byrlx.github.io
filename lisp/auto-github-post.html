@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>自动生成github文章名</title>
@@ -96,15 +96,16 @@ for the JavaScript code in this tag.
 <p>
 代码如下:
 </p>
-<pre class="example">
-#!/usr/bin/python
+<div class="org-src-container">
+
+<pre class="src src-elisp">#!/usr/bin/python
 
 import time
 import sys
 import os
 import re
 
-# mardown 语法,写在每篇文章的开始,其中LX会被替换为title名
+# mardown &#35821;&#27861;,&#20889;&#22312;&#27599;&#31687;&#25991;&#31456;&#30340;&#24320;&#22987;,&#20854;&#20013;LX&#20250;&#34987;&#26367;&#25442;&#20026;title&#21517;
 raw_format= \
 '''---
 layout: default
@@ -115,47 +116,48 @@ title: LX
 -----------
 '''
 
-# 保留当前工作目录,并且换到文章目录
+# &#20445;&#30041;&#24403;&#21069;&#24037;&#20316;&#30446;&#24405;,&#24182;&#19988;&#25442;&#21040;&#25991;&#31456;&#30446;&#24405;
 oldpath = os.getcwd()
-post_dir = "/home/byrlx/lx-git/byrlx.github.io/_posts/"
+post_dir = <span style="color: #CC9393;">"/home/byrlx/lx-git/byrlx.github.io/_posts/"</span>
 os.chdir(post_dir)
 
-# 获取格式化日期
+# &#33719;&#21462;&#26684;&#24335;&#21270;&#26085;&#26399;
 prefix = time.strftime('%Y-%m-%d-')
-suffix = ".md"
+suffix = <span style="color: #CC9393;">".md"</span>
 
 if(len(sys.argv) != 2):
-	print "Usage %s post_name" % sys.argv[0]
-	exit(-1)
+        print <span style="color: #CC9393;">"Usage %s post_name"</span> % sys.argv[0]
+        exit(-1)
 
 
 file = prefix + sys.argv[1]
 title = sys.argv[1]
 last_three_chr = title[-3:]
-#判断有没有后缀名,没有则加上,有则将其从title中去掉
+#&#21028;&#26029;&#26377;&#27809;&#26377;&#21518;&#32512;&#21517;,&#27809;&#26377;&#21017;&#21152;&#19978;,&#26377;&#21017;&#23558;&#20854;&#20174;title&#20013;&#21435;&#25481;
 if last_three_chr != suffix:
-	file = file+suffix
+        file = file+suffix
 else:
-	title = title[0:-3]
+        title = title[0:-3]
 
-#将markdown语法中的字符串替换为 title 名
+#&#23558;markdown&#35821;&#27861;&#20013;&#30340;&#23383;&#31526;&#20018;&#26367;&#25442;&#20026; title &#21517;
 file_format = re.sub('LX',title,raw_format)
 
-#如果文件不存在,创建文件并写入开始内容
+#&#22914;&#26524;&#25991;&#20214;&#19981;&#23384;&#22312;,&#21019;&#24314;&#25991;&#20214;&#24182;&#20889;&#20837;&#24320;&#22987;&#20869;&#23481;
 if not os.path.isfile(file):
-	lxfile = open(file,"w");
-	lxfile.write(file_format)
-	lxfile.close()
+        lxfile = open(file,<span style="color: #CC9393;">"w"</span>)<span style="color: #5F7F5F;">;</span>
+        lxfile.write(file_format)
+        lxfile.close()
 
-#打开文件,编辑,编辑结束后调用git命令上传
-cmd = "emacs -nw " + file
+#&#25171;&#24320;&#25991;&#20214;,&#32534;&#36753;,&#32534;&#36753;&#32467;&#26463;&#21518;&#35843;&#29992;git&#21629;&#20196;&#19978;&#20256;
+cmd = <span style="color: #CC9393;">"emacs -nw "</span> + file
 os.system(cmd)
-os.system("git add -A")
-os.system("git commit -m \"modify post\"")
-os.system("git push")
+os.system(<span style="color: #CC9393;">"git add -A"</span>)
+os.system(<span style="color: #CC9393;">"git commit -m \"modify post\""</span>)
+os.system(<span style="color: #CC9393;">"git push"</span>)
 
 os.chdir(oldpath)
 </pre>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="postamble">Created At <span class="timestamp-wrapper"><span class="timestamp">&lt;2013-08-03 Sat 23:25&gt;</span></span> by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>

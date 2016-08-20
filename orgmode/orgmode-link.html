@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Orgmode手册3:链接</title>
@@ -107,9 +107,11 @@ for the JavaScript code in this tag.
 <p>
 Org的链接格式为:
 </p>
-<pre class="example">
-[[链接地址][描述]] 或 [[链接地址]]
+<div class="org-src-container">
+
+<pre class="src src-elisp">[[&#38142;&#25509;&#22320;&#22336;][&#25551;&#36848;]] &#25110; [[&#38142;&#25509;&#22320;&#22336;]]
 </pre>
+</div>
 <p>
 当最后一个"]"写完时, org会将该链接显示为(带下划线的"描述", 该显示格式对应face "org-link"),
 如果想要编辑链接, 可以在链接上使用快捷键 "C-c C-l", 在显示内容前后使用"delete"键
@@ -193,10 +195,12 @@ Org的链接格式为:
 跳转到被 "&lt;&lt;&gt;&gt;"定义的地方. 如下面的例子,在第一个链接上用C-c C-o 会
 跳转到test出现的地方. 
 </p>
-<pre class="example">
-loc1: [[test]] 
+<div class="org-src-container">
+
+<pre class="src src-elisp">loc1: [[test]] 
 loc2  this is a &lt;&lt;test&gt;&gt;
-</pre></li>
+</pre>
+</div></li>
 <li>如果1)不存在, 会跳转到 "#+NAME" 命名和链接相同的地方.</li>
 <li>前两步都失败, 会尝试寻找精确匹配的 <b>标题</b>.</li>
 </ol>
@@ -208,24 +212,26 @@ loc2  this is a &lt;&lt;test&gt;&gt;
 <p>
 org mode支持的外部链接包括:
 </p>
-<pre class="example">
-|                             | 描述                  |
+<div class="org-src-container">
+
+<pre class="src src-elisp">|                             | &#25551;&#36848;                  |
 |-----------------------------+-----------------------|
-| http://web                  | 网站                  |
-| doi:10.1000/182             | doi链接               |
-| file://path                 | 文件相对/绝对地址     |
-| file:/a@b:x/y.pdf           | 远程文件地址          |
-| file:orgmode-learn.org::111 | 跳转到文件NNN行       |
-| file:org-file::key/*title   | 支持org文件的标题搜索 |
-| file+sys:/path              | 使用系统打开          |
-| docview:path::NNN           | 使用docview模式打开   |
-| news:comp.emacs             | Usenet 链接           |
+| http://web                  | &#32593;&#31449;                  |
+| doi:10.1000/182             | doi&#38142;&#25509;               |
+| file://path                 | &#25991;&#20214;&#30456;&#23545;/&#32477;&#23545;&#22320;&#22336;     |
+| file:/a@b:x/y.pdf           | &#36828;&#31243;&#25991;&#20214;&#22320;&#22336;          |
+| file:orgmode-learn.org::111 | &#36339;&#36716;&#21040;&#25991;&#20214;NNN&#34892;       |
+| file:org-file::key/*title   | &#25903;&#25345;org&#25991;&#20214;&#30340;&#26631;&#39064;&#25628;&#32034; |
+| file+sys:/path              | &#20351;&#29992;&#31995;&#32479;&#25171;&#24320;          |
+| docview:path::NNN           | &#20351;&#29992;docview&#27169;&#24335;&#25171;&#24320;   |
+| news:comp.emacs             | Usenet &#38142;&#25509;           |
 | mailto:a@b                  | mail                  |
-| gnus:group                  | gnus链接              |
-| irc:/irc.com/#emacs         | irc链接               |
-| shell:cmd                   | shell 命令            |
+| gnus:group                  | gnus&#38142;&#25509;              |
+| irc:/irc.com/#emacs         | irc&#38142;&#25509;               |
+| shell:cmd                   | shell &#21629;&#20196;            |
 | elisp:cmd                   | elisp cmd             |
 </pre>
+</div>
 </div>
 </div>
 
@@ -236,26 +242,30 @@ org mode支持的外部链接包括:
 如果链接太长且在文件中经常使用, 可以将其设置为"链接关键字",
 可以用 "#+LINK"关键字来实现这个功能, 或者设置"org-link-abbrev-alist"变量:
 </p>
-<pre class="example">
-#+LINK: bugzilla  http://10.1.2.9/bugzilla/show_bug.cgi?id=
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+LINK: bugzilla  http://10.1.2.9/bugzilla/show_bug.cgi?id=
 #+LINK: google    http://www.google.com/search?q=%s
-或者
+&#25110;&#32773;
 (setq org-link-abbrev-alist
-  '(("bugzilla"  . "http://10.1.2.9/bugzilla/show_bug.cgi?id=")
-    ("url-to-ja" . "http://translate.google.fr/translate?sl=en&amp;tl=ja&amp;u=%h")
-    ("google"    . "http://www.google.com/search?q=")
-    ("gmap"      . "http://maps.google.com/maps?q=%s")
-    ("omap"      . "http://nominatim.openstreetmap.org/search?q=%s&amp;polygon=1")
-    ("ads"       . "http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?author=%s&amp;db_key=AST")))
+  '((<span style="color: #CC9393;">"bugzilla"</span>  . <span style="color: #CC9393;">"http://10.1.2.9/bugzilla/show_bug.cgi?id="</span>)
+    (<span style="color: #CC9393;">"url-to-ja"</span> . <span style="color: #CC9393;">"http://translate.google.fr/translate?sl=en&amp;tl=ja&amp;u=%h"</span>)
+    (<span style="color: #CC9393;">"google"</span>    . <span style="color: #CC9393;">"http://www.google.com/search?q="</span>)
+    (<span style="color: #CC9393;">"gmap"</span>      . <span style="color: #CC9393;">"http://maps.google.com/maps?q=%s"</span>)
+    (<span style="color: #CC9393;">"omap"</span>      . <span style="color: #CC9393;">"http://nominatim.openstreetmap.org/search?q=%s&amp;polygon=1"</span>)
+    (<span style="color: #CC9393;">"ads"</span>       . <span style="color: #CC9393;">"http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?author=%s&amp;db_key=AST"</span>)))
 </pre>
+</div>
 
 <p>
 短链接的格式为, 如果链接中有"%s", 会被tag替代, "%h"则会将tag进行url编码.
 %(function)会调用函数并将结果添加. 什么都没有的话直接在尾部添加. 例如
 </p>
-<pre class="example">
-[[bugzilla:129][description]] ;;  http://10.1.2.9/bugzilla/show_bug.cgi?id=129
+<div class="org-src-container">
+
+<pre class="src src-elisp">[[bugzilla:129][description]] <span style="color: #5F7F5F;">;;  </span><span style="color: #7F9F7F;">http://10.1.2.9/bugzilla/show_bug.cgi?id=129</span>
 </pre>
+</div>
 </div>
 </div>
 </div>

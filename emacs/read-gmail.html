@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Emacs gnus 的日常使用</title>
@@ -119,8 +119,9 @@ for the JavaScript code in this tag.
 <li>mac安装:  brew install offlineimap</li>
 <li>配置 ~/.offlineimaprc</li>
 </ol>
-<pre class="example">
-[general]
+<div class="org-src-container">
+
+<pre class="src src-elisp">[general]
 ui = ttyui
 accounts = Gmail
 
@@ -134,13 +135,14 @@ localfolders = ~/lx/Gmail
 
 [Repository Gmail-Remote]
 type = Gmail
-remoteuser = 邮箱
-remotepass = 密码
+remoteuser = &#37038;&#31665;
+remotepass = &#23494;&#30721;
 realdelete = no
 maxconnections = 3
-# 下面这行使用与OS X系统
+# &#19979;&#38754;&#36825;&#34892;&#20351;&#29992;&#19982;OS X&#31995;&#32479;
 sslcacertfile = /usr/local/etc/openssl/cert.pem
 </pre>
+</div>
 <ol class="org-ol">
 <li>同步命令: offlineimap -o
 第一次运行这个命令有可能会报错, 显示 "Gmail SMTP debug: error “please log in via your web browser" 这样的内容,
@@ -152,11 +154,13 @@ sslcacertfile = /usr/local/etc/openssl/cert.pem
 <div id="outline-container-orgheadline3" class="outline-3">
 <h3 id="orgheadline3">配置</h3>
 <div class="outline-text-3" id="text-orgheadline3">
-<pre class="example">
-  ;; Gnus配置
+<div class="org-src-container">
+
+<pre class="src src-elisp">  <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">Gnus&#37197;&#32622;</span>
 (setq gnus-select-method
-   '(nnmaildir "Gmail" (directory "~/lx/Gmail")))
+   '(nnmaildir <span style="color: #CC9393;">"Gmail"</span> (directory <span style="color: #CC9393;">"~/lx/Gmail"</span>)))
 </pre>
+</div>
 </div>
 </div>
 </div>
@@ -179,29 +183,31 @@ gnus对于atom类型的RSS支持不好, 可以通过在以下方式解决
 <li><p>
 Put the following code into your .gnus:
 </p>
-<pre class="example">
-(require 'mm-url)
-(defadvice mm-url-insert 
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">require</span> '<span style="color: #BFEBBF;">mm-url</span>)
+(<span style="color: #F0DFAF; font-weight: bold;">defadvice</span> <span style="color: #93E0E3;">mm-url-insert</span> 
    (after DE-convert-atom-to-rss () )  
-   "Converts atom to RSS by calling xsltproc."  
-   (when 
+   <span style="color: #9FC59F;">"Converts atom to RSS by calling xsltproc."</span>  
+   (<span style="color: #F0DFAF; font-weight: bold;">when</span> 
       (re-search-forward
-         "xmlns=\"http://www.w3.org/.*/Atom\"" 
+         <span style="color: #CC9393;">"xmlns=\"http://www.w3.org/.*/Atom\""</span> 
           nil t)
       (goto-char (point-min))    
-      (message "Converting Atom to RSS... ")    
+      (message <span style="color: #CC9393;">"Converting Atom to RSS... "</span>)    
       (call-process-region 
          (point-min) 
          (point-max) 
-         "xsltproc" 
+         <span style="color: #CC9393;">"xsltproc"</span> 
          t t nil 
          (expand-file-name 
-            "~/.emacs.d/atom2rss.xsl") "-")    
+            <span style="color: #CC9393;">"~/.emacs.d/atom2rss.xsl"</span>) <span style="color: #CC9393;">"-"</span>)    
       (goto-char (point-min))    
       (message 
-         "Converting Atom to RSS... done")))
+         <span style="color: #CC9393;">"Converting Atom to RSS... done"</span>)))
 (ad-activate 'mm-url-insert)
-</pre></li>
+</pre>
+</div></li>
 </ol>
 </div>
 </div>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Retrofit之项目介绍</title>
@@ -139,30 +139,36 @@ retrofit库可以在<a href="http://search.maven.org/#search%7Cga%7C1%7Cretrofit
 <li><p>
 Maven
 </p>
-<pre class="example">
-&lt;dependency&gt;
-  &lt;groupId&gt;com.squareup.retrofit&lt;/groupId&gt;
-  &lt;artifactId&gt;retrofit&lt;/artifactId&gt;
-  &lt;version&gt;2.0.0-beta2&lt;/version&gt;
+<div class="org-src-container">
+
+<pre class="src src-java">&lt;dependency&gt;
+  &lt;groupId&gt;com.squareup.<span style="color: #7CB8BB;">retrofit</span>&lt;/groupId&gt;
+  &lt;artifactId&gt;<span style="color: #7CB8BB;">retrofit</span>&lt;/artifactId&gt;
+  &lt;version&gt;2.0.0-<span style="color: #7CB8BB;">beta2</span>&lt;/version&gt;
 &lt;/dependency&gt;
-</pre></li>
+</pre>
+</div></li>
 <li><p>
 Gradle. 如果与服务端的请求和结果都是json的话,需要gson converter进行转化, 因为要把该库也添加上.
 </p>
-<pre class="example">
-compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
-compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
-</pre></li>
+<div class="org-src-container">
+
+<pre class="src src-java">compile <span style="color: #CC9393;">'com.squareup.retrofit:retrofit:2.0.0-beta2'</span>
+compile <span style="color: #CC9393;">'com.squareup.retrofit:converter-gson:2.0.0-beta2'</span>
+</pre>
+</div></li>
 <li><p>
 混淆配置
 如果项目中使用混淆的话, 需要在混淆文件中假如如下配置
 </p>
-<pre class="example">
--dontwarn retrofit.**
--keep class retrofit.** { *; }
+<div class="org-src-container">
+
+<pre class="src src-java">-dontwarn <span style="color: #BFEBBF;">retrofit</span>.**
+-keep <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #BFEBBF;">retrofit</span>.** { *; }
 -keepattributes Signature
 -keepattributes Exceptions
-</pre></li>
+</pre>
+</div></li>
 </ul>
 </div>
 </div>
@@ -186,22 +192,26 @@ compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
 用户类. 这段代码定义了用户类User, 每个用户包含三个基本信息:id, name, age; 
 通过retrofit请求用户信息时, 客户端返回用户的json信息, retrofit可以直接将json信息转化为用户类.
 </p>
-<pre class="example">
-public class User {
-    private int id;
-    private String name;
-    private int age;
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">User</span> {
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">id</span>;
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">name</span>;
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">age</span>;
 }
-</pre></li>
+</pre>
+</div></li>
 <li><p>
 定义Client和GET请求接口
 </p>
-<pre class="example">
-public interface Client {
-    @GET("users")
-    Call&lt;List&lt;User&gt;&gt;  getUsers();
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">interface</span> <span style="color: #7CB8BB;">Client</span> {
+    <span style="color: #BFEBBF;">@GET</span>(<span style="color: #CC9393;">"users"</span>)
+    <span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">List</span>&lt;<span style="color: #7CB8BB;">User</span>&gt;&gt;  <span style="color: #93E0E3;">getUsers</span>();
 }
 </pre>
+</div>
 <p>
 这段代码定义了一个接口Client, 并定义了一个GET函数getUsers(), 该函数用户向服务器发送get请求获取所有的
 用户信息. 定义GET请求需要用GET注解来修饰函数, 注解的参数为uri的相对路径, 下一部分会定义URL的地址, 在
@@ -217,23 +227,25 @@ public interface Client {
 <li><p>
 <a id="orgtarget1"></a>
 </p>
-<pre class="example">
-public class MainActivity {
-    ....
-    public static final String SERVER_URL = "http://10.10.10.10/account";
-    private OkHttpClient okHttpClient = new OkHttpClient();
-    private Retrofit.Builder builder = new Retrofit.Builder()
-	.base_url(SERVER_URL)
-	.client(okHttpClient)
-	.addConvertFactory(GsonConvertFactory.create());
+<div class="org-src-container">
 
-    Retrofit retrofit = builder.build();
-    Client client = retrofit.create(Client.class);
-    Call&lt;List&lt;Users&gt;&gt; call = client.getUsers();
-    List&lt;Users&gt; result = call.execute().body();
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">MainActivity</span> {
+    ....
+    <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> String SERVER_URL = <span style="color: #CC9393;">"http://10.10.10.10/account"</span>;
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">OkHttpClient</span> <span style="color: #DFAF8F;">okHttpClient</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">OkHttpClient</span>();
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #BFEBBF;">Retrofit</span>.<span style="color: #7CB8BB;">Builder</span> <span style="color: #DFAF8F;">builder</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">Retrofit</span>.<span style="color: #7CB8BB;">Builder</span>()
+        .base_url(SERVER_URL)
+        .client(okHttpClient)
+        .addConvertFactory(GsonConvertFactory.create());
+
+    <span style="color: #7CB8BB;">Retrofit</span> <span style="color: #DFAF8F;">retrofit</span> = builder.build();
+    <span style="color: #7CB8BB;">Client</span> <span style="color: #DFAF8F;">client</span> = retrofit.create(Client.<span style="color: #F0DFAF; font-weight: bold;">class</span>);
+    <span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">List</span>&lt;<span style="color: #7CB8BB;">Users</span>&gt;&gt; <span style="color: #DFAF8F;">call</span> = client.getUsers();
+    <span style="color: #7CB8BB;">List</span>&lt;<span style="color: #7CB8BB;">Users</span>&gt; <span style="color: #DFAF8F;">result</span> = call.execute().body();
     ....
 }
 </pre>
+</div>
 <p>
 上述代码用来做实际的请求动作, 首先通过Retrofit Builder来基于各种参数(服务器地址, httpclient, converter)
 生成一个builder对象, 让后调用builder的build()函数生成一个retrofit对象.
@@ -258,34 +270,38 @@ public class MainActivity {
 来生成service实例.
 </p>
 
-<pre class="example">
-public class ServiceGenerator {
-    public static final String BASE_URL = "";
+<div class="org-src-container">
 
-    private static OkHttpClient httpClient = new OkHttpClient();
-    private static Retrofit.Builder builder =
-	new Retrofit.Builder()
-	.baseUrl(BASE_URL)
-	.addConverterFactory(GsonConverterFactory.create());
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">ServiceGenerator</span> {
+    <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">BASE_URL</span> = <span style="color: #CC9393;">""</span>;
 
-    public static &lt;T&gt; T createService(Class&lt;T&gt; serviceClass){
-        //把设置client放到这里是因为后续有对client进行配置的需求
-	Retrofit retrofit = builder.client(httpClient).build(); 
-	return retrofit.create(serviceClass);
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">OkHttpClient</span> <span style="color: #DFAF8F;">httpClient</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">OkHttpClient</span>();
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #BFEBBF;">Retrofit</span>.<span style="color: #7CB8BB;">Builder</span> <span style="color: #DFAF8F;">builder</span> =
+        <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">Retrofit</span>.<span style="color: #7CB8BB;">Builder</span>()
+        .baseUrl(BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create());
+
+    <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> &lt;<span style="color: #7CB8BB;">T</span>&gt; <span style="color: #7CB8BB;">T</span> <span style="color: #93E0E3;">createService</span>(<span style="color: #7CB8BB;">Class</span>&lt;<span style="color: #7CB8BB;">T</span>&gt; <span style="color: #DFAF8F;">serviceClass</span>){
+        <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#25226;&#35774;&#32622;client&#25918;&#21040;&#36825;&#37324;&#26159;&#22240;&#20026;&#21518;&#32493;&#26377;&#23545;client&#36827;&#34892;&#37197;&#32622;&#30340;&#38656;&#27714;</span>
+        <span style="color: #7CB8BB;">Retrofit</span> <span style="color: #DFAF8F;">retrofit</span> = builder.client(httpClient).build(); 
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> retrofit.create(serviceClass);
     }
-				      
+
 }
 </pre>
+</div>
 
 <p>
 这样在上一节的MainActivity中,可以直接使用ServiceGenerator来创建Client实例
 </p>
 
-<pre class="example">
-Client client = ServiceGenerator.create(Client.class);
-Client call = client.getUsers();
-List&lt;Users&gt; result = call.execute().body();
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">Client</span> <span style="color: #DFAF8F;">client</span> = ServiceGenerator.create(Client.<span style="color: #F0DFAF; font-weight: bold;">class</span>);
+<span style="color: #7CB8BB;">Client</span> <span style="color: #DFAF8F;">call</span> = client.getUsers();
+<span style="color: #7CB8BB;">List</span>&lt;<span style="color: #7CB8BB;">Users</span>&gt; <span style="color: #DFAF8F;">result</span> = call.execute().body();
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline6" class="outline-3">
@@ -296,38 +312,40 @@ List&lt;Users&gt; result = call.execute().body();
 进行请求认证.通过对OkHttpClient进行配置可以在retrofit中实现该方式. 
 </p>
 
-<pre class="example">
-public static &lt;T&gt; T createService(Class&lt;T&gt; serviceClass){
-    createService(serviceClass, null, null);
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> &lt;<span style="color: #7CB8BB;">T</span>&gt; <span style="color: #7CB8BB;">T</span> <span style="color: #93E0E3;">createService</span>(<span style="color: #7CB8BB;">Class</span>&lt;<span style="color: #7CB8BB;">T</span>&gt; <span style="color: #DFAF8F;">serviceClass</span>){
+    createService(serviceClass, <span style="color: #BFEBBF;">null</span>, <span style="color: #BFEBBF;">null</span>);
 }
 
-pubic static &lt;T&gt; T createService(Class&lt;T&gt; serviceCls, String userName, String passWord)  {
-    if (userName != null &amp;&amp; passWord != null) {
-	//对用户名和密码进行加密(不同的需求加密方式不一样, 这里只提供参考)
-	String credentials = userName + ":" + passWord;
-	final String base64Str = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+pubic <span style="color: #F0DFAF; font-weight: bold;">static</span> &lt;<span style="color: #7CB8BB;">T</span>&gt; <span style="color: #7CB8BB;">T</span> <span style="color: #93E0E3;">createService</span>(<span style="color: #7CB8BB;">Class</span>&lt;<span style="color: #7CB8BB;">T</span>&gt; <span style="color: #DFAF8F;">serviceCls</span>, <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">userName</span>, <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">passWord</span>)  {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (userName != <span style="color: #BFEBBF;">null</span> &amp;&amp; passWord != <span style="color: #BFEBBF;">null</span>) {
+        <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#23545;&#29992;&#25143;&#21517;&#21644;&#23494;&#30721;&#36827;&#34892;&#21152;&#23494;(&#19981;&#21516;&#30340;&#38656;&#27714;&#21152;&#23494;&#26041;&#24335;&#19981;&#19968;&#26679;, &#36825;&#37324;&#21482;&#25552;&#20379;&#21442;&#32771;)</span>
+        <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">credentials</span> = userName + <span style="color: #CC9393;">":"</span> + passWord;
+        <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">base64Str</span> = Base64.encodeToString(credentials.getBytes(), <span style="color: #BFEBBF;">Base64</span>.NO_WRAP);
 
-	httpClient.interceptors().clear();
-	httpClient.interceptors().add(new Interceptor() {
-		@Override
-		public Response intercept(Interceptor.Chain chain) throws IOException {
-		    Request original = chain.request();
+        httpClient.interceptors().clear();
+        httpClient.interceptors().add(<span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Interceptor</span>() {
+                <span style="color: #BFEBBF;">@Override</span>
+                <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">Response</span> <span style="color: #93E0E3;">intercept</span>(<span style="color: #BFEBBF;">Interceptor</span>.<span style="color: #7CB8BB;">Chain</span> <span style="color: #DFAF8F;">chain</span>) <span style="color: #F0DFAF; font-weight: bold;">throws</span> <span style="color: #7CB8BB;">IOException</span> {
+                    <span style="color: #7CB8BB;">Request</span> <span style="color: #DFAF8F;">original</span> = chain.request();
 
-		    Request.Builder requestBuilder = original.newBuilder()
-			.header("Authorization", basic);
-                    .header("Accept", "applicaton/json");
+                    <span style="color: #BFEBBF;">Request</span>.<span style="color: #7CB8BB;">Builder</span> <span style="color: #DFAF8F;">requestBuilder</span> = original.newBuilder()
+                        .header(<span style="color: #CC9393;">"Authorization"</span>, basic);
+                    .header(<span style="color: #CC9393;">"Accept"</span>, <span style="color: #CC9393;">"applicaton/json"</span>);
                     .method(original.method(), original.body());
 
-		    Request request = requestBuilder.build();
-		    return chain.proceed(request);
-		}
-	    });
+                    <span style="color: #7CB8BB;">Request</span> <span style="color: #DFAF8F;">request</span> = requestBuilder.build();
+                    <span style="color: #F0DFAF; font-weight: bold;">return</span> chain.proceed(request);
+                }
+            });
     }
 
-    Retrofit retrofit = builder.client(httpClient).build();
-    return retrofit.create(serverClass);
+    <span style="color: #7CB8BB;">Retrofit</span> <span style="color: #DFAF8F;">retrofit</span> = builder.client(httpClient).build();
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> retrofit.create(serverClass);
 }
 </pre>
+</div>
 
 <p>
 上述代码通过修改OkHttpClient的相关参数来修改API请求的头部, 讲加密后的帐号和密码放入到
@@ -355,28 +373,30 @@ Authorization中实现验证.
 <p>
 基于前面的代码, 重新写一个OAuth相关的createService()函数.
 </p>
-<pre class="example">
-public static &lt;T&gt; T createService(Class&lt;T&gt; serviceClass, AccessToken token) {
-    if (token != null) {
-	httpClient.interceptors().clear();
-	httpClient.interceptors().add(new Interceptor() {
-		@Override
-		public Response intercept(Interceptor.Chain chain) throws IOException {
-		    Request original = chain.request();
-		    Request.Builder builder2 = original.newBuilder()
-			.header("Accept", "application/json")
-			.header("Authorization", token.getTokenType()+ " " + token.getAccessToken())
-			.method(original.method(), original.body());
-		    Request request = builder2.build();
-		    return chain.proceed(request);
-		}
-	    });
+<div class="org-src-container">
 
-	Retrofit retrofit = builder.client(httpClient).build();
-	return retrofit.create(serverClass);
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> &lt;<span style="color: #7CB8BB;">T</span>&gt; <span style="color: #7CB8BB;">T</span> <span style="color: #93E0E3;">createService</span>(<span style="color: #7CB8BB;">Class</span>&lt;<span style="color: #7CB8BB;">T</span>&gt; <span style="color: #DFAF8F;">serviceClass</span>, <span style="color: #7CB8BB;">AccessToken</span> <span style="color: #DFAF8F;">token</span>) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (token != <span style="color: #BFEBBF;">null</span>) {
+        httpClient.interceptors().clear();
+        httpClient.interceptors().add(<span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Interceptor</span>() {
+                <span style="color: #BFEBBF;">@Override</span>
+                <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">Response</span> <span style="color: #93E0E3;">intercept</span>(<span style="color: #BFEBBF;">Interceptor</span>.<span style="color: #7CB8BB;">Chain</span> <span style="color: #DFAF8F;">chain</span>) <span style="color: #F0DFAF; font-weight: bold;">throws</span> <span style="color: #7CB8BB;">IOException</span> {
+                    <span style="color: #7CB8BB;">Request</span> <span style="color: #DFAF8F;">original</span> = chain.request();
+                    <span style="color: #BFEBBF;">Request</span>.<span style="color: #7CB8BB;">Builder</span> <span style="color: #DFAF8F;">builder2</span> = original.newBuilder()
+                        .header(<span style="color: #CC9393;">"Accept"</span>, <span style="color: #CC9393;">"application/json"</span>)
+                        .header(<span style="color: #CC9393;">"Authorization"</span>, token.getTokenType()+ <span style="color: #CC9393;">" "</span> + token.getAccessToken())
+                        .method(original.method(), original.body());
+                    <span style="color: #7CB8BB;">Request</span> <span style="color: #DFAF8F;">request</span> = builder2.build();
+                    <span style="color: #F0DFAF; font-weight: bold;">return</span> chain.proceed(request);
+                }
+            });
+
+        <span style="color: #7CB8BB;">Retrofit</span> <span style="color: #DFAF8F;">retrofit</span> = builder.client(httpClient).build();
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> retrofit.create(serverClass);
     }
 }
 </pre>
+</div>
 
 <p>
 上面的代码通过创建一个定制的 <b>RequestInterceptor</b> 对象来配置httpClient, 在定制的对象中将token信息
@@ -396,32 +416,34 @@ public static &lt;T&gt; T createService(Class&lt;T&gt; serviceClass, AccessToken
 app获取其在该网站的信息.如果用户点击允许, 第三方服务器就会生成一个授权码返回给用户.
 第一步先创建程序主界面:
 </p>
-<pre class="example">
-public class LoginActivity extends Activity {
-    //在第三方平台注册应用获取的clientId和secret
-    private final String clientId = "your-client-id";
-    private final String clientSecret = "your-client-secret";
-    //获取跳转码后的跳转url, 在申请授权码时需要一并传给第三方服务器
-    private final String redirectUri = "your://redirecturi";
+<div class="org-src-container">
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">LoginActivity</span> <span style="color: #F0DFAF; font-weight: bold;">extends</span> <span style="color: #7CB8BB;">Activity</span> {
+    <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#22312;&#31532;&#19977;&#26041;&#24179;&#21488;&#27880;&#20876;&#24212;&#29992;&#33719;&#21462;&#30340;clientId&#21644;secret</span>
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">clientId</span> = <span style="color: #CC9393;">"your-client-id"</span>;
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">clientSecret</span> = <span style="color: #CC9393;">"your-client-secret"</span>;
+    <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#33719;&#21462;&#36339;&#36716;&#30721;&#21518;&#30340;&#36339;&#36716;url, &#22312;&#30003;&#35831;&#25480;&#26435;&#30721;&#26102;&#38656;&#35201;&#19968;&#24182;&#20256;&#32473;&#31532;&#19977;&#26041;&#26381;&#21153;&#22120;</span>
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">redirectUri</span> = <span style="color: #CC9393;">"your://redirecturi"</span>;
+
+    <span style="color: #BFEBBF;">@Override</span>
+    <span style="color: #F0DFAF; font-weight: bold;">protected</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">onCreate</span>(<span style="color: #7CB8BB;">Bundle</span> <span style="color: #DFAF8F;">savedInstanceState</span>) {
+        <span style="color: #F0DFAF; font-weight: bold;">super</span>.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Button loginButton (Button) findViewById(R.id.loginbutton);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse(ServiceGenerator.API_BASE_URL + "/login" + "?client_id=" + clientId + "&amp;redirect_uri=" + redirectUri));
+        <span style="color: #7CB8BB;">Button</span> <span style="color: #DFAF8F;">loginButton</span> (<span style="color: #7CB8BB;">Button</span>) findViewById(R.id.loginbutton);
+        loginButton.setOnClickListener(<span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">View</span>.<span style="color: #7CB8BB;">OnClickListener</span>() {
+            <span style="color: #BFEBBF;">@Override</span>
+            <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">onClick</span>(<span style="color: #7CB8BB;">View</span> <span style="color: #DFAF8F;">v</span>) {
+                <span style="color: #7CB8BB;">Intent</span> <span style="color: #DFAF8F;">intent</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Intent</span>(
+                    <span style="color: #BFEBBF;">Intent</span>.ACTION_VIEW,
+                    Uri.parse(<span style="color: #BFEBBF;">ServiceGenerator</span>.API_BASE_URL + <span style="color: #CC9393;">"/login"</span> + <span style="color: #CC9393;">"?client_id="</span> + clientId + <span style="color: #CC9393;">"&amp;redirect_uri="</span> + redirectUri));
                 startActivity(intent);
             }
         });
     }
 }
 </pre>
+</div>
 
 <p>
 上述代码定义了一个基本的Android界面, 界面只有一个按钮, 点击按钮会请求授权码(一般会跳转到一个授权界面).
@@ -429,42 +451,46 @@ public class LoginActivity extends Activity {
 时传入回调地址. 这在Android中会表现发送回调Uri的广播,并将授权码通过intent传递出去.
 所以app中需要在注册一个可以接受该intent的界面,这里还是使用主界面. 在AndroidMainfest.xml中设置intent-filter
 </p>
-<pre class="example">
-&lt;activity  
-    android:name="com.futurestudio.oauthexample.LoginActivity"
-    android:label="@string/app_name"
-    android:configChanges="keyboard|orientation|screenSize"&gt;
+<div class="org-src-container">
+
+<pre class="src src-java">&lt;activity  
+    android:name=<span style="color: #CC9393;">"com.futurestudio.oauthexample.LoginActivity"</span>
+    android:label=<span style="color: #CC9393;">"@string/app_name"</span>
+    android:configChanges=<span style="color: #CC9393;">"keyboard|orientation|screenSize"</span>&gt;
     &lt;intent-filter&gt;
-        &lt;action android:name="android.intent.action.VIEW" /&gt;
-        &lt;category android:name="android.intent.category.DEFAULT" /&gt;
-        &lt;category android:name="android.intent.category.BROWSABLE" /&gt;
+        &lt;action android:name=<span style="color: #CC9393;">"android.intent.action.VIEW"</span> /&gt;
+        &lt;category android:name=<span style="color: #CC9393;">"android.intent.category.DEFAULT"</span> /&gt;
+        &lt;category android:name=<span style="color: #CC9393;">"android.intent.category.BROWSABLE"</span> /&gt;
         &lt;data
-            android:host="redirecturi"
-            android:scheme="your" /&gt;
+            android:host=<span style="color: #CC9393;">"redirecturi"</span>
+            android:scheme=<span style="color: #CC9393;">"your"</span> /&gt;
     &lt;/intent-filter&gt;
 &lt;/activity&gt;
 </pre>
+</div>
 
 <p>
 在onResume处理接受到的Intent.
 这里假设授权码在intent中传递并且key值为code(第三方平台的回调方式需要参考他们的文档).
 </p>
-<pre class="example">
-@Override
-protected void onResume() {  
-    super.onResume();
+<div class="org-src-container">
 
-    Uri uri = getIntent().getData();
-    if (uri != null &amp;&amp; uri.toString().startsWith(redirectUri)) {
-        String code = uri.getQueryParameter("code");
-        if (code != null) {
-            //处理授权码
-        } else if (uri.getQueryParameter("error") != null) {
-            //处理错误
+<pre class="src src-java"><span style="color: #BFEBBF;">@Override</span>
+<span style="color: #F0DFAF; font-weight: bold;">protected</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">onResume</span>() {  
+    <span style="color: #F0DFAF; font-weight: bold;">super</span>.onResume();
+
+    <span style="color: #7CB8BB;">Uri</span> <span style="color: #DFAF8F;">uri</span> = getIntent().getData();
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (uri != <span style="color: #BFEBBF;">null</span> &amp;&amp; uri.toString().startsWith(redirectUri)) {
+        <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">code</span> = uri.getQueryParameter(<span style="color: #CC9393;">"code"</span>);
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (code != <span style="color: #BFEBBF;">null</span>) {
+            <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#22788;&#29702;&#25480;&#26435;&#30721;</span>
+        } <span style="color: #F0DFAF; font-weight: bold;">else</span> <span style="color: #F0DFAF; font-weight: bold;">if</span> (uri.getQueryParameter(<span style="color: #CC9393;">"error"</span>) != <span style="color: #BFEBBF;">null</span>) {
+            <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#22788;&#29702;&#38169;&#35823;</span>
         }
     }
 }
 </pre>
+</div>
 
 <p>
 好, 到此为止,我们就已经获取到了授权码,下一步就是通过授权码获取Access Token. 
@@ -474,27 +500,31 @@ protected void onResume() {
 上一步获取到授权码后, 就可以向第三方的Access Token服务器发送请求获取token. 我们可以写一个retrofit服务
 来实现这个功能. 
 </p>
-<pre class="example">
-   public interface LoginService {  
-    @POST("/token")
-    Call&lt;AccessToken&gt; getAccessToken(
-            @Query("code") String code,
-            @Query("grant_type") String grantType);
+<div class="org-src-container">
+
+<pre class="src src-java">   <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">interface</span> <span style="color: #7CB8BB;">LoginService</span> {  
+    <span style="color: #BFEBBF;">@POST</span>(<span style="color: #CC9393;">"/token"</span>)
+    <span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">AccessToken</span>&gt; <span style="color: #93E0E3;">getAccessToken</span>(
+            <span style="color: #BFEBBF;">@Query</span>(<span style="color: #CC9393;">"code"</span>) <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">code</span>,
+            <span style="color: #BFEBBF;">@Query</span>(<span style="color: #CC9393;">"grant_type"</span>) <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">grantType</span>);
 }
 </pre>
+</div>
 
 <p>
 这里的code就是上一步获取的授权码, grantType是授权类型. 然后用下面的代码加入到onResume获取成功的代码段中
 </p>
-<pre class="example">
-if (code != null) {
-         // get access token
-         LoginService loginService = 
-             ServiceGenerator.createService(LoginService.class, clientId, clientSecret);
-         Call&lt;AccessToken&gt; call = loginService.getAccessToken(code, "authorization_code");
-         AccessToken accessToken = call.execute().body();
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">if</span> (code != <span style="color: #BFEBBF;">null</span>) {
+         <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">get access token</span>
+         <span style="color: #7CB8BB;">LoginService</span> <span style="color: #DFAF8F;">loginService</span> = 
+             ServiceGenerator.createService(LoginService.<span style="color: #F0DFAF; font-weight: bold;">class</span>, clientId, clientSecret);
+         <span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">AccessToken</span>&gt; <span style="color: #DFAF8F;">call</span> = loginService.getAccessToken(code, <span style="color: #CC9393;">"authorization_code"</span>);
+         <span style="color: #7CB8BB;">AccessToken</span> <span style="color: #DFAF8F;">accessToken</span> = call.execute().body();
 }
-</pre></li>
+</pre>
+</div></li>
 </ol>
 
 <p>

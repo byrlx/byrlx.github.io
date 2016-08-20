@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Orgmode手册2:表格</title>
@@ -481,12 +481,14 @@ org支持公式后面添加任意数量的附加模式, 公式和
 <p>
 下面是一些实例程序
 </p>
-<pre class="example">
-$1+$2                Sum of first and second field
-$1+$2;%.2f           保留小数点两位
-exp($2)+exp($1)      数学公式
-tan($1);Dp3s1        计算度数, 精度为3, 展示为科学计数
+<div class="org-src-container">
+
+<pre class="src src-elisp">$1+$2                Sum of first and second field
+$1+$2<span style="color: #5F7F5F;">;</span><span style="color: #7F9F7F;">%.2f           &#20445;&#30041;&#23567;&#25968;&#28857;&#20004;&#20301;</span>
+exp($2)+exp($1)      &#25968;&#23398;&#20844;&#24335;
+tan($1)<span style="color: #5F7F5F;">;</span><span style="color: #7F9F7F;">Dp3s1        &#35745;&#31639;&#24230;&#25968;, &#31934;&#24230;&#20026;3, &#23637;&#31034;&#20026;&#31185;&#23398;&#35745;&#25968;</span>
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline8" class="outline-3">
@@ -499,12 +501,14 @@ org支持用lisp代码处理表格. 以 '( 开头的表达式会被解析为lisp
 "范围(..)"会被解析为空格分开的域. 例如前面表格相加的公司用lisp表示为
 <b>$5='(+ $1 $2 $3 $4)</b>. 下面是一些例子:
 </p>
-<pre class="example">
-'(concat (substring $1 1 2) (substring $1 0 1) (substring $1 2))
-   交互第一列表格内容的前两个字符
-'(+ $1 $2);N   Add columns 1 and 2, equivalent to Calc's `$1+$2'.
-'(apply '+ '($1..$4));N   另外一种表格相加方法
+<div class="org-src-container">
+
+<pre class="src src-elisp">'(concat (substring $1 1 2) (substring $1 0 1) (substring $1 2))
+   &#20132;&#20114;&#31532;&#19968;&#21015;&#34920;&#26684;&#20869;&#23481;&#30340;&#21069;&#20004;&#20010;&#23383;&#31526;
+'(+ $1 $2)<span style="color: #5F7F5F;">;</span><span style="color: #7F9F7F;">N   Add columns 1 and 2, equivalent to Calc's `</span><span style="color: #7F9F7F;">$1+$2</span><span style="color: #7F9F7F;">'.</span>
+'(apply '+ '($1..$4))<span style="color: #5F7F5F;">;</span><span style="color: #7F9F7F;">N   &#21478;&#22806;&#19968;&#31181;&#34920;&#26684;&#30456;&#21152;&#26041;&#27861;</span>
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline9" class="outline-3">
@@ -515,13 +519,15 @@ org支持用lisp代码处理表格. 以 '( 开头的表达式会被解析为lisp
 其中SS是可选, 如果公式后面接";T", 计算结果会展示为 HH:MM:SS.
 如果为";t", 计算结果为小时的小数表示. 下面的例子展示了这一点:
 </p>
-<pre class="example">
-|  Task 1 |   Task 2 |    Total |
+<div class="org-src-container">
+
+<pre class="src src-elisp">|  Task 1 |   Task 2 |    Total |
 |---------+----------+----------|
 |    2:12 |     1:47 | 03:59:00 |
 | 3:02:20 | -2:07:00 |     0.92 |
-#+TBLFM: @2$3=$1+$2;T::@3$3=$1+$2;t
+#+TBLFM: @2$3=$1+$2<span style="color: #5F7F5F;">;</span><span style="color: #7F9F7F;">T::@3$3=$1+$2;t</span>
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline10" class="outline-3">
@@ -552,8 +558,9 @@ orgmode提供了三个查找函数用于在表中进行查找:
 <p>
 下面是一个示例, 更多示例看这篇文章: <a href="http://orgmode.org/worg/org-tutorials/org-lookups.html">http://orgmode.org/worg/org-tutorials/org-lookups.html</a>
 </p>
-<pre class="example">
- #+TBLNAME: rates
+<div class="org-src-container">
+
+<pre class="src src-elisp"> #+TBLNAME: rates
 | currency        | abbreviation | euros |
 |-----------------+--------------+-------|
 | euro            | eur          |     1 |
@@ -571,10 +578,11 @@ orgmode提供了三个查找函数用于在表中进行查找:
 |  2.7. | lunch            |  190 | sek      |   0.12 |   22.8 |   |
 |  3.7. | fishing licenses | 1400 | nok      |   0.14 |   196. |   |
 |  3.7. | gasoline         |  340 |          | #ERROR | #ERROR |   |
- #+TBLFM: $5='(org-lookup-first $4 '(remote(rates,@2$2..@&gt;$2)) '(remote(rates,@2$3..@&gt;$3)))::$6=$5*$3
-函数解释第一个函数查找cost表的第四列和rates表的第二列相同的值, 并将查找结果对应的
-rates表的第三列填充到cost表的第五列, 然后计算第六列的值.
+ #+TBLFM: $5='(org-lookup-first $4 '(remote(rates,@2$2..@&gt;$2)) '(remote(rates,@2$3..@&gt;$3)))<span style="color: #DCDCCC; font-weight: bold;">::$6=$5*$3</span>
+&#20989;&#25968;&#35299;&#37322;&#31532;&#19968;&#20010;&#20989;&#25968;&#26597;&#25214;cost&#34920;&#30340;&#31532;&#22235;&#21015;&#21644;rates&#34920;&#30340;&#31532;&#20108;&#21015;&#30456;&#21516;&#30340;&#20540;, &#24182;&#23558;&#26597;&#25214;&#32467;&#26524;&#23545;&#24212;&#30340;
+rates&#34920;&#30340;&#31532;&#19977;&#21015;&#22635;&#20805;&#21040;cost&#34920;&#30340;&#31532;&#20116;&#21015;, &#28982;&#21518;&#35745;&#31639;&#31532;&#20845;&#21015;&#30340;&#20540;.
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline12" class="outline-3">

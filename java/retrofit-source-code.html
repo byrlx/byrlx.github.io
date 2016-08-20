@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>'Retrofit源码1: 为什么写一个interface就可以实现http请求'</title>
@@ -131,30 +131,32 @@ for the JavaScript code in this tag.
 <p>
 下面的示例代码是揭开retrofit面纱的入口代码, 通过该代码可以从服务器获取用户列表
 </p>
-<pre class="example">
-//自定义接口
-public interface Client {
-    @GET("users")
-    Call&lt;List&lt;User&gt;&gt;  getUsers();
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#33258;&#23450;&#20041;&#25509;&#21475;</span>
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">interface</span> <span style="color: #7CB8BB;">Client</span> {
+    <span style="color: #BFEBBF;">@GET</span>(<span style="color: #CC9393;">"users"</span>)
+    <span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">List</span>&lt;<span style="color: #7CB8BB;">User</span>&gt;&gt;  <span style="color: #93E0E3;">getUsers</span>();
 }
 
-//使用retrofit来使用自己定义接口实现http请求
-public class MainActivity {
+<span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#20351;&#29992;retrofit&#26469;&#20351;&#29992;&#33258;&#24049;&#23450;&#20041;&#25509;&#21475;&#23454;&#29616;http&#35831;&#27714;</span>
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">MainActivity</span> {
     ....
-    public static final String SERVER_URL = "http://10.10.10.10/account";
-    private OkHttpClient okHttpClient = new OkHttpClient();
-    private Retrofit.Builder builder = new Retrofit.Builder()
-	.base_url(SERVER_URL)
-	.client(okHttpClient)
-	.addConvertFactory(GsonConvertFactory.create());
+    <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> String SERVER_URL = <span style="color: #CC9393;">"http://10.10.10.10/account"</span>;
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">OkHttpClient</span> <span style="color: #DFAF8F;">okHttpClient</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">OkHttpClient</span>();
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #BFEBBF;">Retrofit</span>.<span style="color: #7CB8BB;">Builder</span> <span style="color: #DFAF8F;">builder</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">Retrofit</span>.<span style="color: #7CB8BB;">Builder</span>()
+        .base_url(SERVER_URL)
+        .client(okHttpClient)
+        .addConvertFactory(GsonConvertFactory.create());
 
-    Retrofit retrofit = builder.build();
-    Client client = retrofit.create(Client.class);
-    Call&lt;List&lt;Users&gt;&gt; call = client.getUsers();
-    List&lt;Users&gt; result = call.execute().body();
+    <span style="color: #7CB8BB;">Retrofit</span> <span style="color: #DFAF8F;">retrofit</span> = builder.build();
+    <span style="color: #7CB8BB;">Client</span> <span style="color: #DFAF8F;">client</span> = retrofit.create(Client.<span style="color: #F0DFAF; font-weight: bold;">class</span>);
+    <span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">List</span>&lt;<span style="color: #7CB8BB;">Users</span>&gt;&gt; <span style="color: #DFAF8F;">call</span> = client.getUsers();
+    <span style="color: #7CB8BB;">List</span>&lt;<span style="color: #7CB8BB;">Users</span>&gt; <span style="color: #DFAF8F;">result</span> = call.execute().body();
     ....
 }
 </pre>
+</div>
 </div>
 </div>
 
@@ -244,59 +246,63 @@ Retrofit类的源码使用了Builder设计模式, 该类只有一个私有的构
 该平台的一些独特性质, 例如如果系统存在 <b>android.os.Build</b> 类,
 则代表这是android平台.
 </p>
-<pre class="example">
-private static final Platform PLATFORM = findPlatform();
+<div class="org-src-container">
 
-static Platform get() {
-  return PLATFORM;
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">Platform</span> <span style="color: #DFAF8F;">PLATFORM</span> = findPlatform();
+
+<span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">Platform</span> <span style="color: #93E0E3;">get</span>() {
+  <span style="color: #F0DFAF; font-weight: bold;">return</span> PLATFORM;
 }
 
-private static Platform findPlatform() {
-  try {
-    Class.forName("android.os.Build");
-    if (Build.VERSION.SDK_INT != 0) {
-      return new Android();
+<span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">Platform</span> <span style="color: #93E0E3;">findPlatform</span>() {
+  <span style="color: #F0DFAF; font-weight: bold;">try</span> {
+    Class.forName(<span style="color: #CC9393;">"android.os.Build"</span>);
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (<span style="color: #BFEBBF;">Build</span>.<span style="color: #BFEBBF;">VERSION</span>.SDK_INT != 0) {
+      <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Android</span>();
     }
-  } catch (ClassNotFoundException ignored) {
+  } <span style="color: #F0DFAF; font-weight: bold;">catch</span> (<span style="color: #7CB8BB;">ClassNotFoundException</span> <span style="color: #DFAF8F;">ignored</span>) {
   }
-  try {
-    Class.forName("java.util.Optional");
-    return new Java8();
-  } catch (ClassNotFoundException ignored) {
+  <span style="color: #F0DFAF; font-weight: bold;">try</span> {
+    Class.forName(<span style="color: #CC9393;">"java.util.Optional"</span>);
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Java8</span>();
+  } <span style="color: #F0DFAF; font-weight: bold;">catch</span> (<span style="color: #7CB8BB;">ClassNotFoundException</span> <span style="color: #DFAF8F;">ignored</span>) {
   }
-  try {
-    Class.forName("org.robovm.apple.foundation.NSObject");
-    return new IOS();
-  } catch (ClassNotFoundException ignored) {
+  <span style="color: #F0DFAF; font-weight: bold;">try</span> {
+    Class.forName(<span style="color: #CC9393;">"org.robovm.apple.foundation.NSObject"</span>);
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">IOS</span>();
+  } <span style="color: #F0DFAF; font-weight: bold;">catch</span> (<span style="color: #7CB8BB;">ClassNotFoundException</span> <span style="color: #DFAF8F;">ignored</span>) {
   }
-  return new Platform();
+  <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Platform</span>();
 }
 </pre>
+</div>
 <p>
 下面是Android平台的实现代码,其重写了父类的两个函数. 另外, 该类还有个
 继承了Executor的子类 <b>MainThreadExecutor</b>, 该类包含了android的 UI
 线程的handler, 从而保证工作都会在UI线程完成. 至于其重写的函数的意义, 
 会在后面介绍.
 </p>
-<pre class="example">
-static class Android extends Platform {
-  @Override public Executor defaultCallbackExecutor() {
-    return new MainThreadExecutor();
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Android</span> <span style="color: #F0DFAF; font-weight: bold;">extends</span> <span style="color: #7CB8BB;">Platform</span> {
+  <span style="color: #BFEBBF;">@Override</span> <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">Executor</span> <span style="color: #93E0E3;">defaultCallbackExecutor</span>() {
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">MainThreadExecutor</span>();
   }
 
-  @Override CallAdapter.Factory defaultCallAdapterFactory(Executor callbackExecutor) {
-    return new ExecutorCallAdapterFactory(callbackExecutor);
+  <span style="color: #BFEBBF;">@Override</span> <span style="color: #BFEBBF;">CallAdapter</span>.<span style="color: #7CB8BB;">Factory</span> <span style="color: #93E0E3;">defaultCallAdapterFactory</span>(<span style="color: #7CB8BB;">Executor</span> <span style="color: #DFAF8F;">callbackExecutor</span>) {
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">ExecutorCallAdapterFactory</span>(callbackExecutor);
   }
 
-  static class MainThreadExecutor implements Executor {
-    private final Handler handler = new Handler(Looper.getMainLooper());
+  <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">MainThreadExecutor</span> <span style="color: #F0DFAF; font-weight: bold;">implements</span> <span style="color: #7CB8BB;">Executor</span> {
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">Handler</span> <span style="color: #DFAF8F;">handler</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Handler</span>(Looper.getMainLooper());
 
-    @Override public void execute(Runnable r) {
+    <span style="color: #BFEBBF;">@Override</span> <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">execute</span>(<span style="color: #7CB8BB;">Runnable</span> <span style="color: #DFAF8F;">r</span>) {
       handler.post(r);
     }
   }
 }
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline5" class="outline-2">
@@ -307,41 +313,45 @@ static class Android extends Platform {
 一个retrofit实例. 接下来就是retrofit很神奇的一步:通过create()函数创建一个自定义
 接口的对象实例:
 </p>
-<pre class="example">
-Client client = retrofit.create(Client.class);
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">Client</span> <span style="color: #DFAF8F;">client</span> = retrofit.create(Client.<span style="color: #F0DFAF; font-weight: bold;">class</span>);
 </pre>
+</div>
 
 <p>
 在前面的示例代码中, Client是我们创建的一个接口, 并没有任何的"实体"代码(实现类),
 但是这里通过create()函数就可以生成一个"有血有肉"的对象实例. 通过create()函数的
 源码看一下这个过程是怎么实现的. 
 </p>
-<pre class="example">
-  public &lt;T&gt; T create(final Class&lt;T&gt; service) {
+<div class="org-src-container">
+
+<pre class="src src-java">  <span style="color: #F0DFAF; font-weight: bold;">public</span> &lt;<span style="color: #7CB8BB;">T</span>&gt; <span style="color: #7CB8BB;">T</span> <span style="color: #93E0E3;">create</span>(<span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">Class</span>&lt;<span style="color: #7CB8BB;">T</span>&gt; <span style="color: #DFAF8F;">service</span>) {
   Utils.validateServiceInterface(service);
-  if (validateEagerly) {
+  <span style="color: #F0DFAF; font-weight: bold;">if</span> (validateEagerly) {
     eagerlyValidateMethods(service);
   }
-  return (T) Proxy.newProxyInstance(service.getClassLoader(), new Class&lt;?&gt;[] { service },
-      new InvocationHandler() {
-	private final Platform platform = Platform.get();
+  <span style="color: #F0DFAF; font-weight: bold;">return</span> (<span style="color: #7CB8BB;">T</span>) Proxy.newProxyInstance(service.getClassLoader(), <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Class</span>&lt;?&gt;[] { service },
+      <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">InvocationHandler</span>() {
+        <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">Platform</span> <span style="color: #DFAF8F;">platform</span> = Platform.get();
 
-	@Override public Object invoke(Object proxy, Method method, Object... args)
-	    throws Throwable {
-	  // If the method is a method from Object then defer to normal invocation.
-	  if (method.getDeclaringClass() == Object.class) {
-	    return method.invoke(this, args);
-	  }
-	  if (platform.isDefaultMethod(method)) {
-	    return platform.invokeDefaultMethod(method, service, proxy, args);
-	  }
-	  ServiceMethod serviceMethod = loadServiceMethod(method);
-	  OkHttpCall okHttpCall = new OkHttpCall&lt;&gt;(serviceMethod, args);
-	  return serviceMethod.callAdapter.adapt(okHttpCall);
-	}
+        <span style="color: #BFEBBF;">@Override</span> <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">Object</span> <span style="color: #93E0E3;">invoke</span>(<span style="color: #7CB8BB;">Object</span> <span style="color: #DFAF8F;">proxy</span>, <span style="color: #7CB8BB;">Method</span> <span style="color: #DFAF8F;">method</span>, <span style="color: #7CB8BB;">Object</span>... <span style="color: #DFAF8F;">args</span>)
+            <span style="color: #F0DFAF; font-weight: bold;">throws</span> <span style="color: #7CB8BB;">Throwable</span> {
+          <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">If the method is a method from Object then defer to normal invocation.</span>
+          <span style="color: #F0DFAF; font-weight: bold;">if</span> (method.getDeclaringClass() == Object.<span style="color: #F0DFAF; font-weight: bold;">class</span>) {
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> method.invoke(<span style="color: #F0DFAF; font-weight: bold;">this</span>, args);
+          }
+          <span style="color: #F0DFAF; font-weight: bold;">if</span> (platform.isDefaultMethod(method)) {
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> platform.invokeDefaultMethod(method, service, proxy, args);
+          }
+          <span style="color: #7CB8BB;">ServiceMethod</span> <span style="color: #DFAF8F;">serviceMethod</span> = loadServiceMethod(method);
+          <span style="color: #7CB8BB;">OkHttpCall</span> <span style="color: #DFAF8F;">okHttpCall</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">OkHttpCall</span>&lt;&gt;(serviceMethod, args);
+          <span style="color: #F0DFAF; font-weight: bold;">return</span> serviceMethod.callAdapter.adapt(okHttpCall);
+        }
       });
 }
 </pre>
+</div>
 
 <p>
 前面的"if"语句暂时先不管, 最后的 "return" 返回了一个 <code>Proxy.newProxyInstance()</code>
@@ -358,11 +368,13 @@ invoke()函数, 该函数的参数method就是Client类的方法, 参数就是Cl
 具体的函数实现实际的http请求, 则需要看一下 invoke() 的具体实现. 在该函数的实现里,
 最重要的就是这几行. 
 </p>
-<pre class="example">
-ServiceMethod serviceMethod = loadServiceMethod(method);
-OkHttpCall okHttpCall = new OkHttpCall&lt;&gt;(serviceMethod, args);
-return serviceMethod.callAdapter.adapt(okHttpCall);
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">ServiceMethod</span> <span style="color: #DFAF8F;">serviceMethod</span> = loadServiceMethod(method);
+<span style="color: #7CB8BB;">OkHttpCall</span> <span style="color: #DFAF8F;">okHttpCall</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">OkHttpCall</span>&lt;&gt;(serviceMethod, args);
+<span style="color: #F0DFAF; font-weight: bold;">return</span> serviceMethod.callAdapter.adapt(okHttpCall);
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline9" class="outline-2">
@@ -470,38 +482,40 @@ invoke()的返回值总是Object类型, 将其转换为自定义函数的返回�
 CallAdapter是Call的适配器类, 在将一个自定义函数解析成ServiceMethod实例时, 
 会生成这个ServiceMethod的callAdapter变量. 下面的代码展示了创建过程.
 </p>
-<pre class="example">
- //SeviceMethod.java
-  private CallAdapter&lt;?&gt; createCallAdapter() {
-    Type returnType = method.getGenericReturnType();
-    if (Utils.hasUnresolvableType(returnType)) {
-      throw methodError(
-	  "Method return type must not include a type variable or wildcard: %s", returnType);
+<div class="org-src-container">
+
+<pre class="src src-java"> <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">SeviceMethod.java</span>
+  <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">CallAdapter</span>&lt;?&gt; <span style="color: #93E0E3;">createCallAdapter</span>() {
+    <span style="color: #7CB8BB;">Type</span> <span style="color: #DFAF8F;">returnType</span> = method.getGenericReturnType();
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (Utils.hasUnresolvableType(returnType)) {
+      <span style="color: #F0DFAF; font-weight: bold;">throw</span> methodError(
+          <span style="color: #CC9393;">"Method return type must not include a type variable or wildcard: %s"</span>, returnType);
     }
-    if (returnType == void.class) {
-      throw methodError("Service methods cannot return void.");
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (returnType == <span style="color: #7CB8BB;">void</span>.<span style="color: #F0DFAF; font-weight: bold;">class</span>) {
+      <span style="color: #F0DFAF; font-weight: bold;">throw</span> methodError(<span style="color: #CC9393;">"Service methods cannot return void."</span>);
     }
-    Annotation[] annotations = method.getAnnotations();
-    try {
-      return retrofit.callAdapter(returnType, annotations);
-    } catch (RuntimeException e) { // Wide exception range because factories are user code.
-      throw methodError(e, "Unable to create call adapter for %s", returnType);
+    <span style="color: #7CB8BB;">Annotation</span>[] <span style="color: #DFAF8F;">annotations</span> = method.getAnnotations();
+    <span style="color: #F0DFAF; font-weight: bold;">try</span> {
+      <span style="color: #F0DFAF; font-weight: bold;">return</span> retrofit.callAdapter(returnType, annotations);
+    } <span style="color: #F0DFAF; font-weight: bold;">catch</span> (<span style="color: #7CB8BB;">RuntimeException</span> <span style="color: #DFAF8F;">e</span>) { <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Wide exception range because factories are user code.</span>
+      <span style="color: #F0DFAF; font-weight: bold;">throw</span> methodError(e, <span style="color: #CC9393;">"Unable to create call adapter for %s"</span>, returnType);
     }
   }
-//Retrofit.java 
-public CallAdapter&lt;?&gt; nextCallAdapter(CallAdapter.Factory skipPast, Type returnType,
-    Annotation[] annotations) {
-  checkNotNull(returnType, "returnType == null");
-  checkNotNull(annotations, "annotations == null");
+<span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">Retrofit.java </span>
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">CallAdapter</span>&lt;?&gt; <span style="color: #93E0E3;">nextCallAdapter</span>(<span style="color: #BFEBBF;">CallAdapter</span>.<span style="color: #7CB8BB;">Factory</span> <span style="color: #DFAF8F;">skipPast</span>, <span style="color: #7CB8BB;">Type</span> <span style="color: #DFAF8F;">returnType</span>,
+    <span style="color: #7CB8BB;">Annotation</span>[] <span style="color: #DFAF8F;">annotations</span>) {
+  checkNotNull(returnType, <span style="color: #CC9393;">"returnType == null"</span>);
+  checkNotNull(annotations, <span style="color: #CC9393;">"annotations == null"</span>);
 
-  int start = adapterFactories.indexOf(skipPast) + 1;
-  for (int i = start, count = adapterFactories.size(); i &lt; count; i++) {
-    CallAdapter&lt;?&gt; adapter = adapterFactories.get(i).get(returnType, annotations, this);
-    if (adapter != null) {
-      return adapter;
+  <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">start</span> = adapterFactories.indexOf(skipPast) + 1;
+  <span style="color: #F0DFAF; font-weight: bold;">for</span> (<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">i</span> = start, <span style="color: #DFAF8F;">count</span> = adapterFactories.size(); i &lt; <span style="color: #7CB8BB;">count</span>; i++) {
+    <span style="color: #7CB8BB;">CallAdapter</span>&lt;?&gt; <span style="color: #DFAF8F;">adapter</span> = adapterFactories.get(i).get(returnType, annotations, <span style="color: #F0DFAF; font-weight: bold;">this</span>);
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (adapter != <span style="color: #BFEBBF;">null</span>) {
+      <span style="color: #F0DFAF; font-weight: bold;">return</span> adapter;
     }
   }
 </pre>
+</div>
 
 <p>
 上面的代码是callAdapter变量的创建过程, 第一个函数 <code>createCallAdapter()</code> 首先
@@ -534,12 +548,14 @@ builder提供了一个 <code>addCallAdapterFactory()</code>
 对于Android 平台来说, 这个"默认"的CallAdapterFactory代码如下,
 该函数返回一个ExecutorCallAdapterFactory实例. 
 </p>
-<pre class="example">
-//Android platform
-    @Override CallAdapter.Factory defaultCallAdapterFactory(Executor callbackExecutor) {
-      return new ExecutorCallAdapterFactory(callbackExecutor);
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">Android platform</span>
+    <span style="color: #BFEBBF;">@Override</span> <span style="color: #BFEBBF;">CallAdapter</span>.<span style="color: #7CB8BB;">Factory</span> <span style="color: #93E0E3;">defaultCallAdapterFactory</span>(<span style="color: #7CB8BB;">Executor</span> <span style="color: #DFAF8F;">callbackExecutor</span>) {
+      <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">ExecutorCallAdapterFactory</span>(callbackExecutor);
     }
 </pre>
+</div>
 <p>
 根据<a href="#orgheadline8">前面</a>的内容,当对该实例调用 <code>get()</code> 函数时, 如何返回一个
 可以适配"返回类型"和"函数注解"的CallAdapter实例, 这就要看下
@@ -548,24 +564,26 @@ builder提供了一个 <code>addCallAdapterFactory()</code>
 那么都会生成一个匿名的"CallAdapter"实例.该实例实现了 <code>adapter()</code>
 方法, 使其可以返回一个具体的Call的子类, 即 ExecutorCallbackCall(). 
 </p>
-<pre class="example">
-@Override
-public CallAdapter&lt;Call&lt;?&gt;&gt; get(Type returnType, Annotation[] annotations, Retrofit retrofit) {
-  if (getRawType(returnType) != Call.class) {
-    return null;
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #BFEBBF;">@Override</span>
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">CallAdapter</span>&lt;<span style="color: #7CB8BB;">Call</span>&lt;?&gt;&gt; <span style="color: #93E0E3;">get</span>(<span style="color: #7CB8BB;">Type</span> <span style="color: #DFAF8F;">returnType</span>, <span style="color: #7CB8BB;">Annotation</span>[] <span style="color: #DFAF8F;">annotations</span>, <span style="color: #7CB8BB;">Retrofit</span> <span style="color: #DFAF8F;">retrofit</span>) {
+  <span style="color: #F0DFAF; font-weight: bold;">if</span> (getRawType(returnType) != Call.<span style="color: #F0DFAF; font-weight: bold;">class</span>) {
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #BFEBBF;">null</span>;
   }
-  final Type responseType = Utils.getCallResponseType(returnType);
-  return new CallAdapter&lt;Call&lt;?&gt;&gt;() {
-    @Override public Type responseType() {
-      return responseType;
+  <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">Type</span> <span style="color: #DFAF8F;">responseType</span> = Utils.getCallResponseType(returnType);
+  <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">CallAdapter</span>&lt;<span style="color: #7CB8BB;">Call</span>&lt;?&gt;&gt;() {
+    <span style="color: #BFEBBF;">@Override</span> <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">Type</span> <span style="color: #93E0E3;">responseType</span>() {
+      <span style="color: #F0DFAF; font-weight: bold;">return</span> responseType;
     }
 
-    @Override public &lt;R&gt; Call&lt;R&gt; adapt(Call&lt;R&gt; call) {
-      return new ExecutorCallbackCall&lt;&gt;(callbackExecutor, call);
+    <span style="color: #BFEBBF;">@Override</span> <span style="color: #F0DFAF; font-weight: bold;">public</span> &lt;<span style="color: #7CB8BB;">R</span>&gt; <span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">R</span>&gt; <span style="color: #93E0E3;">adapt</span>(<span style="color: #7CB8BB;">Call</span>&lt;<span style="color: #7CB8BB;">R</span>&gt; <span style="color: #DFAF8F;">call</span>) {
+      <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">ExecutorCallbackCall</span>&lt;&gt;(callbackExecutor, call);
     }
   };
 }
 </pre>
+</div>
 
 <p>
 以上就是调用自定义interface的具体某个函数的过程, 以Android平台为例, 通过调用函数,
@@ -581,10 +599,12 @@ public CallAdapter&lt;Call&lt;?&gt;&gt; get(Type returnType, Annotation[] annota
 那么就可以通过执行该实例的execute()或enqueue()函数执行具体的http请求了.
 这一部分是OkHttp相关的内容, 会在后面文章陆续说明.
 </p>
-<pre class="example">
-//具体请求代码
-List&lt;Users&gt; result = call.execute().body();
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#20855;&#20307;&#35831;&#27714;&#20195;&#30721;</span>
+<span style="color: #7CB8BB;">List</span>&lt;<span style="color: #7CB8BB;">Users</span>&gt; <span style="color: #DFAF8F;">result</span> = call.execute().body();
 </pre>
+</div>
 
 <p>
 这里想补充一下ExecutorCallbackCall类的一个变量: callbackExecutor. 
@@ -598,30 +618,32 @@ List&lt;Users&gt; result = call.execute().body();
 所以我们来看一下这个 callbackExecutor 有什么特殊之处. 
 下面的代码追溯了这个变量的最终出处.
 </p>
-<pre class="example">
-//Android平台通过该函数创建factory
-    @Override CallAdapter.Factory defaultCallAdapterFactory(Executor callbackExecutor) {
-      return new ExecutorCallAdapterFactory(callbackExecutor);
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">Android&#24179;&#21488;&#36890;&#36807;&#35813;&#20989;&#25968;&#21019;&#24314;factory</span>
+    <span style="color: #BFEBBF;">@Override</span> <span style="color: #BFEBBF;">CallAdapter</span>.<span style="color: #7CB8BB;">Factory</span> <span style="color: #93E0E3;">defaultCallAdapterFactory</span>(<span style="color: #7CB8BB;">Executor</span> <span style="color: #DFAF8F;">callbackExecutor</span>) {
+      <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">ExecutorCallAdapterFactory</span>(callbackExecutor);
     }
 
-//Retrofit在builder中调用了上面的函数, 并传入了executor参数
+<span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">Retrofit&#22312;builder&#20013;&#35843;&#29992;&#20102;&#19978;&#38754;&#30340;&#20989;&#25968;, &#24182;&#20256;&#20837;&#20102;executor&#21442;&#25968;</span>
 adapterFactories.add(platform.defaultCallAdapterFactory(callbackExecutor));
 
-//builder的callbackExecutor的创建, 调用了平台的相关函数
+<span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">builder&#30340;callbackExecutor&#30340;&#21019;&#24314;, &#35843;&#29992;&#20102;&#24179;&#21488;&#30340;&#30456;&#20851;&#20989;&#25968;</span>
 callbackExecutor = platform.defaultCallbackExecutor();
 
-//平台相关函数的实现
-    @Override public Executor defaultCallbackExecutor() {
-      return new MainThreadExecutor();
+<span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#24179;&#21488;&#30456;&#20851;&#20989;&#25968;&#30340;&#23454;&#29616;</span>
+    <span style="color: #BFEBBF;">@Override</span> <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">Executor</span> <span style="color: #93E0E3;">defaultCallbackExecutor</span>() {
+      <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">MainThreadExecutor</span>();
     }
-    static class MainThreadExecutor implements Executor {
-      private final Handler handler = new Handler(Looper.getMainLooper());
+    <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">MainThreadExecutor</span> <span style="color: #F0DFAF; font-weight: bold;">implements</span> <span style="color: #7CB8BB;">Executor</span> {
+      <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">Handler</span> <span style="color: #DFAF8F;">handler</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Handler</span>(Looper.getMainLooper());
 
-      @Override public void execute(Runnable r) {
+      <span style="color: #BFEBBF;">@Override</span> <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">execute</span>(<span style="color: #7CB8BB;">Runnable</span> <span style="color: #DFAF8F;">r</span>) {
         handler.post(r);
       }
     }
 </pre>
+</div>
 <p>
 通过上面代码可以看出, Android平台的这个executor其实是一个带有UI线程handler的
 executor, 所以最后执行execute时, 会将runnable传给UI线程执行. 即,当调用enqueue()

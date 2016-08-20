@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>一个bitmap的实现代码</title>
@@ -134,13 +134,15 @@ for the JavaScript code in this tag.
 这里使用了Long类型, 故可以存放64位. 
 mData是具体存放bit的数据, next指向下一个Bucket对象.
 </p>
-<pre class="example">
-static class Bucket {
-  final static int BITS_PER_WORD = Long.SIZE;
-  final static long LAST_BIT = 1L &lt;&lt; (Long.SIZE - 1);
-  long mData = 0;
-  Bucket next;
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Bucket</span> {
+  <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">BITS_PER_WORD</span> = <span style="color: #BFEBBF;">Long</span>.SIZE;
+  <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">long</span> <span style="color: #DFAF8F;">LAST_BIT</span> = 1L &lt;&lt; (<span style="color: #BFEBBF;">Long</span>.SIZE - 1);
+  <span style="color: #7CB8BB;">long</span> <span style="color: #DFAF8F;">mData</span> = 0;
+  <span style="color: #7CB8BB;">Bucket</span> <span style="color: #DFAF8F;">next</span>;
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline3" class="outline-3">
@@ -158,27 +160,31 @@ static class Bucket {
 顺着链表调用下去, 直到找到一个合适的位置.</li>
 </ol>
 
-<pre class="example">
-void set(int index) {
-      if (index &gt;= BITS_PER_WORD) {
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">set</span>(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>) {
+      <span style="color: #F0DFAF; font-weight: bold;">if</span> (index &gt;= BITS_PER_WORD) {
            ensureNext();
            next.set(index - BITS_PER_WORD);
-      } else {
+      } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
            mData |= 1L &lt;&lt; index;
       }
 }
 </pre>
+</div>
 
 <p>
 ensureNext()的代码如下:
 </p>
-<pre class="example">
-private void ensureNext() {
-     if (next == null) {
-          next = new Bucket();
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">ensureNext</span>() {
+     <span style="color: #F0DFAF; font-weight: bold;">if</span> (next == <span style="color: #BFEBBF;">null</span>) {
+          next = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Bucket</span>();
      }
 }
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline4" class="outline-3">
@@ -187,17 +193,19 @@ private void ensureNext() {
 <p>
 其原理跟设置一样, 通过 "与" 操作将bit位清除.
 </p>
-<pre class="example">
-void clear(int index) {
-    if (index &gt;= BITS_PER_WORD) {
-        if (next != null) {
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">clear</span>(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (index &gt;= BITS_PER_WORD) {
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (next != <span style="color: #BFEBBF;">null</span>) {
             next.clear(index - BITS_PER_WORD);
         }
-    } else {
+    } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
         mData &amp;= ~(1L &lt;&lt; index);
     }
 }
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline5" class="outline-3">
@@ -206,16 +214,18 @@ void clear(int index) {
 <p>
 递归查找链表, 判断指定位置是否设置了bit位.
 </p>
-<pre class="example">
-boolean get(int index) {
-    if (index &gt;= BITS_PER_WORD) {
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">boolean</span> <span style="color: #93E0E3;">get</span>(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (index &gt;= BITS_PER_WORD) {
         ensureNext();
-        return next.get(index - BITS_PER_WORD);
-    } else {
-        return (mData &amp; (1L &lt;&lt; index)) != 0;
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> next.get(index - BITS_PER_WORD);
+    } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> (mData &amp; (1L &lt;&lt; index)) != 0;
     }
 }
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline6" class="outline-3">
@@ -237,29 +247,31 @@ boolean get(int index) {
 该位置会被移除该Bucket, 所以需要记录下来, 将其重新插入到下一个Bucket中.
 这个过程会一直持续下去, 直到碰到一个最高位没被设置的Bucket.
 </p>
-<pre class="example">
-void insert(int index, boolean value) {
-    if (index &gt;= BITS_PER_WORD) {
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">insert</span>(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>, <span style="color: #7CB8BB;">boolean</span> <span style="color: #DFAF8F;">value</span>) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (index &gt;= BITS_PER_WORD) {
         ensureNext();
         next.insert(index - BITS_PER_WORD, value);
-    } else {
-        final boolean lastBit = (mData &amp; LAST_BIT) != 0;
-        long mask = (1L &lt;&lt; index) - 1;
-        final long before = mData &amp; mask;
-        final long after = ((mData &amp; ~mask)) &lt;&lt; 1;
+    } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
+        <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">boolean</span> <span style="color: #DFAF8F;">lastBit</span> = (mData &amp; LAST_BIT) != 0;
+        <span style="color: #7CB8BB;">long</span> <span style="color: #DFAF8F;">mask</span> = (1L &lt;&lt; index) - 1;
+        <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">long</span> <span style="color: #DFAF8F;">before</span> = mData &amp; mask;
+        <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">long</span> <span style="color: #DFAF8F;">after</span> = ((mData &amp; ~mask)) &lt;&lt; 1;
         mData = before | after;
-        if (value) {
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (value) {
             set(index);
-        } else {
+        } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
             clear(index);
         }
-        if (lastBit || next != null) {
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (lastBit || next != <span style="color: #BFEBBF;">null</span>) {
             ensureNext();
             next.insert(0, lastBit);
         }
     }
 }
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline7" class="outline-3">
@@ -280,30 +292,32 @@ void insert(int index, boolean value) {
 <li>调用下一个bucket的remove(0). 遍历链表, 重复这个操作.</li>
 </ol>
 
-<pre class="example">
-boolean remove(int index) {
-    if (index &gt;= BITS_PER_WORD) {
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">boolean</span> <span style="color: #93E0E3;">remove</span>(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (index &gt;= BITS_PER_WORD) {
         ensureNext();
-        return next.remove(index - BITS_PER_WORD);
-    } else {
-        long mask = (1L &lt;&lt; index);
-        final boolean value = (mData &amp; mask) != 0;
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> next.remove(index - BITS_PER_WORD);
+    } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
+        <span style="color: #7CB8BB;">long</span> <span style="color: #DFAF8F;">mask</span> = (1L &lt;&lt; index);
+        <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">boolean</span> <span style="color: #DFAF8F;">value</span> = (mData &amp; mask) != 0;
         mData &amp;= ~mask;
         mask = mask - 1;
-        final long before = mData &amp; mask;
-        // cannot use &gt;&gt; because it adds one.
-        final long after = Long.rotateRight(mData &amp; ~mask, 1);
+        <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">long</span> <span style="color: #DFAF8F;">before</span> = mData &amp; mask;
+        <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">cannot use &gt;&gt; because it adds one.</span>
+        <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">long</span> <span style="color: #DFAF8F;">after</span> = Long.rotateRight(mData &amp; ~mask, 1);
         mData = before | after;
-        if (next != null) {
-            if (next.get(0)) {
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (next != <span style="color: #BFEBBF;">null</span>) {
+            <span style="color: #F0DFAF; font-weight: bold;">if</span> (next.get(0)) {
                 set(BITS_PER_WORD - 1);
             }
             next.remove(0);
         }
-        return value;
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> value;
     }
 }
 </pre>
+</div>
 </div>
 </div>
 
@@ -313,21 +327,23 @@ boolean remove(int index) {
 <p>
 统计index之前的bit数量. 基于 Long 的 bitCount() 函数实现.
 </p>
-<pre class="example">
-int countOnesBefore(int index) {
-    if (next == null) {
-        if (index &gt;= BITS_PER_WORD) {
-            return Long.bitCount(mData);
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">int</span> <span style="color: #93E0E3;">countOnesBefore</span>(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (next == <span style="color: #BFEBBF;">null</span>) {
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (index &gt;= BITS_PER_WORD) {
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> Long.bitCount(mData);
         }
-        return Long.bitCount(mData &amp; ((1L &lt;&lt; index) - 1));
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> Long.bitCount(mData &amp; ((1L &lt;&lt; index) - 1));
     }
-    if (index &lt; BITS_PER_WORD) {
-        return Long.bitCount(mData &amp; ((1L &lt;&lt; index) - 1));
-    } else {
-        return next.countOnesBefore(index - BITS_PER_WORD) + Long.bitCount(mData);
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (index &lt; <span style="color: #7CB8BB;">BITS_PER_WORD</span>) {
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> Long.bitCount(mData &amp; ((1L &lt;&lt; index) - 1));
+    } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> next.countOnesBefore(index - BITS_PER_WORD) + Long.bitCount(mData);
     }
 }
 </pre>
+</div>
 </div>
 </div>
 </div>

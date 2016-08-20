@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Android 消息机制源码笔记</title>
@@ -194,28 +194,30 @@ obtain(&#x2026;)函数族用于获取消息, 这些obtain()函数通过不同的
 从消息池中取一个消息. 也可以调用obtain(Handler h)来设置获取到的消息的
 Handler.
 </p>
-<pre class="example">
-public static Message obtain() {
-    synchronized (sPoolSync) {
-        if (sPool != null) {
-            Message m = sPool;
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">Message</span> <span style="color: #93E0E3;">obtain</span>() {
+    <span style="color: #F0DFAF; font-weight: bold;">synchronized</span> (sPoolSync) {
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (sPool != <span style="color: #BFEBBF;">null</span>) {
+            <span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">m</span> = sPool;
             sPool = m.next;
-            m.next = null;
-            m.flags = 0; // clear in-use flag
+            m.next = <span style="color: #BFEBBF;">null</span>;
+            m.flags = 0; <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">clear in-use flag</span>
             sPoolSize--;
-            return m;
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> m;
         }
     }
-    return new Message();
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Message</span>();
 }
 
-public static Message obtain(Handler h) {
-    Message m = obtain();
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">Message</span> <span style="color: #93E0E3;">obtain</span>(<span style="color: #7CB8BB;">Handler</span> <span style="color: #DFAF8F;">h</span>) {
+    <span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">m</span> = obtain();
     m.target = h;
 
-    return m;
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> m;
 }
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline4" class="outline-3">
@@ -225,11 +227,13 @@ public static Message obtain(Handler h) {
 调用sendToTarget()函数调用Message的target变量(一个Handler)的sendMessage()函数.
 如果没有设置target则会报错. sendMessage()函数的实现在Handler一节讲述.
 </p>
-<pre class="example">
-public void sendToTarget() {
-    target.sendMessage(this);
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">sendToTarget</span>() {
+    target.sendMessage(<span style="color: #F0DFAF; font-weight: bold;">this</span>);
 }
 </pre>
+</div>
 </div>
 </div>
 </div>
@@ -249,61 +253,63 @@ public void sendToTarget() {
 新插入消息会遍历列表, 并插入到相应位置. <br  />
 下面是该函数代码:
 </p>
-<pre class="example">
-boolean enqueueMessage(Message msg, long when) {
-    if (msg.target == null) {
-        throw new IllegalArgumentException("Message must have a target.");
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">boolean</span> <span style="color: #93E0E3;">enqueueMessage</span>(<span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">msg</span>, <span style="color: #7CB8BB;">long</span> <span style="color: #DFAF8F;">when</span>) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (msg.target == <span style="color: #BFEBBF;">null</span>) {
+        <span style="color: #F0DFAF; font-weight: bold;">throw</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">IllegalArgumentException</span>(<span style="color: #CC9393;">"Message must have a target."</span>);
     }
-    if (msg.isInUse()) {
-        throw new IllegalStateException(msg + " This message is already in use.");
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (msg.isInUse()) {
+        <span style="color: #F0DFAF; font-weight: bold;">throw</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">IllegalStateException</span>(msg + <span style="color: #CC9393;">" This message is already in use."</span>);
     }
 
-    synchronized (this) {
-        if (mQuitting) {
-            IllegalStateException e = new IllegalStateException(
-                    msg.target + " sending message to a Handler on a dead thread");
+    <span style="color: #F0DFAF; font-weight: bold;">synchronized</span> (<span style="color: #F0DFAF; font-weight: bold;">this</span>) {
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (mQuitting) {
+            <span style="color: #7CB8BB;">IllegalStateException</span> <span style="color: #DFAF8F;">e</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">IllegalStateException</span>(
+                    msg.target + <span style="color: #CC9393;">" sending message to a Handler on a dead thread"</span>);
             Log.w(TAG, e.getMessage(), e);
             msg.recycle();
-            return false;
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #BFEBBF;">false</span>;
         }
 
         msg.markInUse();
         msg.when = when;
-        Message p = mMessages;
-        boolean needWake;
-        if (p == null || when == 0 || when &lt; p.when) {
-            // New head, wake up the event queue if blocked.
+        <span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">p</span> = mMessages;
+        <span style="color: #7CB8BB;">boolean</span> <span style="color: #DFAF8F;">needWake</span>;
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (p == <span style="color: #BFEBBF;">null</span> || when == 0 || when &lt; p.<span style="color: #7CB8BB;">when</span>) {
+            <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">New head, wake up the event queue if blocked.</span>
             msg.next = p;
             mMessages = msg;
             needWake = mBlocked;
-        } else {
-            // Inserted within the middle of the queue.  Usually we don't have to wake
-            // up the event queue unless there is a barrier at the head of the queue
-            // and the message is the earliest asynchronous message in the queue.
-            needWake = mBlocked &amp;&amp; p.target == null &amp;&amp; msg.isAsynchronous();
-            Message prev;
-            for (;;) {
+        } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
+            <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Inserted within the middle of the queue.  Usually we don't have to wake</span>
+            <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">up the event queue unless there is a barrier at the head of the queue</span>
+            <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">and the message is the earliest asynchronous message in the queue.</span>
+            needWake = mBlocked &amp;&amp; p.target == <span style="color: #BFEBBF;">null</span> &amp;&amp; msg.isAsynchronous();
+            <span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">prev</span>;
+            <span style="color: #F0DFAF; font-weight: bold;">for</span> (;;) {
                 prev = p;
                 p = p.next;
-                if (p == null || when &lt; p.when) {
-                    break;
+                <span style="color: #F0DFAF; font-weight: bold;">if</span> (p == <span style="color: #BFEBBF;">null</span> || when &lt; p.<span style="color: #7CB8BB;">when</span>) {
+                    <span style="color: #F0DFAF; font-weight: bold;">break</span>;
                 }
-                if (needWake &amp;&amp; p.isAsynchronous()) {
-                    needWake = false;
+                <span style="color: #F0DFAF; font-weight: bold;">if</span> (needWake &amp;&amp; p.isAsynchronous()) {
+                    needWake = <span style="color: #BFEBBF;">false</span>;
                 }
             }
-            msg.next = p; // invariant: p == prev.next
+            msg.next = p; <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">invariant: p == prev.next</span>
             prev.next = msg;
         }
 
-        // We can assume mPtr != 0 because mQuitting is false.
-        if (needWake) {
+        <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">We can assume mPtr != 0 because mQuitting is false.</span>
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (needWake) {
             nativeWake(mPtr);
         }
     }
-    return true;
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #BFEBBF;">true</span>;
 }
 </pre>
+</div>
 <p>
 函数的流程如下:
 </p>
@@ -345,69 +351,71 @@ nextPollTimeoutMillis的值为差值.</li>
 </ol></li>
 </ol>
 
-<pre class="example">
-Message next() {
-     // Return here if the message loop has already quit and been disposed.
-     // This can happen if the application tries to restart a looper after quit
-     // which is not supported.
-     final long ptr = mPtr;
-     if (ptr == 0) {
-         return null;
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">Message</span> <span style="color: #93E0E3;">next</span>() {
+     <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Return here if the message loop has already quit and been disposed.</span>
+     <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">This can happen if the application tries to restart a looper after quit</span>
+     <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">which is not supported.</span>
+     <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">long</span> <span style="color: #DFAF8F;">ptr</span> = mPtr;
+     <span style="color: #F0DFAF; font-weight: bold;">if</span> (ptr == 0) {
+         <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #BFEBBF;">null</span>;
      }
 
-     int pendingIdleHandlerCount = -1; // -1 only during first iteration
-     int nextPollTimeoutMillis = 0;
-     for (;;) {
-         if (nextPollTimeoutMillis != 0) {
+     <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">pendingIdleHandlerCount</span> = -1; <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">-1 only during first iteration</span>
+     <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">nextPollTimeoutMillis</span> = 0;
+     <span style="color: #F0DFAF; font-weight: bold;">for</span> (;;) {
+         <span style="color: #F0DFAF; font-weight: bold;">if</span> (nextPollTimeoutMillis != 0) {
              Binder.flushPendingCommands();
          }
 
          nativePollOnce(ptr, nextPollTimeoutMillis);
 
-         synchronized (this) {
-             // Try to retrieve the next message.  Return if found.
-             final long now = SystemClock.uptimeMillis();
-             Message prevMsg = null;
-             Message msg = mMessages;
-             if (msg != null &amp;&amp; msg.target == null) {
-                 // Stalled by a barrier.  Find the next asynchronous message in the queue.
-                 do {
+         <span style="color: #F0DFAF; font-weight: bold;">synchronized</span> (<span style="color: #F0DFAF; font-weight: bold;">this</span>) {
+             <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Try to retrieve the next message.  Return if found.</span>
+             <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">long</span> <span style="color: #DFAF8F;">now</span> = SystemClock.uptimeMillis();
+             <span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">prevMsg</span> = <span style="color: #BFEBBF;">null</span>;
+             <span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">msg</span> = mMessages;
+             <span style="color: #F0DFAF; font-weight: bold;">if</span> (msg != <span style="color: #BFEBBF;">null</span> &amp;&amp; msg.target == <span style="color: #BFEBBF;">null</span>) {
+                 <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Stalled by a barrier.  Find the next asynchronous message in the queue.</span>
+                 <span style="color: #F0DFAF; font-weight: bold;">do</span> {
                      prevMsg = msg;
                      msg = msg.next;
-                 } while (msg != null &amp;&amp; !msg.isAsynchronous());
+                 } <span style="color: #F0DFAF; font-weight: bold;">while</span> (msg != <span style="color: #BFEBBF;">null</span> &amp;&amp; <span style="color: #F0DFAF; font-weight: bold;">!</span>msg.isAsynchronous());
              }
-             if (msg != null) {
-                 if (now &lt; msg.when) {
-                     // Next message is not ready.  Set a timeout to wake up when it is ready.
-                     nextPollTimeoutMillis = (int) Math.min(msg.when - now, Integer.MAX_VALUE);
-                 } else {
-                     // Got a message.
-                     mBlocked = false;
-                     if (prevMsg != null) {
+             <span style="color: #F0DFAF; font-weight: bold;">if</span> (msg != <span style="color: #BFEBBF;">null</span>) {
+                 <span style="color: #F0DFAF; font-weight: bold;">if</span> (now &lt; msg.<span style="color: #7CB8BB;">when</span>) {
+                     <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Next message is not ready.  Set a timeout to wake up when it is ready.</span>
+                     nextPollTimeoutMillis = (<span style="color: #7CB8BB;">int</span>) Math.min(msg.when - now, <span style="color: #BFEBBF;">Integer</span>.MAX_VALUE);
+                 } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
+                     <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Got a message.</span>
+                     mBlocked = <span style="color: #BFEBBF;">false</span>;
+                     <span style="color: #F0DFAF; font-weight: bold;">if</span> (prevMsg != <span style="color: #BFEBBF;">null</span>) {
                          prevMsg.next = msg.next;
-                     } else {
+                     } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
                          mMessages = msg.next;
                      }
-                     msg.next = null;
-                     if (DEBUG) Log.v(TAG, "Returning message: " + msg);
+                     msg.next = <span style="color: #BFEBBF;">null</span>;
+                     <span style="color: #F0DFAF; font-weight: bold;">if</span> (DEBUG) Log.v(TAG, <span style="color: #CC9393;">"Returning message: "</span> + msg);
                      msg.markInUse();
-                     return msg;
+                     <span style="color: #F0DFAF; font-weight: bold;">return</span> msg;
                  }
-             } else {
-                 // No more messages.
+             } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
+                 <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">No more messages.</span>
                  nextPollTimeoutMillis = -1;
              }
 
-             // Process the quit message now that all pending messages have been handled.
-             if (mQuitting) {
+             <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Process the quit message now that all pending messages have been handled.</span>
+             <span style="color: #F0DFAF; font-weight: bold;">if</span> (mQuitting) {
                  dispose();
-                 return null;
+                 <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #BFEBBF;">null</span>;
              }
 
-	     ...
+             ...
      }
  }
 </pre>
+</div>
 </div>
 </div>
 </div>
@@ -429,18 +437,20 @@ Looper类有一个静态变量sThreadLocal, 该变量是一个ThreadLocal
 会在函数内部生成一个looper实例并赋值给该变量.
 调用 myLooper函数会返回这个变量.
 </p>
-<pre class="example">
-private static void prepare(boolean quitAllowed) {
-    if (sThreadLocal.get() != null) {
-        throw new RuntimeException("Only one Looper may be created per thread");
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">prepare</span>(<span style="color: #7CB8BB;">boolean</span> <span style="color: #DFAF8F;">quitAllowed</span>) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (sThreadLocal.get() != <span style="color: #BFEBBF;">null</span>) {
+        <span style="color: #F0DFAF; font-weight: bold;">throw</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">RuntimeException</span>(<span style="color: #CC9393;">"Only one Looper may be created per thread"</span>);
     }
-    sThreadLocal.set(new Looper(quitAllowed));
+    sThreadLocal.set(<span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Looper</span>(quitAllowed));
 }
 
-public static @Nullable Looper myLooper() {
-    return sThreadLocal.get();
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #BFEBBF;">@Nullable</span> <span style="color: #7CB8BB;">Looper</span> <span style="color: #93E0E3;">myLooper</span>() {
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> sThreadLocal.get();
 }
 </pre>
+</div>
 
 <p>
 PS: Looper还有一个静态变量sMainLooper, 这个变量是UI线程
@@ -456,31 +466,33 @@ PS: Looper还有一个静态变量sMainLooper, 这个变量是UI线程
 每次循环都从消息队列中获取一个消息, 若无消息则可能
 会阻塞或者退出循环(主要与<a href="#orgheadline5">MessageQueue</a>有关. 下面是该函数主要代码:
 </p>
-<pre class="example">
-public static void loop() {
-    final Looper me = myLooper();
-    if (me == null) {
-        throw new RuntimeException("No Looper; Looper.prepare() wasn't called on this thread.");
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">loop</span>() {
+    <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">Looper</span> <span style="color: #DFAF8F;">me</span> = myLooper();
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (me == <span style="color: #BFEBBF;">null</span>) {
+        <span style="color: #F0DFAF; font-weight: bold;">throw</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">RuntimeException</span>(<span style="color: #CC9393;">"No Looper; Looper.prepare() wasn't called on this thread."</span>);
     }
-    final MessageQueue queue = me.mQueue;
+    <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">MessageQueue</span> <span style="color: #DFAF8F;">queue</span> = me.mQueue;
     ...
-    for (;;) {
-        Message msg = queue.next(); // might block
-        if (msg == null) {
-            // No message indicates that the message queue is quitting.
-            return;
+    <span style="color: #F0DFAF; font-weight: bold;">for</span> (;;) {
+        <span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">msg</span> = queue.next(); <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">might block</span>
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (msg == <span style="color: #BFEBBF;">null</span>) {
+            <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">No message indicates that the message queue is quitting.</span>
+            <span style="color: #F0DFAF; font-weight: bold;">return</span>;
         }
 
-	...
+        ...
 
         msg.target.dispatchMessage(msg);
 
-	...
+        ...
 
         msg.recycleUnchecked();
     }
 }
 </pre>
+</div>
 <p>
 代码流程:
 </p>
@@ -517,27 +529,29 @@ Handler(callback, async).
 第二个参数async标志消息是否要按时间排序.
 该函数会去拿去当前线程的<a href="#orgheadline8">Looper</a>, 如果没有则报错.
 </p>
-<pre class="example">
-   public Handler(Callback callback, boolean async) {
-    if (FIND_POTENTIAL_LEAKS) {
-        final Class&lt;? extends Handler&gt; klass = getClass();
-        if ((klass.isAnonymousClass() || klass.isMemberClass() || klass.isLocalClass()) &amp;&amp;
-                (klass.getModifiers() &amp; Modifier.STATIC) == 0) {
-            Log.w(TAG, "The following Handler class should be static or leaks might occur: " +
+<div class="org-src-container">
+
+<pre class="src src-java">   <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #93E0E3;">Handler</span>(<span style="color: #7CB8BB;">Callback</span> <span style="color: #DFAF8F;">callback</span>, <span style="color: #7CB8BB;">boolean</span> <span style="color: #DFAF8F;">async</span>) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (FIND_POTENTIAL_LEAKS) {
+        <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">Class</span>&lt;? <span style="color: #F0DFAF; font-weight: bold;">extends</span> <span style="color: #7CB8BB;">Handler</span>&gt; <span style="color: #DFAF8F;">klass</span> = getClass();
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> ((klass.isAnonymousClass() || klass.isMemberClass() || klass.isLocalClass()) &amp;&amp;
+                (klass.getModifiers() &amp; <span style="color: #BFEBBF;">Modifier</span>.STATIC) == 0) {
+            Log.w(TAG, <span style="color: #CC9393;">"The following Handler class should be static or leaks might occur: "</span> +
                 klass.getCanonicalName());
         }
     }
 
     mLooper = Looper.myLooper();
-    if (mLooper == null) {
-        throw new RuntimeException(
-            "Can't create handler inside thread that has not called Looper.prepare()");
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (mLooper == <span style="color: #BFEBBF;">null</span>) {
+        <span style="color: #F0DFAF; font-weight: bold;">throw</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">RuntimeException</span>(
+            <span style="color: #CC9393;">"Can't create handler inside thread that has not called Looper.prepare()"</span>);
     }
     mQueue = mLooper.mQueue;
     mCallback = callback;
     mAsynchronous = async;
 }
-</pre></li>
+</pre>
+</div></li>
 
 <li>Handler(looper, callback, async).
 第一个参数looper是显示的传入一个looper参数给handler的构造函数.
@@ -563,25 +577,27 @@ Handler的发送消息相关的函数也有多个, 基本都是先计算该messa
 enqueueMessage()函数, 最终调用到了<a href="#orgheadline5">MessageQueue</a>的
 enqueueMessage()函数.
 </p>
-<pre class="example">
-public boolean sendMessageAtTime(Message msg, long uptimeMillis) {
-    MessageQueue queue = mQueue;
-    if (queue == null) {
-        RuntimeException e = new RuntimeException(
-                this + " sendMessageAtTime() called with no mQueue");
-        Log.w("Looper", e.getMessage(), e);
-        return false;
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">boolean</span> <span style="color: #93E0E3;">sendMessageAtTime</span>(<span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">msg</span>, <span style="color: #7CB8BB;">long</span> <span style="color: #DFAF8F;">uptimeMillis</span>) {
+    <span style="color: #7CB8BB;">MessageQueue</span> <span style="color: #DFAF8F;">queue</span> = mQueue;
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (queue == <span style="color: #BFEBBF;">null</span>) {
+        <span style="color: #7CB8BB;">RuntimeException</span> <span style="color: #DFAF8F;">e</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">RuntimeException</span>(
+                <span style="color: #F0DFAF; font-weight: bold;">this</span> + <span style="color: #CC9393;">" sendMessageAtTime() called with no mQueue"</span>);
+        Log.w(<span style="color: #CC9393;">"Looper"</span>, e.getMessage(), e);
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #BFEBBF;">false</span>;
     }
-    return enqueueMessage(queue, msg, uptimeMillis);
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> enqueueMessage(queue, msg, uptimeMillis);
 }
-private boolean enqueueMessage(MessageQueue queue, Message msg, long uptimeMillis) {
-    msg.target = this;
-    if (mAsynchronous) {
-        msg.setAsynchronous(true);
+<span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">boolean</span> <span style="color: #93E0E3;">enqueueMessage</span>(<span style="color: #7CB8BB;">MessageQueue</span> <span style="color: #DFAF8F;">queue</span>, <span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">msg</span>, <span style="color: #7CB8BB;">long</span> <span style="color: #DFAF8F;">uptimeMillis</span>) {
+    msg.target = <span style="color: #F0DFAF; font-weight: bold;">this</span>;
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (mAsynchronous) {
+        msg.setAsynchronous(<span style="color: #BFEBBF;">true</span>);
     }
-    return queue.enqueueMessage(msg, uptimeMillis);
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> queue.enqueueMessage(msg, uptimeMillis);
 }
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline15" class="outline-3">
@@ -592,37 +608,39 @@ post系列函数用于发送一个"Runnable"消息, 该runnable会被存入
 消息的callback变量. 在<a href="#orgheadline8">Looper</a>做消息分发时, 会回调到Handler的
 dispatchMessage()函数来处理callback.代码如下:
 </p>
-<pre class="example">
-public final boolean post(Runnable r)
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">boolean</span> <span style="color: #93E0E3;">post</span>(<span style="color: #7CB8BB;">Runnable</span> <span style="color: #DFAF8F;">r</span>)
 {
-   return  sendMessageDelayed(getPostMessage(r), 0);
+   <span style="color: #F0DFAF; font-weight: bold;">return</span>  sendMessageDelayed(getPostMessage(r), 0);
 }
 
-public final boolean sendMessageDelayed(Message msg, long delayMillis)
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">boolean</span> <span style="color: #93E0E3;">sendMessageDelayed</span>(<span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">msg</span>, <span style="color: #7CB8BB;">long</span> <span style="color: #DFAF8F;">delayMillis</span>)
 {
-    if (delayMillis &lt; 0) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (delayMillis &lt; 0) {
         delayMillis = 0;
     }
-    return sendMessageAtTime(msg, SystemClock.uptimeMillis() + delayMillis);
+    <span style="color: #F0DFAF; font-weight: bold;">return</span> sendMessageAtTime(msg, SystemClock.uptimeMillis() + delayMillis);
 }
 
-//called from looper
-public void dispatchMessage(Message msg) {
-    if (msg.callback != null) {
+<span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">called from looper</span>
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">dispatchMessage</span>(<span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">msg</span>) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (msg.callback != <span style="color: #BFEBBF;">null</span>) {
         handleCallback(msg);
-    } else {
-        if (mCallback != null) {
-            if (mCallback.handleMessage(msg)) {
-                return;
+    } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (mCallback != <span style="color: #BFEBBF;">null</span>) {
+            <span style="color: #F0DFAF; font-weight: bold;">if</span> (mCallback.handleMessage(msg)) {
+                <span style="color: #F0DFAF; font-weight: bold;">return</span>;
             }
         }
         handleMessage(msg);
     }
 }
-private static void handleCallback(Message message) {
+<span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">handleCallback</span>(<span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">message</span>) {
     message.callback.run();
 }
 </pre>
+</div>
 </div>
 </div>
 </div>

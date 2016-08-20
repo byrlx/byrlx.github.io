@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Android Gradle Plugin User Guide 文档翻译</title>
@@ -239,9 +239,11 @@ Gradle的一些迷人特质包括:
 <li><p>
 对于一个简单的java工程,需要在build.gradle里加入
 </p>
-<pre class="example">
-apply plugin: 'java'
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">apply</span> <span style="color: #DFAF8F;">plugin</span>: <span style="color: #CC9393;">'java'</span>
 </pre>
+</div>
 <p>
 上述代码表示使用java插件,该插件随着Gradle包发布.可以使用该插件来
 编译和测试java应用程序.
@@ -250,24 +252,26 @@ apply plugin: 'java'
 对于一个简单的Android工程,build.gradle的内容一般为
 (该文件一般位于每个模块的目录下面):
 </p>
-<pre class="example">
-buildscript {
+<div class="org-src-container">
+
+<pre class="src src-java">buildscript {
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.11.1'
+        classpath <span style="color: #CC9393;">'com.android.tools.build:gradle:0.11.1'</span>
     }
 }
 
-apply plugin: 'android'
+<span style="color: #7CB8BB;">apply</span> <span style="color: #DFAF8F;">plugin</span>: <span style="color: #CC9393;">'android'</span>
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.0"
+    buildToolsVersion <span style="color: #CC9393;">"19.0.0"</span>
 }
 </pre>
+</div>
 <p>
 上述代码描述了Android编译的三个方面:
 </p>
@@ -339,18 +343,20 @@ source sets一般有两个目录:源码目录和测试目录.他们的位置:
 java工程
 gradle同时支持目录配置.例如对于一个java工程,可以使用如下配置:
 </p>
-<pre class="example">
-sourceSets {
+<div class="org-src-container">
+
+<pre class="src src-java">sourceSets {
     main {
         java {
-            srcDir 'src/java'
+            srcDir <span style="color: #CC9393;">'src/java'</span>
         }
         resources {
-            srcDir 'src/resources'
+            srcDir <span style="color: #CC9393;">'src/resources'</span>
         }
     }
 }
 </pre>
+</div>
 <p>
 注: srcDir会自动将目录添加到已存的"源码"列表中.
 </p>
@@ -359,34 +365,38 @@ sourceSets {
 可以使用 <b>srcDirs</b> 关键字来替换默认的source目录.该字段后面跟着
 路径数组,例如:
 </p>
-<pre class="example">
-sourceSets {
-    main.java.srcDirs = ['src/java']
-    main.resources.srcDirs = ['src/resources']
+<div class="org-src-container">
+
+<pre class="src src-java">sourceSets {
+    main.java.srcDirs = [<span style="color: #CC9393;">'src/java'</span>]
+    main.resources.srcDirs = [<span style="color: #CC9393;">'src/resources'</span>]
 }
-</pre></li>
+</pre>
+</div></li>
 <li><p>
 Android工程
 android插件使用的语法跟上一节相同.但是会放在<a href="#orgtarget1">2.3</a>字段中.
 下面是一段实例代码,用于映射老的android架构到gradle中:
 </p>
-<pre class="example">
-android {
+<div class="org-src-container">
+
+<pre class="src src-java">android {
     sourceSets {
         main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            resources.srcDirs = ['src']
-            aidl.srcDirs = ['src']
-            renderscript.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
+            manifest.srcFile <span style="color: #CC9393;">'AndroidManifest.xml'</span>
+            java.srcDirs = [<span style="color: #CC9393;">'src'</span>]
+            resources.srcDirs = [<span style="color: #CC9393;">'src'</span>]
+            aidl.srcDirs = [<span style="color: #CC9393;">'src'</span>]
+            renderscript.srcDirs = [<span style="color: #CC9393;">'src'</span>]
+            res.srcDirs = [<span style="color: #CC9393;">'res'</span>]
+            assets.srcDirs = [<span style="color: #CC9393;">'assets'</span>]
         }
 
-        androidTest.setRoot('tests')
+        androidTest.setRoot(<span style="color: #CC9393;">'tests'</span>)
     }
 }
 </pre>
+</div>
 <p>
 由于老架构将所有的源文件放到一个目录,所以这里需要设置所有组件的
 路径为"src".
@@ -516,19 +526,21 @@ Android插件提供了丰富的DSL语言来实现编译系统的客制化.
 <p>
 例如: 
 </p>
-<pre class="example">
-android {
+<div class="org-src-container">
+
+<pre class="src src-java">android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.0"
+    buildToolsVersion <span style="color: #CC9393;">"19.0.0"</span>
 
     defaultConfig {
         versionCode 12
-        versionName "2.0"
+        versionName <span style="color: #CC9393;">"2.0"</span>
         minSdkVersion 16
         targetSdkVersion 16
     }
 }
 </pre>
+</div>
 <p>
 上述所有的配置都放在 <b>android</b> 段的 <b>defaultConfig</b> 段中.
 </p>
@@ -544,14 +556,15 @@ android {
 在build文件中进行上述配置的一个优势是灵活性高.例如,可以在其他文件或build文件
 的其他地方定义一个函数并在defaultConfig中调用他.
 </p>
-<pre class="example">
-def computeVersionName() {
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">def</span> <span style="color: #93E0E3;">computeVersionName</span>() {
     ...
 }
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.0"
+    buildToolsVersion <span style="color: #CC9393;">"19.0.0"</span>
 
     defaultConfig {
         versionCode 12
@@ -561,6 +574,7 @@ android {
     }
 }
 </pre>
+</div>
 
 <p>
 如果没有在配置文件中设置某个属性,会使用默认值.如果默认值是null(一些property的
@@ -585,21 +599,23 @@ debug版本使用一个"已知"的name/password来签名应用(这样在编译�
 <p>
 例如下面有关buildType的DSL配置：
 </p>
-<pre class="example">
-android {
+<div class="org-src-container">
+
+<pre class="src src-java">android {
     buildTypes {
         debug {
-            applicationIdSuffix ".debug"
+            applicationIdSuffix <span style="color: #CC9393;">".debug"</span>
         }
 
         jnidebug.initWith(buildTypes.debug)
         jnidebug {
-            packageNameSuffix ".jnidebug"
-            jniDebuggable true
+            packageNameSuffix <span style="color: #CC9393;">".jnidebug"</span>
+            jniDebuggable <span style="color: #BFEBBF;">true</span>
         }
     }
 }
 </pre>
+</div>
 <p>
 上述配置实现了以下功能:
 </p>
@@ -627,11 +643,13 @@ src目录下创建一个同名目录(所以自定义编译类型不能为main或
 <p>
 也可以使用如下代码重定向编译类型的sourceSets.
 </p>
-<pre class="example">
-android {
-    sourceSets.jnidebug.setRoot('foo/jnidebug')
+<div class="org-src-container">
+
+<pre class="src src-java">android {
+    sourceSets.jnidebug.setRoot(<span style="color: #CC9393;">'foo/jnidebug'</span>)
 }
 </pre>
+</div>
 
 <p>
 同时,对于每个新的编译类型,都会创建一个相应的 assemble&lt;BuildTypeName&gt; 的任务.
@@ -686,30 +704,32 @@ debug配置,即有一个已知的"keystore密码+别名+密码". "debug编译类
 <p>
 Android插件支持签名配置的创建和客制化.通过<a id="orgtarget3"></a>来实现.例如:
 </p>
-<pre class="example">
-android {
+<div class="org-src-container">
+
+<pre class="src src-java">android {
     signingConfigs {
         debug {
-            storeFile file("debug.keystore")
+            <span style="color: #7CB8BB;">storeFile</span> <span style="color: #DFAF8F;">file</span>(<span style="color: #CC9393;">"debug.keystore"</span>)
         }
 
         myConfig {
-            storeFile file("other.keystore")
-            storePassword "android"
-            keyAlias "androiddebugkey"
-            keyPassword "android"
+            <span style="color: #7CB8BB;">storeFile</span> <span style="color: #DFAF8F;">file</span>(<span style="color: #CC9393;">"other.keystore"</span>)
+            storePassword <span style="color: #CC9393;">"android"</span>
+            keyAlias <span style="color: #CC9393;">"androiddebugkey"</span>
+            keyPassword <span style="color: #CC9393;">"android"</span>
         }
     }
 
     buildTypes {
         foo {
-            debuggable true
-            jniDebuggable true
+            debuggable <span style="color: #BFEBBF;">true</span>
+            jniDebuggable <span style="color: #BFEBBF;">true</span>
             signingConfig signingConfigs.myConfig
         }
     }
 }
 </pre>
+</div>
 <p>
 上述代码修改了debug编译类型的keystore文件位置.并创建了一个新的签名配置和一个使用
 该签名配置的新编译类型.
@@ -734,12 +754,13 @@ android {
 Gradle插件支持4.10版本的ProGuard. ProGuard插件默认是启用的.如果在"编译类型"中设置了
 <b>minifyEnable</b> 属性.会自动创建相关任务.例如在编译类型和flavor中使用ProGuard:
 </p>
-<pre class="example">
-android {
+<div class="org-src-container">
+
+<pre class="src src-java">android {
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFile getDefaultProguardFile('proguard-android.txt')
+            minifyEnabled <span style="color: #BFEBBF;">true</span>
+            proguardFile getDefaultProguardFile(<span style="color: #CC9393;">'proguard-android.txt'</span>)
         }
     }
 
@@ -747,11 +768,12 @@ android {
         flavor1 {
         }
         flavor2 {
-            proguardFile 'some-other-rules.txt'
+            proguardFile <span style="color: #CC9393;">'some-other-rules.txt'</span>
         }
     }
 }
 </pre>
+</div>
 <p>
 默认有两个规则文件:
 </p>
@@ -793,15 +815,17 @@ android {
 <p>
 当需要使用外部的jar包时,需要在<a id="orgtarget4"></a>段中添加<a id="orgtarget5"></a>配置(dependencies是标准的DSL元素,不属于android段).
 </p>
-<pre class="example">
-dependencies {
-    compile files('libs/foo.jar')
+<div class="org-src-container">
+
+<pre class="src src-java">dependencies {
+    <span style="color: #7CB8BB;">compile</span> <span style="color: #DFAF8F;">files</span>(<span style="color: #CC9393;">'libs/foo.jar'</span>)
 }
 
 android {
     ...
 }
 </pre>
+</div>
 <p>
 <b>compile</b> 配置一般用于配置主工程.这些jar包会被添加到编译路径并包入最后的APK中.
 其他可以添加的依赖包括:
@@ -825,15 +849,17 @@ android {
 Gradle支持从Maven和Ivy库中下载依赖库.
 首先将仓库添加到 <b>repositories</b> 段中.然后在 <b>dependencies</b> 中添加依赖.
 </p>
-<pre class="example">
-repositories {
+<div class="org-src-container">
+
+<pre class="src src-java">repositories {
     mavenCentral()
 }
 
 dependencies {
-    compile 'com.google.guava:guava:11.0.2'
+    compile <span style="color: #CC9393;">'com.google.guava:guava:11.0.2'</span>
 }
 </pre>
+</div>
 <p>
 注: Gradle支持本地和远端仓库.
 注: 如果依赖自身也有依赖的话,都会被下载.
@@ -851,13 +877,15 @@ dependencies {
 可以通过多工程设置来使一个gradle工程依赖其他的gradle工程.一般的多工程设置
 是通过在项目根目录下添加子目录来实现的.例如:
 </p>
-<pre class="example">
-MyProject/
+<div class="org-src-container">
+
+<pre class="src src-java">MyProject/
  + app/
  + libraries/
     + lib1/
     + lib2/
 </pre>
+</div>
 <p>
 上述代码设置了三个工程:
 </p>
@@ -900,11 +928,13 @@ MyProject/
 <p>
 如果gradle工程之间有依赖的话,可以做如下设置.
 </p>
-<pre class="example">
-dependencies {
-    compile project(':libraries:lib1')
+<div class="org-src-container">
+
+<pre class="src src-java">dependencies {
+    <span style="color: #7CB8BB;">compile</span> <span style="color: #DFAF8F;">project</span>(<span style="color: #CC9393;">':libraries:lib1'</span>)
 }
 </pre>
+</div>
 <p>
 更多信息参考<a href="http://gradle.org/docs/current/userguide/multi_project_builds.html">http://gradle.org/docs/current/userguide/multi_project_builds.html</a>.
 </p>
@@ -925,23 +955,25 @@ dependencies {
 <p>
 创建一个android库工程需要使用一个不同的plugin.
 </p>
-<pre class="example">
-buildscript {
+<div class="org-src-container">
+
+<pre class="src src-java">buildscript {
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.6'
+        classpath <span style="color: #CC9393;">'com.android.tools.build:gradle:0.5.6'</span>
     }
 }
 
-apply plugin: 'android-library'
+<span style="color: #7CB8BB;">apply</span> <span style="color: #DFAF8F;">plugin</span>: <span style="color: #CC9393;">'android-library'</span>
 
 android {
     compileSdkVersion 15
 }
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline27" class="outline-4">
@@ -972,11 +1004,13 @@ android {
 默认情况下,库只发布release版本,无论依赖该库的其他工程发布的是那个版本.
 可以通过配置来控制发布那个版本:
 </p>
-<pre class="example">
-android {
-    defaultPublishConfig "debug"
+<div class="org-src-container">
+
+<pre class="src src-java">android {
+    defaultPublishConfig <span style="color: #CC9393;">"debug"</span>
 }
 </pre>
+</div>
 <p>
 需要注意的是配置名必须为全名,如果需要使用flavor,要写成"flavorDebug"的形式.
 </p>
@@ -984,11 +1018,13 @@ android {
 <p>
 也可以通过配置来取消默认的发布.这样会导致生产所有版本的aar文件.
 </p>
-<pre class="example">
-android {
-   publishNonDefault true
+<div class="org-src-container">
+
+<pre class="src src-java">android {
+   publishNonDefault <span style="color: #BFEBBF;">true</span>
 }
 </pre>
+</div>
 </div>
 </div>
 </div>
@@ -1023,16 +1059,18 @@ Gradle插件在应用的工程中整合了测试工程.
 <p>
 在build.gradle的android段中可以配置以下属性:
 </p>
-<pre class="example">
-android {
+<div class="org-src-container">
+
+<pre class="src src-java">android {
     defaultConfig {
-        testPackageName "com.test.foo"
-        testInstrumentationRunner "android.test.InstrumentationTestRunner"
-        testHandleProfiling true
-        testFunctionalTest true
+        testPackageName <span style="color: #CC9393;">"com.test.foo"</span>
+        testInstrumentationRunner <span style="color: #CC9393;">"android.test.InstrumentationTestRunner"</span>
+        testHandleProfiling <span style="color: #BFEBBF;">true</span>
+        testFunctionalTest <span style="color: #BFEBBF;">true</span>
     }
 }
 </pre>
+</div>
 <p>
 targetPackage属性会自动被设置为test程序的package名称,即使通过defaultConfig或其他
 编译选项进行配置.
@@ -1082,8 +1120,9 @@ flavor这个概念通常用于改变非常小的场景.
 <p>
 使用DSL的 <b>productFlavor</b> 关键字来定义flavor.
 </p>
-<pre class="example">
-android {
+<div class="org-src-container">
+
+<pre class="src src-java">android {
     productFlavors {
         flavor1 {
             ...
@@ -1095,6 +1134,7 @@ android {
     }
 }
 </pre>
+</div>
 <p>
 上述代码创建了两个flavor: flavor1和flavor2.
 记住flavor的名字不能与 <b>编译类型</b> 和 <b>androidTest的sourceSet</b> 混淆.
@@ -1129,8 +1169,9 @@ Flavor可以完成同样的功能: 所以一个工程可以生成的APK是所有
 flavor的配置跟其他的配置一样,每个flavor都要用大括号括起来.
 例如:
 </p>
-<pre class="example">
-android {
+<div class="org-src-container">
+
+<pre class="src src-java">android {
     ...
 
     defaultConfig {
@@ -1140,17 +1181,18 @@ android {
 
     productFlavors {
         flavor1 {
-            packageName "com.example.flavor1"
+            packageName <span style="color: #CC9393;">"com.example.flavor1"</span>
             versionCode 20
         }
 
         flavor2 {
-            packageName "com.example.flavor2"
+            packageName <span style="color: #CC9393;">"com.example.flavor2"</span>
             minSdkVersion 14
         }
     }
 }
 </pre>
+</div>
 <p>
 需要说明的是androd.productFlavors.*对象属于<a id="orgtarget6"></a>类型,该类型
 与前面提到的android.defaultConfig类型共享同样的属性.
@@ -1217,11 +1259,13 @@ Location: src/androidTestFlavor2</li>
 同时,flavor也可以设置自己的依赖.例如,如果一个flavor版本需要生成一个有广告的版本
 或一个收费版本,可以为该flavor设置依赖广告SDK.
 </p>
-<pre class="example">
-dependencies {
-  flavor1Compile "..."
+<div class="org-src-container">
+
+<pre class="src src-java">dependencies {
+  flavor1Compile <span style="color: #CC9393;">"..."</span>
 }
 </pre>
+</div>
 
 <p>
 每个编译变量都会生成相应的资源集合:
@@ -1278,11 +1322,13 @@ Location: src/androidTestFlavor2</li>
 <p>
 同样, 它们可以配置相关的依赖:
 </p>
-<pre class="example">
-dependencies {
-    androidTestFlavor1Compile "..."
+<div class="org-src-container">
+
+<pre class="src src-java">dependencies {
+    androidTestFlavor1Compile <span style="color: #CC9393;">"..."</span>
 }
 </pre>
+</div>
 
 <p>
 可以通过 <b>deviceCheck</b> 或 <b>androidTest</b> 任务来运行所有的测试任务.

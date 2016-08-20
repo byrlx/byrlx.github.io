@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Elisp基本数据结构</title>
@@ -132,8 +132,9 @@ List 的CDR槽位可以通过(cdr list)来获取, 以上面的l为例, 其CDR槽
 (称其为llcdr), llcdr的CAR槽位为maple, CDR槽位为nil.
 可以通过下图来展示上面的例子
 </p>
-<pre class="example">
- --------------       --------------       --------------
+<div class="org-src-container">
+
+<pre class="src src-elisp"> --------------       --------------       --------------
 | car   | cdr  |     | car   | cdr  |     | car   | cdr  |
 |   o   |   o-------&gt;| oak   |   o-------&gt;| maple |  nil |
 |   |   |      |     |       |      |     |       |      |
@@ -146,6 +147,7 @@ List 的CDR槽位可以通过(cdr list)来获取, 以上面的l为例, 其CDR槽
             |       |      |     |         |      |
              --------------       ----------------
 </pre>
+</div>
 
 <p>
 一个cons cell可以用下面的方式表示 (A . B). 这里该cons cell的CAR槽位为A,
@@ -153,9 +155,11 @@ CDR槽位为B, 对于上面的list l, 其完整的表示为. 不过在lisp编码
 使用上面例子的形式, 除非需要明确指定CDR槽为一个既不为cons cell, 又不为nil的
 对象.
 </p>
-<pre class="example">
-((pine . (needless . nil)) . (oak . (maple . nil))))
+<div class="org-src-container">
+
+<pre class="src src-elisp">((pine . (needless . nil)) . (oak . (maple . nil))))
 </pre>
+</div>
 </div>
 </div>
 

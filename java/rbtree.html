@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:31 -->
+<!-- 2016-08-21 Sun 01:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>红黑树</title>
@@ -139,33 +139,35 @@ for the JavaScript code in this tag.
 右子树(上的数据)都大于该节点. 基于这个规则可以很容易的将一组数据转使用二叉树
 排序, 即二叉搜索树. 例如下面的代码就将一个新数据插入到一个现成的二叉搜索树中.
 </p>
-<pre class="example">
-class Node(){
-    int data;
-    Node left;
-    Node right;
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Node</span>(){
+    <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">data</span>;
+    <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">left</span>;
+    <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">right</span>;
 }
 
-void insert(Node root, Node newNode) {
-    Node cur = root;
+<span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">insert</span>(<span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">root</span>, <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">newNode</span>) {
+    <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">cur</span> = root;
 
-    while(cur != null) {
-	if(newNode.data &lt; cur.data) {
-	    if(cur.left == null) {
-		cur.left = newNode;
-		break;
-	    }
-	    cur = cur.left;
-	} else {
-	    if(cur.right == null){
-		cur.right = newNode;
-		break;
-	    }
-	    cur = cur.right;
-	}
+    <span style="color: #F0DFAF; font-weight: bold;">while</span>(cur != <span style="color: #BFEBBF;">null</span>) {
+        <span style="color: #F0DFAF; font-weight: bold;">if</span>(newNode.data &lt; cur.<span style="color: #7CB8BB;">data</span>) {
+            <span style="color: #F0DFAF; font-weight: bold;">if</span>(cur.left == <span style="color: #BFEBBF;">null</span>) {
+                cur.left = newNode;
+                <span style="color: #F0DFAF; font-weight: bold;">break</span>;
+            }
+            cur = cur.left;
+        } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
+            <span style="color: #F0DFAF; font-weight: bold;">if</span>(cur.right == <span style="color: #BFEBBF;">null</span>){
+                cur.right = newNode;
+                <span style="color: #F0DFAF; font-weight: bold;">break</span>;
+            }
+            cur = cur.right;
+        }
     }
 }
 </pre>
+</div>
 
 <p>
 上面的代码很简单, 首先定义了一个Node类, 代表树的节点, 然后定义了插入算法 insert,
@@ -178,15 +180,17 @@ void insert(Node root, Node newNode) {
 二叉树排序数据的展示可以通过"中序遍历"树的方式实现, 即先递归遍历左子树, 输出, 
 然后输出当前节点, 然后递归遍历右子树输出. 代码如下:
 </p>
-<pre class="example">
-void preorderTraverse(Node root) {
-    if(root == null) return;
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">preorderTraverse</span>(<span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">root</span>) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span>(root == <span style="color: #BFEBBF;">null</span>) <span style="color: #F0DFAF; font-weight: bold;">return</span>;
 
     preorderTraverse(root.left);
     print(root.data);
     preorderTraverse(root.right);
 }
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline2" class="outline-2">
@@ -394,38 +398,41 @@ right. 那这五者之间的关系为:
 下面代码是节点的实现, 每个节点被创建是都被设成了红色, 因为<a href="#orgheadline8">红黑树的规则维持</a>
 需要上溯, 所以定义了一个变量parent指向其父节点.
 </p>
-<pre class="example">
-private class Node {
-    int data;           //存放的数据
-    int color;          //该节点颜色(也可以理解为其父节点到该节点的链接的颜色)
-    int blackHeight;    //该节点的黑高度
+<div class="org-src-container">
 
-    Node left;    //左子树
-    Node right;   //右子树
-    Node parent;  //指向父节点
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Node</span> {
+    <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">data</span>;           <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#23384;&#25918;&#30340;&#25968;&#25454;</span>
+    <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">color</span>;          <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#35813;&#33410;&#28857;&#39068;&#33394;(&#20063;&#21487;&#20197;&#29702;&#35299;&#20026;&#20854;&#29238;&#33410;&#28857;&#21040;&#35813;&#33410;&#28857;&#30340;&#38142;&#25509;&#30340;&#39068;&#33394;)</span>
+    <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">blackHeight</span>;    <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#35813;&#33410;&#28857;&#30340;&#40657;&#39640;&#24230;</span>
 
-    Node(int data) {
-        this.data = data;
+    <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">left</span>;    <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#24038;&#23376;&#26641;</span>
+    <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">right</span>;   <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#21491;&#23376;&#26641;</span>
+    <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">parent</span>;  <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#25351;&#21521;&#29238;&#33410;&#28857;</span>
+
+    <span style="color: #93E0E3;">Node</span>(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">data</span>) {
+        <span style="color: #F0DFAF; font-weight: bold;">this</span>.data = data;
         color = RED;
         blackHeight = 0;
     }
 }
 </pre>
+</div>
 
 <p>
 下面代码是<a href="#orgheadline6">左旋转</a>和<a href="#orgheadline7">右旋转</a>的代码, 注意这里要修改多个"指针", 尤其是parent.
 同时也要注意旋转后root是否也需要修改的问题.
 链表操作比较熟练的话应该没什么问题.
 </p>
-<pre class="example">
-private Node rotateLeft(Node node) {
-        Node right = node.right;
-        if (root == node) {
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">Node</span> <span style="color: #93E0E3;">rotateLeft</span>(<span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">node</span>) {
+        <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">right</span> = node.right;
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (root == node) {
             root = right;
         }
 
         node.right = right.left;
-        if(node.right != null) {
+        <span style="color: #F0DFAF; font-weight: bold;">if</span>(node.right != <span style="color: #BFEBBF;">null</span>) {
             node.right.parent = node.parent;
         }
 
@@ -433,11 +440,11 @@ private Node rotateLeft(Node node) {
         right.parent = node.parent;
         node.parent = right;
 
-        //更改parent
-        if (right.parent != null) {
-            if (right.parent.left == node) {
+        <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#26356;&#25913;parent</span>
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (right.parent != <span style="color: #BFEBBF;">null</span>) {
+            <span style="color: #F0DFAF; font-weight: bold;">if</span> (right.parent.left == node) {
                 right.parent.left = right;
-            } else {
+            } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
                 right.parent.right = right;
             }
         }
@@ -445,17 +452,17 @@ private Node rotateLeft(Node node) {
         right.color = node.color;
         node.color = RED;
 
-        return right;
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> right;
     }
 
-    private Node rotateRight(Node node) {
-        Node left = node.left;
-        if (root == node) {
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">Node</span> <span style="color: #93E0E3;">rotateRight</span>(<span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">node</span>) {
+        <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">left</span> = node.left;
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (root == node) {
             root = left;
         }
 
         node.left = left.right;
-        if(node.left != null) {
+        <span style="color: #F0DFAF; font-weight: bold;">if</span>(node.left != <span style="color: #BFEBBF;">null</span>) {
             node.left.parent = node.parent;
         }
 
@@ -463,10 +470,10 @@ private Node rotateLeft(Node node) {
         left.parent = node.parent;
         node.parent = left;
 
-        if (left.parent != null) {
-            if (left.parent.left == node) {
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (left.parent != <span style="color: #BFEBBF;">null</span>) {
+            <span style="color: #F0DFAF; font-weight: bold;">if</span> (left.parent.left == node) {
                 left.parent.left = left;
-            } else {
+            } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
                 left.parent.right = left;
             }
         }
@@ -474,66 +481,68 @@ private Node rotateLeft(Node node) {
         left.color = node.color;
         node.color = RED;
 
-        return left;
+        <span style="color: #F0DFAF; font-weight: bold;">return</span> left;
     }
 </pre>
+</div>
 
 <p>
 下面是红黑树的主要代码, insert()和resetTree()函数用于完成新节点的插入和插入后
 <a href="#orgheadline8">红黑树的规则维持</a>, 这里使用了一个while循环来进行一次维持后的上溯.
 </p>
-<pre class="example">
-/**
- * 红黑树(Red-Black Tree)
- */
-public class RbTree {
-    private static final int[] DATA = {19, 7, 30, 18, 11, 22, 3, 25, 26, 38, 20};
-    private static final int BLACK = 0;
-    private static final int RED = 1;
+<div class="org-src-container">
 
-    private Node root;
+<pre class="src src-java"><span style="color: #9FC59F;">/**</span>
+<span style="color: #9FC59F;"> * &#32418;&#40657;&#26641;(Red-Black Tree)</span>
+<span style="color: #9FC59F;"> */</span>
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">RbTree</span> {
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">int</span>[] <span style="color: #DFAF8F;">DATA</span> = {19, 7, 30, 18, 11, 22, 3, 25, 26, 38, 20};
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">BLACK</span> = 0;
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">RED</span> = 1;
 
-    /**
-     * 基于数组构造红黑树
-     */
-    public void build(int[] data) {
-        for (int i = 0, len = data.length; i &lt; len; i++) {
-            Node newNode = new Node(data[i]);
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">root</span>;
+
+    <span style="color: #9FC59F;">/**</span>
+<span style="color: #9FC59F;">     * &#22522;&#20110;&#25968;&#32452;&#26500;&#36896;&#32418;&#40657;&#26641;</span>
+<span style="color: #9FC59F;">     */</span>
+    <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">build</span>(<span style="color: #7CB8BB;">int</span>[] <span style="color: #DFAF8F;">data</span>) {
+        <span style="color: #F0DFAF; font-weight: bold;">for</span> (<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">i</span> = 0, <span style="color: #DFAF8F;">len</span> = data.length; i &lt; <span style="color: #7CB8BB;">len</span>; i++) {
+            <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">newNode</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Node</span>(data[i]);
             insert(newNode);
         }
     }
 
-    /**
-     * 将新节点插入到root代表的红黑树,
-     * 新节点的颜色会先被设置为红色, 然后基于排序规则插入到红黑树,
-     * 如果插入后破坏了红黑树的任意规则, 则需要对红黑树进行重置
-     */
-    public void insert(Node newNode) {
-        //第一个节点设为root
-        if (root == null) {
+    <span style="color: #9FC59F;">/**</span>
+<span style="color: #9FC59F;">     * &#23558;&#26032;&#33410;&#28857;&#25554;&#20837;&#21040;root&#20195;&#34920;&#30340;&#32418;&#40657;&#26641;,</span>
+<span style="color: #9FC59F;">     * &#26032;&#33410;&#28857;&#30340;&#39068;&#33394;&#20250;&#20808;&#34987;&#35774;&#32622;&#20026;&#32418;&#33394;, &#28982;&#21518;&#22522;&#20110;&#25490;&#24207;&#35268;&#21017;&#25554;&#20837;&#21040;&#32418;&#40657;&#26641;,</span>
+<span style="color: #9FC59F;">     * &#22914;&#26524;&#25554;&#20837;&#21518;&#30772;&#22351;&#20102;&#32418;&#40657;&#26641;&#30340;&#20219;&#24847;&#35268;&#21017;, &#21017;&#38656;&#35201;&#23545;&#32418;&#40657;&#26641;&#36827;&#34892;&#37325;&#32622;</span>
+<span style="color: #9FC59F;">     */</span>
+    <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">insert</span>(<span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">newNode</span>) {
+        <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#31532;&#19968;&#20010;&#33410;&#28857;&#35774;&#20026;root</span>
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (root == <span style="color: #BFEBBF;">null</span>) {
             root = newNode;
             root.color = BLACK;
-            return;
+            <span style="color: #F0DFAF; font-weight: bold;">return</span>;
         }
 
-        //先将节点根据排序插入到指定的位置
-        Node cur = root;
+        <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#20808;&#23558;&#33410;&#28857;&#26681;&#25454;&#25490;&#24207;&#25554;&#20837;&#21040;&#25351;&#23450;&#30340;&#20301;&#32622;</span>
+        <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">cur</span> = root;
 
-        //根据数据的大小先将新节点插入到"应该插入"的位置,
-        //注: 这有可能破坏红黑树的规则
-        while (cur != null) {
-            if (newNode.data &lt; cur.data) {
-                if (cur.left == null) {
+        <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#26681;&#25454;&#25968;&#25454;&#30340;&#22823;&#23567;&#20808;&#23558;&#26032;&#33410;&#28857;&#25554;&#20837;&#21040;"&#24212;&#35813;&#25554;&#20837;"&#30340;&#20301;&#32622;,</span>
+        <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#27880;: &#36825;&#26377;&#21487;&#33021;&#30772;&#22351;&#32418;&#40657;&#26641;&#30340;&#35268;&#21017;</span>
+        <span style="color: #F0DFAF; font-weight: bold;">while</span> (cur != <span style="color: #BFEBBF;">null</span>) {
+            <span style="color: #F0DFAF; font-weight: bold;">if</span> (newNode.data &lt; cur.<span style="color: #7CB8BB;">data</span>) {
+                <span style="color: #F0DFAF; font-weight: bold;">if</span> (cur.left == <span style="color: #BFEBBF;">null</span>) {
                     cur.left = newNode;
                     newNode.parent = cur;
-                    break;
+                    <span style="color: #F0DFAF; font-weight: bold;">break</span>;
                 }
                 cur = cur.left;
-            } else {
-                if (cur.right == null) {
+            } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
+                <span style="color: #F0DFAF; font-weight: bold;">if</span> (cur.right == <span style="color: #BFEBBF;">null</span>) {
                     cur.right = newNode;
                     newNode.parent = cur;
-                    break;
+                    <span style="color: #F0DFAF; font-weight: bold;">break</span>;
                 }
                 cur = cur.right;
             }
@@ -542,57 +551,57 @@ public class RbTree {
         resetRbTree(newNode);
     }
 
-    /**
-     * 如果一个节点的左右节点都为红色, 该使用该方法修改这个子树的
-     * 结构, 将两个子节点都改为黑色, 并且将该节点改为红色.
-     *
-     * @param node
-     */
-    private void flipColor(Node node) {
+    <span style="color: #9FC59F;">/**</span>
+<span style="color: #9FC59F;">     * &#22914;&#26524;&#19968;&#20010;&#33410;&#28857;&#30340;&#24038;&#21491;&#33410;&#28857;&#37117;&#20026;&#32418;&#33394;, &#35813;&#20351;&#29992;&#35813;&#26041;&#27861;&#20462;&#25913;&#36825;&#20010;&#23376;&#26641;&#30340;</span>
+<span style="color: #9FC59F;">     * &#32467;&#26500;, &#23558;&#20004;&#20010;&#23376;&#33410;&#28857;&#37117;&#25913;&#20026;&#40657;&#33394;, &#24182;&#19988;&#23558;&#35813;&#33410;&#28857;&#25913;&#20026;&#32418;&#33394;.</span>
+<span style="color: #9FC59F;">     *</span>
+<span style="color: #9FC59F;">     * </span><span style="color: #9FC59F;">@param</span><span style="color: #9FC59F;"> node</span>
+<span style="color: #9FC59F;">     */</span>
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">flipColor</span>(<span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">node</span>) {
         node.left.color = BLACK;
         node.right.color = BLACK;
         node.color = RED;
     }
 
-    /**
-     * 重置红黑树, 因为新插入的节点可能会破坏红黑树的规则,
-     * 所以每次插入一个节点后都要看是否需要重置红黑树
-     */
-    private void resetRbTree(Node newNode) {
-        Node cur = newNode;
+    <span style="color: #9FC59F;">/**</span>
+<span style="color: #9FC59F;">     * &#37325;&#32622;&#32418;&#40657;&#26641;, &#22240;&#20026;&#26032;&#25554;&#20837;&#30340;&#33410;&#28857;&#21487;&#33021;&#20250;&#30772;&#22351;&#32418;&#40657;&#26641;&#30340;&#35268;&#21017;,</span>
+<span style="color: #9FC59F;">     * &#25152;&#20197;&#27599;&#27425;&#25554;&#20837;&#19968;&#20010;&#33410;&#28857;&#21518;&#37117;&#35201;&#30475;&#26159;&#21542;&#38656;&#35201;&#37325;&#32622;&#32418;&#40657;&#26641;</span>
+<span style="color: #9FC59F;">     */</span>
+    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">resetRbTree</span>(<span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">newNode</span>) {
+        <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">cur</span> = newNode;
 
-        //提示, 这里父节点永远是其父节点的左节点
-        while (cur != root &amp;&amp; cur.color == RED) {
-            Node p = cur.parent;
+        <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#25552;&#31034;, &#36825;&#37324;&#29238;&#33410;&#28857;&#27704;&#36828;&#26159;&#20854;&#29238;&#33410;&#28857;&#30340;&#24038;&#33410;&#28857;</span>
+        <span style="color: #F0DFAF; font-weight: bold;">while</span> (cur != root &amp;&amp; cur.color == RED) {
+            <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">p</span> = cur.parent;
 
-            //没有破坏红黑树, 直接返回
-            if (p.color == BLACK &amp;&amp; cur == p.left) {
-                break;
+            <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#27809;&#26377;&#30772;&#22351;&#32418;&#40657;&#26641;, &#30452;&#25509;&#36820;&#22238;</span>
+            <span style="color: #F0DFAF; font-weight: bold;">if</span> (p.color == BLACK &amp;&amp; cur == p.left) {
+                <span style="color: #F0DFAF; font-weight: bold;">break</span>;
             }
 
-            //父节点是黑点, 且新节点是父节点的右节点
-            else if (p.color == BLACK &amp;&amp; cur == p.right) {
-                //如果父节点的左节点也为红色, 则说明父节点的左右节点都为红色
-                if (p.left != null &amp;&amp; p.left.color == RED) {
+            <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#29238;&#33410;&#28857;&#26159;&#40657;&#28857;, &#19988;&#26032;&#33410;&#28857;&#26159;&#29238;&#33410;&#28857;&#30340;&#21491;&#33410;&#28857;</span>
+            <span style="color: #F0DFAF; font-weight: bold;">else</span> <span style="color: #F0DFAF; font-weight: bold;">if</span> (p.color == BLACK &amp;&amp; cur == p.right) {
+                <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#22914;&#26524;&#29238;&#33410;&#28857;&#30340;&#24038;&#33410;&#28857;&#20063;&#20026;&#32418;&#33394;, &#21017;&#35828;&#26126;&#29238;&#33410;&#28857;&#30340;&#24038;&#21491;&#33410;&#28857;&#37117;&#20026;&#32418;&#33394;</span>
+                <span style="color: #F0DFAF; font-weight: bold;">if</span> (p.left != <span style="color: #BFEBBF;">null</span> &amp;&amp; p.left.color == RED) {
                     flipColor(p);
                     cur = p;
-                    continue;
-                } else {
+                    <span style="color: #F0DFAF; font-weight: bold;">continue</span>;
+                } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
                     rotateLeft(p);
-                    break;
+                    <span style="color: #F0DFAF; font-weight: bold;">break</span>;
                 }
             }
 
-            //父节点是红色,
-            else if (p.color == RED) {
-                Node pp = p.parent;
+            <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#29238;&#33410;&#28857;&#26159;&#32418;&#33394;,</span>
+            <span style="color: #F0DFAF; font-weight: bold;">else</span> <span style="color: #F0DFAF; font-weight: bold;">if</span> (p.color == RED) {
+                <span style="color: #7CB8BB;">Node</span> <span style="color: #DFAF8F;">pp</span> = p.parent;
 
-                //新节点是父节点的左节点, 先右旋转, 再flip
-                if (cur == p.left) {
-                    cur = rotateRight(pp);   //祖父节点右旋
+                <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#26032;&#33410;&#28857;&#26159;&#29238;&#33410;&#28857;&#30340;&#24038;&#33410;&#28857;, &#20808;&#21491;&#26059;&#36716;, &#20877;flip</span>
+                <span style="color: #F0DFAF; font-weight: bold;">if</span> (cur == p.left) {
+                    cur = rotateRight(pp);   <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#31062;&#29238;&#33410;&#28857;&#21491;&#26059;</span>
                     flipColor(cur);
-                } else {
-                    //新节点是父节点的右节点, 先左旋转, 再右旋转, 再flip
+                } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
+                    <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">&#26032;&#33410;&#28857;&#26159;&#29238;&#33410;&#28857;&#30340;&#21491;&#33410;&#28857;, &#20808;&#24038;&#26059;&#36716;, &#20877;&#21491;&#26059;&#36716;, &#20877;flip</span>
                     rotateLeft(p);
                     cur = rotateRight(pp);
                     flipColor(cur);
@@ -600,11 +609,12 @@ public class RbTree {
             }
         }
 
-        if (cur == root &amp;&amp; cur.color == RED) {
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (cur == root &amp;&amp; cur.color == RED) {
             cur.color = BLACK;
         }
     }
 </pre>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline10" class="outline-2">
