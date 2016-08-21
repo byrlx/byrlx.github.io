@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-08-21 Sun 01:40 -->
+<!-- 2016-08-21 Sun 22:52 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>【翻译】当我开始Android开发时，希望能早点认识的一些开源库</title>
@@ -122,6 +122,12 @@ for the JavaScript code in this tag.
 <li><a href="#orgheadline19">第五步: 存储数据 - Realm (sqlite的替代品)</a>
 <ul>
 <li><a href="#orgheadline20">基本介绍</a></li>
+<li><a href="#orgheadline21">一些特性</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline22">番外篇: 简便启动activity - Dart + Henson</a>
+<ul>
+<li><a href="#orgheadline23">基本用法</a></li>
 </ul>
 </li>
 </ul>
@@ -129,15 +135,6 @@ for the JavaScript code in this tag.
 </div>
 <p>
 原文地址 <a href="https://speakerdeck.com/chrisguzman/android-libraries-i-wish-i-knew-when-i-started">https://speakerdeck.com/chrisguzman/android-libraries-i-wish-i-knew-when-i-started</a>
-</p>
-
-<p>
-There’s no sense in re-inventing the wheel when you’re working on Android apps,
- especially if you’re just starting out.
- This talk will cover a range of libraries you can include in your Android apps that will help you tackle the problems other people have already solved.
- Whether you’re loading data from a web api,
- showing &amp; caching images,
- or storing &amp; syncing data there’s a library you can pull in to help you out!
 </p>
 
 <p>
@@ -686,6 +683,237 @@ Realm的一些特点:
 <li>为手机而生.</li>
 <li>可以快到使用同步.</li>
 <li>支持一个应用包含多个Realm数据库.(Sqlite只有一个).</li>
+</ol>
+
+<p>
+下面是Realm在App中的应用实例:
+</p>
+<ol class="org-ol">
+<li><p>
+需要持久化的类需要继承RealmObject:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Taco</span> <span style="color: #F0DFAF; font-weight: bold;">extends</span> <span style="color: #7CB8BB;">RealmObject</span> {
+ <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">description</span>;
+ <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">tag</span>;
+ <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">imageUrl</span>;
+ <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">boolean</span> <span style="color: #DFAF8F;">favorite</span>;
+ <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">getters and setters</span>
+}
+</pre>
+</div></li>
+<li><p>
+配置Realm, 一般是创建一个RealmConfiguration对象, 将Realm文件存储到
+App的"file"目录下. 
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">RealmConfiguration</span> <span style="color: #DFAF8F;">realmConfig</span> =
+ <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">RealmConfiguration</span>.<span style="color: #7CB8BB;">Builder</span>(context).build();
+Realm.setDefaultConfiguration(realmConfig);
+<span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Get a Realm instance for this thread</span>
+<span style="color: #7CB8BB;">Realm</span> <span style="color: #DFAF8F;">realm</span> = Realm.getDefaultInstance();
+</pre>
+</div></li>
+<li><p>
+持久化. Realm支持存储一个已存在的类实例, 或者通过传入class文件直接存储一个
+新的类实例.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java">realm.beginTransaction(); <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Persist your data in a transaction</span>
+<span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">Taco</span> <span style="color: #DFAF8F;">managedTaco</span> = realm.copyToRealm(unmanagedTaco); <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Persist unmanaged objects</span>
+<span style="color: #7CB8BB;">Taco</span> <span style="color: #DFAF8F;">taco</span> = realm.createObject(Taco.<span style="color: #F0DFAF; font-weight: bold;">class</span>); <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Create managed objects directly</span>
+realm.commitTransaction();
+</pre>
+</div></li>
+<li><p>
+获取数据.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">Realm</span> <span style="color: #DFAF8F;">realm</span> = Realm.getDefaultInstance(); <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Get a Realm instance for this thread</span>
+<span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">RealmResults</span>&lt;<span style="color: #7CB8BB;">Taco</span>&gt; <span style="color: #DFAF8F;">likedTacos</span> =
+realm.where(Taco.<span style="color: #F0DFAF; font-weight: bold;">class</span>).equalTo(<span style="color: #CC9393;">"favorite"</span>, <span style="color: #BFEBBF;">true</span>).findAll(); <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">find all favorite tacos</span>
+</pre>
+</div></li>
+<li><p>
+删除操作:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">All changes to data must happen in a transaction</span>
+realm.executeTransaction(<span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">Realm</span>.<span style="color: #7CB8BB;">Transaction</span>() {
+ <span style="color: #BFEBBF;">@Override</span>
+ <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #DFAF8F;">execute</span>(<span style="color: #7CB8BB;">Realm</span> <span style="color: #DFAF8F;">realm</span>) {
+ <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">remove single match</span>
+ limeTacos.deleteFirstFromRealm();
+ <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">or limeTacos.deleteLastFromRealm();</span>
+ <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">remove a single object</span>
+ <span style="color: #7CB8BB;">Taco</span> <span style="color: #DFAF8F;">fishTaco</span> = limeTacos.get(1);
+ fishTaco.deleteFromRealm();
+ <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Delete all matches</span>
+ limeTacos.deleteAllFromRealm();
+ }
+});
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline21" class="outline-3">
+<h3 id="orgheadline21">一些特性</h3>
+<div class="outline-text-3" id="text-orgheadline21">
+<ol class="org-ol">
+<li>Realm同样支持同步和异步的"写数据"操作, 通过调用不同的Api实现, 如下代码:
+<ol class="org-ol">
+<li><p>
+同步写:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">Transaction block</span>
+realm.executeTransaction(<span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">Realm</span>.<span style="color: #7CB8BB;">Transaction</span>() {
+ <span style="color: #BFEBBF;">@Override</span>
+ <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #DFAF8F;">execute</span>(<span style="color: #7CB8BB;">Realm</span> <span style="color: #DFAF8F;">realm</span>) {
+    <span style="color: #7CB8BB;">Taco</span> <span style="color: #DFAF8F;">taco</span> = realm.createObject(Taco.<span style="color: #F0DFAF; font-weight: bold;">class</span>);
+    taco.setDescription(<span style="color: #CC9393;">"Spaghetti Squash on Fresh Corn Tortillas"</span>);
+    user.setImageUrl(<span style="color: #CC9393;">"http://tacoimages.com/1.jpg"</span>);
+ }
+});
+</pre>
+</div></li>
+<li><p>
+异步写, 需要传入两个个回调类对象参数, 分别是成功和失败的回调.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java">realm.executeTransactionAsync(<span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">Realm</span>.<span style="color: #7CB8BB;">Transaction</span>() {
+  <span style="color: #BFEBBF;">@Override</span>
+  <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">execute</span>(<span style="color: #7CB8BB;">Realm</span> <span style="color: #DFAF8F;">bgRealm</span>) {
+     <span style="color: #7CB8BB;">Taco</span> <span style="color: #DFAF8F;">taco</span> = bgRealm.createObject(Taco.<span style="color: #F0DFAF; font-weight: bold;">class</span>);
+     taco.setDescription(<span style="color: #CC9393;">"Spaghetti Squash on Fresh Corn Tortillas"</span>);
+     user.setImageUrl(<span style="color: #CC9393;">"http://tacoimages.com/1.jpg"</span>);
+  }}, <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">Realm</span>.<span style="color: #BFEBBF;">Transaction</span>.<span style="color: #7CB8BB;">OnSuccess</span>() {
+         <span style="color: #BFEBBF;">@Override</span>
+         <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">onSuccess</span>() {}}, 
+      <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">Realm</span>.<span style="color: #BFEBBF;">Transaction</span>.<span style="color: #7CB8BB;">OnError</span>() {
+         <span style="color: #BFEBBF;">@Override</span>
+         <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">onError</span>(<span style="color: #7CB8BB;">Throwable</span> <span style="color: #DFAF8F;">error</span>) {}
+ });
+</pre>
+</div></li>
+</ol></li>
+<li><p>
+跟Gson一样, Realm也支持类成员变量的解析. 例如:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Taco</span> <span style="color: #F0DFAF; font-weight: bold;">extends</span> <span style="color: #7CB8BB;">RealmObject</span> {
+ ...
+ <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #BFEBBF;">List</span>&lt;<span style="color: #7CB8BB;">Ingredient</span>&gt;
+ ...
+}
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">Ingredient</span> <span style="color: #F0DFAF; font-weight: bold;">extends</span> <span style="color: #7CB8BB;">RealmObject</span> {
+ <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">name</span>;
+ <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">URL</span> <span style="color: #DFAF8F;">url</span>;
+}
+
+<span style="color: #7CB8BB;">RealmResults</span>&lt;<span style="color: #7CB8BB;">Taco</span>&gt; <span style="color: #DFAF8F;">limeTacos</span> = realm.where(Taco.<span style="color: #F0DFAF; font-weight: bold;">class</span>)
+ .equalTo(<span style="color: #CC9393;">"ingredients.name"</span>, <span style="color: #CC9393;">"Lime"</span>)
+ .findAll();
+</pre>
+</div></li>
+<li><p>
+为RealmObject和RealmResults增加数据变化的listener.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java">limeTacos.addChangeListener(
+ <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">RealmChangeListener</span>&lt;<span style="color: #7CB8BB;">RealmResults</span>&lt;<span style="color: #7CB8BB;">Taco</span>&gt;&gt;() {
+ <span style="color: #BFEBBF;">@Override</span>
+ <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">onChange</span>(<span style="color: #7CB8BB;">RealmResults</span>&lt;<span style="color: #7CB8BB;">Taco</span>&gt; <span style="color: #DFAF8F;">tacosConLimon</span>) {
+ <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">tacosConLimon.size() == limeTacos.size()</span>
+ <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Query results are updated in real time</span>
+     Log.d(<span style="color: #CC9393;">"LimeTacos"</span>, <span style="color: #CC9393;">"Now we have"</span> + limeTacos.size() + <span style="color: #CC9393;">" tacos"</span>);
+ }
+});
+</pre>
+</div></li>
+<li><p>
+为防止内存泄漏, 需要在onDestroy中关闭Realm.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #BFEBBF;">@Override</span>
+<span style="color: #F0DFAF; font-weight: bold;">protected</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">onDestroy</span>() {
+ realm.removeChangeListener(realmListener); <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Remove the listener.</span>
+ realm.close(); <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">or realm.removeAllChangeListeners(); Close the Realm instance.</span>
+}
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline22" class="outline-2">
+<h2 id="orgheadline22">番外篇: 简便启动activity - Dart + Henson</h2>
+<div class="outline-text-2" id="text-orgheadline22">
+<p>
+  这两个类是受到ButterKnife启发实现的, 提供了一个更简便的启动Activity的方法, 
+作者说, 不要再浪费时间写这样的代码啦.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java">intent.putExtra(EXTRA_TACO_DESCRIPTION, <span style="color: #CC9393;">"Seasoned Lentils with Green Chile on Naan"</span>);
+tacoDescription = getIntent().getExtras().getString(EXTRA_TACO_DESCRIPTION);
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline23" class="outline-3">
+<h3 id="orgheadline23">基本用法</h3>
+<div class="outline-text-3" id="text-orgheadline23">
+<ol class="org-ol">
+<li><p>
+Dart定义intent使用到的参数.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">TacoDetailActivity</span> <span style="color: #F0DFAF; font-weight: bold;">extends</span> <span style="color: #7CB8BB;">Activity</span> {
+ <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">Required. Exception thrown if missing</span>
+ <span style="color: #BFEBBF;">@InjectExtra</span> <span style="color: #7CB8BB;">boolean</span> <span style="color: #DFAF8F;">favorite</span>;
+ <span style="color: #BFEBBF;">@InjectExtra</span> String description
+ <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">default value if left null</span>
+ <span style="color: #BFEBBF;">@Nullable</span> <span style="color: #BFEBBF;">@InjectExtra</span> <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">tag</span> = <span style="color: #CC9393;">"taco"</span>;
+ <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">Ingredient implements Parcelable</span>
+ <span style="color: #BFEBBF;">@Nullable</span> <span style="color: #BFEBBF;">@InjectExtra</span> <span style="color: #7CB8BB;">Ingredient</span> <span style="color: #DFAF8F;">withIngredient</span>;
+ <span style="color: #BFEBBF;">@Override</span>
+ <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">onCreate</span>(<span style="color: #7CB8BB;">Bundle</span> <span style="color: #DFAF8F;">bundle</span>) {
+ <span style="color: #F0DFAF; font-weight: bold;">super</span>.onCreate(bundle);
+ Dart.inject(<span style="color: #F0DFAF; font-weight: bold;">this</span>);
+ <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">TODO use member variables</span>
+ ...
+ }
+}
+</pre>
+</div></li>
+<li><p>
+使用Henson生成intent. 
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">Start intent for TacoDetailActivity</span>
+<span style="color: #7CB8BB;">Intent</span> <span style="color: #DFAF8F;">intent</span> = Henson.with(context)
+ .gotoTacoDetailActivity()
+ .favorite(<span style="color: #BFEBBF;">true</span>)
+ .description(<span style="color: #CC9393;">"Seasoned Lentils with Green Chile on Naan"</span>)
+ .ingredient(<span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Ingredient</span>())
+ .build();
+<span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">tag is null or defaults to "taco"</span>
+startActivity(intent);
+</pre>
+</div></li>
 </ol>
 </div>
 </div>
