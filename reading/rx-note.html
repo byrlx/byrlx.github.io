@@ -6,7 +6,7 @@
 <!-- 2016-10-14 Fri 11:51 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
-<title>twitter消息一览</title>
+<title>RxJava 笔记</title>
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Luis Xu" />
 <link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
@@ -84,98 +84,98 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
-<h1 class="title">twitter消息一览</h1>
+<h1 class="title">RxJava 笔记</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline1"><span class="todo nilTODO">TODO</span> 3. 开源测试工具Test Butler</a></li>
-<li><a href="#orgheadline2"><span class="todo nilTODO">TODO</span> 4. 3x3</a></li>
-<li><a href="#orgheadline3"><span class="todo nilTODO">TODO</span> 3. Droidcon NYC 2016</a></li>
-<li><a href="#orgheadline4">4. IntelliJ plugin</a></li>
-<li><a href="#orgheadline5">5. AI和Java</a></li>
-<li><a href="#orgheadline6"><span class="todo nilTODO">TODO</span> 6. StateListAnimator</a></li>
-<li><a href="#orgheadline7"><span class="todo nilTODO">TODO</span> 7. 360AnDev</a></li>
+<li><a href="#orgheadline1">Observable</a>
+<ul>
+<li><a href="#orgheadline2">基本介绍</a></li>
+<li><a href="#orgheadline3">支持的操作符</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
-<p>
-最近略忙, 好久没上twitter. 在上面关注了几个Android大咖, 便于及时了解最新的一些
-技术. 今晚把最近一段时间的推文略读了一下. 顺手做一个简单摘要, 博自己一乐.
-(标题前面展示TODO表示文章还需要阅读, 并阅读完成后补充相关内容)
-</p>
-
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1"><span class="todo TODO">TODO</span> 3. 开源测试工具Test Butler</h2>
+<h2 id="orgheadline1">Observable</h2>
 <div class="outline-text-2" id="text-orgheadline1">
 <p>
-<a href="https://engineering.linkedin.com/blog/2016/08/introducing-and-open-sourcing-test-butler--reliable-android-test">https://engineering.linkedin.com/blog/2016/08/introducing-and-open-sourcing-test-butler--reliable-android-test</a>
+这张图介绍了 Observable 的形式:
+<img src="../img/observable.png" alt="observable.png" />
+</p>
+</div>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">基本介绍</h3>
+<div class="outline-text-3" id="text-orgheadline2">
+<p>
+可以把 Observable 看作是 Iterable 的"push"版本. 对于 Iterable,
+消费者通过 iterator 来获取数据. 而 Observable 是采用的"观察者模式",
+所以数据生成之后生产者直接 push 给消费者.  这种操作的一个灵活性是
+数据的到达即可以是同步的又可以是异步的.
 </p>
 
-<p>
-这篇文章是linkin团队的文章, 介绍他们开源的一个测试工具Test Butler.
+<ol class="org-ol">
+<li>Observable 支持像操作数组一样操作异步数据.</li>
+<li><p>
+可以发射单个/多个/无限的事件流.下面是 Observable 和 Iterable 的
+对比.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2"><span class="todo TODO">TODO</span> 4. 3x3</h2>
-<div class="outline-text-2" id="text-orgheadline2">
-<p>
-<a href="https://engineering.linkedin.com/blog/2016/02/3x3--speeding-up-mobile-releases">https://engineering.linkedin.com/blog/2016/02/3x3--speeding-up-mobile-releases</a>
-同样是一篇linkin用来提升android发布流程的技术文章.
-</p>
-</div>
-</div>
-<div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="orgheadline3"><span class="todo TODO">TODO</span> 3. Droidcon NYC 2016</h2>
-<div class="outline-text-2" id="text-orgheadline3">
-<p>
-时间 September 29-30
-要开始, 应该会有很多不错的presentation. 持续关注.
-</p>
-</div>
-</div>
-<div id="outline-container-orgheadline4" class="outline-2">
-<h2 id="orgheadline4">4. IntelliJ plugin</h2>
-<div class="outline-text-2" id="text-orgheadline4">
-<p>
-一个介绍IntelliJ插件的视频.
-</p>
-</div>
-</div>
-<div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5">5. AI和Java</h2>
-<div class="outline-text-2" id="text-orgheadline5">
-<p>
-视频地址: <a href="http://nighthacking.com/artificial-intelligence-and-java/">http://nighthacking.com/artificial-intelligence-and-java/</a>
-</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
-<p>
-一个介绍人工智能和Java的视频.
-</p>
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">event</th>
+<th scope="col" class="org-left">Iterable</th>
+<th scope="col" class="org-left">Observable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">retrieve data</td>
+<td class="org-left">T next()</td>
+<td class="org-left">onNext(T)</td>
+</tr>
+
+<tr>
+<td class="org-left">error</td>
+<td class="org-left">throws</td>
+<td class="org-left">onError(Exception)</td>
+</tr>
+
+<tr>
+<td class="org-left">complete</td>
+<td class="org-left">!hasNext()</td>
+<td class="org-left">onCompleted()</td>
+</tr>
+</tbody>
+</table></li>
+<li>客户端代码要一直把与 Observable 操作当作异步操作.</li>
+<li>callback 虽然和使用, 但是在内嵌多个 callback 的场景中变得
+很<a href="https://gist.github.com/4677544">笨重</a>.</li>
+<li>可以分为"热"和"冷"两种, 热方式会立刻发射生成的数据.
+而冷方式会等有 subscriber 注册之后才发射.</li>
+</ol>
 </div>
 </div>
-<div id="outline-container-orgheadline6" class="outline-2">
-<h2 id="orgheadline6"><span class="todo TODO">TODO</span> 6. StateListAnimator</h2>
-<div class="outline-text-2" id="text-orgheadline6">
-<p>
-<a href="https://blog.stylingandroid.com/statelistanimator/">https://blog.stylingandroid.com/statelistanimator/</a>
-一个开源控件.
-</p>
-</div>
-</div>
-<div id="outline-container-orgheadline7" class="outline-2">
-<h2 id="orgheadline7"><span class="todo TODO">TODO</span> 7. 360AnDev</h2>
-<div class="outline-text-2" id="text-orgheadline7">
-<p>
-<a href="https://github.com/AndroidStudyGroup/conferences/wiki/360AnDev2016">https://github.com/AndroidStudyGroup/conferences/wiki/360AnDev2016</a>
-一些不错的android资源列表
-</p>
+
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">支持的操作符</h3>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="postamble">Created At  by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
+<p class="postamble">Created At <span class="timestamp-wrapper"><span class="timestamp">&lt;2016-04-18 Mon 22:15&gt;</span></span> by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
 </div>
 </body>
 </html>
