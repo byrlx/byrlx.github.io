@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-10-14 Fri 10:20 -->
+<!-- 2016-10-14 Fri 10:24 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Android Log 系统</title>
@@ -209,170 +209,121 @@ g_logformat = android_log_format_new();
 <div id="outline-container-orgheadline2" class="outline-3">
 <h3 id="orgheadline2">test 参数</h3>
 <div class="outline-text-3" id="text-orgheadline2">
-<p>
-如果logcat只有一个参数"&#x2013;test",则执行logprint_run_tests()函数,从代码来看,这个函数主要是测试logcat的功能的.
-</p>
+<div class="org-src-container">
 
-<p>
-    <i>* logprint_run_tests()*</i>
-p_format = android_log_format_new();
-fprintf(stderr, "running tests\n");
-tag = "random";
-android_log_addFilterRule(p_format,"*:i");
-</p>
+<pre class="src src-c">&#22914;&#26524;logcat&#21482;&#26377;&#19968;&#20010;&#21442;&#25968;<span style="color: #CC9393;">"--test"</span>,&#21017;&#25191;&#34892;logprint_run_tests()&#20989;&#25968;,&#20174;&#20195;&#30721;&#26469;&#30475;,&#36825;&#20010;&#20989;&#25968;&#20027;&#35201;&#26159;&#27979;&#35797;logcat&#30340;&#21151;&#33021;&#30340;.
 
-<p>
-这个函数开始也call了一次 android_log_format_new()分配了一个结构体.并设置了tag变量,tag是每个module在打log时都需要设置一个tag,可以通过tag用来标志是该module输出的log. 接着call函数 android_log_addFilterRule(), 设置logcat的过滤机制.
-</p>
+        <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">logprint_run_tests()</span><span style="color: #5F7F5F;">*/</span>
+    p_format = android_log_format_new();
+    fprintf(stderr, <span style="color: #CC9393;">"running tests\n"</span>);
+    tag = <span style="color: #CC9393;">"random"</span>;
+    android_log_addFilterRule(p_format,<span style="color: #CC9393;">"*:i"</span>);
 
-<p>
-    <i>* android_log_addFilterRule() *</i>
-    android_LogPriority pri = ANDROID_LOG_DEFAULT;
-    tagNameLength = strcspn(filterExpression, ":");
-if(filterExpression[tagNameLength] == ':') {
-    pri = filterCharToPri(filterExpression[tagNameLength+1]);
-</p>
+<span style="color: #7CB8BB;">&#36825;&#20010;&#20989;&#25968;&#24320;&#22987;&#20063;call&#20102;&#19968;&#27425;</span> <span style="color: #93E0E3;">android_log_format_new</span>()&#20998;&#37197;&#20102;&#19968;&#20010;&#32467;&#26500;&#20307;.&#24182;&#35774;&#32622;&#20102;tag&#21464;&#37327;,tag&#26159;&#27599;&#20010;module&#22312;&#25171;log&#26102;&#37117;&#38656;&#35201;&#35774;&#32622;&#19968;&#20010;tag,&#21487;&#20197;&#36890;&#36807;tag&#29992;&#26469;&#26631;&#24535;&#26159;&#35813;module&#36755;&#20986;&#30340;log. &#25509;&#30528;call&#20989;&#25968; android_log_addFilterRule(), &#35774;&#32622;logcat&#30340;&#36807;&#28388;&#26426;&#21046;.
 
-<p>
-    if (pri == ANDROID_LOG_UNKNOWN) {
-        goto error;
+        <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">android_log_addFilterRule() </span><span style="color: #5F7F5F;">*/</span>
+        android_LogPriority pri = ANDROID_LOG_DEFAULT;
+        tagNameLength = strcspn(filterExpression, <span style="color: #CC9393;">":"</span>);
+    <span style="color: #F0DFAF; font-weight: bold;">if</span>(filterExpression[tagNameLength] == <span style="color: #CC9393;">':'</span>) {
+        pri = filterCharToPri(filterExpression[tagNameLength+1]);
+
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (pri == ANDROID_LOG_UNKNOWN) {
+            <span style="color: #F0DFAF; font-weight: bold;">goto</span> <span style="color: #BFEBBF;">error</span>;
+        }
     }
-}
-</p>
 
-<p>
-该函数设置pri变量的值为 ANDROID_LOG_DEFAULT, 这个值被定义在一个enum中,如果log pririoty被设为 ANDROID_LOG_DEFAULT, 则表示输出所有等级的log.接着获得filter的tag的长度,根据前面的参数,"*:i"的返回结果是1, 接着调用filterCharToPri(),并传入参数"i"
-. 这个函数把传入的字符形式的log level 转换为数字level,这些level和 ANDROID_LOG_DEFAULT一起定义在enum中.
-</p>
+<span style="color: #7CB8BB;">&#35813;&#20989;&#25968;&#35774;&#32622;pri&#21464;&#37327;&#30340;&#20540;&#20026;</span> <span style="color: #DFAF8F;">ANDROID_LOG_DEFAULT</span>, <span style="color: #7CB8BB;">&#36825;&#20010;&#20540;&#34987;&#23450;&#20041;&#22312;&#19968;&#20010;enum&#20013;</span>,<span style="color: #DFAF8F;">&#22914;&#26524;log</span> pririoty&#34987;&#35774;&#20026; ANDROID_LOG_DEFAULT, <span style="color: #DFAF8F;">&#21017;&#34920;&#31034;&#36755;&#20986;&#25152;&#26377;&#31561;&#32423;&#30340;log</span>.&#25509;&#30528;&#33719;&#24471;filter&#30340;tag&#30340;&#38271;&#24230;,<span style="color: #DFAF8F;">&#26681;&#25454;&#21069;&#38754;&#30340;&#21442;&#25968;</span>,<span style="color: #CC9393;">"*:i"</span>&#30340;&#36820;&#22238;&#32467;&#26524;&#26159;1, &#25509;&#30528;&#35843;&#29992;filterCharToPri(),&#24182;&#20256;&#20837;&#21442;&#25968;<span style="color: #CC9393;">"i"</span>
+. &#36825;&#20010;&#20989;&#25968;&#25226;&#20256;&#20837;&#30340;&#23383;&#31526;&#24418;&#24335;&#30340;log level &#36716;&#25442;&#20026;&#25968;&#23383;level,<span style="color: #7CB8BB;">&#36825;&#20123;level&#21644;</span> <span style="color: #7CB8BB;">ANDROID_LOG_DEFAULT&#19968;&#36215;&#23450;&#20041;&#22312;enum&#20013;</span>.
 
-<p>
-} else if (c == 'i') {
-    pri = ANDROID_LOG_INFO;
-</p>
+    } <span style="color: #F0DFAF; font-weight: bold;">else</span> <span style="color: #F0DFAF; font-weight: bold;">if</span> (c == <span style="color: #CC9393;">'i'</span>) {
+        pri = ANDROID_LOG_INFO;
 
-<p>
-<i>* define *</i>
-enum  {
-    ANDROID_LOG_UNKNOWN = 0,
-    ANDROID_LOG_DEFAULT,    <i>* only for SetMinPriority() *</i>
-</p>
+        <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">define </span><span style="color: #5F7F5F;">*/</span>
+        <span style="color: #F0DFAF; font-weight: bold;">enum</span>  {
+            <span style="color: #DFAF8F;">ANDROID_LOG_UNKNOWN</span> = 0,
+            <span style="color: #DFAF8F;">ANDROID_LOG_DEFAULT</span>,    <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">only for SetMinPriority() </span><span style="color: #5F7F5F;">*/</span>
 
-<p>
-ANDROID_LOG_VERBOSE,
-ANDROID_LOG_DEBUG,
-ANDROID_LOG_INFO,
-ANDROID_LOG_WARN,
-ANDROID_LOG_ERROR,
-ANDROID_LOG_FATAL,
-</p>
+            <span style="color: #DFAF8F;">ANDROID_LOG_VERBOSE</span>,
+            <span style="color: #DFAF8F;">ANDROID_LOG_DEBUG</span>,
+            <span style="color: #DFAF8F;">ANDROID_LOG_INFO</span>,
+            <span style="color: #DFAF8F;">ANDROID_LOG_WARN</span>,
+            <span style="color: #DFAF8F;">ANDROID_LOG_ERROR</span>,
+            <span style="color: #DFAF8F;">ANDROID_LOG_FATAL</span>,
 
-<p>
-ANDROID_LOG_SILENT,     <i>* only for SetMinPriority(); must be last *</i>
-</p>
+            <span style="color: #DFAF8F;">ANDROID_LOG_SILENT</span>,     <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">only for SetMinPriority(); must be last </span><span style="color: #5F7F5F;">*/</span>
 
-<p>
-接下来判断是否有设置全局的log level,即传入的filter中是否包含"*:x"的字符串,如果是的话,就设置一个全局性的log level
-</p>
+<span style="color: #7CB8BB;">&#25509;&#19979;&#26469;&#21028;&#26029;&#26159;&#21542;&#26377;&#35774;&#32622;&#20840;&#23616;&#30340;log</span> <span style="color: #DFAF8F;">level</span>,<span style="color: #DFAF8F;">&#21363;&#20256;&#20837;&#30340;filter&#20013;&#26159;&#21542;&#21253;&#21547;</span><span style="color: #CC9393;">"*:x"</span>&#30340;&#23383;&#31526;&#20018;,<span style="color: #DFAF8F;">&#22914;&#26524;&#26159;&#30340;&#35805;</span>,<span style="color: #7CB8BB;">&#23601;&#35774;&#32622;&#19968;&#20010;&#20840;&#23616;&#24615;&#30340;log</span> <span style="color: #DFAF8F;">level</span>
 
-<p>
-<i>* android_log_addFilterRule() *</i>
-     if(0 <code>= strncmp("*", filterExpression, tagNameLength)) {
-         if (pri =</code> ANDROID_LOG_DEFAULT) {
-    pri = ANDROID_LOG_DEBUG;
-}
-p_format-&gt;global_pri = pri;
-</p>
+        <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">android_log_addFilterRule() </span><span style="color: #5F7F5F;">*/</span>
+    <span style="color: #F0DFAF; font-weight: bold;">if</span>(0 == strncmp(<span style="color: #CC9393;">"*"</span>, filterExpression, tagNameLength)) {
+        <span style="color: #F0DFAF; font-weight: bold;">if</span> (pri == ANDROID_LOG_DEFAULT) {
+            pri = ANDROID_LOG_DEBUG;
+        }
+        p_format-&gt;global_pri = pri;
 
-<p>
-这样,runtest()函数的filter设置就完成了,剩下都是一些基本的检查语句检查设置有没有成功.
-</p>
+&#36825;&#26679;,runtest()&#20989;&#25968;&#30340;filter&#35774;&#32622;&#23601;&#23436;&#25104;&#20102;,&#21097;&#19979;&#37117;&#26159;&#19968;&#20123;&#22522;&#26412;&#30340;&#26816;&#26597;&#35821;&#21477;&#26816;&#26597;&#35774;&#32622;&#26377;&#27809;&#26377;&#25104;&#21151;.
 
-<p>
-assert (ANDROID_LOG_INFO == filterPriForTag(p_format, "random"));
-</p>
+            assert (ANDROID_LOG_INFO == filterPriForTag(p_format, <span style="color: #CC9393;">"random"</span>));
 
-<p>
-这条语句检查tag "random"的priority是否是ANDROID_LOG_INFO,看下 filterPriForTag()函数实现
-</p>
+&#36825;&#26465;&#35821;&#21477;&#26816;&#26597;tag <span style="color: #CC9393;">"random"</span>&#30340;priority&#26159;&#21542;&#26159;ANDROID_LOG_INFO,&#30475;&#19979; <span style="color: #7CB8BB;">filterPriForTag</span>()&#20989;&#25968;&#23454;&#29616;
 
-<p>
-static android_LogPriority filterPriForTag(
-        AndroidLogFormat *p_format, const char *tag)
-{
-    FilterInfo *p_curFilter;
-    for (p_curFilter = p_format-&gt;filters
-            ; p_curFilter != NULL
-            ; p_curFilter = p_curFilter-&gt;p_next
-    ) {
-        if (0 <code>= strcmp(tag, p_curFilter-&gt;mTag)) {
-	             if (p_curFilter-&gt;mPri =</code> ANDROID_LOG_DEFAULT) {
-                return p_format-&gt;global_pri;
-            } else {
-                return p_curFilter-&gt;mPri;
+        <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">android_LogPriority</span> <span style="color: #DFAF8F;">filterPriForTag</span>(
+                <span style="color: #7CB8BB;">AndroidLogFormat</span> *<span style="color: #DFAF8F;">p_format</span>, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">tag</span>)
+        {
+            <span style="color: #7CB8BB;">FilterInfo</span> *<span style="color: #DFAF8F;">p_curFilter</span>;
+            <span style="color: #F0DFAF; font-weight: bold;">for</span> (p_curFilter = p_format-&gt;filters
+                    ; p_curFilter != <span style="color: #BFEBBF;">NULL</span>
+                    ; p_curFilter = p_curFilter-&gt;p_next
+            ) {
+                <span style="color: #F0DFAF; font-weight: bold;">if</span> (0 == strcmp(tag, p_curFilter-&gt;mTag)) {
+                    <span style="color: #F0DFAF; font-weight: bold;">if</span> (p_curFilter-&gt;mPri == ANDROID_LOG_DEFAULT) {
+                        <span style="color: #F0DFAF; font-weight: bold;">return</span> p_format-&gt;global_pri;
+                    } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
+                        <span style="color: #F0DFAF; font-weight: bold;">return</span> p_curFilter-&gt;mPri;
+                    }
+                }
             }
+
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> p_format-&gt;global_pri;
         }
-    }
-</p>
 
-<p>
-    return p_format-&gt;global_pri;
-}
-</p>
+&#36825;&#27573;code&#24456;&#30452;&#35266;,&#39318;&#20808;&#36941;&#21382;p_format&#30340;filter,&#26816;&#26597;&#26377;&#27809;&#26377;&#35774;&#32622;tag&#30340;priority, &#22914;&#26524;&#27809;&#26377;&#25214;&#21040;,<span style="color: #7CB8BB;">&#23601;&#36820;&#22238;&#20840;&#23616;&#30340;log</span> <span style="color: #DFAF8F;">level</span>. &#36824;&#26377;&#21478;&#19968;&#20010;&#38656;&#35201;&#26816;&#26597;&#30340;&#22320;&#26041;
 
-<p>
-这段code很直观,首先遍历p_format的filter,检查有没有设置tag的priority, 如果没有找到,就返回全局的log level. 还有另一个需要检查的地方
-</p>
+    assert(android_log_shouldPrintLine(p_format, tag, ANDROID_LOG_DEBUG) == 0);
 
-<p>
-assert(android_log_shouldPrintLine(p_format, tag, ANDROID_LOG_DEBUG) == 0);
-</p>
+&#22312;android&#20013;&#27599;&#26465;log&#37117;&#23545;&#24212;&#35201;&#19968;&#20010;priority,&#36825;&#20010;&#20989;&#25968;&#26816;&#26597;&#30456;&#24212;tag&#30340;&#36825;&#26465;log&#26159;&#21542;&#24212;&#35813;&#25171;&#21360;&#20986;&#26469;.
 
-<p>
-在android中每条log都对应要一个priority,这个函数检查相应tag的这条log是否应该打印出来.
-</p>
-
-<p>
-int android_log_shouldPrintLine (
-        AndroidLogFormat *p_format, const char *tag, android_LogPriority pri)
-{
-    return pri &gt;= filterPriForTag(p_format, tag);
-}
-</p>
-
-<p>
-通过filterPriForTag()函数查找该tag的priority,然后跟传入的level做比较,判断是否需要打印该tag该level级别的log.
-</p>
-
-<p>
-同时,可以通过 android_log_addFilterString()设定多个log filter.
-</p>
-
-<p>
-err = android_log_addFilterString(p_format, "*:s random:d ");
-</p>
-
-<p>
-int android_log_addFilterString(AndroidLogFormat *p_format,
-        const char *filterString)
-{
-    // Yes, I'm using strsep
-    while (NULL != (p_ret = strsep(&amp;p_cur, " \t,"))) {
-        // ignore whitespace-only entries
-        if(p_ret[ 0]= != '\0') {
-            err = android_log_addFilterRule(p_format, p_ret);
+        <span style="color: #7CB8BB;">int</span> android_log_shouldPrintLine (
+                AndroidLogFormat *p_format, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">tag</span>, <span style="color: #7CB8BB;">android_LogPriority</span> <span style="color: #DFAF8F;">pri</span>)
+        {
+            <span style="color: #F0DFAF; font-weight: bold;">return</span> pri &gt;= filterPriForTag(p_format, tag);
         }
-    }
-&#x2026;&#x2026;        
-}
-</p>
 
-<p>
-android_log_addFilterString()会循环遍历传入的filter string,并将其添加到filter 链表中.
-ok, "&#x2013;test" 参数到这里就讲完了.
-</p>
+&#36890;&#36807;filterPriForTag()&#20989;&#25968;&#26597;&#25214;&#35813;tag&#30340;priority,&#28982;&#21518;&#36319;&#20256;&#20837;&#30340;level&#20570;&#27604;&#36739;,&#21028;&#26029;&#26159;&#21542;&#38656;&#35201;&#25171;&#21360;&#35813;tag&#35813;level&#32423;&#21035;&#30340;log.
+
+&#21516;&#26102;,&#21487;&#20197;&#36890;&#36807; <span style="color: #7CB8BB;">android_log_addFilterString</span>()<span style="color: #7CB8BB;">&#35774;&#23450;&#22810;&#20010;log</span> <span style="color: #DFAF8F;">filter</span>.
+
+    err = android_log_addFilterString(p_format, <span style="color: #CC9393;">"*:s random:d "</span>);
+
+        <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">android_log_addFilterString</span>(<span style="color: #7CB8BB;">AndroidLogFormat</span> *<span style="color: #DFAF8F;">p_format</span>,
+                <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">filterString</span>)
+        {
+            <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Yes, I'm using strsep</span>
+            <span style="color: #F0DFAF; font-weight: bold;">while</span> (<span style="color: #BFEBBF;">NULL</span> != (p_ret = strsep(&amp;p_cur, <span style="color: #CC9393;">" \t,"</span>))) {
+                <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">ignore whitespace-only entries</span>
+                <span style="color: #F0DFAF; font-weight: bold;">if</span>(p_ret[0] != <span style="color: #CC9393;">'\0'</span>) {
+                    err = android_log_addFilterRule(p_format, p_ret);
+                }
+            }
+        ...... 
+        }
+
+android_log_addFilterString()<span style="color: #7CB8BB;">&#20250;&#24490;&#29615;&#36941;&#21382;&#20256;&#20837;&#30340;filter</span> <span style="color: #DFAF8F;">string</span>,<span style="color: #DFAF8F;">&#24182;&#23558;&#20854;&#28155;&#21152;&#21040;filter</span> &#38142;&#34920;&#20013;.
+ok, <span style="color: #CC9393;">"--test"</span> &#21442;&#25968;&#21040;&#36825;&#37324;&#23601;&#35762;&#23436;&#20102;.
+</pre>
 </div>
 </div>
-
+</div>
 <div id="outline-container-orgheadline3" class="outline-3">
 <h3 id="orgheadline3">"-s" 参数</h3>
 <div class="outline-text-3" id="text-orgheadline3">
@@ -679,7 +630,7 @@ logger device read() 的实现是每次读取一条logger_entry, 并存放到结
     <span style="color: #7CB8BB;">int32_t</span>     <span style="color: #DFAF8F;">tid</span>;    <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">generating process's tid </span><span style="color: #5F7F5F;">*/</span>
     <span style="color: #7CB8BB;">int32_t</span>     <span style="color: #DFAF8F;">sec</span>;    <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">seconds since Epoch </span><span style="color: #5F7F5F;">*/</span>
     <span style="color: #7CB8BB;">int32_t</span>     <span style="color: #DFAF8F;">nsec</span>;   <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">nanoseconds </span><span style="color: #5F7F5F;">*/</span>
-    <span style="color: #7CB8BB;">char</span>        <span style="color: #DFAF8F;">msg</span>[ 0]=; <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">the entry's payload </span><span style="color: #5F7F5F;">*/</span>
+    <span style="color: #7CB8BB;">char</span>        <span style="color: #DFAF8F;">msg</span>[0]; <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">the entry's payload </span><span style="color: #5F7F5F;">*/</span>
 };
 </pre>
 </div>
@@ -805,7 +756,7 @@ android_log_processLogBuffer()的参数有两个,第一个是logger_entry变量,
     <span style="color: #7CB8BB;">int32_t</span>     <span style="color: #DFAF8F;">tid</span>;    <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">generating process's tid </span><span style="color: #5F7F5F;">*/</span>
     <span style="color: #7CB8BB;">int32_t</span>     <span style="color: #DFAF8F;">sec</span>;    <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">seconds since Epoch </span><span style="color: #5F7F5F;">*/</span>
     <span style="color: #7CB8BB;">int32_t</span>     <span style="color: #DFAF8F;">nsec</span>;   <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">nanoseconds </span><span style="color: #5F7F5F;">*/</span>
-    <span style="color: #7CB8BB;">char</span>        <span style="color: #DFAF8F;">msg</span>[ 0]=; <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">the entry's payload </span><span style="color: #5F7F5F;">*/</span>
+    <span style="color: #7CB8BB;">char</span>        <span style="color: #DFAF8F;">msg</span>[0]; <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">the entry's payload </span><span style="color: #5F7F5F;">*/</span>
 };
 
 <span style="color: #F0DFAF; font-weight: bold;">typedef</span> <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">AndroidLogEntry_t</span> {
@@ -842,7 +793,7 @@ android_log_processLogBuffer()的参数有两个,第一个是logger_entry变量,
         }
     }
 
-    entry-&gt;priority = buf-&gt;msg[ 0]=;
+    entry-&gt;priority = buf-&gt;msg[0];
     entry-&gt;tag = buf-&gt;msg + 1;
     entry-&gt;message = buf-&gt;msg + msgStart;
     entry-&gt;messageLen = msgEnd - msgStart;
@@ -905,7 +856,7 @@ android_log_processLogBuffer()的参数有两个,第一个是logger_entry变量,
             suffixLen = 1;
             <span style="color: #F0DFAF; font-weight: bold;">break</span>;
         <span style="color: #F0DFAF; font-weight: bold;">case</span> FORMAT_RAW:
-            prefixBuf[ 0]= = 0;
+            prefixBuf[0] = 0;
             prefixLen = 0;
             strcpy(suffixBuf, <span style="color: #CC9393;">"\n"</span>);
             suffixLen = 1;
@@ -949,7 +900,7 @@ android_log_processLogBuffer()的参数有两个,第一个是logger_entry变量,
     <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">pm</span>;
 
 
-    ret[ 0]= = <span style="color: #CC9393;">'\0'</span>;       <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">to start strcat off </span><span style="color: #5F7F5F;">*/</span>
+    ret[0] = <span style="color: #CC9393;">'\0'</span>;       <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">to start strcat off </span><span style="color: #5F7F5F;">*/</span>
 
     p = ret;
     pm = entry-&gt;message;
@@ -1126,7 +1077,7 @@ __android_log_print()通过va_list变量把format形式字符串生成最终的�
 
 <pre class="src src-c"><span style="color: #7CB8BB;">int</span> <span style="color: #93E0E3;">__android_log_write</span>(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">prio</span>, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">tag</span>, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">msg</span>)
 {
-    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>[3]=;
+    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>[3];
     <span style="color: #7CB8BB;">log_id_t</span> <span style="color: #DFAF8F;">log_id</span> = LOG_ID_MAIN;
 
     <span style="color: #F0DFAF; font-weight: bold;">if</span> (<span style="color: #F0DFAF; font-weight: bold;">!</span>tag)
@@ -1144,12 +1095,12 @@ __android_log_print()通过va_list变量把format形式字符串生成最终的�
         <span style="color: #F0DFAF; font-weight: bold;">!</span>strcmp(tag, <span style="color: #CC9393;">"SMS"</span>))
             log_id = LOG_ID_RADIO;
 
-    vec[ 0]=.iov_base   = (<span style="color: #7CB8BB;">unsigned</span> <span style="color: #7CB8BB;">char</span> *) &amp;prio;
-    vec[ 0]=.iov_len    = 1;
-    vec[1]=.iov_base   = (<span style="color: #7CB8BB;">void</span> *) tag;
-    vec[1]=.iov_len    = strlen(tag) + 1;
-    vec[2]=.iov_base   = (<span style="color: #7CB8BB;">void</span> *) msg;
-    vec[2]=.iov_len    = strlen(msg) + 1;
+    vec[0].iov_base   = (<span style="color: #7CB8BB;">unsigned</span> <span style="color: #7CB8BB;">char</span> *) &amp;prio;
+    vec[0].iov_len    = 1;
+    vec[1].iov_base   = (<span style="color: #7CB8BB;">void</span> *) tag;
+    vec[1].iov_len    = strlen(tag) + 1;
+    vec[2].iov_base   = (<span style="color: #7CB8BB;">void</span> *) msg;
+    vec[2].iov_len    = strlen(msg) + 1;
 
     <span style="color: #F0DFAF; font-weight: bold;">return</span> write_to_log(log_id, vec, 3);
 }
@@ -1278,7 +1229,7 @@ SLOGX()API族用于生成system log,log被写到system这个logger device中,SLO
 
 <span style="color: #7CB8BB;">int</span> <span style="color: #93E0E3;">__android_log_buf_write</span>(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">bufID</span>, <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">prio</span>, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">tag</span>, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">msg</span>)
 {
-    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>[3]=;
+    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>[3];
 
     <span style="color: #F0DFAF; font-weight: bold;">if</span> (<span style="color: #F0DFAF; font-weight: bold;">!</span>tag)
         tag = <span style="color: #CC9393;">""</span>;
@@ -1295,12 +1246,12 @@ SLOGX()API族用于生成system log,log被写到system这个logger device中,SLO
         <span style="color: #F0DFAF; font-weight: bold;">!</span>strcmp(tag, <span style="color: #CC9393;">"SMS"</span>))
             bufID = LOG_ID_RADIO;
 
-    vec[ 0]=.iov_base   = (<span style="color: #7CB8BB;">unsigned</span> <span style="color: #7CB8BB;">char</span> *) &amp;prio;
-    vec[ 0]=.iov_len    = 1;
-    vec[1]=.iov_base   = (<span style="color: #7CB8BB;">void</span> *) tag;
-    vec[1]=.iov_len    = strlen(tag) + 1;
-    vec[2]=.iov_base   = (<span style="color: #7CB8BB;">void</span> *) msg;
-    vec[2]=.iov_len    = strlen(msg) + 1;
+    vec[0].iov_base   = (<span style="color: #7CB8BB;">unsigned</span> <span style="color: #7CB8BB;">char</span> *) &amp;prio;
+    vec[0].iov_len    = 1;
+    vec[1].iov_base   = (<span style="color: #7CB8BB;">void</span> *) tag;
+    vec[1].iov_len    = strlen(tag) + 1;
+    vec[2].iov_base   = (<span style="color: #7CB8BB;">void</span> *) msg;
+    vec[2].iov_len    = strlen(msg) + 1;
 
     <span style="color: #F0DFAF; font-weight: bold;">return</span> write_to_log(bufID, vec, 3);
 }
@@ -1357,14 +1308,14 @@ public <span style="color: #F0DFAF; font-weight: bold;">static</span> native <sp
 <span style="color: #7CB8BB;">int</span> <span style="color: #93E0E3;">__android_log_btwrite</span>(<span style="color: #7CB8BB;">int32_t</span> <span style="color: #DFAF8F;">tag</span>, <span style="color: #7CB8BB;">char</span> <span style="color: #DFAF8F;">type</span>, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">void</span> *<span style="color: #DFAF8F;">payload</span>,
     <span style="color: #7CB8BB;">size_t</span> <span style="color: #DFAF8F;">len</span>)
 {
-    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>[3]=;
+    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>[3];
 
-    vec[ 0]=.iov_base = &amp;tag;
-    vec[ 0]=.iov_len = <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(tag);
-    vec[1]=.iov_base = &amp;type;
-    vec[1]=.iov_len = <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(type);
-    vec[2]=.iov_base = (<span style="color: #7CB8BB;">void</span>*)payload;
-    vec[2]=.iov_len = len;
+    vec[0].iov_base = &amp;tag;
+    vec[0].iov_len = <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(tag);
+    vec[1].iov_base = &amp;type;
+    vec[1].iov_len = <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(type);
+    vec[2].iov_base = (<span style="color: #7CB8BB;">void</span>*)payload;
+    vec[2].iov_len = len;
 
     <span style="color: #F0DFAF; font-weight: bold;">return</span> write_to_log(LOG_ID_EVENTS, vec, 3);
 }
@@ -1385,8 +1336,8 @@ public <span style="color: #F0DFAF; font-weight: bold;">static</span> native <sp
     <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">max</span> = <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(buf) - <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(len) - 2;  <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Type byte, final newline</span>
     <span style="color: #F0DFAF; font-weight: bold;">if</span> (len &gt; max) len = max;
 
-    buf[ 0]= = EVENT_TYPE_STRING;
-    memcpy(&amp;buf[1]=, &amp;len, <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(len));
+    buf[0] = EVENT_TYPE_STRING;
+    memcpy(&amp;buf[1], &amp;len, <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(len));
     memcpy(&amp;buf[1 + <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(len)], str, len);
     buf[1 + <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(len) + len] = <span style="color: #CC9393;">'\n'</span>;
 
@@ -1403,12 +1354,12 @@ public <span style="color: #F0DFAF; font-weight: bold;">static</span> native <sp
 
 <pre class="src src-c"><span style="color: #7CB8BB;">int</span> <span style="color: #93E0E3;">__android_log_bwrite</span>(<span style="color: #7CB8BB;">int32_t</span> <span style="color: #DFAF8F;">tag</span>, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">void</span> *<span style="color: #DFAF8F;">payload</span>, <span style="color: #7CB8BB;">size_t</span> <span style="color: #DFAF8F;">len</span>)
 {
-    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>[2]=;
+    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>[2];
 
-    vec[ 0]=.iov_base = &amp;tag;
-    vec[ 0]=.iov_len = <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(tag);
-    vec[1]=.iov_base = (<span style="color: #7CB8BB;">void</span>*)payload;
-    vec[1]=.iov_len = len;
+    vec[0].iov_base = &amp;tag;
+    vec[0].iov_len = <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(tag);
+    vec[1].iov_base = (<span style="color: #7CB8BB;">void</span>*)payload;
+    vec[1].iov_len = len;
 
     <span style="color: #F0DFAF; font-weight: bold;">return</span> write_to_log(LOG_ID_EVENTS, vec, 2);
 }
@@ -1465,8 +1416,8 @@ writeEvent的第四种形式:写入的是int/long/string的组合体,则会循�
         env-&gt;DeleteLocalRef(item);
     }
 
-    buf[ 0]= = EVENT_TYPE_LIST;
-    buf[1]= = copied;
+    buf[0] = EVENT_TYPE_LIST;
+    buf[1] = copied;
     buf[pos++] = <span style="color: #CC9393;">'\n'</span>;
     <span style="color: #F0DFAF; font-weight: bold;">return</span> android_bWriteLog(tag, buf, pos);
 }
@@ -2107,7 +2058,7 @@ include $(BUILD_EXECUTABLE)
         usage();
     }
 
-    rc = android_fork_execvp_ext(argc, &amp;argv[ 0]=, &amp;status, <span style="color: #BFEBBF;">true</span>,
+    rc = android_fork_execvp_ext(argc, &amp;argv[0], &amp;status, <span style="color: #BFEBBF;">true</span>,
                                  log_target, abbreviated, <span style="color: #BFEBBF;">NULL</span>);
 
         ....
@@ -2216,7 +2167,7 @@ logwrapper程序再把它写到相关文件中。
         sigaction(SIGQUIT, &amp;ignact, &amp;quitact);
     }
 
-    rc = parent(argv[ 0]=, parent_ptty, pid, status, log_target,
+    rc = parent(argv[0], parent_ptty, pid, status, log_target,
                 abbreviated, file_path);
 }
 </pre>
@@ -2238,8 +2189,8 @@ logwrapper程序再把它写到相关文件中。
     memcpy(argv_child, argv, <span style="color: #7CB8BB;">argc</span> * <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(<span style="color: #7CB8BB;">char</span> *));
     argv_child[argc] = <span style="color: #BFEBBF;">NULL</span>;
 
-    <span style="color: #F0DFAF; font-weight: bold;">if</span> (execvp(argv_child[ 0]=, argv_child)) {
-        FATAL_CHILD(<span style="color: #CC9393;">"executing %s failed: %s\n"</span>, argv_child[ 0]=,
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (execvp(argv_child[0], argv_child)) {
+        FATAL_CHILD(<span style="color: #CC9393;">"executing %s failed: %s\n"</span>, argv_child[0],
                 strerror(errno));
     }
 }
@@ -2256,7 +2207,7 @@ parent()实现就比较复杂一些。
     ...
 
 <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">pollfd</span> poll_fds[] = {
-    [ 0]= = {
+    [0] = {
         .fd = parent_read,
         .events = POLLIN,
     },
@@ -2306,7 +2257,7 @@ log_info.abbreviated = abbreviated;
         <span style="color: #F0DFAF; font-weight: bold;">goto</span> <span style="color: #BFEBBF;">err_poll</span>;
     }
 
-    <span style="color: #F0DFAF; font-weight: bold;">if</span> (poll_fds[ 0]=.revents &amp; POLLIN) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (poll_fds[0].revents &amp; POLLIN) {
         sz = read(parent_read, &amp;buffer[b], <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(buffer) - 1 - b);
 
         sz += b;
@@ -2341,7 +2292,7 @@ log_info.abbreviated = abbreviated;
         }
     }
 
-    <span style="color: #F0DFAF; font-weight: bold;">if</span> (poll_fds[ 0]=.revents &amp; POLLHUP) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (poll_fds[0].revents &amp; POLLHUP) {
         <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">ret</span>;
 
         ret = waitpid(pid, &amp;status, WNOHANG);
