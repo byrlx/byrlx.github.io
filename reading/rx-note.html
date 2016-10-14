@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-10-14 Fri 13:57 -->
+<!-- 2016-10-14 Fri 16:03 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>RxJava 笔记</title>
@@ -95,6 +95,24 @@ for the JavaScript code in this tag.
 <li><a href="#orgheadline3">支持的操作符</a></li>
 </ul>
 </li>
+<li><a href="#orgheadline15">操作符</a>
+<ul>
+<li><a href="#orgheadline14">创建类操作符</a>
+<ul>
+<li><a href="#orgheadline4">Create</a></li>
+<li><a href="#orgheadline5">Defer</a></li>
+<li><a href="#orgheadline6">Empty/Never/Throw</a></li>
+<li><a href="#orgheadline7">From</a></li>
+<li><a href="#orgheadline8">Interval</a></li>
+<li><a href="#orgheadline9">Just</a></li>
+<li><a href="#orgheadline10">Range</a></li>
+<li><a href="#orgheadline11">Repeat</a></li>
+<li><a href="#orgheadline12"><span class="todo nilTODO">TODO</span> Start</a></li>
+<li><a href="#orgheadline13">Timer</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -171,6 +189,196 @@ for the JavaScript code in this tag.
 
 <div id="outline-container-orgheadline3" class="outline-3">
 <h3 id="orgheadline3">支持的操作符</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<ol class="org-ol">
+<li>创建. 包括 Create, Defer, Empty/Never/Throw, From, Interval, Just, Range, Repeat, Start, and Timer</li>
+<li>转化. 包括 Buffer, FlatMap, GroupBy, Map, Scan, and Window.</li>
+<li>过滤. 包括 Debounce, Distinct, ElementAt, Filter, First, IgnoreElements, Last, Sample, Skip, SkipLast, Take, and TakeLast.</li>
+<li>合并. 包括 And/Then/When, CombineLatest, Join, Merge, StartWith, Switch, and Zip.</li>
+<li>条件. 包括 All, Amb, Contains, DefaultIfEmpty, SequenceEqual, SkipUntil, SkipWhile, TakeUntil, and TakeWhile</li>
+<li>计算. 包括 Average, Concat, Count, Max, Min, Reduce, and Sum.</li>
+<li>连接. 包括Connect, Publish, RefCount, and Replay.</li>
+<li>工具类. 包括Delay, Do, Materialize/Dematerialize, ObserveOn, Serialize, Subscribe, SubscribeOn, TimeInterval, Timeout, Timestamp, and Using.</li>
+</ol>
+
+<p>
+这些操作符有的会返回 Observable序列, 所以可以将这些操作性连在一起
+做序列化操作.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline15" class="outline-2">
+<h2 id="orgheadline15">操作符</h2>
+<div class="outline-text-2" id="text-orgheadline15">
+</div><div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14">创建类操作符</h3>
+<div class="outline-text-3" id="text-orgheadline14">
+</div><div id="outline-container-orgheadline4" class="outline-4">
+<h4 id="orgheadline4">Create</h4>
+<div class="outline-text-4" id="text-orgheadline4">
+<p>
+ 从头开始创建一个 Observable, 该函数的参数必须能够
+接受一个 Observer 作为参数.这样通过该函数创建的 Observable
+才能注册 Observer.
+</p>
+
+<p>
+在 Java 中,create()函数接受一个 OnSubscribe 对象.
+</p>
+<pre class="example">
+Observable.create(new Observable.OnSubscribe&lt;Integer&gt;() {
+    @Override
+    public void call(Subscriber&lt;? super Integer&gt; observer) {
+        try {
+            if (!observer.isUnsubscribed()) {
+                for (int i = 1; i &lt; 5; i++) {
+                    observer.onNext(i);
+                }
+                observer.onCompleted();
+            }
+        } catch (Exception e) {
+            observer.onError(e);
+        }
+    }
+ } ).subscribe(new Subscriber&lt;Integer&gt;() {
+        @Override
+        public void onNext(Integer item) {
+            System.out.println("Next: " + item);
+        }
+
+        @Override
+        public void onError(Throwable error) {
+            System.err.println("Error: " + error.getMessage());
+        }
+
+        @Override
+        public void onCompleted() {
+            System.out.println("Sequence complete.");
+        }
+    });
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5">Defer</h4>
+<div class="outline-text-4" id="text-orgheadline5">
+<p>
+ 当有observer注册的时候才创建 Observable. 例如下面的例子,
+ 虽然只创建了一个 defer() 返回值对象, 但是call()函数会调用两次.
+说明每次注册一个新的观察者时, 都会生成一个新的 Observable 对象.
+</p>
+<pre class="example">
+Observable&lt;String&gt; observable = Observable.defer(new Func0&lt;Observable&lt;String&gt;&gt;() {
+        @Override
+        public Observable&lt;String&gt; call() {
+            System.out.println("create observable id = " + cont++);
+            return Observable.just(value);
+        }
+    });
+observable.subscribe(glbSubscriber);
+observable.subscribe(glbSubscriber);
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-4">
+<h4 id="orgheadline6">Empty/Never/Throw</h4>
+<div class="outline-text-4" id="text-orgheadline6">
+<p>
+empty()创建一个 Observable, 注册之后立刻调用 onComplete()
+never()创建一个 Observable, 注册之后永远都不调用
+throw()(java叫 error())创建一个 Observable, 注册之后立刻调用 onError()
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7">From</h4>
+<div class="outline-text-4" id="text-orgheadline7">
+<p>
+将一系列其他类型(Iterable, array&#x2026;)转化为 Observable
+</p>
+
+<p>
+RxJava 支持的类型包括: Iterable, Array, Callable, Future
+</p>
+<pre class="example">
+Observable.from(names).subscribe(new Action1&lt;String&gt;() {
+    @Override
+    public void call(String s) {
+        System.out.println("hi:" + s);
+    }
+});
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8">Interval</h4>
+<div class="outline-text-4" id="text-orgheadline8">
+<p>
+ 间隔性的发射数据.  一直下去,不停止.<br  />
+RxJava提供了多个重载版本.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-4">
+<h4 id="orgheadline9">Just</h4>
+<div class="outline-text-4" id="text-orgheadline9">
+<p>
+ 接受一个参数,并原封不动的发射出去, 这与<a href="#orgheadline7">From</a>不同, 后者
+会把 array 分解然后一个个的发射. 
+</p>
+
+<p>
+RxJava 不支持参数为 array.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10">Range</h4>
+<div class="outline-text-4" id="text-orgheadline10">
+<p>
+发射一段范围内的整数. 接受两个参数:起始值和个数.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11">Repeat</h4>
+<div class="outline-text-4" id="text-orgheadline11">
+<p>
+创建一个 Observable, 重复性的发射数据.
+</p>
+
+<p>
+RxJava 的该操作符实现并不初始化一个 observable, 它需要
+在一个 Observable 对象内部调用.
+</p>
+<pre class="example">
+Observable.just("helo", "wold")
+        .repeat(3)
+        .subscribe(glbSubscriber);
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12"><span class="todo TODO">TODO</span> Start</h4>
+<div class="outline-text-4" id="text-orgheadline12">
+<p>
+接受一个函数, 然后发射函数的返回值.
+</p>
+
+<p>
+RxJava 中该操作符的实现放在了一个单独的模块 rxjava-async 中
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline13" class="outline-4">
+<h4 id="orgheadline13">Timer</h4>
+<div class="outline-text-4" id="text-orgheadline13">
+<p>
+延迟反射数据.
+</p>
+</div>
+</div>
 </div>
 </div>
 </div>
