@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-10-14 Fri 09:16 -->
+<!-- 2016-10-14 Fri 09:20 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
-<title>SICP 阅读笔记 求解函数 f(x)=0</title>
+<title>SICP 阅读笔记</title>
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Luis Xu Luis Xu" />
 <link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
@@ -84,7 +84,7 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
-<h1 class="title">SICP 阅读笔记 求解函数 f(x)=0</h1>
+<h1 class="title">SICP 阅读笔记</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -97,11 +97,15 @@ for the JavaScript code in this tag.
 <li><a href="#orgheadline5">4. 实现基本函数</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline6">高阶抽象lxsearch</a></li>
-<li><a href="#orgheadline9">lxsearch使用实例</a>
+<li><a href="#orgheadline10">解函数 f(x) = 0</a>
+<ul>
+<li><a href="#orgheadline6">1. 高阶抽象lxsearch</a></li>
+<li><a href="#orgheadline9">2. lxsearch使用实例</a>
 <ul>
 <li><a href="#orgheadline7">计算方程 x^2 - 52x + 100 = 0 在区间 (10, 100)上的解</a></li>
 <li><a href="#orgheadline8">方程 x^3 -100x = 0, 区间(1,11)</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -261,9 +265,12 @@ f(x) = xy. 则 f'(x) = y*(dx/dx) + x*(dy/dx). 通过规则1和2, 可以
 </div>
 </div>
 
-<div id="outline-container-orgheadline6" class="outline-2">
-<h2 id="orgheadline6">高阶抽象lxsearch</h2>
-<div class="outline-text-2" id="text-orgheadline6">
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10">解函数 f(x) = 0</h2>
+<div class="outline-text-2" id="text-orgheadline10">
+</div><div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">1. 高阶抽象lxsearch</h3>
+<div class="outline-text-3" id="text-orgheadline6">
 <p>
 在开始讲解代码之前, 需要先讲一下程序对方程 f(x) 做一些限制,在下面的
 程序中, 需要传入区间参数(a, b), 方程f(x)在该区间上必须是连续函数, 
@@ -319,12 +326,12 @@ f(x) = xy. 则 f'(x) = y*(dx/dx) + x*(dy/dx). 通过规则1和2, 可以
 </div>
 </div>
 
-<div id="outline-container-orgheadline9" class="outline-2">
-<h2 id="orgheadline9">lxsearch使用实例</h2>
-<div class="outline-text-2" id="text-orgheadline9">
-</div><div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="orgheadline7">计算方程 x^2 - 52x + 100 = 0 在区间 (10, 100)上的解</h3>
-<div class="outline-text-3" id="text-orgheadline7">
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">2. lxsearch使用实例</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+</div><div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7">计算方程 x^2 - 52x + 100 = 0 在区间 (10, 100)上的解</h4>
+<div class="outline-text-4" id="text-orgheadline7">
 <p>
 在计算之前, 我们先用代码写出该方程:
 </p>
@@ -347,9 +354,9 @@ f(x) = xy. 则 f'(x) = y*(dx/dx) + x*(dy/dx). 通过规则1和2, 可以
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8">方程 x^3 -100x = 0, 区间(1,11)</h3>
-<div class="outline-text-3" id="text-orgheadline8">
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8">方程 x^3 -100x = 0, 区间(1,11)</h4>
+<div class="outline-text-4" id="text-orgheadline8">
 <p>
 前面可以讲过, lxsearch是一个高阶的抽象函数, 我们可以将满足条件的
 任意方程传给他来求解函数的解, 这里通过传入一个lambda表达式来
@@ -362,6 +369,7 @@ f(x) = xy. 则 f'(x) = y*(dx/dx) + x*(dy/dx). 通过规则1和2, 可以
  1
  11)
 </pre>
+</div>
 </div>
 </div>
 </div>
