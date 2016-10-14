@@ -6,9 +6,9 @@
 <!-- 2016-10-14 Fri 09:16 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
-<title>对函数 f(x) 求导</title>
+<title>SICP 阅读笔记 求解函数 f(x)=0</title>
 <meta  name="generator" content="Org-mode" />
-<meta  name="author" content="Luis Xu" />
+<meta  name="author" content="Luis Xu Luis Xu" />
 <link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
 <link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
 <link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
@@ -84,26 +84,43 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
-<h1 class="title">对函数 f(x) 求导</h1>
+<h1 class="title">SICP 阅读笔记 求解函数 f(x)=0</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline1">1. 定义求导规则</a></li>
-<li><a href="#orgheadline2">2. 定义表达式基本操作函数</a></li>
-<li><a href="#orgheadline3">3. 编写求导函数</a></li>
-<li><a href="#orgheadline4">4. 实现基本函数</a></li>
+<li><a href="#orgheadline1">对函数 f(x) 求导</a>
+<ul>
+<li><a href="#orgheadline2">1. 定义求导规则</a></li>
+<li><a href="#orgheadline3">2. 定义表达式基本操作函数</a></li>
+<li><a href="#orgheadline4">3. 编写求导函数</a></li>
+<li><a href="#orgheadline5">4. 实现基本函数</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline6">高阶抽象lxsearch</a></li>
+<li><a href="#orgheadline9">lxsearch使用实例</a>
+<ul>
+<li><a href="#orgheadline7">计算方程 x^2 - 52x + 100 = 0 在区间 (10, 100)上的解</a></li>
+<li><a href="#orgheadline8">方程 x^3 -100x = 0, 区间(1,11)</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
+
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">对函数 f(x) 求导</h2>
+<div class="outline-text-2" id="text-orgheadline1">
 <p>
 本文是 <a href="http://book.douban.com/subject/1148282/">SICP</a> 的一段阅读笔记. 记录如何
 一步步设计出一个可以对函数 f(x) 求导的程序.
 </p>
+</div>
 
-<div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">1. 定义求导规则</h2>
-<div class="outline-text-2" id="text-orgheadline1">
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">1. 定义求导规则</h3>
+<div class="outline-text-3" id="text-orgheadline2">
 <p>
 导数是大学数学微积分中学过的内容, 关于导数的意义和重要性可以参考
 相关的文献, 这里主要讲述求导的基本规则:
@@ -129,9 +146,9 @@ f(x) = xy. 则 f'(x) = y*(dx/dx) + x*(dy/dx). 通过规则1和2, 可以
 </div>
 </div>
 
-<div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2">2. 定义表达式基本操作函数</h2>
-<div class="outline-text-2" id="text-orgheadline2">
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">2. 定义表达式基本操作函数</h3>
+<div class="outline-text-3" id="text-orgheadline3">
 <p>
 在第一部分中已经定义了求导的基本规则, 这部分就开始涉及真正的代码实现, 
 从前面的规则可以看出, 求导涉及的两个要素主要为: 表达式和规则. 
@@ -152,9 +169,9 @@ f(x) = xy. 则 f'(x) = y*(dx/dx) + x*(dy/dx). 通过规则1和2, 可以
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="orgheadline3">3. 编写求导函数</h2>
-<div class="outline-text-2" id="text-orgheadline3">
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">3. 编写求导函数</h3>
+<div class="outline-text-3" id="text-orgheadline4">
 <p>
 通过2中定义的基本函数, 我们可以实现求导函数. 其代码实现如下:
 </p>
@@ -182,9 +199,9 @@ f(x) = xy. 则 f'(x) = y*(dx/dx) + x*(dy/dx). 通过规则1和2, 可以
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline4" class="outline-2">
-<h2 id="orgheadline4">4. 实现基本函数</h2>
-<div class="outline-text-2" id="text-orgheadline4">
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">4. 实现基本函数</h3>
+<div class="outline-text-3" id="text-orgheadline5">
 <p>
 在对该求导函数 deriv 的实现步骤中,我们先在第二部分定义了一些基本的
 表达式操作函数, 但是并没有给出这些函数的具体实现, 但是这样并不会影响
@@ -236,11 +253,122 @@ f(x) = xy. 则 f'(x) = y*(dx/dx) + x*(dy/dx). 通过规则1和2, 可以
   (list '* m1 m2))
 </pre>
 </div>
+<p>
+本文是 <a href="http://book.douban.com/subject/1148282/">SICP</a> 的第一章的一段阅读笔记, 旨在求解函数 <b>f(x)=0</b> 在一段
+区间内的解, 同时更深入了解一下Lisp "过程同时也为数据" 的精髓.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">高阶抽象lxsearch</h2>
+<div class="outline-text-2" id="text-orgheadline6">
+<p>
+在开始讲解代码之前, 需要先讲一下程序对方程 f(x) 做一些限制,在下面的
+程序中, 需要传入区间参数(a, b), 方程f(x)在该区间上必须是连续函数, 
+且 f(a)&lt;0, f(b)&gt;0. 这样在该区间上必存在 x 使得 <b>f(x)=0</b>; 
+</p>
+
+<p>
+基于上面的限制, 使用"类似折半查找"的方法来解方程, 首先查找去该区间的
+中间值 mid=(a+b)/2, 判断 f(mid)的值, 如果 f(mid)&gt;0, 在解在区间(a,mid),
+否则解在区间 (mid, b), 根据此规则递归求解.
+</p>
+
+<p>
+先看一下函数的源码, 这里定义了函数lxsearch, 该函数接受三个参数: 
+</p>
+<ul class="org-ul">
+<li>f 即函数 f(x)</li>
+<li>a 为一个参数使得 f(a) &lt; 0</li>
+<li>b 为参数使得 f(b) &gt; 0</li>
+</ul>
+<p>
+下面为该函数的流程(<b>注</b>:代码中lxaverage和lxclose-enough等基本函数的
+定义未给出):
+</p>
+<ol class="org-ol">
+<li>定义局部变量mid为a和b的平均数</li>
+<li>判断a和b的差值是否已经足够接近, 如果是, 返回mid</li>
+<li>如果差值还不接近, 计算f(mid)的值
+<ol class="org-ol">
+<li>如果f(mid)&gt;0, 递归调用lxsearch计算区间(a, mid)</li>
+<li>否则, 如果f(mid)&lt;0, 递归调用lxsearch计算区间(mid, b)</li>
+<li>如果f(mid)=0, 直接返回mid.</li>
+</ol></li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">lxsearch</span> (f a b)
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> ((mid (lxaverage a b)))
+    (<span style="color: #F0DFAF; font-weight: bold;">if</span> (lxclose-enough? a b)
+        (lxformat-float mid)
+      (<span style="color: #F0DFAF; font-weight: bold;">let</span> ((test-value (funcall f mid)))
+        (<span style="color: #F0DFAF; font-weight: bold;">cond</span> ((&gt; test-value 0) (lxsearch f a mid)) 
+              ((&lt; test-value 0) (lxsearch f mid b))
+              (t (lxformat-float mid)))))))
+</pre>
+</div>
+
+<p>
+这里需要说明的是lxsearch是一个很抽象的定义, 这里的f可以为我们在学校里
+学习过的任意函数, 只要它满足前面中提到的限制即可. 下面通过几个实例来
+看一下lxsearch的使用.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9">lxsearch使用实例</h2>
+<div class="outline-text-2" id="text-orgheadline9">
+</div><div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">计算方程 x^2 - 52x + 100 = 0 在区间 (10, 100)上的解</h3>
+<div class="outline-text-3" id="text-orgheadline7">
+<p>
+在计算之前, 我们先用代码写出该方程:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">f</span> (x)
+  (+ (- (* x x)
+        (* 52 x))
+     100))
+</pre>
+</div>
+
+<p>
+然后将函数f作为参数传给lxsearch, 就可以得到解为50
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(lxsearch 'f 10 100)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">方程 x^3 -100x = 0, 区间(1,11)</h3>
+<div class="outline-text-3" id="text-orgheadline8">
+<p>
+前面可以讲过, lxsearch是一个高阶的抽象函数, 我们可以将满足条件的
+任意方程传给他来求解函数的解, 这里通过传入一个lambda表达式来
+展示lambda表达式如何作为函数参数.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(lxsearch
+ '(<span style="color: #F0DFAF; font-weight: bold;">lambda</span> (x) (- (lxcube x) (* 100 x)))
+ 1
+ 11)
+</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="postamble">Created At <span class="timestamp-wrapper"><span class="timestamp">&lt;2016-02-15 Mon 23:25&gt;</span></span> by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
+<p class="postamble">Created At <span class="timestamp-wrapper"><span class="timestamp">&lt;2016-02-01 Mon 23:25&gt;</span></span> by Luis Xu Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
 </div>
 </body>
 </html>
