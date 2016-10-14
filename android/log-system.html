@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-10-14 Fri 10:18 -->
+<!-- 2016-10-14 Fri 10:20 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Android Log 系统</title>
@@ -199,7 +199,7 @@ g_logformat = android_log_format_new();
 <div class="org-src-container">
 
 <pre class="src src-c">    <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">main()</span><span style="color: #5F7F5F;">*/</span>
-<span style="color: #F0DFAF; font-weight: bold;">if</span> (argc == 2 &amp;&amp; 0 == strcmp(argv=[1]=, <span style="color: #CC9393;">"--test"</span>)) {
+<span style="color: #F0DFAF; font-weight: bold;">if</span> (argc == 2 &amp;&amp; 0 == strcmp(argv[1], <span style="color: #CC9393;">"--test"</span>)) {
     logprint_run_tests();
     exit(0);
 }
@@ -358,7 +358,7 @@ int android_log_addFilterString(AndroidLogFormat *p_format,
     // Yes, I'm using strsep
     while (NULL != (p_ret = strsep(&amp;p_cur, " \t,"))) {
         // ignore whitespace-only entries
-        if(p_ret=[ 0]= != '\0') {
+        if(p_ret[ 0]= != '\0') {
             err = android_log_addFilterRule(p_format, p_ret);
         }
     }
@@ -679,7 +679,7 @@ logger device read() 的实现是每次读取一条logger_entry, 并存放到结
     <span style="color: #7CB8BB;">int32_t</span>     <span style="color: #DFAF8F;">tid</span>;    <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">generating process's tid </span><span style="color: #5F7F5F;">*/</span>
     <span style="color: #7CB8BB;">int32_t</span>     <span style="color: #DFAF8F;">sec</span>;    <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">seconds since Epoch </span><span style="color: #5F7F5F;">*/</span>
     <span style="color: #7CB8BB;">int32_t</span>     <span style="color: #DFAF8F;">nsec</span>;   <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">nanoseconds </span><span style="color: #5F7F5F;">*/</span>
-    <span style="color: #7CB8BB;">char</span>        <span style="color: #DFAF8F;">msg</span>=[ 0]=; <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">the entry's payload </span><span style="color: #5F7F5F;">*/</span>
+    <span style="color: #7CB8BB;">char</span>        <span style="color: #DFAF8F;">msg</span>[ 0]=; <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">the entry's payload </span><span style="color: #5F7F5F;">*/</span>
 };
 </pre>
 </div>
@@ -805,7 +805,7 @@ android_log_processLogBuffer()的参数有两个,第一个是logger_entry变量,
     <span style="color: #7CB8BB;">int32_t</span>     <span style="color: #DFAF8F;">tid</span>;    <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">generating process's tid </span><span style="color: #5F7F5F;">*/</span>
     <span style="color: #7CB8BB;">int32_t</span>     <span style="color: #DFAF8F;">sec</span>;    <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">seconds since Epoch </span><span style="color: #5F7F5F;">*/</span>
     <span style="color: #7CB8BB;">int32_t</span>     <span style="color: #DFAF8F;">nsec</span>;   <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">nanoseconds </span><span style="color: #5F7F5F;">*/</span>
-    <span style="color: #7CB8BB;">char</span>        <span style="color: #DFAF8F;">msg</span>=[ 0]=; <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">the entry's payload </span><span style="color: #5F7F5F;">*/</span>
+    <span style="color: #7CB8BB;">char</span>        <span style="color: #DFAF8F;">msg</span>[ 0]=; <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">the entry's payload </span><span style="color: #5F7F5F;">*/</span>
 };
 
 <span style="color: #F0DFAF; font-weight: bold;">typedef</span> <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">AndroidLogEntry_t</span> {
@@ -842,7 +842,7 @@ android_log_processLogBuffer()的参数有两个,第一个是logger_entry变量,
         }
     }
 
-    entry-&gt;priority = buf-&gt;msg=[ 0]=;
+    entry-&gt;priority = buf-&gt;msg[ 0]=;
     entry-&gt;tag = buf-&gt;msg + 1;
     entry-&gt;message = buf-&gt;msg + msgStart;
     entry-&gt;messageLen = msgEnd - msgStart;
@@ -905,7 +905,7 @@ android_log_processLogBuffer()的参数有两个,第一个是logger_entry变量,
             suffixLen = 1;
             <span style="color: #F0DFAF; font-weight: bold;">break</span>;
         <span style="color: #F0DFAF; font-weight: bold;">case</span> FORMAT_RAW:
-            prefixBuf=[ 0]= = 0;
+            prefixBuf[ 0]= = 0;
             prefixLen = 0;
             strcpy(suffixBuf, <span style="color: #CC9393;">"\n"</span>);
             suffixLen = 1;
@@ -949,7 +949,7 @@ android_log_processLogBuffer()的参数有两个,第一个是logger_entry变量,
     <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">pm</span>;
 
 
-    ret=[ 0]= = <span style="color: #CC9393;">'\0'</span>;       <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">to start strcat off </span><span style="color: #5F7F5F;">*/</span>
+    ret[ 0]= = <span style="color: #CC9393;">'\0'</span>;       <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">to start strcat off </span><span style="color: #5F7F5F;">*/</span>
 
     p = ret;
     pm = entry-&gt;message;
@@ -1126,7 +1126,7 @@ __android_log_print()通过va_list变量把format形式字符串生成最终的�
 
 <pre class="src src-c"><span style="color: #7CB8BB;">int</span> <span style="color: #93E0E3;">__android_log_write</span>(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">prio</span>, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">tag</span>, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">msg</span>)
 {
-    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>=[3]=;
+    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>[3]=;
     <span style="color: #7CB8BB;">log_id_t</span> <span style="color: #DFAF8F;">log_id</span> = LOG_ID_MAIN;
 
     <span style="color: #F0DFAF; font-weight: bold;">if</span> (<span style="color: #F0DFAF; font-weight: bold;">!</span>tag)
@@ -1144,12 +1144,12 @@ __android_log_print()通过va_list变量把format形式字符串生成最终的�
         <span style="color: #F0DFAF; font-weight: bold;">!</span>strcmp(tag, <span style="color: #CC9393;">"SMS"</span>))
             log_id = LOG_ID_RADIO;
 
-    vec=[ 0]=.iov_base   = (<span style="color: #7CB8BB;">unsigned</span> <span style="color: #7CB8BB;">char</span> *) &amp;prio;
-    vec=[ 0]=.iov_len    = 1;
-    vec=[1]=.iov_base   = (<span style="color: #7CB8BB;">void</span> *) tag;
-    vec=[1]=.iov_len    = strlen(tag) + 1;
-    vec=[2]=.iov_base   = (<span style="color: #7CB8BB;">void</span> *) msg;
-    vec=[2]=.iov_len    = strlen(msg) + 1;
+    vec[ 0]=.iov_base   = (<span style="color: #7CB8BB;">unsigned</span> <span style="color: #7CB8BB;">char</span> *) &amp;prio;
+    vec[ 0]=.iov_len    = 1;
+    vec[1]=.iov_base   = (<span style="color: #7CB8BB;">void</span> *) tag;
+    vec[1]=.iov_len    = strlen(tag) + 1;
+    vec[2]=.iov_base   = (<span style="color: #7CB8BB;">void</span> *) msg;
+    vec[2]=.iov_len    = strlen(msg) + 1;
 
     <span style="color: #F0DFAF; font-weight: bold;">return</span> write_to_log(log_id, vec, 3);
 }
@@ -1278,7 +1278,7 @@ SLOGX()API族用于生成system log,log被写到system这个logger device中,SLO
 
 <span style="color: #7CB8BB;">int</span> <span style="color: #93E0E3;">__android_log_buf_write</span>(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">bufID</span>, <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">prio</span>, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">tag</span>, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">msg</span>)
 {
-    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>=[3]=;
+    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>[3]=;
 
     <span style="color: #F0DFAF; font-weight: bold;">if</span> (<span style="color: #F0DFAF; font-weight: bold;">!</span>tag)
         tag = <span style="color: #CC9393;">""</span>;
@@ -1295,12 +1295,12 @@ SLOGX()API族用于生成system log,log被写到system这个logger device中,SLO
         <span style="color: #F0DFAF; font-weight: bold;">!</span>strcmp(tag, <span style="color: #CC9393;">"SMS"</span>))
             bufID = LOG_ID_RADIO;
 
-    vec=[ 0]=.iov_base   = (<span style="color: #7CB8BB;">unsigned</span> <span style="color: #7CB8BB;">char</span> *) &amp;prio;
-    vec=[ 0]=.iov_len    = 1;
-    vec=[1]=.iov_base   = (<span style="color: #7CB8BB;">void</span> *) tag;
-    vec=[1]=.iov_len    = strlen(tag) + 1;
-    vec=[2]=.iov_base   = (<span style="color: #7CB8BB;">void</span> *) msg;
-    vec=[2]=.iov_len    = strlen(msg) + 1;
+    vec[ 0]=.iov_base   = (<span style="color: #7CB8BB;">unsigned</span> <span style="color: #7CB8BB;">char</span> *) &amp;prio;
+    vec[ 0]=.iov_len    = 1;
+    vec[1]=.iov_base   = (<span style="color: #7CB8BB;">void</span> *) tag;
+    vec[1]=.iov_len    = strlen(tag) + 1;
+    vec[2]=.iov_base   = (<span style="color: #7CB8BB;">void</span> *) msg;
+    vec[2]=.iov_len    = strlen(msg) + 1;
 
     <span style="color: #F0DFAF; font-weight: bold;">return</span> write_to_log(bufID, vec, 3);
 }
@@ -1357,14 +1357,14 @@ public <span style="color: #F0DFAF; font-weight: bold;">static</span> native <sp
 <span style="color: #7CB8BB;">int</span> <span style="color: #93E0E3;">__android_log_btwrite</span>(<span style="color: #7CB8BB;">int32_t</span> <span style="color: #DFAF8F;">tag</span>, <span style="color: #7CB8BB;">char</span> <span style="color: #DFAF8F;">type</span>, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">void</span> *<span style="color: #DFAF8F;">payload</span>,
     <span style="color: #7CB8BB;">size_t</span> <span style="color: #DFAF8F;">len</span>)
 {
-    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>=[3]=;
+    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>[3]=;
 
-    vec=[ 0]=.iov_base = &amp;tag;
-    vec=[ 0]=.iov_len = <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(tag);
-    vec=[1]=.iov_base = &amp;type;
-    vec=[1]=.iov_len = <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(type);
-    vec=[2]=.iov_base = (<span style="color: #7CB8BB;">void</span>*)payload;
-    vec=[2]=.iov_len = len;
+    vec[ 0]=.iov_base = &amp;tag;
+    vec[ 0]=.iov_len = <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(tag);
+    vec[1]=.iov_base = &amp;type;
+    vec[1]=.iov_len = <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(type);
+    vec[2]=.iov_base = (<span style="color: #7CB8BB;">void</span>*)payload;
+    vec[2]=.iov_len = len;
 
     <span style="color: #F0DFAF; font-weight: bold;">return</span> write_to_log(LOG_ID_EVENTS, vec, 3);
 }
@@ -1385,8 +1385,8 @@ public <span style="color: #F0DFAF; font-weight: bold;">static</span> native <sp
     <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">max</span> = <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(buf) - <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(len) - 2;  <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Type byte, final newline</span>
     <span style="color: #F0DFAF; font-weight: bold;">if</span> (len &gt; max) len = max;
 
-    buf=[ 0]= = EVENT_TYPE_STRING;
-    memcpy(&amp;buf=[1]=, &amp;len, <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(len));
+    buf[ 0]= = EVENT_TYPE_STRING;
+    memcpy(&amp;buf[1]=, &amp;len, <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(len));
     memcpy(&amp;buf[1 + <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(len)], str, len);
     buf[1 + <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(len) + len] = <span style="color: #CC9393;">'\n'</span>;
 
@@ -1403,12 +1403,12 @@ public <span style="color: #F0DFAF; font-weight: bold;">static</span> native <sp
 
 <pre class="src src-c"><span style="color: #7CB8BB;">int</span> <span style="color: #93E0E3;">__android_log_bwrite</span>(<span style="color: #7CB8BB;">int32_t</span> <span style="color: #DFAF8F;">tag</span>, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">void</span> *<span style="color: #DFAF8F;">payload</span>, <span style="color: #7CB8BB;">size_t</span> <span style="color: #DFAF8F;">len</span>)
 {
-    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>=[2]=;
+    <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">iovec</span> <span style="color: #DFAF8F;">vec</span>[2]=;
 
-    vec=[ 0]=.iov_base = &amp;tag;
-    vec=[ 0]=.iov_len = <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(tag);
-    vec=[1]=.iov_base = (<span style="color: #7CB8BB;">void</span>*)payload;
-    vec=[1]=.iov_len = len;
+    vec[ 0]=.iov_base = &amp;tag;
+    vec[ 0]=.iov_len = <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(tag);
+    vec[1]=.iov_base = (<span style="color: #7CB8BB;">void</span>*)payload;
+    vec[1]=.iov_len = len;
 
     <span style="color: #F0DFAF; font-weight: bold;">return</span> write_to_log(LOG_ID_EVENTS, vec, 2);
 }
@@ -1465,8 +1465,8 @@ writeEvent的第四种形式:写入的是int/long/string的组合体,则会循�
         env-&gt;DeleteLocalRef(item);
     }
 
-    buf=[ 0]= = EVENT_TYPE_LIST;
-    buf=[1]= = copied;
+    buf[ 0]= = EVENT_TYPE_LIST;
+    buf[1]= = copied;
     buf[pos++] = <span style="color: #CC9393;">'\n'</span>;
     <span style="color: #F0DFAF; font-weight: bold;">return</span> android_bWriteLog(tag, buf, pos);
 }
@@ -2107,7 +2107,7 @@ include $(BUILD_EXECUTABLE)
         usage();
     }
 
-    rc = android_fork_execvp_ext(argc, &amp;argv=[ 0]=, &amp;status, <span style="color: #BFEBBF;">true</span>,
+    rc = android_fork_execvp_ext(argc, &amp;argv[ 0]=, &amp;status, <span style="color: #BFEBBF;">true</span>,
                                  log_target, abbreviated, <span style="color: #BFEBBF;">NULL</span>);
 
         ....
@@ -2216,7 +2216,7 @@ logwrapper程序再把它写到相关文件中。
         sigaction(SIGQUIT, &amp;ignact, &amp;quitact);
     }
 
-    rc = parent(argv=[ 0]=, parent_ptty, pid, status, log_target,
+    rc = parent(argv[ 0]=, parent_ptty, pid, status, log_target,
                 abbreviated, file_path);
 }
 </pre>
@@ -2238,8 +2238,8 @@ logwrapper程序再把它写到相关文件中。
     memcpy(argv_child, argv, <span style="color: #7CB8BB;">argc</span> * <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(<span style="color: #7CB8BB;">char</span> *));
     argv_child[argc] = <span style="color: #BFEBBF;">NULL</span>;
 
-    <span style="color: #F0DFAF; font-weight: bold;">if</span> (execvp(argv_child=[ 0]=, argv_child)) {
-        FATAL_CHILD(<span style="color: #CC9393;">"executing %s failed: %s\n"</span>, argv_child=[ 0]=,
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (execvp(argv_child[ 0]=, argv_child)) {
+        FATAL_CHILD(<span style="color: #CC9393;">"executing %s failed: %s\n"</span>, argv_child[ 0]=,
                 strerror(errno));
     }
 }
@@ -2256,7 +2256,7 @@ parent()实现就比较复杂一些。
     ...
 
 <span style="color: #F0DFAF; font-weight: bold;">struct</span> <span style="color: #7CB8BB;">pollfd</span> poll_fds[] = {
-    =[ 0]= = {
+    [ 0]= = {
         .fd = parent_read,
         .events = POLLIN,
     },
@@ -2306,7 +2306,7 @@ log_info.abbreviated = abbreviated;
         <span style="color: #F0DFAF; font-weight: bold;">goto</span> <span style="color: #BFEBBF;">err_poll</span>;
     }
 
-    <span style="color: #F0DFAF; font-weight: bold;">if</span> (poll_fds=[ 0]=.revents &amp; POLLIN) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (poll_fds[ 0]=.revents &amp; POLLIN) {
         sz = read(parent_read, &amp;buffer[b], <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(buffer) - 1 - b);
 
         sz += b;
@@ -2341,7 +2341,7 @@ log_info.abbreviated = abbreviated;
         }
     }
 
-    <span style="color: #F0DFAF; font-weight: bold;">if</span> (poll_fds=[ 0]=.revents &amp; POLLHUP) {
+    <span style="color: #F0DFAF; font-weight: bold;">if</span> (poll_fds[ 0]=.revents &amp; POLLHUP) {
         <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">ret</span>;
 
         ret = waitpid(pid, &amp;status, WNOHANG);
