@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-10-14 Fri 16:03 -->
+<!-- 2016-10-16 Sun 09:00 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>RxJava 笔记</title>
@@ -95,7 +95,7 @@ for the JavaScript code in this tag.
 <li><a href="#orgheadline3">支持的操作符</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline15">操作符</a>
+<li><a href="#orgheadline18">操作符</a>
 <ul>
 <li><a href="#orgheadline14">创建类操作符</a>
 <ul>
@@ -109,6 +109,12 @@ for the JavaScript code in this tag.
 <li><a href="#orgheadline11">Repeat</a></li>
 <li><a href="#orgheadline12"><span class="todo nilTODO">TODO</span> Start</a></li>
 <li><a href="#orgheadline13">Timer</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline17">转化类操作符</a>
+<ul>
+<li><a href="#orgheadline15">Buffer</a></li>
+<li><a href="#orgheadline16"><span class="todo nilTODO">TODO</span> FlatMap</a></li>
 </ul>
 </li>
 </ul>
@@ -208,9 +214,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline15" class="outline-2">
-<h2 id="orgheadline15">操作符</h2>
-<div class="outline-text-2" id="text-orgheadline15">
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="orgheadline18">操作符</h2>
+<div class="outline-text-2" id="text-orgheadline18">
 </div><div id="outline-container-orgheadline14" class="outline-3">
 <h3 id="orgheadline14">创建类操作符</h3>
 <div class="outline-text-3" id="text-orgheadline14">
@@ -376,6 +382,32 @@ RxJava 中该操作符的实现放在了一个单独的模块 rxjava-async 中
 <div class="outline-text-4" id="text-orgheadline13">
 <p>
 延迟反射数据.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17">转化类操作符</h3>
+<div class="outline-text-3" id="text-orgheadline17">
+</div><div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15">Buffer</h4>
+<div class="outline-text-4" id="text-orgheadline15">
+<p>
+收集到一定数量之后才发射全部收集到的数据.
+</p>
+
+<p>
+RxJava 把收集到的数据放到一个 List 中
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline16" class="outline-4">
+<h4 id="orgheadline16"><span class="todo TODO">TODO</span> FlatMap</h4>
+<div class="outline-text-4" id="text-orgheadline16">
+<p>
+flatMap()接受一个能够返回 Observable 的参数. 这样, 该参数会将
+flatMap()的调用者(原始 Observable)里面的值转化为一个个的 Observable,
+然后再把这些 Observable 合成一个 Observable.
 </p>
 </div>
 </div>
