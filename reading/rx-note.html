@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-10-17 Mon 09:49 -->
+<!-- 2016-10-18 Tue 12:03 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>RxJava 笔记</title>
@@ -94,53 +94,26 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orgheadline3">基本介绍</a></li>
 <li><a href="#orgheadline4">支持的操作符</a></li>
-</ul>
-</li>
 <li><a href="#orgheadline34">操作符</a>
 <ul>
-<li><a href="#orgheadline15">创建类操作符</a>
-<ul>
-<li><a href="#orgheadline5">Create</a></li>
-<li><a href="#orgheadline6">Defer</a></li>
-<li><a href="#orgheadline7">Empty/Never/Throw</a></li>
-<li><a href="#orgheadline8">From</a></li>
-<li><a href="#orgheadline9">Interval</a></li>
-<li><a href="#orgheadline10">Just</a></li>
-<li><a href="#orgheadline11">Range</a></li>
-<li><a href="#orgheadline12">Repeat</a></li>
-<li><a href="#orgheadline13"><span class="todo nilTODO">TODO</span> Start</a></li>
-<li><a href="#orgheadline14">Timer</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline22">转化类操作符</a>
-<ul>
-<li><a href="#orgheadline16">Buffer</a></li>
-<li><a href="#orgheadline17"><span class="todo nilTODO">TODO</span> FlatMap</a></li>
-<li><a href="#orgheadline18">GroupBy</a></li>
-<li><a href="#orgheadline19">Map</a></li>
-<li><a href="#orgheadline20">Scan</a></li>
-<li><a href="#orgheadline21"><span class="todo nilTODO">TODO</span> Window</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline33">过滤类操作符</a>
-<ul>
-<li><a href="#orgheadline23"><span class="todo nilTODO">TODO</span> Debounce</a></li>
-<li><a href="#orgheadline24">Distinct</a></li>
-<li><a href="#orgheadline25">ElementAt</a></li>
-<li><a href="#orgheadline26">Filter</a></li>
-<li><a href="#orgheadline27">First</a></li>
-<li><a href="#orgheadline28">IgnoreElements</a></li>
-<li><a href="#orgheadline29">Last</a></li>
-<li><a href="#orgheadline30"><span class="todo nilTODO">TODO</span> Sample</a></li>
-<li><a href="#orgheadline31">Skip/SkipLast</a></li>
-<li><a href="#orgheadline32">Take/TakeLast</a></li>
+<li><a href="#orgheadline15">创建类操作符</a></li>
+<li><a href="#orgheadline22">转化类操作符</a></li>
+<li><a href="#orgheadline33">过滤类操作符</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline36">RxJava 在 Android 中应用</a>
+<li><a href="#orgheadline35">Subscribe</a>
 <ul>
-<li><a href="#orgheadline35">RxBus</a></li>
+<li><a href="#orgheadline36">AsyncSubject</a></li>
+<li><a href="#orgheadline37">BehaviorSubject</a></li>
+<li><a href="#orgheadline38">PublishSubject</a></li>
+<li><a href="#orgheadline39">ReplaySubject</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline41">RxJava 在 Android 中应用</a>
+<ul>
+<li><a href="#orgheadline40">RxBus</a></li>
 </ul>
 </li>
 </ul>
@@ -259,16 +232,13 @@ Rx 基于"观察者模式", 支持流式的数据和事件以及在其上的各�
 </p>
 </div>
 </div>
-</div>
-<div id="outline-container-orgheadline34" class="outline-2">
-<h2 id="orgheadline34">操作符</h2>
-<div class="outline-text-2" id="text-orgheadline34">
-</div><div id="outline-container-orgheadline15" class="outline-3">
-<h3 id="orgheadline15">创建类操作符</h3>
-<div class="outline-text-3" id="text-orgheadline15">
-</div><div id="outline-container-orgheadline5" class="outline-4">
-<h4 id="orgheadline5">Create</h4>
-<div class="outline-text-4" id="text-orgheadline5">
+<div id="outline-container-orgheadline34" class="outline-3">
+<h3 id="orgheadline34">操作符</h3>
+<div class="outline-text-3" id="text-orgheadline34">
+</div><div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15">创建类操作符</h4>
+<div class="outline-text-4" id="text-orgheadline15">
+</div><ul class="org-ul"><li><a id="orgheadline5"></a>Create<br  /><div class="outline-text-5" id="text-orgheadline5">
 <p>
  从头开始创建一个 Observable, 该函数的参数必须能够
 接受一个 Observer 作为参数.这样通过该函数创建的 Observable
@@ -310,11 +280,8 @@ Observable.create(new Observable.OnSubscribe&lt;Integer&gt;() {
         }
     });
 </pre>
-</div>
-</div>
-<div id="outline-container-orgheadline6" class="outline-4">
-<h4 id="orgheadline6">Defer</h4>
-<div class="outline-text-4" id="text-orgheadline6">
+</div></li>
+<li><a id="orgheadline6"></a>Defer<br  /><div class="outline-text-5" id="text-orgheadline6">
 <p>
  当有observer注册的时候才创建 Observable. 例如下面的例子,
  虽然只创建了一个 defer() 返回值对象, 但是call()函数会调用两次.
@@ -331,23 +298,17 @@ Observable&lt;String&gt; observable = Observable.defer(new Func0&lt;Observable&l
 observable.subscribe(glbSubscriber);
 observable.subscribe(glbSubscriber);
 </pre>
-</div>
-</div>
-<div id="outline-container-orgheadline7" class="outline-4">
-<h4 id="orgheadline7">Empty/Never/Throw</h4>
-<div class="outline-text-4" id="text-orgheadline7">
+</div></li>
+<li><a id="orgheadline7"></a>Empty/Never/Throw<br  /><div class="outline-text-5" id="text-orgheadline7">
 <p>
 empty()创建一个 Observable, 注册之后立刻调用 onComplete()
 never()创建一个 Observable, 注册之后永远都不调用
 throw()(java叫 error())创建一个 Observable, 注册之后立刻调用 onError()
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline8" class="outline-4">
-<h4 id="orgheadline8">From</h4>
-<div class="outline-text-4" id="text-orgheadline8">
+</div></li>
+<li><a id="orgheadline8"></a>From<br  /><div class="outline-text-5" id="text-orgheadline8">
 <p>
-将一系列其他类型(Iterable, array&#x2026;)转化为 Observable
+将一系列其他类型(Iterable, array&#x2026;)转化为 Observable, 一个一个发射出.
 </p>
 
 <p>
@@ -361,20 +322,14 @@ Observable.from(names).subscribe(new Action1&lt;String&gt;() {
     }
 });
 </pre>
-</div>
-</div>
-<div id="outline-container-orgheadline9" class="outline-4">
-<h4 id="orgheadline9">Interval</h4>
-<div class="outline-text-4" id="text-orgheadline9">
+</div></li>
+<li><a id="orgheadline9"></a>Interval<br  /><div class="outline-text-5" id="text-orgheadline9">
 <p>
  间隔性的发射数据.  一直下去,不停止.<br  />
 RxJava提供了多个重载版本.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline10" class="outline-4">
-<h4 id="orgheadline10">Just</h4>
-<div class="outline-text-4" id="text-orgheadline10">
+</div></li>
+<li><a id="orgheadline10"></a>Just<br  /><div class="outline-text-5" id="text-orgheadline10">
 <p>
  接受一个参数,并原封不动的发射出去, 这与<a href="#orgheadline8">From</a>不同, 后者
 会把 array 分解然后一个个的发射. 
@@ -383,19 +338,13 @@ RxJava提供了多个重载版本.
 <p>
 RxJava 不支持参数为 array.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline11" class="outline-4">
-<h4 id="orgheadline11">Range</h4>
-<div class="outline-text-4" id="text-orgheadline11">
+</div></li>
+<li><a id="orgheadline11"></a>Range<br  /><div class="outline-text-5" id="text-orgheadline11">
 <p>
 发射一段范围内的整数. 接受两个参数:起始值和个数.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline12" class="outline-4">
-<h4 id="orgheadline12">Repeat</h4>
-<div class="outline-text-4" id="text-orgheadline12">
+</div></li>
+<li><a id="orgheadline12"></a>Repeat<br  /><div class="outline-text-5" id="text-orgheadline12">
 <p>
 创建一个 Observable, 重复性的发射数据.
 </p>
@@ -409,11 +358,8 @@ Observable.just("helo", "wold")
         .repeat(3)
         .subscribe(glbSubscriber);
 </pre>
-</div>
-</div>
-<div id="outline-container-orgheadline13" class="outline-4">
-<h4 id="orgheadline13"><span class="todo TODO">TODO</span> Start</h4>
-<div class="outline-text-4" id="text-orgheadline13">
+</div></li>
+<li><a id="orgheadline13"></a><span class="todo TODO">TODO</span> Start<br  /><div class="outline-text-5" id="text-orgheadline13">
 <p>
 接受一个函数, 然后发射函数的返回值.
 </p>
@@ -421,23 +367,17 @@ Observable.just("helo", "wold")
 <p>
 RxJava 中该操作符的实现放在了一个单独的模块 rxjava-async 中
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline14" class="outline-4">
-<h4 id="orgheadline14">Timer</h4>
-<div class="outline-text-4" id="text-orgheadline14">
+</div></li>
+<li><a id="orgheadline14"></a>Timer<br  /><div class="outline-text-5" id="text-orgheadline14">
 <p>
 延迟反射数据.
 </p>
+</div></li></ul>
 </div>
-</div>
-</div>
-<div id="outline-container-orgheadline22" class="outline-3">
-<h3 id="orgheadline22">转化类操作符</h3>
-<div class="outline-text-3" id="text-orgheadline22">
-</div><div id="outline-container-orgheadline16" class="outline-4">
-<h4 id="orgheadline16">Buffer</h4>
-<div class="outline-text-4" id="text-orgheadline16">
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22">转化类操作符</h4>
+<div class="outline-text-4" id="text-orgheadline22">
+</div><ul class="org-ul"><li><a id="orgheadline16"></a>Buffer<br  /><div class="outline-text-5" id="text-orgheadline16">
 <p>
 收集到一定数量之后才发射全部收集到的数据.
 </p>
@@ -445,21 +385,15 @@ RxJava 中该操作符的实现放在了一个单独的模块 rxjava-async 中
 <p>
 RxJava 把收集到的数据放到一个 List 中
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline17" class="outline-4">
-<h4 id="orgheadline17"><span class="todo TODO">TODO</span> FlatMap</h4>
-<div class="outline-text-4" id="text-orgheadline17">
+</div></li>
+<li><a id="orgheadline17"></a><span class="todo TODO">TODO</span> FlatMap<br  /><div class="outline-text-5" id="text-orgheadline17">
 <p>
 flatMap()接受一个能够返回 Observable 的参数. 这样, 该参数会将
 flatMap()的调用者(原始 Observable)里面的值转化为一个个的 Observable,
 然后再把这些 Observable 合成一个 Observable.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline18" class="outline-4">
-<h4 id="orgheadline18">GroupBy</h4>
-<div class="outline-text-4" id="text-orgheadline18">
+</div></li>
+<li><a id="orgheadline18"></a>GroupBy<br  /><div class="outline-text-5" id="text-orgheadline18">
 <p>
  把一个 observable 分成根据条件几个 observable, 每个 observable 都有
 一个 key.
@@ -505,11 +439,8 @@ public void groupBy() {
             });
 }
 </pre>
-</div>
-</div>
-<div id="outline-container-orgheadline19" class="outline-4">
-<h4 id="orgheadline19">Map</h4>
-<div class="outline-text-4" id="text-orgheadline19">
+</div></li>
+<li><a id="orgheadline19"></a>Map<br  /><div class="outline-text-5" id="text-orgheadline19">
 <p>
  转化发射的值为另一个值发射. 该函数接受一个函数作为参数
 用来转化 item.
@@ -522,11 +453,8 @@ Observable.just(2, 5, 8).map(new Func1&lt;Integer, String&gt;() {
     }
 }).subscribe(glbSubscriber);
 </pre>
-</div>
-</div>
-<div id="outline-container-orgheadline20" class="outline-4">
-<h4 id="orgheadline20">Scan</h4>
-<div class="outline-text-4" id="text-orgheadline20">
+</div></li>
+<li><a id="orgheadline20"></a>Scan<br  /><div class="outline-text-5" id="text-orgheadline20">
 <p>
  该操作符接受一个函数, 该函数将源 Observable 发射的数据
 转化为另外的数据, 并基于该转化的数据和源 Observable 的下一个
@@ -541,11 +469,8 @@ Observable.just(1, 9, 8, 8, 02, 06)
     }
 }).subscribe(glbIntSub);
 </pre>
-</div>
-</div>
-<div id="outline-container-orgheadline21" class="outline-4">
-<h4 id="orgheadline21"><span class="todo TODO">TODO</span> Window</h4>
-<div class="outline-text-4" id="text-orgheadline21">
+</div></li>
+<li><a id="orgheadline21"></a><span class="todo TODO">TODO</span> Window<br  /><div class="outline-text-5" id="text-orgheadline21">
 <p>
 把发射的元素分成几块, 每块都通过 observable 发射.
 </p>
@@ -570,7 +495,7 @@ RxJava: 下面的代码有问题, 如果注册一个全局的 subscriber, 则只
                         integerObservable.subscribe(glbIntSub);
                     }
                 });
-		
+
 //修复版
         Observable.just(1, 9, 8, 3, 1, 6, 4)
                 .window(4)
@@ -603,95 +528,111 @@ RxJava: 下面的代码有问题, 如果注册一个全局的 subscriber, 则只
                     }
                 });
 </pre>
+</div></li></ul>
 </div>
-</div>
-</div>
-<div id="outline-container-orgheadline33" class="outline-3">
-<h3 id="orgheadline33">过滤类操作符</h3>
-<div class="outline-text-3" id="text-orgheadline33">
-</div><div id="outline-container-orgheadline23" class="outline-4">
-<h4 id="orgheadline23"><span class="todo TODO">TODO</span> Debounce</h4>
-<div class="outline-text-4" id="text-orgheadline23">
+<div id="outline-container-orgheadline33" class="outline-4">
+<h4 id="orgheadline33">过滤类操作符</h4>
+<div class="outline-text-4" id="text-orgheadline33">
+</div><ul class="org-ul"><li><a id="orgheadline23"></a><span class="todo TODO">TODO</span> Debounce<br  /><div class="outline-text-5" id="text-orgheadline23">
 <p>
 接受一个 timeout 值, 在 timeout 结束之前所产生的源 Observable
  的值都会被抛弃.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline24" class="outline-4">
-<h4 id="orgheadline24">Distinct</h4>
-<div class="outline-text-4" id="text-orgheadline24">
+</div></li>
+<li><a id="orgheadline24"></a>Distinct<br  /><div class="outline-text-5" id="text-orgheadline24">
 <p>
 只发射没发射过的项目, 已经发射过的会被过滤掉.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline25" class="outline-4">
-<h4 id="orgheadline25">ElementAt</h4>
-<div class="outline-text-4" id="text-orgheadline25">
+</div></li>
+<li><a id="orgheadline25"></a>ElementAt<br  /><div class="outline-text-5" id="text-orgheadline25">
 <p>
 接受一个 index 值参数, 只发射第 index 个参数(下标从1开始).
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline26" class="outline-4">
-<h4 id="orgheadline26">Filter</h4>
-<div class="outline-text-4" id="text-orgheadline26">
+</div></li>
+<li><a id="orgheadline26"></a>Filter<br  /><div class="outline-text-5" id="text-orgheadline26">
 <p>
 只发射通过 filter 函数的元素.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline27" class="outline-4">
-<h4 id="orgheadline27">First</h4>
-<div class="outline-text-4" id="text-orgheadline27">
+</div></li>
+<li><a id="orgheadline27"></a>First<br  /><div class="outline-text-5" id="text-orgheadline27">
 <p>
 只发射第一个元素.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline28" class="outline-4">
-<h4 id="orgheadline28">IgnoreElements</h4>
-<div class="outline-text-4" id="text-orgheadline28">
+</div></li>
+<li><a id="orgheadline28"></a>IgnoreElements<br  /><div class="outline-text-5" id="text-orgheadline28">
 <p>
 忽略所有元素
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline29" class="outline-4">
-<h4 id="orgheadline29">Last</h4>
-<div class="outline-text-4" id="text-orgheadline29">
+</div></li>
+<li><a id="orgheadline29"></a>Last<br  /><div class="outline-text-5" id="text-orgheadline29">
 <p>
 发射最后一个元素
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline30" class="outline-4">
-<h4 id="orgheadline30"><span class="todo TODO">TODO</span> Sample</h4>
-</div>
-<div id="outline-container-orgheadline31" class="outline-4">
-<h4 id="orgheadline31">Skip/SkipLast</h4>
-<div class="outline-text-4" id="text-orgheadline31">
+</div></li>
+<li><a id="orgheadline30"></a><span class="todo TODO">TODO</span> Sample<br  /></li>
+<li><a id="orgheadline31"></a>Skip/SkipLast<br  /><div class="outline-text-5" id="text-orgheadline31">
 <p>
 跳过前/后 N 个元素.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline32" class="outline-4">
-<h4 id="orgheadline32">Take/TakeLast</h4>
-<div class="outline-text-4" id="text-orgheadline32">
+</div></li>
+<li><a id="orgheadline32"></a>Take/TakeLast<br  /><div class="outline-text-5" id="text-orgheadline32">
 <p>
 只拿前/后 N 个元素.
+</p>
+</div></li></ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline35" class="outline-2">
+<h2 id="orgheadline35">Subscribe</h2>
+<div class="outline-text-2" id="text-orgheadline35">
+<p>
+Subscribe即是Observable 又是 Observer.
+</p>
+</div>
+<div id="outline-container-orgheadline36" class="outline-3">
+<h3 id="orgheadline36">AsyncSubject</h3>
+<div class="outline-text-3" id="text-orgheadline36">
+<p>
+当源 Observable 结束之后, 该 Subject 会将源 Observable
+的最后一个 item 发射出来. 即源 Observable 的结束会激活
+该 Subject 的发射/结束动作. 后续所有的 observer 都会得到
+同样的值.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline37" class="outline-3">
+<h3 id="orgheadline37">BehaviorSubject</h3>
+<div class="outline-text-3" id="text-orgheadline37">
+<p>
+ 当一个 Observer 注册到该 Subject 时,该 Subject 会
+开始发射最近刚发射过的 item,及后面生成的 item.
+即一个 Observer 得到从"它注册时间的上一个 item + 之后开始的序列".
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline38" class="outline-3">
+<h3 id="orgheadline38">PublishSubject</h3>
+<div class="outline-text-3" id="text-orgheadline38">
+<p>
+只发射注册时间之后的 item.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline39" class="outline-3">
+<h3 id="orgheadline39">ReplaySubject</h3>
+<div class="outline-text-3" id="text-orgheadline39">
+<p>
+每一个 Observer 都发射所有的 item.
 </p>
 </div>
 </div>
 </div>
-</div>
-<div id="outline-container-orgheadline36" class="outline-2">
-<h2 id="orgheadline36">RxJava 在 Android 中应用</h2>
-<div class="outline-text-2" id="text-orgheadline36">
-</div><div id="outline-container-orgheadline35" class="outline-3">
-<h3 id="orgheadline35">RxBus</h3>
+<div id="outline-container-orgheadline41" class="outline-2">
+<h2 id="orgheadline41">RxJava 在 Android 中应用</h2>
+<div class="outline-text-2" id="text-orgheadline41">
+</div><div id="outline-container-orgheadline40" class="outline-3">
+<h3 id="orgheadline40">RxBus</h3>
 </div>
 </div>
 </div>
