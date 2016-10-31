@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-10-31 Mon 23:19 -->
+<!-- 2016-11-01 Tue 00:14 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Android 大笔记</title>
@@ -89,54 +89,69 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline1">View笔记</a>
+<li><a href="#orgheadline1">MVVM 的一种实现</a>
 <ul>
-<li><a href="#orgheadline7">基本知识</a>
+<li><a href="#orgheadline2">MVVM 的含义</a></li>
+<li><a href="#orgheadline3">主流的两种实现方式</a></li>
+<li><a href="#orgheadline4">常见代码:activity 做所有事情</a></li>
+<li><a href="#orgheadline8">使用 RxJava 改造</a>
 <ul>
-<li><a href="#orgheadline2">View的位置.</a></li>
-<li><a href="#orgheadline3">大小和边距</a></li>
-<li><a href="#orgheadline4">Layout</a></li>
-<li><a href="#orgheadline5">坐标系统</a></li>
-<li><a href="#orgheadline6">适配</a></li>
+<li><a href="#orgheadline5">创建 Model</a></li>
+<li><a href="#orgheadline6">创建 ViewModel</a></li>
+<li><a href="#orgheadline7">改造后的 activity</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline9">好处</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline10">View笔记</a>
+<ul>
+<li><a href="#orgheadline16">基本知识</a>
+<ul>
+<li><a href="#orgheadline11">View的位置.</a></li>
+<li><a href="#orgheadline12">大小和边距</a></li>
+<li><a href="#orgheadline13">Layout</a></li>
+<li><a href="#orgheadline14">坐标系统</a></li>
+<li><a href="#orgheadline15">适配</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline8">使用开源项目Robolectric测试Android代码</a>
+<li><a href="#orgheadline17">使用开源项目Robolectric测试Android代码</a>
 <ul>
-<li><a href="#orgheadline9">项目介绍</a></li>
-<li><a href="#orgheadline12">简单的测试项目</a>
+<li><a href="#orgheadline18">项目介绍</a></li>
+<li><a href="#orgheadline21">简单的测试项目</a>
 <ul>
-<li><a href="#orgheadline10">加入到项目工程</a></li>
-<li><a href="#orgheadline11">编写简单测试代码</a></li>
+<li><a href="#orgheadline19">加入到项目工程</a></li>
+<li><a href="#orgheadline20">编写简单测试代码</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline15">Robolectric文档</a>
+<li><a href="#orgheadline24">Robolectric文档</a>
 <ul>
-<li><a href="#orgheadline13">模拟Activity的生命周期</a></li>
-<li><a href="#orgheadline14">用Intent 或 savedInstanceState启动/恢复 Activity</a></li>
+<li><a href="#orgheadline22">模拟Activity的生命周期</a></li>
+<li><a href="#orgheadline23">用Intent 或 savedInstanceState启动/恢复 Activity</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline16">performace patterns 笔记</a>
+<li><a href="#orgheadline25">performace patterns 笔记</a>
 <ul>
-<li><a href="#orgheadline17">Rendering Performance</a>
+<li><a href="#orgheadline26">Rendering Performance</a>
 <ul>
-<li><a href="#orgheadline18">a) 产生这个问题的一些主要原因:</a></li>
-<li><a href="#orgheadline19">b) 渲染性能分析的常用方法</a></li>
-<li><a href="#orgheadline20">c) 关于VSYNC</a></li>
-<li><a href="#orgheadline21">d) GPU 渲染分析</a></li>
-<li><a href="#orgheadline22">e) More about GPU</a></li>
-<li><a href="#orgheadline23">f) Invalidate/layout</a></li>
-<li><a href="#orgheadline24">g) Overdraw/Cliprect/Quickreject</a></li>
+<li><a href="#orgheadline27">a) 产生这个问题的一些主要原因:</a></li>
+<li><a href="#orgheadline28">b) 渲染性能分析的常用方法</a></li>
+<li><a href="#orgheadline29">c) 关于VSYNC</a></li>
+<li><a href="#orgheadline30">d) GPU 渲染分析</a></li>
+<li><a href="#orgheadline31">e) More about GPU</a></li>
+<li><a href="#orgheadline32">f) Invalidate/layout</a></li>
+<li><a href="#orgheadline33">g) Overdraw/Cliprect/Quickreject</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline25">Battery Performance</a>
+<li><a href="#orgheadline34">Battery Performance</a>
 <ul>
-<li><a href="#orgheadline26">a) PowerManager.Wakelock</a></li>
-<li><a href="#orgheadline27">b) JobScheduler API</a></li>
-<li><a href="#orgheadline28">c) Battery HIstorian tool</a></li>
+<li><a href="#orgheadline35">a) PowerManager.Wakelock</a></li>
+<li><a href="#orgheadline36">b) JobScheduler API</a></li>
+<li><a href="#orgheadline37">c) Battery HIstorian tool</a></li>
 </ul>
 </li>
 </ul>
@@ -145,8 +160,307 @@ for the JavaScript code in this tag.
 </div>
 </div>
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">View笔记</h2>
+<h2 id="orgheadline1">MVVM 的一种实现</h2>
 <div class="outline-text-2" id="text-orgheadline1">
+<p>
+原文 <a href="https://medium.com/@Miqubel/refactoring-to-mvvm-40ebafff43de#.3pd0ag4sb">https://medium.com/@Miqubel/refactoring-to-mvvm-40ebafff43de#.3pd0ag4sb</a>
+</p>
+</div>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">MVVM 的含义</h3>
+<div class="outline-text-3" id="text-orgheadline2">
+<ol class="org-ol">
+<li>M: model, 负责提供数据以及跟后台服务交互.</li>
+<li>VM: 中间件. 负责将 model 提供的数据进行转化, 方便 view 使用.并将 view
+的请求发送给 model.</li>
+<li>V: 实现用户接口并包含一个 VM.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">主流的两种实现方式</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<ol class="org-ol">
+<li>RxJava Observables.</li>
+<li>Android Data Binding.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">常见代码:activity 做所有事情</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
+下述代码中, activity 同时负责数据的请求和 UI 的更新.这样做的弊端:
+</p>
+<ol class="org-ol">
+<li>MainActivity 知道的太多, 例如数据的获取方式.</li>
+<li>测试代码不好写.</li>
+</ol>
+<pre class="example">
+public class MainActivity extends AppCompatActivity {
+
+    EditText editText;
+    ImageButton imageButton;
+    BooksAdapter adapter;
+    ListView listView;
+    TextView textNoDataFound;
+    GoogleBooksService service;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Configure Retrofit
+        Retrofit retrofit = new Retrofit.Builder()
+                // Base URL can change for endpoints (dev, staging, live..)
+                .baseUrl("https://www.googleapis.com")
+                // Takes care of converting the JSON response into java objects
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        // Create the Google Book API Service
+        service = retrofit.create(GoogleBooksService.class);
+
+
+        editText = (EditText) findViewById(R.id.editText);
+        imageButton = (ImageButton) findViewById(R.id.imageButton);
+        textNoDataFound = (TextView) findViewById(R.id.text_no_data_found);
+
+        adapter = new BooksAdapter(this, -1);
+
+        listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(adapter);
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performSearch();
+            }
+        });
+    }
+
+    private void performSearch() {
+        String formatUserInput = getUserInput().trim().replaceAll("\\s+", "+");
+        // Just call the method on the GoogleBooksService
+        service.search("search+" + formatUserInput)
+                // enqueue runs the request on a separate thread
+                .enqueue(new Callback&lt;BookSearchResult&gt;() {
+
+                    // We receive a Response with the content we expect already parsed
+                    @Override
+                    public void onResponse(Call&lt;BookSearchResult&gt; call, Response&lt;BookSearchResult&gt; books) {
+                        updateUi(books.body().getBooks());
+                    }
+
+                    // In case of error, this method gets called
+                    @Override
+                    public void onFailure(Call&lt;BookSearchResult&gt; call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
+    }
+
+    private void updateUi(List&lt;Book&gt; books) {
+        if (books.isEmpty()) {
+            // if no books found, show a message
+            textNoDataFound.setVisibility(View.VISIBLE);
+        } else {
+            textNoDataFound.setVisibility(View.GONE);
+        }
+        adapter.clear();
+        adapter.addAll(books);
+    }
+
+    private String getUserInput() {
+        return editText.getText().toString();
+    }
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">使用 RxJava 改造</h3>
+<div class="outline-text-3" id="text-orgheadline8">
+</div><div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5">创建 Model</h4>
+<div class="outline-text-4" id="text-orgheadline5">
+<p>
+顶层的 model 使用接口实现, 接口定义了 model 的行为和返回的结果. 然后提供一个
+实现类. 实现类中使用 Retrofit 的 Observable 取代了 Callable.  返回的 Observable
+ 已经配置为在线程中执行请求.
+</p>
+<pre class="example">
+public interface BooksInteractor {
+    Observable&lt;BookSearchResult&gt; search(String search);
+}
+
+public class BooksInteractorImpl implements BooksInteractor {
+    private GoogleBooksService service;
+
+    public BooksInteractorImpl() {
+        // Configure Retrofit
+        Retrofit retrofit = new Retrofit.Builder()
+                // Base URL can change for endpoints (dev, staging, live..)
+                .baseUrl("https://www.googleapis.com")
+                // Takes care of converting the JSON response into java objects
+                .addConverterFactory(GsonConverterFactory.create())
+                // Retrofit Call to RxJava Observable
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+        // Create the Google Book API Service
+        service = retrofit.create(GoogleBooksService.class);
+    }
+
+    @Override
+    public Observable&lt;BookSearchResult&gt; search(String search) {
+        return service.search("search+" + search).subscribeOn(Schedulers.io());
+    }
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-4">
+<h4 id="orgheadline6">创建 ViewModel</h4>
+<div class="outline-text-4" id="text-orgheadline6">
+<p>
+ViewModel 的功能比较简单, 配置执行的线程.
+ 如下例设置了返回的搜索结果在 scheduler 中被执行.
+</p>
+<pre class="example">
+public class BooksViewModel {
+
+    private BooksInteractor interactor;
+    private Scheduler scheduler;
+
+    public BooksViewModel(BooksInteractor interactor, Scheduler scheduler) {
+        this.interactor = interactor;
+        this.scheduler = scheduler;
+    }
+
+    public Observable&lt;BookSearchResult&gt; search(String search) {
+        return interactor.search(search).observeOn(scheduler);
+    }
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7">改造后的 activity</h4>
+<div class="outline-text-4" id="text-orgheadline7">
+<pre class="example">
+public class MainActivity extends AppCompatActivity {
+
+    EditText editText;
+    ImageButton imageButton;
+    BooksAdapter adapter;
+    ListView listView;
+    TextView textNoDataFound;
+
+    private CompositeSubscription subscriptions = new CompositeSubscription();
+    private BooksViewModel booksViewModel;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        booksViewModel = new BooksViewModel(new BooksInteractorImpl(), 
+                                            AndroidSchedulers.mainThread());
+
+        editText = (EditText) findViewById(R.id.editText);
+        imageButton = (ImageButton) findViewById(R.id.imageButton);
+        textNoDataFound = (TextView) findViewById(R.id.text_no_data_found);
+
+        adapter = new BooksAdapter(this, -1);
+
+        listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(adapter);
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performSearch();
+            }
+        });
+    }
+  
+    @Override
+    protected void onDestroy() {
+        subscriptions.unsubscribe();
+        super.onDestroy();
+    }
+
+    private void performSearch() {
+        String formatUserInput = getUserInput().trim().replaceAll("\\s+", "+");
+        subscription = booksViewModel.search(formatUserInput)
+                .subscribe(new Observer&lt;BookSearchResult&gt;() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(BookSearchResult bookSearchResult) {
+                        updateUi(bookSearchResult.getBooks());
+                    }
+                });
+    }
+
+    private void updateUi(List&lt;Book&gt; books) {
+        if (books.isEmpty()) {
+            // if no books found, show a message
+            textNoDataFound.setVisibility(View.VISIBLE);
+        } else {
+            textNoDataFound.setVisibility(View.GONE);
+        }
+        adapter.clear();
+        adapter.addAll(books);
+    }
+
+    private String getUserInput() {
+        return editText.getText().toString();
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">好处</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+<ol class="org-ol">
+<li><p>
+方便写测试用例.
+</p>
+<pre class="example">
+   public class BooksInteractorMock implements BooksInteractor {
+    @Override
+    public Observable&lt;BookSearchResult&gt; search(String search) {
+        return Observable.just(getMockedBookSearchResult());
+    }
+
+    private BookSearchResult getMockedBookSearchResult() {
+        BookSearchResult bookSearchResult = new BookSearchResult();
+//        bookSearchResult.setBooks(myListOfBooks);
+        return bookSearchResult;
+    }
+}
+</pre></li>
+<li>ViewModel 不需要知道 View 的存在(对比 Presenter).</li>
+<li>可以包含多个 ViewModel.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10">View笔记</h2>
+<div class="outline-text-2" id="text-orgheadline10">
 <p>
 View是Android 中的用户交互组件,一个 view 就代表屏幕上的一块区域, 你可以在这块区域上画图,
 点击, 移动等各种操作.
@@ -166,12 +480,12 @@ View 在应用中通过"tree"的方式进行管理维护.创建 view 有两种�
 <i><b><b><b><b>下面的内容基于源码和文档</b></b></b></b></i>
 </p>
 </div>
-<div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="orgheadline7">基本知识</h3>
-<div class="outline-text-3" id="text-orgheadline7">
-</div><div id="outline-container-orgheadline2" class="outline-4">
-<h4 id="orgheadline2">View的位置.</h4>
-<div class="outline-text-4" id="text-orgheadline2">
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16">基本知识</h3>
+<div class="outline-text-3" id="text-orgheadline16">
+</div><div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11">View的位置.</h4>
+<div class="outline-text-4" id="text-orgheadline11">
 <ol class="org-ol">
 <li>View是一个矩形的物体, 通过"左上角的坐标"和"宽/高"来描述一个view.
 描述这些属性的单位是像素(pixel).</li>
@@ -180,9 +494,9 @@ View 在应用中通过"tree"的方式进行管理维护.创建 view 有两种�
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline3" class="outline-4">
-<h4 id="orgheadline3">大小和边距</h4>
-<div class="outline-text-4" id="text-orgheadline3">
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12">大小和边距</h4>
+<div class="outline-text-4" id="text-orgheadline12">
 <ol class="org-ol">
 <li>每个view都有两组"宽/高"属性
 <ul class="org-ul">
@@ -192,18 +506,18 @@ View 在应用中通过"tree"的方式进行管理维护.创建 view 有两种�
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline4" class="outline-4">
-<h4 id="orgheadline4">Layout</h4>
-<div class="outline-text-4" id="text-orgheadline4">
+<div id="outline-container-orgheadline13" class="outline-4">
+<h4 id="orgheadline13">Layout</h4>
+<div class="outline-text-4" id="text-orgheadline13">
 <p>
 Layout包含两个过程:measure和layout.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orgheadline5" class="outline-4">
-<h4 id="orgheadline5">坐标系统</h4>
-<div class="outline-text-4" id="text-orgheadline5">
+<div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14">坐标系统</h4>
+<div class="outline-text-4" id="text-orgheadline14">
 <p>
 背景知识: 一个View的父view范围有可能在当前屏幕之外.
 </p>
@@ -297,9 +611,9 @@ Layout包含两个过程:measure和layout.
 </table>
 </div>
 </div>
-<div id="outline-container-orgheadline6" class="outline-4">
-<h4 id="orgheadline6">适配</h4>
-<div class="outline-text-4" id="text-orgheadline6">
+<div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15">适配</h4>
+<div class="outline-text-4" id="text-orgheadline15">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -380,9 +694,9 @@ Layout包含两个过程:measure和layout.
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline8" class="outline-2">
-<h2 id="orgheadline8">使用开源项目Robolectric测试Android代码</h2>
-<div class="outline-text-2" id="text-orgheadline8">
+<div id="outline-container-orgheadline17" class="outline-2">
+<h2 id="orgheadline17">使用开源项目Robolectric测试Android代码</h2>
+<div class="outline-text-2" id="text-orgheadline17">
 <p>
 该项目官网 <a href="http://robolectric.org/">http://robolectric.org/</a>. github地址: <a href="https://github.com/robolectric/robolectric">https://github.com/robolectric/robolectric</a>.
 </p>
@@ -392,9 +706,9 @@ Layout包含两个过程:measure和layout.
 </p>
 </div>
 
-<div id="outline-container-orgheadline9" class="outline-3">
-<h3 id="orgheadline9">项目介绍</h3>
-<div class="outline-text-3" id="text-orgheadline9">
+<div id="outline-container-orgheadline18" class="outline-3">
+<h3 id="orgheadline18">项目介绍</h3>
+<div class="outline-text-3" id="text-orgheadline18">
 <p>
 Robolectric是一个开源的单元测试框架, 它可以实现直接在JVM里跑Android相关的测试(Activity/Service),
 避免Android自家出品的 <b>古老</b> 的必须要在虚拟机上跑的测试. (注: 目前来看, Android的后续版本对测试的支持越来越好&#x2026;..)
@@ -414,12 +728,12 @@ JVM就可以实现大部分测试.</li>
 </div>
 </div>
 
-<div id="outline-container-orgheadline12" class="outline-3">
-<h3 id="orgheadline12">简单的测试项目</h3>
-<div class="outline-text-3" id="text-orgheadline12">
-</div><div id="outline-container-orgheadline10" class="outline-4">
-<h4 id="orgheadline10">加入到项目工程</h4>
-<div class="outline-text-4" id="text-orgheadline10">
+<div id="outline-container-orgheadline21" class="outline-3">
+<h3 id="orgheadline21">简单的测试项目</h3>
+<div class="outline-text-3" id="text-orgheadline21">
+</div><div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19">加入到项目工程</h4>
+<div class="outline-text-4" id="text-orgheadline19">
 <p>
 添加robolectric的依赖, 由于要使用Junit和assert相关的函数,
 所以把他们的依赖也一起加上.
@@ -437,9 +751,9 @@ testCompile 'org.robolectric:robolectric:3.0'
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline11" class="outline-4">
-<h4 id="orgheadline11">编写简单测试代码</h4>
-<div class="outline-text-4" id="text-orgheadline11">
+<div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20">编写简单测试代码</h4>
+<div class="outline-text-4" id="text-orgheadline20">
 <p>
 在src目录下创建test目录, 然后在test目录下创建与main相同的package目录. 
 创建TestMainActivity.class类, 来测试MainActivity.
@@ -486,12 +800,12 @@ testCompile 'org.robolectric:robolectric:3.0'
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline15" class="outline-3">
-<h3 id="orgheadline15">Robolectric文档</h3>
-<div class="outline-text-3" id="text-orgheadline15">
-</div><div id="outline-container-orgheadline13" class="outline-4">
-<h4 id="orgheadline13">模拟Activity的生命周期</h4>
-<div class="outline-text-4" id="text-orgheadline13">
+<div id="outline-container-orgheadline24" class="outline-3">
+<h3 id="orgheadline24">Robolectric文档</h3>
+<div class="outline-text-3" id="text-orgheadline24">
+</div><div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22">模拟Activity的生命周期</h4>
+<div class="outline-text-4" id="text-orgheadline22">
 <p>
 通过ActivityController这个API可以实现对Activity生命周期
 的控制. 通过以下API可以获取一个ActivityController实例化.
@@ -520,9 +834,9 @@ view相关的函数, 必须要先调用visible().
 </div>
 </div>
 
-<div id="outline-container-orgheadline14" class="outline-4">
-<h4 id="orgheadline14">用Intent 或 savedInstanceState启动/恢复 Activity</h4>
-<div class="outline-text-4" id="text-orgheadline14">
+<div id="outline-container-orgheadline23" class="outline-4">
+<h4 id="orgheadline23">用Intent 或 savedInstanceState启动/恢复 Activity</h4>
+<div class="outline-text-4" id="text-orgheadline23">
 <div class="org-src-container">
 
 <pre class="src src-java"><span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">intent</span>
@@ -541,17 +855,17 @@ Bundle savedInstanceState = <span style="color: #F0DFAF; font-weight: bold;">new
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline16" class="outline-2">
-<h2 id="orgheadline16">performace patterns 笔记</h2>
-<div class="outline-text-2" id="text-orgheadline16">
+<div id="outline-container-orgheadline25" class="outline-2">
+<h2 id="orgheadline25">performace patterns 笔记</h2>
+<div class="outline-text-2" id="text-orgheadline25">
 <p>
 视频地址为 <a href="https://www.youtube.com/playlist?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE"><a href="https://www.youtube.com/playlist?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE">https://www.youtube.com/playlist?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE</a></a>.
 </p>
 </div>
 
-<div id="outline-container-orgheadline17" class="outline-3">
-<h3 id="orgheadline17"><a href="https://www.youtube.com/watch?v=HXQhu6qfTVU&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE">Rendering Performance</a></h3>
-<div class="outline-text-3" id="text-orgheadline17">
+<div id="outline-container-orgheadline26" class="outline-3">
+<h3 id="orgheadline26"><a href="https://www.youtube.com/watch?v=HXQhu6qfTVU&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE">Rendering Performance</a></h3>
+<div class="outline-text-3" id="text-orgheadline26">
 <p>
 该视频主要讨论 UI 的流畅度问题,如果用户在使用 App 发现有卡顿或不流畅的现象,这一般都是
 <b>渲染</b> 问题.
@@ -566,9 +880,9 @@ Android 系统一般每16ms 重绘一下应用界面,所以一秒能画60帧. �
 </p>
 </div>
 
-<div id="outline-container-orgheadline18" class="outline-4">
-<h4 id="orgheadline18">a) 产生这个问题的一些主要原因:</h4>
-<div class="outline-text-4" id="text-orgheadline18">
+<div id="outline-container-orgheadline27" class="outline-4">
+<h4 id="orgheadline27">a) 产生这个问题的一些主要原因:</h4>
+<div class="outline-text-4" id="text-orgheadline27">
 <ol class="org-ol">
 <li>重绘 view 花费太多 CPU 周期,尤其是重绘一个结构复杂的 view.</li>
 <li><p>
@@ -590,9 +904,9 @@ Android 系统一般每16ms 重绘一下应用界面,所以一秒能画60帧. �
 </div>
 </div>
 
-<div id="outline-container-orgheadline19" class="outline-4">
-<h4 id="orgheadline19">b) 渲染性能分析的常用方法</h4>
-<div class="outline-text-4" id="text-orgheadline19">
+<div id="outline-container-orgheadline28" class="outline-4">
+<h4 id="orgheadline28">b) 渲染性能分析的常用方法</h4>
+<div class="outline-text-4" id="text-orgheadline28">
 <ol class="org-ol">
 <li>使用 HIerarchy Viewer 分析 layout 结构,如果 layout 结构过于复杂,重绘时间会过长.</li>
 <li>使用手机上的 <b>Developer Option</b> 中带的一些 debug 选项来查看应用是否有 <b>overdraw</b> 的问题.
@@ -601,9 +915,9 @@ Android 系统一般每16ms 重绘一下应用界面,所以一秒能画60帧. �
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline20" class="outline-4">
-<h4 id="orgheadline20">c) 关于VSYNC</h4>
-<div class="outline-text-4" id="text-orgheadline20">
+<div id="outline-container-orgheadline29" class="outline-4">
+<h4 id="orgheadline29">c) 关于VSYNC</h4>
+<div class="outline-text-4" id="text-orgheadline29">
 <p>
 刷新率: 屏幕每秒更新的次数, 用 HZ 表示; 帧率: GPU 每秒生成帧的数量, fps.
 </p>
@@ -638,9 +952,9 @@ VSYNC 就是协调这种 copy 过程的机制. 理想情况下,帧率一般大�
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline21" class="outline-4">
-<h4 id="orgheadline21">d) GPU 渲染分析</h4>
-<div class="outline-text-4" id="text-orgheadline21">
+<div id="outline-container-orgheadline30" class="outline-4">
+<h4 id="orgheadline30">d) GPU 渲染分析</h4>
+<div class="outline-text-4" id="text-orgheadline30">
 <p>
 打开 <b>开发者选项</b> 的 <b>GPU 呈现模式分析</b>, 选择在屏幕上显示. 选好后, 会在屏幕上显示一些颜色
 条.  这些颜色条显示了三部分的渲染效果:1, 最底层代表导航栏; 2, 最上层代表通知栏; 3, 中间
@@ -670,9 +984,9 @@ VSYNC 就是协调这种 copy 过程的机制. 理想情况下,帧率一般大�
 </ul>
 </div>
 </div>
-<div id="outline-container-orgheadline22" class="outline-4">
-<h4 id="orgheadline22">e) More about GPU</h4>
-<div class="outline-text-4" id="text-orgheadline22">
+<div id="outline-container-orgheadline31" class="outline-4">
+<h4 id="orgheadline31">e) More about GPU</h4>
+<div class="outline-text-4" id="text-orgheadline31">
 <p>
 将对程序所描述的内容转化为最后屏幕上的像素的过程用到了 <b>光栅化</b> 这项技术. 对该技术的解释为 
 "<i>把物体的数学描述以及与物体相关的颜色信息转换为屏幕上用于对应位置的像素及用于填充像素的颜色，
@@ -692,9 +1006,9 @@ GPU 的过程都是非常耗时的操作.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline23" class="outline-4">
-<h4 id="orgheadline23">f) Invalidate/layout</h4>
-<div class="outline-text-4" id="text-orgheadline23">
+<div id="outline-container-orgheadline32" class="outline-4">
+<h4 id="orgheadline32">f) Invalidate/layout</h4>
+<div class="outline-text-4" id="text-orgheadline32">
 <p>
 上节说过 CPU 通过 displaylist 将数据传给 GPU,如果一个 view 的位置发生改变,可能只需重新
 执行一次这个 displaylist 就可以.但是在另一种情况下,view 的改变会导致 displaylist 不合法,
@@ -707,9 +1021,9 @@ GPU 的过程都是非常耗时的操作.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline24" class="outline-4">
-<h4 id="orgheadline24">g) Overdraw/Cliprect/Quickreject</h4>
-<div class="outline-text-4" id="text-orgheadline24">
+<div id="outline-container-orgheadline33" class="outline-4">
+<h4 id="orgheadline33">g) Overdraw/Cliprect/Quickreject</h4>
+<div class="outline-text-4" id="text-orgheadline33">
 <p>
 Android 目前在尽量避免 overdraw 现象.但是对于自定义 view,android 系统的优化程序通常无法触及
 (重写onDraw()函数). 但是可以通过下述方法给优化程序一些提示:
@@ -723,9 +1037,9 @@ Android 目前在尽量避免 overdraw 现象.但是对于自定义 view,android
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline25" class="outline-3">
-<h3 id="orgheadline25">Battery Performance</h3>
-<div class="outline-text-3" id="text-orgheadline25">
+<div id="outline-container-orgheadline34" class="outline-3">
+<h3 id="orgheadline34">Battery Performance</h3>
+<div class="outline-text-3" id="text-orgheadline34">
 <p>
 普渡大学对常用的应用/游戏做了一项耗电研究, 研究发现, 在这些应用消耗的电量中,
 只有大约25%~30%用于应用的核心功能.剩下的75%左右都被网络传输/广告等功能消耗掉.
@@ -733,9 +1047,9 @@ Android 目前在尽量避免 overdraw 现象.但是对于自定义 view,android
 </p>
 </div>
 
-<div id="outline-container-orgheadline26" class="outline-4">
-<h4 id="orgheadline26">a) PowerManager.Wakelock</h4>
-<div class="outline-text-4" id="text-orgheadline26">
+<div id="outline-container-orgheadline35" class="outline-4">
+<h4 id="orgheadline35">a) PowerManager.Wakelock</h4>
+<div class="outline-text-4" id="text-orgheadline35">
 <p>
 该函数可以保持 CPU 一直运行,并不会使屏幕进入休眠状态.但是要注释锁的时机, 不然可能
 导致屏幕一直不休眠.
@@ -746,17 +1060,17 @@ Android 目前在尽量避免 overdraw 现象.但是对于自定义 view,android
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline27" class="outline-4">
-<h4 id="orgheadline27">b) JobScheduler API</h4>
-<div class="outline-text-4" id="text-orgheadline27">
+<div id="outline-container-orgheadline36" class="outline-4">
+<h4 id="orgheadline36">b) JobScheduler API</h4>
+<div class="outline-text-4" id="text-orgheadline36">
 <p>
 该 api 可以将工作安排到指定条件执行(WIFI/batching&#x2026;)
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline28" class="outline-4">
-<h4 id="orgheadline28">c) Battery HIstorian tool</h4>
-<div class="outline-text-4" id="text-orgheadline28">
+<div id="outline-container-orgheadline37" class="outline-4">
+<h4 id="orgheadline37">c) Battery HIstorian tool</h4>
+<div class="outline-text-4" id="text-orgheadline37">
 <p>
 L 版发布, 可以查看唤醒 CPU 的频率,"凶手"和持续时间.
 </p>
