@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-11-06 Sun 16:57 -->
+<!-- 2016-11-07 Mon 13:08 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -89,6 +89,10 @@ for the JavaScript code in this tag.
 <div id="text-table-of-contents">
 <ul>
 <li><a href="#orgheadline1">implicit</a></li>
+<li><a href="#orgheadline2">简写规则</a></li>
+<li><a href="#orgheadline3">case 关键字</a></li>
+<li><a href="#orgheadline4">规则</a></li>
+<li><a href="#orgheadline5">PartialFunction</a></li>
 </ul>
 </div>
 </div>
@@ -96,11 +100,90 @@ for the JavaScript code in this tag.
 <h2 id="orgheadline1">implicit</h2>
 <div class="outline-text-2" id="text-orgheadline1">
 <ol class="org-ol">
-<li>修饰函数参数时, 标志该参数不是在调用时必须提供的.\
+<li>修饰函数参数时, 标志该参数不是在调用时必须提供的.<br  />
 如果没有提供, 会使用"范围"内的 该类型的默认值, 即用
-<b>implicit</b> 定义的值.\
+<b>implicit</b> 定义的值, 或者是 implicit 修饰的返回该类型结果的参数.<br  />
 如果没有默认值, 会报编译错误.</li>
+<li></li>
 </ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">简写规则</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<ol class="org-ol">
+<li>函数只有一行代码, 可以去掉大括号和返回类型. 编译器会自动推理.</li>
+<li><p>
+如果函数参数是一个函数, 参数函数也只有一个参数 并只使用一次, 那么可以将参数函数
+的参数用 <b>_</b> 代替. 编译器会自动推理.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala"> class Upper {
+   def upper(strings: String*): Seq[String] = {
+       strings.map((s: String) =&gt; s.toUpperCase())
+   }
+}
+
+class Upper {
+   def lower(strings:String*) = strings.map(_.toLowerCase())
+}
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">case 关键字</h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<ol class="org-ol">
+<li>case 修饰类时, 构造函数参数可以直接访问, 但是不能修改其值.</li>
+<li>case 修饰的类会在编译时构造一个 companion object.</li>
+<li>创建"companion object"对象时, 编译器会自动寻找 apply()方法, 参数与类相同.</li>
+<li>case 会创建很多默认的函数, 如 toString(), hash(), apply()&#x2026;</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">规则</h2>
+<div class="outline-text-2" id="text-orgheadline4">
+<ol class="org-ol">
+<li>scala 中, 整个类定义的代码就是构造函数.</li>
+<li>允许小范围 import</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">PartialFunction</h2>
+<div class="outline-text-2" id="text-orgheadline5">
+<ol class="org-ol">
+<li>接受任意类型参数, 返回 Unit.</li>
+<li>代码只有 case 组成, 判断接受的参数类型</li>
+<li>unexpected 是默认值, 放到 case 的最后</li>
+</ol>
+<p>
+如下形式:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def receive = {
+  case s: Shape =&gt;
+    s.draw(str =&gt; println(s"draw $str"))
+    sender ! Response(s" $s drawn")
+  case Exit =&gt;
+    println("exiting...")
+    sender ! Finished
+  case unexpected =&gt;
+    val response = Response("unkonw")
+    println(s"response: $response")
+    sender ! response
+}
+</pre>
+</div>
 </div>
 </div>
 </div>
