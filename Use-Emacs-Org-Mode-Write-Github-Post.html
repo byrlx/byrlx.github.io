@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-11-28 Mon 18:23 -->
+<!-- 2017-02-24 Fri 09:57 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>使用OrgMode撰写博客</title>
@@ -175,7 +175,7 @@ for the JavaScript code in this tag.
 <div class="org-src-container">
 
 <pre class="src src-elisp"><span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">=============== Org Publish =====================</span>
-(setq org-publish-project-alist
+(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-publish-project-alist
       '((<span style="color: #CC9393;">"github-blog"</span>
          <span style="color: #DCDCCC; font-weight: bold;">:base-directory</span> <span style="color: #CC9393;">"/Users/douhua/lx/github/blog/org/post/"</span>
          <span style="color: #DCDCCC; font-weight: bold;">:publishing-directory</span> <span style="color: #CC9393;">"/Users/douhua/lx/github/blog/_posts/"</span>
@@ -206,7 +206,7 @@ for the JavaScript code in this tag.
 
 <pre class="src src-elisp"><span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">&#33258;&#21160;&#26356;&#26032;blog</span>
 (<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">lx-update-blog</span> ()
-  (interactive)
+  (<span style="color: #F0DFAF; font-weight: bold;">interactive</span>)
   (org-publish <span style="color: #CC9393;">"github-blog"</span>)
   (shell-command (concat <span style="color: #CC9393;">"cd "</span> LXBLOG <span style="color: #CC9393;">" &amp;&amp; git add -A &amp;&amp; git ci -m 'update blog' &amp;&amp; git push"</span>)))
 (global-set-key (kbd <span style="color: #CC9393;">"&lt;f9&gt;"</span>) 'lx-update-blog)

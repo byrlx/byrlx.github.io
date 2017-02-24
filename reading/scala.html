@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2017-02-24 Fri 09:57 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Luis Xu" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">implicit</a></li>
+<li><a href="#orgheadline2">简写规则</a></li>
+<li><a href="#orgheadline3">case 关键字</a></li>
+<li><a href="#orgheadline4">规则</a></li>
+<li><a href="#orgheadline5">PartialFunction</a></li>
+<li><a href="#orgheadline7">数据结构</a>
+<ul>
+<li><a href="#orgheadline6">Range</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline8">函数</a></li>
+<li><a href="#orgheadline9">Option, Some, None</a></li>
+<li><a href="#orgheadline10">sealed</a></li>
+<li><a href="#orgheadline11">_</a></li>
+<li><a href="#orgheadline12">:</a></li>
+<li><a href="#orgheadline13">if</a></li>
+<li><a href="#orgheadline14">for</a></li>
+<li><a href="#orgheadline15">&lt;:</a></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">implicit</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<ol class="org-ol">
+<li>修饰函数参数时, 标志该参数不是在调用时必须提供的.<br  />
+如果没有提供, 会使用"范围"内的 该类型的默认值, 即用
+<b>implicit</b> 定义的值, 或者是 implicit 修饰的返回该类型结果的参数.<br  />
+如果没有默认值, 会报编译错误.</li>
+<li></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">简写规则</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<ol class="org-ol">
+<li>函数只有一行代码, 可以去掉大括号和返回类型. 编译器会自动推理.</li>
+<li><p>
+如果函数参数是一个函数, 参数函数也只有一个参数 并只使用一次, 那么可以将参数函数
+的参数用 <b>_</b> 代替. 编译器会自动推理.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala"> class Upper {
+   def upper(strings: String*): Seq[String] = {
+       strings.map((s: String) =&gt; s.toUpperCase())
+   }
+}
+
+class Upper {
+   def lower(strings:String*) = strings.map(_.toLowerCase())
+}
+</pre>
+</div>
+
+<ol class="org-ol">
+<li>如果函数只有一看参数, 可以这样写 obj fun param. 这种形式等于 obj.fun(param)</li>
+</ol></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">case 关键字</h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<ol class="org-ol">
+<li>case 修饰类时, 构造函数参数可以直接访问, 但是不能修改其值.</li>
+<li>case 修饰的类会在编译时构造一个 companion object.</li>
+<li>创建"companion object"对象时, 编译器会自动寻找 apply()方法, 参数与类相同.</li>
+<li>case 会创建很多默认的函数, 如 toString(), hash(), apply()&#x2026;</li>
+<li>copy()函数可以基于一个实例创建另一个实例</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">规则</h2>
+<div class="outline-text-2" id="text-orgheadline4">
+<ol class="org-ol">
+<li>scala 中, 整个类定义的代码就是构造函数.</li>
+<li>允许小范围 import</li>
+<li>val 修饰的变量是 immutable 的</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">PartialFunction</h2>
+<div class="outline-text-2" id="text-orgheadline5">
+<ol class="org-ol">
+<li>接受任意类型参数, 返回 Unit.</li>
+<li>代码只有 case 组成, 判断接受的参数类型</li>
+<li>unexpected 是默认值, 放到 case 的最后</li>
+</ol>
+<p>
+如下形式:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def receive = {
+  case s: Shape =&gt;
+    s.draw(str =&gt; println(s"draw $str"))
+    sender ! Response(s" $s drawn")
+  case Exit =&gt;
+    println("exiting...")
+    sender ! Finished
+  case unexpected =&gt;
+    val response = Response("unkonw")
+    println(s"response: $response")
+    sender ! response
+}
+</pre>
+</div>
+<ol class="org-ol">
+<li>使用 isDefinedAt 判断是否能 match</li>
+<li>通过 orElse 把多个 PartialFunction 连接起来. 然后判断的时候
+会依次做 match</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-scala">val pf1: PartialFunction[Any, String] = {
+  case s: String =&gt; "YES"
+}
+val pf2: PartialFunction[Any, String] = {
+  case d: Double =&gt; "YES"
+}
+
+val pf = pf1 orElse pf2
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline7" class="outline-2">
+<h2 id="orgheadline7">数据结构</h2>
+<div class="outline-text-2" id="text-orgheadline7">
+</div><div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">Range</h3>
+<div class="outline-text-3" id="text-orgheadline6">
+<p>
++. 1 to 10  //(1,&#x2026;,10)
++. 1 until 10 //(1,&#x2026;,9)
++. 1 to 10 by 3 //(1, 4, 7 ,10)
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-2">
+<h2 id="orgheadline8">函数</h2>
+<div class="outline-text-2" id="text-orgheadline8">
+<ol class="org-ol">
+<li><p>
+函数参数可以写到多个(一般不超过俩)括号里, 一般第二个括号放
+函数参数比较多, 也可以用 "大括号" 代替括号.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def draw(offset: Point = Point(0.0, 0.0))(f: String =&gt; Unit): Unit =    f(s"draw(offset = $offset), ${this.toString}")
+
+s.draw(Point(1.0, 2.0)){
+    str =&gt; println(s"ShapesDrawingActor: $str")
+}
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9">Option, Some, None</h2>
+<div class="outline-text-2" id="text-orgheadline9">
+<ol class="org-ol">
+<li>Some, 表示有一个数据. None 表示没有数据. 都是 Option 的子类</li>
+<li>getOrElse 来获取 Option 中的数据.</li>
+<li>map的 getkey 操作返回的都是 Option, 可能为 Some, 也可能为 None</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10">sealed</h2>
+<div class="outline-text-2" id="text-orgheadline10">
+<ol class="org-ol">
+<li>该关键字修饰的类, 其子类必须跟该类位于同一个源文件.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-2">
+<h2 id="orgheadline11">_</h2>
+<div class="outline-text-2" id="text-orgheadline11">
+<ol class="org-ol">
+<li>import 中表示引用所有或者所有的 static</li>
+<li><p>
+import 中不引入某类型
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">import java.math.BigInteger.{
+  ONE =&gt; _,
+  TEN,
+  ZERO =&gt; JAVAZERO }
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-2">
+<h2 id="orgheadline12">:</h2>
+<div class="outline-text-2" id="text-orgheadline12">
+<ol class="org-ol">
+<li>A f: B == B.f(A)</li>
+<li>相当于 Lisp 中的 cons, (相当于修饰符左边是 car, 右边是 cdr)
+A::B == B.::(A)</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-2">
+<h2 id="orgheadline13">if</h2>
+<div class="outline-text-2" id="text-orgheadline13">
+<ol class="org-ol">
+<li>if 及其他的条件判断语句都有返回值.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-2">
+<h2 id="orgheadline14">for</h2>
+<div class="outline-text-2" id="text-orgheadline14">
+<ol class="org-ol">
+<li>for (value &lt;- values) action</li>
+<li>for (value &lt;- values <br  />
+         filter <br  />
+         filter <br  />
+         &#x2026;.) action <br  />
+也可以在括号中定义变量并使用</li>
+<li><p>
+过滤到集合中, yield
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">var result = for (value &lt;- values filter) yield value
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-2">
+<h2 id="orgheadline15">&lt;:</h2>
+<div class="outline-text-2" id="text-orgheadline15">
+<ol class="org-ol">
+<li>A &lt;: B 表示 A 是 B 的 subclass.
+例如 R &lt;: {def close:Unit} 表示 R 是后面的带函数的匿名类的子类.</li>
+<li><p>
+实例解析:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scala">def apply[R &lt;: { def close():Unit }, T](resource: =&gt; R)(f: R =&gt; T)
+//等于
+def apply[  R &lt;: { def close():Unit },
+	    T ]
+	    (resource: =&gt; R)
+	    (f: R =&gt; T) = {...}
+</pre>
+</div>
+<ul class="org-ul">
+<li>R 表示要处理的类型</li>
+<li>T 表示返回的类型</li>
+<li>第一个括号是生成 R 的参数函数</li>
+<li>第二个括号是处理 R 并返回结果的参数函数.</li>
+</ul></li>
+<li>&lt;:&lt;(A, B) == A&lt;:&lt;B</li>
+<li>Q[A &lt;: B] means that class Q can take any class A that is a subclass of B.
+Q[+B] means that Q can take any class, but if A is a subclass of B, then Q[A] is considered to be a subclass of Q[B].
+Q[+A &lt;: B] means that class Q can only take subclasses of B as well as propagating the subclass relationship.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="postamble">Created At  by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
+</div>
+</body>
+</html>

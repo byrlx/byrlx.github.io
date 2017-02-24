@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-11-28 Mon 18:23 -->
+<!-- 2017-02-24 Fri 09:57 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Android Log 系统</title>
@@ -252,7 +252,7 @@ g_logformat = android_log_format_new();
 
             <span style="color: #DFAF8F;">ANDROID_LOG_SILENT</span>,     <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">only for SetMinPriority(); must be last </span><span style="color: #5F7F5F;">*/</span>
 
-<span style="color: #7CB8BB;">&#25509;&#19979;&#26469;&#21028;&#26029;&#26159;&#21542;&#26377;&#35774;&#32622;&#20840;&#23616;&#30340;log</span> <span style="color: #DFAF8F;">level</span>,<span style="color: #DFAF8F;">&#21363;&#20256;&#20837;&#30340;filter&#20013;&#26159;&#21542;&#21253;&#21547;</span><span style="color: #CC9393;">"*:x"</span>&#30340;&#23383;&#31526;&#20018;,<span style="color: #DFAF8F;">&#22914;&#26524;&#26159;&#30340;&#35805;</span>,<span style="color: #7CB8BB;">&#23601;&#35774;&#32622;&#19968;&#20010;&#20840;&#23616;&#24615;&#30340;log</span> <span style="color: #DFAF8F;">level</span>
+<span style="color: #7CB8BB;">&#25509;&#19979;&#26469;&#21028;&#26029;&#26159;&#21542;&#26377;&#35774;&#32622;&#20840;&#23616;&#30340;log</span> <span style="color: #DFAF8F;">level</span>,<span style="color: #DFAF8F;">&#21363;&#20256;&#20837;&#30340;filter&#20013;&#26159;&#21542;&#21253;&#21547;</span><span style="color: #CC9393;">"*:x"</span>&#30340;&#23383;&#31526;&#20018;,<span style="color: #DFAF8F;">&#22914;&#26524;&#26159;&#30340;&#35805;</span>,<span style="color: #7CB8BB;">&#23601;&#35774;&#32622;&#19968;&#20010;&#20840;&#23616;&#24615;&#30340;log</span> <span style="color: #93E0E3;">level</span>
 
         <span style="color: #5F7F5F;">/* </span><span style="color: #7F9F7F;">android_log_addFilterRule() </span><span style="color: #5F7F5F;">*/</span>
     <span style="color: #F0DFAF; font-weight: bold;">if</span>(0 == strncmp(<span style="color: #CC9393;">"*"</span>, filterExpression, tagNameLength)) {
@@ -267,7 +267,7 @@ g_logformat = android_log_format_new();
 
 &#36825;&#26465;&#35821;&#21477;&#26816;&#26597;tag <span style="color: #CC9393;">"random"</span>&#30340;priority&#26159;&#21542;&#26159;ANDROID_LOG_INFO,&#30475;&#19979; <span style="color: #7CB8BB;">filterPriForTag</span>()&#20989;&#25968;&#23454;&#29616;
 
-        <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">android_LogPriority</span> <span style="color: #DFAF8F;">filterPriForTag</span>(
+        <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">android_LogPriority</span> <span style="color: #93E0E3;">filterPriForTag</span>(
                 <span style="color: #7CB8BB;">AndroidLogFormat</span> *<span style="color: #DFAF8F;">p_format</span>, <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">tag</span>)
         {
             <span style="color: #7CB8BB;">FilterInfo</span> *<span style="color: #DFAF8F;">p_curFilter</span>;
@@ -287,7 +287,7 @@ g_logformat = android_log_format_new();
             <span style="color: #F0DFAF; font-weight: bold;">return</span> p_format-&gt;global_pri;
         }
 
-&#36825;&#27573;code&#24456;&#30452;&#35266;,&#39318;&#20808;&#36941;&#21382;p_format&#30340;filter,&#26816;&#26597;&#26377;&#27809;&#26377;&#35774;&#32622;tag&#30340;priority, &#22914;&#26524;&#27809;&#26377;&#25214;&#21040;,<span style="color: #7CB8BB;">&#23601;&#36820;&#22238;&#20840;&#23616;&#30340;log</span> <span style="color: #DFAF8F;">level</span>. &#36824;&#26377;&#21478;&#19968;&#20010;&#38656;&#35201;&#26816;&#26597;&#30340;&#22320;&#26041;
+&#36825;&#27573;code&#24456;&#30452;&#35266;,&#39318;&#20808;&#36941;&#21382;p_format&#30340;filter,&#26816;&#26597;&#26377;&#27809;&#26377;&#35774;&#32622;tag&#30340;priority, &#22914;&#26524;&#27809;&#26377;&#25214;&#21040;,<span style="color: #7CB8BB;">&#23601;&#36820;&#22238;&#20840;&#23616;&#30340;log</span> <span style="color: #93E0E3;">level</span>. &#36824;&#26377;&#21478;&#19968;&#20010;&#38656;&#35201;&#26816;&#26597;&#30340;&#22320;&#26041;
 
     assert(android_log_shouldPrintLine(p_format, tag, ANDROID_LOG_DEBUG) == 0);
 
@@ -305,7 +305,7 @@ g_logformat = android_log_format_new();
 
     err = android_log_addFilterString(p_format, <span style="color: #CC9393;">"*:s random:d "</span>);
 
-        <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">android_log_addFilterString</span>(<span style="color: #7CB8BB;">AndroidLogFormat</span> *<span style="color: #DFAF8F;">p_format</span>,
+        <span style="color: #7CB8BB;">int</span> <span style="color: #93E0E3;">android_log_addFilterString</span>(<span style="color: #7CB8BB;">AndroidLogFormat</span> *<span style="color: #DFAF8F;">p_format</span>,
                 <span style="color: #F0DFAF; font-weight: bold;">const</span> <span style="color: #7CB8BB;">char</span> *<span style="color: #DFAF8F;">filterString</span>)
         {
             <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Yes, I'm using strsep</span>
@@ -2164,7 +2164,7 @@ logwrapper程序再把它写到相关文件中。
         memset(&amp;ignact, 0, <span style="color: #F0DFAF; font-weight: bold;">sizeof</span>(ignact));
         ignact.sa_handler = SIG_IGN;
         sigaction(<span style="color: #DFAF8F;">SIGINT</span>, &amp;ignact, &amp;intact);
-        sigaction(SIGQUIT, &amp;ignact, &amp;quitact);
+        sigaction(<span style="color: #DFAF8F;">SIGQUIT</span>, &amp;ignact, &amp;quitact);
     }
 
     rc = parent(argv[0], parent_ptty, pid, status, log_target,

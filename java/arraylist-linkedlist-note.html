@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-11-28 Mon 18:23 -->
+<!-- 2017-02-24 Fri 09:57 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>ArrayList, LinkedList源码笔记</title>
@@ -385,7 +385,7 @@ replaceAll()实现: 首先获取队列的ListIterator, 然后过该iterator
 </p>
 <div class="org-src-container">
 
-<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">default</span> <span style="color: #7CB8BB;">void</span> replaceAll(<span style="color: #7CB8BB;">UnaryOperator</span>&lt;<span style="color: #7CB8BB;">E</span>&gt; <span style="color: #DFAF8F;">operator</span>) {
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">default</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">replaceAll</span>(<span style="color: #7CB8BB;">UnaryOperator</span>&lt;<span style="color: #7CB8BB;">E</span>&gt; <span style="color: #DFAF8F;">operator</span>) {
     Objects.requireNonNull(operator);
     <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">ListIterator</span>&lt;<span style="color: #7CB8BB;">E</span>&gt; <span style="color: #DFAF8F;">li</span> = <span style="color: #F0DFAF; font-weight: bold;">this</span>.listIterator();
     <span style="color: #F0DFAF; font-weight: bold;">while</span> (li.hasNext()) {
@@ -401,7 +401,7 @@ array通过ListIterator存入队列.
 </p>
 <div class="org-src-container">
 
-<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">default</span> <span style="color: #7CB8BB;">void</span> sort(<span style="color: #7CB8BB;">Comparator</span>&lt;? <span style="color: #F0DFAF; font-weight: bold;">super</span> <span style="color: #7CB8BB;">E</span>&gt; <span style="color: #DFAF8F;">c</span>) {
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">default</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">sort</span>(<span style="color: #7CB8BB;">Comparator</span>&lt;? <span style="color: #F0DFAF; font-weight: bold;">super</span> <span style="color: #7CB8BB;">E</span>&gt; <span style="color: #DFAF8F;">c</span>) {
     <span style="color: #7CB8BB;">Object</span>[] <span style="color: #DFAF8F;">a</span> = <span style="color: #F0DFAF; font-weight: bold;">this</span>.toArray();
     Arrays.sort(a, (<span style="color: #7CB8BB;">Comparator</span>) c);
     <span style="color: #7CB8BB;">ListIterator</span>&lt;<span style="color: #7CB8BB;">E</span>&gt; <span style="color: #DFAF8F;">i</span> = <span style="color: #F0DFAF; font-weight: bold;">this</span>.listIterator();
@@ -895,10 +895,10 @@ ArryaList的其他实现, 例如 Iterator 和 ListIterator, 基本与
 </p>
 <div class="org-src-container">
 
-<pre class="src src-java">* This <span style="color: #F0DFAF; font-weight: bold;">class</span> is the opposite of <span style="color: #7CB8BB;">the</span> &lt;<span style="color: #7CB8BB;">tt</span>&gt;<span style="color: #7CB8BB;">AbstractList</span>&lt;/tt&gt; <span style="color: #F0DFAF; font-weight: bold;">class</span> in the sense
-* that it <span style="color: #F0DFAF; font-weight: bold;">implements</span> <span style="color: #7CB8BB;">the</span> <span style="color: #CC9393;">"random access"</span> methods (&lt;tt&gt;get(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>)&lt;/tt&gt;,
-* &lt;tt&gt;set(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>, <span style="color: #7CB8BB;">E</span> <span style="color: #DFAF8F;">element</span>)&lt;/tt&gt;, &lt;tt&gt;add(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>, <span style="color: #7CB8BB;">E</span> <span style="color: #DFAF8F;">element</span>)&lt;/tt&gt; and
-* &lt;tt&gt;remove(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>)&lt;/tt&gt;) on top of the list<span style="color: #D0BF8F; font-weight: bold;">'</span><span style="color: #CC9393;">s list iterator, instead of</span>
+<pre class="src src-java">* This <span style="color: #F0DFAF; font-weight: bold;">class</span> is the opposite of <span style="color: #7CB8BB;">the</span> &lt;<span style="color: #7CB8BB;">tt</span>&gt;AbstractList&lt;/tt&gt; <span style="color: #F0DFAF; font-weight: bold;">class</span> in the sense
+* that it <span style="color: #F0DFAF; font-weight: bold;">implements</span> <span style="color: #7CB8BB;">the</span> <span style="color: #CC9393;">"random access"</span> methods (&lt;<span style="color: #7CB8BB;">tt</span>&gt;get(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>)&lt;/tt&gt;,
+* &lt;<span style="color: #7CB8BB;">tt</span>&gt;set(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>, <span style="color: #7CB8BB;">E</span> <span style="color: #DFAF8F;">element</span>)&lt;/tt&gt;, &lt;<span style="color: #7CB8BB;">tt</span>&gt;add(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>, <span style="color: #7CB8BB;">E</span> <span style="color: #DFAF8F;">element</span>)&lt;/tt&gt; and
+* &lt;<span style="color: #7CB8BB;">tt</span>&gt;remove(<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">index</span>)&lt;/tt&gt;) on top of the list<span style="color: #D0BF8F; font-weight: bold;">'</span><span style="color: #CC9393;">s list iterator, instead of</span>
 <span style="color: #CC9393;">* the other way around.&lt;p&gt;</span>
 </pre>
 </div>

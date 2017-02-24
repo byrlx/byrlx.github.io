@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-11-28 Mon 18:23 -->
+<!-- 2017-02-24 Fri 09:57 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Android Gradle Plugin User Guide 文档翻译</title>
@@ -709,11 +709,11 @@ Android插件支持签名配置的创建和客制化.通过<a id="orgtarget3"></
 <pre class="src src-java">android {
     signingConfigs {
         debug {
-            <span style="color: #7CB8BB;">storeFile</span> <span style="color: #DFAF8F;">file</span>(<span style="color: #CC9393;">"debug.keystore"</span>)
+            <span style="color: #7CB8BB;">storeFile</span> <span style="color: #93E0E3;">file</span>(<span style="color: #CC9393;">"debug.keystore"</span>)
         }
 
         myConfig {
-            <span style="color: #7CB8BB;">storeFile</span> <span style="color: #DFAF8F;">file</span>(<span style="color: #CC9393;">"other.keystore"</span>)
+            <span style="color: #7CB8BB;">storeFile</span> <span style="color: #93E0E3;">file</span>(<span style="color: #CC9393;">"other.keystore"</span>)
             storePassword <span style="color: #CC9393;">"android"</span>
             keyAlias <span style="color: #CC9393;">"androiddebugkey"</span>
             keyPassword <span style="color: #CC9393;">"android"</span>
@@ -818,7 +818,7 @@ Gradle插件支持4.10版本的ProGuard. ProGuard插件默认是启用的.如果
 <div class="org-src-container">
 
 <pre class="src src-java">dependencies {
-    <span style="color: #7CB8BB;">compile</span> <span style="color: #DFAF8F;">files</span>(<span style="color: #CC9393;">'libs/foo.jar'</span>)
+    <span style="color: #7CB8BB;">compile</span> <span style="color: #93E0E3;">files</span>(<span style="color: #CC9393;">'libs/foo.jar'</span>)
 }
 
 android {
@@ -931,7 +931,7 @@ dependencies {
 <div class="org-src-container">
 
 <pre class="src src-java">dependencies {
-    <span style="color: #7CB8BB;">compile</span> <span style="color: #DFAF8F;">project</span>(<span style="color: #CC9393;">':libraries:lib1'</span>)
+    <span style="color: #7CB8BB;">compile</span> <span style="color: #93E0E3;">project</span>(<span style="color: #CC9393;">':libraries:lib1'</span>)
 }
 </pre>
 </div>

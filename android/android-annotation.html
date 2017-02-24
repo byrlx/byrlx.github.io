@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-11-28 Mon 18:23 -->
+<!-- 2017-02-24 Fri 09:57 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>【翻译】 10步教你在Android中写"注解"处理程序</title>
@@ -270,7 +270,7 @@ targetCompatibility = 1.7
                 .append(<span style="color: #CC9393;">"\t\treturn \""</span>);
 
         <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">for each javax.lang.model.element.Element annotated with the CustomAnnotation</span>
-        <span style="color: #F0DFAF; font-weight: bold;">for</span> (<span style="color: #7CB8BB;">Element</span> <span style="color: #DFAF8F;">element</span> : roundEnv.getElementsAnnotatedWith(LxAnnotation.<span style="color: #F0DFAF; font-weight: bold;">class</span>)) {
+        <span style="color: #F0DFAF; font-weight: bold;">for</span> (<span style="color: #7CB8BB;">Element</span> <span style="color: #93E0E3;">element</span> : roundEnv.getElementsAnnotatedWith(LxAnnotation.<span style="color: #F0DFAF; font-weight: bold;">class</span>)) {
             <span style="color: #7CB8BB;">String</span> <span style="color: #DFAF8F;">objectType</span> = element.getSimpleName().toString();
 
             <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">this is appending to the return statement</span>
@@ -400,7 +400,7 @@ apply plugin: <span style="color: #CC9393;">'com.neenbedankt.android-apt'</span>
 <div class="org-src-container">
 
 <pre class="src src-java">dependencies {
-    <span style="color: #7CB8BB;">compile</span> <span style="color: #DFAF8F;">files</span>(<span style="color: #CC9393;">'libs/processor.jar'</span>)
+    <span style="color: #7CB8BB;">compile</span> <span style="color: #93E0E3;">files</span>(<span style="color: #CC9393;">'libs/processor.jar'</span>)
     testCompile <span style="color: #CC9393;">'junit:junit:4.12'</span>
     compile <span style="color: #CC9393;">'com.android.support:appcompat-v7:23.1.1'</span>
 }

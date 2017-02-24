@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-11-28 Mon 18:23 -->
+<!-- 2017-02-24 Fri 09:57 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>SICP 阅读笔记</title>
@@ -224,18 +224,18 @@ f(x) = xy. 则 f'(x) = y*(dx/dx) + x*(dy/dx). 通过规则1和2, 可以
 
 //&#22914;&#26524;x&#21644;y&#26159;&#21516;&#19968;&#20010;symbol, &#21017;&#20026;&#30456;&#31561;
 (<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">same-variable?</span> (x y)
-  (and (variable? x)
+  (<span style="color: #F0DFAF; font-weight: bold;">and</span> (variable? x)
        (variable? y)
        (eq x y)))
 
 //&#21644;&#24335;&#24517;&#39035;&#20026;&#19968;&#20010;consp, &#24182;&#19988;&#31532;&#19968;&#20010;&#20803;&#32032;&#20026;+
 (<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">sum?</span> (e)
-  (and (consp e)
+  (<span style="color: #F0DFAF; font-weight: bold;">and</span> (consp e)
        (eq (car e) '+)))
 
 //&#20056;&#24335;&#19982;&#21644;&#24335;&#21028;&#26029;&#26041;&#24335;&#30456;&#21516;
 (<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">product?</span> (e)
-  (and (consp e)
+  (<span style="color: #F0DFAF; font-weight: bold;">and</span> (consp e)
        (eq (car e) '*)))
 
 (<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">addend</span> (e)
@@ -365,7 +365,7 @@ f(x) = xy. 则 f'(x) = y*(dx/dx) + x*(dy/dx). 通过规则1和2, 可以
 <div class="org-src-container">
 
 <pre class="src src-elisp">(lxsearch
- '(<span style="color: #F0DFAF; font-weight: bold;">lambda</span> (x) (- (lxcube x) (* 100 x)))
+ '(lambda (x) (- (lxcube x) (* 100 x)))
  1
  11)
 </pre>

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-11-28 Mon 18:23 -->
+<!-- 2017-02-24 Fri 09:57 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>OrgMode 手册阅读笔记</title>
@@ -699,7 +699,7 @@ Emacs打开org文件默认只显示顶层标题, 可以通过 "#+STARTUP" 选项
 </p>
 <div class="org-src-container">
 
-<pre class="src src-elisp">(setq-default org-catch-invisible-edits 'error)
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq-default</span> org-catch-invisible-edits 'error)
 </pre>
 </div>
 
@@ -1495,7 +1495,7 @@ org mode支持的外部链接包括:
 <pre class="src src-elisp">#+LINK: bugzilla  http://10.1.2.9/bugzilla/show_bug.cgi?id=
 #+LINK: google    http://www.google.com/search?q=%s
 &#25110;&#32773;
-(setq org-link-abbrev-alist
+(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-link-abbrev-alist
   '((<span style="color: #CC9393;">"bugzilla"</span>  . <span style="color: #CC9393;">"http://10.1.2.9/bugzilla/show_bug.cgi?id="</span>)
     (<span style="color: #CC9393;">"url-to-ja"</span> . <span style="color: #CC9393;">"http://translate.google.fr/translate?sl=en&amp;tl=ja&amp;u=%h"</span>)
     (<span style="color: #CC9393;">"google"</span>    . <span style="color: #CC9393;">"http://www.google.com/search?q="</span>)
@@ -1583,7 +1583,7 @@ org mode支持的外部链接包括:
 </p>
 <div class="org-src-container">
 
-<pre class="src src-elisp">(setq org-todo-keywords
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-todo-keywords
    '((sequence <span style="color: #CC9393;">"TODO"</span> <span style="color: #CC9393;">"FEEDBACK"</span> <span style="color: #CC9393;">"VERIFY"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"DONE"</span> <span style="color: #CC9393;">"DELEGATED"</span>)))
 </pre>
 </div>
@@ -1600,7 +1600,7 @@ org mode支持的外部链接包括:
 </p>
 <div class="org-src-container">
 
-<pre class="src src-elisp">(setq org-todo-keywords
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-todo-keywords
        '((sequence <span style="color: #CC9393;">"TODO(t)"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"DONE(d)"</span>)
          (sequence <span style="color: #CC9393;">"REPORT"</span> <span style="color: #CC9393;">"BUG"</span> <span style="color: #CC9393;">"KNOWNCAUSE"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"FIXED"</span>)
          (sequence <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"CANCELED"</span>)))
@@ -1617,7 +1617,7 @@ org mode支持的外部链接包括:
 </p>
 <div class="org-src-container">
 
-<pre class="src src-elisp">(setq org-todo-keywords '((type <span style="color: #CC9393;">"Fred"</span> <span style="color: #CC9393;">"Sara"</span> <span style="color: #CC9393;">"Lucy"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"DONE"</span>)))
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-todo-keywords '((type <span style="color: #CC9393;">"Fred"</span> <span style="color: #CC9393;">"Sara"</span> <span style="color: #CC9393;">"Lucy"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"DONE"</span>)))
 </pre>
 </div>
 </div>
@@ -1651,7 +1651,7 @@ org mode支持的外部链接包括:
 </p>
 <div class="org-src-container">
 
-<pre class="src src-elisp">(setq org-todo-keyword-faces
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-todo-keyword-faces
       '((<span style="color: #CC9393;">"TODO"</span> . org-warning) (<span style="color: #CC9393;">"STARTED"</span> . <span style="color: #CC9393;">"yellow"</span>)
         (<span style="color: #CC9393;">"CANCELED"</span> . (<span style="color: #DCDCCC; font-weight: bold;">:foreground</span> <span style="color: #CC9393;">"blue"</span> <span style="color: #DCDCCC; font-weight: bold;">:weight</span> bold))))
 </pre>
@@ -1673,7 +1673,7 @@ org-enforce-todo-dependencies.
 </p>
 <div class="org-src-container">
 
-<pre class="src src-elisp">(setq org-enforce-todo-dependencies t)
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-enforce-todo-dependencies t)
 </pre>
 </div></li>
 <li><p>
@@ -1714,8 +1714,8 @@ org-enforce-todo-dependencies.
 </p>
 <div class="org-src-container">
 
-<pre class="src src-elisp">(setq org-log-done 'time)
-(setq org-log-done 'note)
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-log-done 'time)
+(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-log-done 'note)
 </pre>
 </div>
 </div>
@@ -1734,7 +1734,7 @@ org-enforce-todo-dependencies.
 </ul>
 <div class="org-src-container">
 
-<pre class="src src-elisp">(setq org-todo-keywords
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-todo-keywords
   '((sequence <span style="color: #CC9393;">"TODO(t)"</span> <span style="color: #CC9393;">"WAIT(w@/!)"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"DONE(d!)"</span> <span style="color: #CC9393;">"CANCELED(c@)"</span>)))
 </pre>
 </div>
@@ -1855,7 +1855,7 @@ So, 如果你凑巧用Emacs写代码, Emacs凑巧又装了Org mode, 那恭喜,
 </p>
 <div class="org-src-container">
 
-<pre class="src src-elisp">(setq org-default-notes-file (concat org-directory <span style="color: #CC9393;">"/notes.org"</span>))
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-default-notes-file (concat org-directory <span style="color: #CC9393;">"/notes.org"</span>))
 (define-key global-map <span style="color: #CC9393;">"\C-cc"</span> 'org-capture)
 </pre>
 </div>
@@ -1884,7 +1884,7 @@ org capture默认会将所有任务都放到notes.org这个文件, 这可能不�
 </ul>
 <div class="org-src-container">
 
-<pre class="src src-elisp">(setq org-capture-templates
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-capture-templates
  '((<span style="color: #CC9393;">"t"</span> <span style="color: #CC9393;">"Todo"</span> entry (file+headline <span style="color: #CC9393;">"~/org/gtd.org"</span> <span style="color: #CC9393;">"Tasks"</span>)
         <span style="color: #CC9393;">"* TODO %?\n  %i\n  %a"</span>)
    (<span style="color: #CC9393;">"j"</span> <span style="color: #CC9393;">"Journal"</span> entry (file+datetree <span style="color: #CC9393;">"~/org/journal.org"</span>)
@@ -2606,7 +2606,7 @@ orgmode可以设置各种范围的header参数, 下面会逐一介绍, 一般来
 </p>
 <div class="org-src-container">
 
-<pre class="src src-elisp">(setq org-babel-default-header-args
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-babel-default-header-args
        (cons '(<span style="color: #DCDCCC; font-weight: bold;">:noweb</span> . <span style="color: #CC9393;">"yes"</span>)
              (assq-delete-all <span style="color: #DCDCCC; font-weight: bold;">:noweb</span> org-babel-default-header-args)))
 </pre>

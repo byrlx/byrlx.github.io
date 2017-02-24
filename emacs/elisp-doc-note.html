@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-11-28 Mon 18:23 -->
+<!-- 2017-02-24 Fri 09:57 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Elisp 文档笔记</title>
@@ -629,7 +629,7 @@ func函数的参数有args和新函数的参数组成. 通过下例可以说明a
 <div class="org-src-container">
 
 <pre class="src src-elisp"><span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">&#23558;lxpa&#35774;&#20026;&#36820;&#22238;&#30340;&#26032;&#20989;&#25968;</span>
-(setq lxpa (apply-partially 'list 'x))
+(<span style="color: #F0DFAF; font-weight: bold;">setq</span> lxpa (apply-partially 'list 'x))
 
 <span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">&#36890;&#36807;funcall&#35843;&#29992;lxpa, &#20256;&#20837;&#21442;&#25968; x, y</span>
 (funcall lxpa 'y 'z)
@@ -666,7 +666,7 @@ mapcar会将func依次映射到后面的集合参数中, 然后将结果合并�
 </p>
 <div class="org-src-container">
 
-<pre class="src src-elisp">          (<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">mapcar*</span> (function <span style="color: #7CB8BB;">&amp;rest</span> args)
+<pre class="src src-elisp">          (<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">mapcar*</span> (<span style="color: #F0DFAF; font-weight: bold;">function</span> <span style="color: #7CB8BB;">&amp;rest</span> args)
             <span style="color: #9FC59F;">"Apply FUNCTION to successive cars of all ARGS.</span>
 <span style="color: #9FC59F;">          Return the list of results."</span>
             <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">If no list is exhausted,</span>

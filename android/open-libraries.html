@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-11-28 Mon 18:23 -->
+<!-- 2017-02-24 Fri 09:57 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>【翻译】当我开始Android开发时，希望能早点认识的一些开源库</title>
@@ -194,7 +194,7 @@ Butter Knife通过注解的方式将代码和xml文件绑定到一起，无需�
 </ol>
 <div class="org-src-container">
 
-<pre class="src src-java">&lt;<span style="color: #7CB8BB;">TextView</span> android:id=<span style="color: #CC9393;">"@+id/description"</span>
+<pre class="src src-java">&lt;TextView android:id=<span style="color: #CC9393;">"@+id/description"</span>
  ...
  /&gt;
 <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> MainActivity <span style="color: #F0DFAF; font-weight: bold;">extends</span> <span style="color: #7CB8BB;">Activity</span> {
@@ -746,7 +746,7 @@ realm.where(Taco.<span style="color: #F0DFAF; font-weight: bold;">class</span>).
 <pre class="src src-java"><span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">All changes to data must happen in a transaction</span>
 realm.executeTransaction(<span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">Realm</span>.<span style="color: #7CB8BB;">Transaction</span>() {
  <span style="color: #BFEBBF;">@Override</span>
- <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #DFAF8F;">execute</span>(<span style="color: #7CB8BB;">Realm</span> <span style="color: #DFAF8F;">realm</span>) {
+ <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">execute</span>(<span style="color: #7CB8BB;">Realm</span> <span style="color: #DFAF8F;">realm</span>) {
  <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">remove single match</span>
  limeTacos.deleteFirstFromRealm();
  <span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">or limeTacos.deleteLastFromRealm();</span>
@@ -776,7 +776,7 @@ realm.executeTransaction(<span style="color: #F0DFAF; font-weight: bold;">new</s
 <pre class="src src-java"><span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">Transaction block</span>
 realm.executeTransaction(<span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #BFEBBF;">Realm</span>.<span style="color: #7CB8BB;">Transaction</span>() {
  <span style="color: #BFEBBF;">@Override</span>
- <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #DFAF8F;">execute</span>(<span style="color: #7CB8BB;">Realm</span> <span style="color: #DFAF8F;">realm</span>) {
+ <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">execute</span>(<span style="color: #7CB8BB;">Realm</span> <span style="color: #DFAF8F;">realm</span>) {
     <span style="color: #7CB8BB;">Taco</span> <span style="color: #DFAF8F;">taco</span> = realm.createObject(Taco.<span style="color: #F0DFAF; font-weight: bold;">class</span>);
     taco.setDescription(<span style="color: #CC9393;">"Spaghetti Squash on Fresh Corn Tortillas"</span>);
     user.setImageUrl(<span style="color: #CC9393;">"http://tacoimages.com/1.jpg"</span>);

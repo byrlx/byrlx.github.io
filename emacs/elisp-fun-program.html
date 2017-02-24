@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-11-28 Mon 18:23 -->
+<!-- 2017-02-24 Fri 09:57 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Elisp 小程序</title>
@@ -191,7 +191,7 @@ for the JavaScript code in this tag.
 <div class="org-src-container">
 
 <pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">lx-add-running</span> (day km loc)
-  (interactive <span style="color: #CC9393;">"sInput day: \nsInput distance: \nsInput location: "</span>)
+  (<span style="color: #F0DFAF; font-weight: bold;">interactive</span> <span style="color: #CC9393;">"sInput day: \nsInput distance: \nsInput location: "</span>)
   (lx-add-running-record  day km loc))
 </pre>
 </div>
@@ -204,7 +204,7 @@ for the JavaScript code in this tag.
 <div class="org-src-container">
 
 <pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">lx-add-running-today</span> (km loc)
-  (interactive <span style="color: #CC9393;">"sInput distance: \nsInput location: "</span>)
+  (<span style="color: #F0DFAF; font-weight: bold;">interactive</span> <span style="color: #CC9393;">"sInput distance: \nsInput location: "</span>)
   (lx-add-running-record (format-time-string <span style="color: #CC9393;">"%m.%d"</span>) km loc))
 </pre>
 </div>
@@ -265,7 +265,7 @@ lx-create-post-today, lx-creat-post. 第一个函数需要
 <div class="org-src-container">
 
 <pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">lx-create-post-today</span> (title category)
-  (interactive <span style="color: #CC9393;">"sInput title:\nsInput category: "</span>)
+  (<span style="color: #F0DFAF; font-weight: bold;">interactive</span> <span style="color: #CC9393;">"sInput title:\nsInput category: "</span>)
   (lx-create-post (format-time-string <span style="color: #CC9393;">"%Y-%m-%d"</span>) title category))
 </pre>
 </div>
@@ -305,11 +305,11 @@ lx-create-post-today, lx-creat-post. 第一个函数需要
 <div class="org-src-container">
 
 <pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">lx-create-post</span> (date title category)
-  (interactive <span style="color: #CC9393;">"Input date title and category: %s %s %s"</span>)
+  (<span style="color: #F0DFAF; font-weight: bold;">interactive</span> <span style="color: #CC9393;">"Input date title and category: %s %s %s"</span>)
   <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">&#32452;&#35013;&#25991;&#20214;&#21517;</span>
-  (setq whole-filename (concat ORG-PATH <span style="color: #CC9393;">"blog/"</span> date <span style="color: #CC9393;">"-"</span> title <span style="color: #CC9393;">".org"</span>))
+  (<span style="color: #F0DFAF; font-weight: bold;">setq</span> whole-filename (concat ORG-PATH <span style="color: #CC9393;">"blog/"</span> date <span style="color: #CC9393;">"-"</span> title <span style="color: #CC9393;">".org"</span>))
   <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">&#21019;&#24314;&#25991;&#20214;, &#25171;&#24320;&#25991;&#20214;</span>
-  (setq filebuf (find-file-other-window whole-filename))
+  (<span style="color: #F0DFAF; font-weight: bold;">setq</span> filebuf (find-file-other-window whole-filename))
   <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">&#25554;&#20837;&#36890;&#29992;&#22836;&#37096;</span>
   (lx-create-post-head title category)
   <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">&#20809;&#26631;&#23450;&#20301;&#22312;&#22836;&#37096;&#19979;&#36793;&#30340;&#31354;&#30333;&#34892;</span>
