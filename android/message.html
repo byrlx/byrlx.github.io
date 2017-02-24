@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2017-02-24 Fri 09:57 -->
+<!-- 2017-02-24 Fri 15:57 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Android 消息机制源码笔记</title>
@@ -91,133 +91,164 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orgheadline1">Message</a>
 <ul>
-<li><a href="#orgheadline2">消息池</a></li>
-<li><a href="#orgheadline3">获取消息</a></li>
+<li><a href="#orgheadline2">成员变量</a></li>
+<li><a href="#orgheadline3">构造消息</a></li>
 <li><a href="#orgheadline4">发送消息</a></li>
+<li><a href="#orgheadline6">异步消息</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline5">MessageQueue</a>
+<li><a href="#orgheadline7">MessageQueue</a>
 <ul>
-<li><a href="#orgheadline6">插入消息: enqueueMessage(msg, when)</a></li>
-<li><a href="#orgheadline7">从队列获取消息</a></li>
+<li><a href="#orgheadline8">插入消息</a></li>
+<li><a href="#orgheadline9">消息队列是否空闲</a></li>
+<li><a href="#orgheadline10">从队列获取消息</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline8">Looper</a>
+<li><a href="#orgheadline5">Looper</a>
 <ul>
-<li><a href="#orgheadline9">为线程初始化一个looper</a></li>
-<li><a href="#orgheadline10">loop()函数处理消息</a></li>
+<li><a href="#orgheadline11">为线程初始化一个looper</a></li>
+<li><a href="#orgheadline12">loop()函数处理消息</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline11">Handler</a>
+<li><a href="#orgheadline13">Messenger</a></li>
+<li><a href="#orgheadline14">Handler</a>
 <ul>
-<li><a href="#orgheadline12">创建handler</a></li>
-<li><a href="#orgheadline13">获取一个消息</a></li>
-<li><a href="#orgheadline14">发送消息</a></li>
-<li><a href="#orgheadline15">发送runnable</a></li>
+<li><a href="#orgheadline15">创建handler</a></li>
+<li><a href="#orgheadline16">获取一个消息</a></li>
+<li><a href="#orgheadline17">发送消息</a></li>
+<li><a href="#orgheadline18">发送runnable</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 <p>
-本笔记是Android中对Handler相关原理的代码阅读笔记.
+<i>Update: 2017.02.24, reread the source code of android-24</i>
+</p>
+
+<p>
+本笔记是Android中对消息系统代码阅读笔记, 包括三个类:
+Message, MessageQueue, Messenger
 </p>
 
 <div id="outline-container-orgheadline1" class="outline-2">
 <h2 id="orgheadline1">Message</h2>
 <div class="outline-text-2" id="text-orgheadline1">
 <p>
-该类是描述了用于作为信息载体的"消息"的实现, 几个重要的成员变量.
+  该类是描述了用于作为信息载体的"消息"的实现, 几个重要的成员变量.
+Message通常都是与Handler结合在一起使用.
 </p>
-<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
-
-
-<colgroup>
-<col  class="org-left" />
-
-<col  class="org-left" />
-</colgroup>
-<thead>
-<tr>
-<th scope="col" class="org-left">&#xa0;</th>
-<th scope="col" class="org-left">描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="org-left">what</td>
-<td class="org-left">该变量可以用来唯一的标志条消息, 因为每个handler都有自己的命名空间, 所以发给不同handler的message, 即使what相同, 也不会冲突</td>
-</tr>
-
-<tr>
-<td class="org-left">arg1/arg2</td>
-<td class="org-left">如果传送的消息只是简单的int类型, 可以直接使用这俩</td>
-</tr>
-
-<tr>
-<td class="org-left">when</td>
-<td class="org-left">消息的激活时间</td>
-</tr>
-
-<tr>
-<td class="org-left">data</td>
-<td class="org-left">Bundle类型, 发送的数据, 通过setData()设置</td>
-</tr>
-
-<tr>
-<td class="org-left">target</td>
-<td class="org-left">目标Handler</td>
-</tr>
-
-<tr>
-<td class="org-left">callback</td>
-<td class="org-left">&#xa0;</td>
-</tr>
-</tbody>
-</table>
 </div>
 <div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2">消息池</h3>
+<h3 id="orgheadline2">成员变量</h3>
 <div class="outline-text-3" id="text-orgheadline2">
-<p>
-Message类本身也定义了一个消息池, 通过链表方式存储, 变量 sPoolSize 定义了消息池的大小,
-消息池的操作都是线程安全的. 
-</p>
+<pre class="example">
+public final class Message implements Parcelable {
+    public int what;
+    public int arg1; 
+    public int arg2;
+    public Object obj;
+    public Messenger replyTo;
+    public int sendingUid = -1;
+    /*package*/ static final int FLAG_IN_USE = 1 &lt;&lt; 0;
+    /*package*/ static final int FLAG_ASYNCHRONOUS = 1 &lt;&lt; 1;
+    /*package*/ static final int FLAGS_TO_CLEAR_ON_COPY_FROM = FLAG_IN_USE;
+    /*package*/ int flags;
+    /*package*/ long when;
+    /*package*/ Bundle data;
+    /*package*/ Handler target;
+    /*package*/ Runnable callback;
+    /*package*/ Message next;
+    private static final Object sPoolSync = new Object();
+    private static Message sPool;
+    private static int sPoolSize = 0;
+    private static final int MAX_POOL_SIZE = 50;
+    private static boolean gCheckRecycle = true;
+    ...
+}
+</pre>
+
+<ol class="org-ol">
+<li>what.      
+该变量是消息的标志符,用来标识一条消息. 对于同一个Handler来说, 该条消息的唯一的. 
+不同Handler来说, what相同不会互相影响, 因为每个handler都有自己的命名空间, 
+所以发给不同handler的message, 即使what相同, 也不会冲突.</li>
+<li>arg1/arg2. 
+Message支持多重方式存储数据. 
+如果传送的数据很简单,可以用int来表示的话, 可以使用这两个字段.                                                                         |</li>
+
+<li>obj.
+传送的消息是一个类的实例, 可以用这个表示. 需要说明的是, 如果该
+Message需要跨进程传输的话(通过Binder), 该类必须支持Parcelable.</li>
+<li>replyTo.
+如果需要"回复"这条消息, 可以使用该变量. 
+Message一般和Handler配合使用.</li>
+<li>sendingUid.
+发送这条消息的uid. 跨进程使用消息一般会用到.</li>
+<li>flags.
+目前有三个标记: FLAG_IN_USE, FLAG_ASYNCHRONOUS, FLAGS_TO_CLEAR_ON_COPY_FROM.</li>
+<li>when. 消息的激活时间                                                                                                            |</li>
+<li>data. 
+Bundle类型, 发送的数据, 通过setData()设置.
+如果arg1/arg2/obj都不能满足传输数据的需求,可以使用该字段.</li>
+<li>target. 目标Handler                                                                                                               |</li>
+<li>callback. 
+目前来说, 当该字段被设置时,标志这条消息是一个Runnable消息, 
+消息被处理时就会执行这个callback所代笔的Runnable.</li>
+<li>next.
+可以使用该字段构造Message链表.</li>
+<li>sPool.
+全局消息池. 用于存放/回收Message.</li>
+<li>sPoolSync.
+消息池的锁.</li>
+<li>sPoolSize. 
+消息池大小.</li>
+</ol>
 </div>
 </div>
 <div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3">获取消息</h3>
+<h3 id="orgheadline3">构造消息</h3>
 <div class="outline-text-3" id="text-orgheadline3">
 <p>
-obtain(&#x2026;)函数族用于获取消息, 这些obtain()函数通过不同的接受不同的
-参数来初始化获取到的消息. 核心函数是obtain(). 通过同步方式
-从消息池中取一个消息. 也可以调用obtain(Handler h)来设置获取到的消息的
-Handler.
+两种方法:
 </p>
-<div class="org-src-container">
-
-<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">Message</span> <span style="color: #93E0E3;">obtain</span>() {
-    <span style="color: #F0DFAF; font-weight: bold;">synchronized</span> (sPoolSync) {
-        <span style="color: #F0DFAF; font-weight: bold;">if</span> (sPool != <span style="color: #BFEBBF;">null</span>) {
-            <span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">m</span> = sPool;
+<ol class="org-ol">
+<li><p>
+通过obtain(&#x2026;)函数族用于获取消息, 这些obtain()函数通过不同的接受不同的
+参数来初始化获取到的消息. 主要流程就是先通过obtain()获取一个消息,
+然后在把参数赋值给消息字段. 
+</p>
+<pre class="example">
+public static Message obtain(Message orig) 
+public static Message obtain(Handler h) 
+public static Message obtain(Handler h, Runnable callback) 
+public static Message obtain(Handler h, int what) 
+public static Message obtain(Handler h, int what, Object obj) 
+public static Message obtain(Handler h, int what, int arg1, int arg2) 
+public static Message obtain(Handler h, int what, int arg1, int arg2, Object obj) 
+public static Message obtain() {
+    synchronized (sPoolSync) {
+        if (sPool != null) {
+            Message m = sPool;
             sPool = m.next;
-            m.next = <span style="color: #BFEBBF;">null</span>;
-            m.flags = 0; <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">clear in-use flag</span>
+            m.next = null;
+            m.flags = 0; // clear in-use flag
             sPoolSize--;
-            <span style="color: #F0DFAF; font-weight: bold;">return</span> m;
+            return m;
         }
     }
-    <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Message</span>();
+    return new Message();
 }
 
-<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">Message</span> <span style="color: #93E0E3;">obtain</span>(<span style="color: #7CB8BB;">Handler</span> <span style="color: #DFAF8F;">h</span>) {
-    <span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">m</span> = obtain();
+public static Message obtain(Handler h) {
+    Message m = obtain();
     m.target = h;
 
-    <span style="color: #F0DFAF; font-weight: bold;">return</span> m;
+    return m;
 }
-</pre>
-</div>
+</pre></li>
+<li>通过构造函数(不推荐).</li>
+</ol>
 </div>
 </div>
 <div id="outline-container-orgheadline4" class="outline-3">
@@ -236,21 +267,50 @@ Handler.
 </div>
 </div>
 </div>
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">异步消息</h3>
+<div class="outline-text-3" id="text-orgheadline6">
+<p>
+如果flags的FLAG_ASYNCHRONOUS被设置, 表明该消息是异步消息.
+异步消息的处理不会收到一些同步barrier的限制.参见<a href="#orgheadline5">Looper</a>.
+</p>
 </div>
-<div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5">MessageQueue</h2>
-<div class="outline-text-2" id="text-orgheadline5">
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-2">
+<h2 id="orgheadline7">MessageQueue</h2>
+<div class="outline-text-2" id="text-orgheadline7">
 <p>
 该类基于前面的<a href="#orgheadline1">Message</a>类实现了一个消息队列, 用于"顺序"处理
 消息, 消息按照其产生时间先后排序.
+一个MessageQueue通常与一个<a href="#orgheadline5">Looper</a>一起使用
+(一个线程只能有一个Looper).
 </p>
 </div>
-<div id="outline-container-orgheadline6" class="outline-3">
-<h3 id="orgheadline6">插入消息: enqueueMessage(msg, when)</h3>
-<div class="outline-text-3" id="text-orgheadline6">
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">插入消息</h3>
+<div class="outline-text-3" id="text-orgheadline8">
 <p>
-该函数用于插入一个消息, 由于消息队列按照消息时间when升序排序,所以
-新插入消息会遍历列表, 并插入到相应位置. <br  />
+调用enqueueMessage(msg, when)函数, 该函数会锁住整个对象. 
+该函数的流程:
+</p>
+<ol class="org-ol">
+<li>判断当前MessageQueue是否正在退出(mQuitting被设置). 
+如果是则报错, 回收消息并返回.</li>
+
+<li>设置消息的FLAG_IN_USE标记位. 然后执行3或4.</li>
+
+<li>如果当前队列为空, 或者消息的when为0, 或者消息的触发时间
+比当前队列的第一个消息还早. 则将消息设置为消息头.</li>
+
+<li>如果3不成立, 则将新消息与队列进行比较, 将其插入到合适位置.
+这里有一个其他设置: 如果当前队列被阻塞, 且第一个元素是barrier
+(barrier是target为null的消息). 那么如果新插入的消息是第一个async消息,
+就会唤醒阻塞队列(如果不是第一个,就不唤醒).</li>
+
+<li><p>
+如果需要唤醒, 则唤醒.
 下面是该函数代码:
 </p>
 <div class="org-src-container">
@@ -321,33 +381,42 @@ Handler.
 <li>否则, 插入到相应位置</li>
 <li>判断是否需要唤醒, 如果是则唤醒.</li>
 </ol></li>
+</ol></li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="orgheadline7">从队列获取消息</h3>
-<div class="outline-text-3" id="text-orgheadline7">
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">消息队列是否空闲</h3>
+<div class="outline-text-3" id="text-orgheadline9">
 <p>
-通过函数next()从队列中获取一个消息. 下面是该函数代码, 
-代码流程:
+空闲条件: 队列为空或第一个消息的触发时间还没到.
+需要获取对象锁.
 </p>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">从队列获取消息</h3>
+<div class="outline-text-3" id="text-orgheadline10">
+<p>
+通过函数next()从队列中获取一个消息. 下面是该函数流程, 
+</p>
+<ol class="org-ol">
+<li>判断该队列是否已经退出(mPtr=0), 是则直接返回Null;</li>
+<li>进入一个无限for()循环获取消息.
 <ol class="org-ol">
 <li>调用JNI函数nativePollOnce(ptr, timeout), 该函数的第二个参数表示要
 阻塞的时长, 如果为0则立即返回, 如果为-1则一直阻塞.</li>
-<li>试图获取一个消息.
+<li>获取全局锁.
 <ol class="org-ol">
-<li>如果没有, 则将上一步的timeout变量nextPollTimeoutMillis设为-1.</li>
-<li>否则(即有消息),
-<ol class="org-ol">
-<li>如果消息时间大于当前时间(即消息的执行时间还未到来), 则设置
-nextPollTimeoutMillis的值为差值.</li>
-<li>否则, 返回消息.</li>
+<li>判断第一个消息是否为barrier. 如果是,获取第一个async消息.</li>
+<li>如果有可用消息(第一个不为barrier或是async消息), 判断消息触发时间, 
+如果未到, 则设置睡眠时间为剩余时间.</li>
+<li>否则, 说明消息可用, 将消息从队列移除, 设置FLAG_IN_USE, 返回消息.</li>
+<li>如果2,3不成立, 没获取到任何消息, 则设置睡眠时间为-1, 那么在下一次循环中
+会进入一直睡眠状态.</li>
+<li>MessageQueue还支持添加IdleHandler接口, 当当前线程没有消息
+可处理即将进入等待之前, 可以执行这些handler的相关函数.</li>
 </ol></li>
-</ol></li>
-<li>获取消息失败, 继续走循环后面的内容.
-<ol class="org-ol">
-<li>如果队列正在退出, 调用dispose()函数销毁native的消息队列.并返回null.
-(在Looper中, 这一步会导致looper退出).</li>
 </ol></li>
 </ol>
 
@@ -419,18 +488,18 @@ nextPollTimeoutMillis的值为差值.</li>
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline8" class="outline-2">
-<h2 id="orgheadline8">Looper</h2>
-<div class="outline-text-2" id="text-orgheadline8">
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">Looper</h2>
+<div class="outline-text-2" id="text-orgheadline5">
 <p>
 Looper类用于在线程中实现一个"消息循环"行为. 
-Looper有一个<a href="#orgheadline5">MessageQueue</a>类型的变量mQueue用于存储消息.
+Looper有一个<a href="#orgheadline7">MessageQueue</a>类型的变量mQueue用于存储消息.
 </p>
 </div>
 
-<div id="outline-container-orgheadline9" class="outline-3">
-<h3 id="orgheadline9">为线程初始化一个looper</h3>
-<div class="outline-text-3" id="text-orgheadline9">
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11">为线程初始化一个looper</h3>
+<div class="outline-text-3" id="text-orgheadline11">
 <p>
 Looper类有一个静态变量sThreadLocal, 该变量是一个ThreadLocal
 类型的线程私有变量. 当调用prepare()函数进行初始化时,
@@ -458,14 +527,18 @@ PS: Looper还有一个静态变量sMainLooper, 这个变量是UI线程
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline10" class="outline-3">
-<h3 id="orgheadline10">loop()函数处理消息</h3>
-<div class="outline-text-3" id="text-orgheadline10">
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12">loop()函数处理消息</h3>
+<div class="outline-text-3" id="text-orgheadline12">
 <p>
 函数的处理在loop()函数中, 该函数建立了一个"无限循环", 
-每次循环都从消息队列中获取一个消息, 若无消息则可能
-会阻塞或者退出循环(主要与<a href="#orgheadline5">MessageQueue</a>有关. 下面是该函数主要代码:
+每次循环都从消息队列中获取一个消息, 这会调用<a href="#orgheadline7">MessageQueue</a>的next()
+函数, 
 </p>
+<ol class="org-ol">
+<li>如果没有可用消息, 该函数会阻塞.</li>
+<li>如果<a href="#orgheadline7">MessageQueue</a>正在退出, 该函数返回null.</li>
+</ol>
 <div class="org-src-container">
 
 <pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">loop</span>() {
@@ -497,7 +570,7 @@ PS: Looper还有一个静态变量sMainLooper, 这个变量是UI线程
 代码流程:
 </p>
 <ol class="org-ol">
-<li>调用queue.next()函数<a href="#orgheadline7">从队列获取消息</a>.</li>
+<li>调用queue.next()函数<a href="#orgheadline10">从队列获取消息</a>.</li>
 <li>判断消息是否为空, 如果为空则退出循环(线程也可能退出). 
 因为next()函数可能会导致线程阻塞. 所以如果"被唤醒"还拿到空消息,
 有可能是别的线程调用了quit()函数.</li>
@@ -507,17 +580,46 @@ PS: Looper还有一个静态变量sMainLooper, 这个变量是UI线程
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline11" class="outline-2">
-<h2 id="orgheadline11">Handler</h2>
-<div class="outline-text-2" id="text-orgheadline11">
+<div id="outline-container-orgheadline13" class="outline-2">
+<h2 id="orgheadline13">Messenger</h2>
+<div class="outline-text-2" id="text-orgheadline13">
+<p>
+Messenger可以用来传递消息, 它里面封装了一个Handler, 其他的程序可以
+通过这个Messenger给这个Handler发送消息. 因为它实现了Parcelable,所以
+可以依附在Message上在进程间进行传递.
+下面是Messenger的主要api.
+</p>
+<ol class="org-ol">
+<li><p>
+构造函数.
+</p>
+<pre class="example">
+public Messenger(Handler target) {
+    mTarget = target.getIMessenger();
+}
+</pre></li>
+<li><p>
+发送消息
+</p>
+<pre class="example">
+public void send(Message message) throws RemoteException {
+    mTarget.send(message);
+}
+</pre></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline14" class="outline-2">
+<h2 id="orgheadline14">Handler</h2>
+<div class="outline-text-2" id="text-orgheadline14">
 <p>
 在一般的APP开发中, 都是通过handler进行消息的发送或
 处理. 这里是几个主要功能的代码笔记.
 </p>
 </div>
-<div id="outline-container-orgheadline12" class="outline-3">
-<h3 id="orgheadline12">创建handler</h3>
-<div class="outline-text-3" id="text-orgheadline12">
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15">创建handler</h3>
+<div class="outline-text-3" id="text-orgheadline15">
 <p>
 Handler的构造函数有多个, 基本最后都调到下面两个函数之一:
 </p>
@@ -527,7 +629,7 @@ Handler(callback, async).
 第一个参数callback的用于, 如果不想自己写一个Handler的子类
 (Handler的通常用法), 可以传入一个callback参数用于处理消息.
 第二个参数async标志消息是否要按时间排序.
-该函数会去拿去当前线程的<a href="#orgheadline8">Looper</a>, 如果没有则报错.
+该函数会去拿去当前线程的<a href="#orgheadline5">Looper</a>, 如果没有则报错.
 </p>
 <div class="org-src-container">
 
@@ -559,22 +661,22 @@ Handler(callback, async).
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="orgheadline13">获取一个消息</h3>
-<div class="outline-text-3" id="text-orgheadline13">
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16">获取一个消息</h3>
+<div class="outline-text-3" id="text-orgheadline16">
 <p>
 调用obtainMessage()可以获取一个消息, 函数内部通过
 调用<a href="#orgheadline1">Message</a>的obtain()函数实现.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline14" class="outline-3">
-<h3 id="orgheadline14">发送消息</h3>
-<div class="outline-text-3" id="text-orgheadline14">
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17">发送消息</h3>
+<div class="outline-text-3" id="text-orgheadline17">
 <p>
 Handler的发送消息相关的函数也有多个, 基本都是先计算该message
 的执行时间, 然后调用sendMessageAtTime()函数. 该函数内部调用了 
-enqueueMessage()函数, 最终调用到了<a href="#orgheadline5">MessageQueue</a>的
+enqueueMessage()函数, 最终调用到了<a href="#orgheadline7">MessageQueue</a>的
 enqueueMessage()函数.
 </p>
 <div class="org-src-container">
@@ -600,12 +702,12 @@ enqueueMessage()函数.
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline15" class="outline-3">
-<h3 id="orgheadline15">发送runnable</h3>
-<div class="outline-text-3" id="text-orgheadline15">
+<div id="outline-container-orgheadline18" class="outline-3">
+<h3 id="orgheadline18">发送runnable</h3>
+<div class="outline-text-3" id="text-orgheadline18">
 <p>
 post系列函数用于发送一个"Runnable"消息, 该runnable会被存入
-消息的callback变量. 在<a href="#orgheadline8">Looper</a>做消息分发时, 会回调到Handler的
+消息的callback变量. 在<a href="#orgheadline5">Looper</a>做消息分发时, 会回调到Handler的
 dispatchMessage()函数来处理callback.代码如下:
 </p>
 <div class="org-src-container">
