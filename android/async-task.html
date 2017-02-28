@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2017-02-24 Fri 21:49 -->
+<!-- 2017-02-28 Tue 19:14 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
-<title>AsyncTask 源码阅读</title>
+<title>AsyncTask笔记</title>
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Luis Xu" />
 <link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
@@ -84,290 +84,364 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
-<h1 class="title">AsyncTask 源码阅读</h1>
+<h1 class="title">AsyncTask笔记</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline1">thread相关</a>
-<ul>
-<li><a href="#orgheadline2">sThreadFactory</a></li>
-<li><a href="#orgheadline3">sPoolWorkQueue</a></li>
-<li><a href="#orgheadline4">THREAD_POOL_EXECUTOR</a></li>
-<li><a href="#orgheadline5">SERIAL_EXECUTOR</a></li>
-<li><a href="#orgheadline6">sWorker和mFuture</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline7">handler相关</a></li>
-<li><a href="#orgheadline10">流程</a>
-<ul>
-<li><a href="#orgheadline8">execute()函数过程</a></li>
-<li><a href="#orgheadline9">发布进度</a></li>
-</ul>
-</li>
+<li><a href="#orgheadline1">注释文档中提到的注意点</a></li>
+<li><a href="#orgheadline2">静态变量</a></li>
+<li><a href="#orgheadline3">构造函数</a></li>
+<li><a href="#orgheadline4">执行函数</a></li>
+<li><a href="#orgheadline5">函数调用位置</a></li>
+<li><a href="#orgheadline6">内部Handler</a></li>
+<li><a href="#orgheadline7">取消任务</a></li>
+<li><a href="#orgheadline8">同步</a></li>
+<li><a href="#orgheadline9">实验</a></li>
 </ul>
 </div>
 </div>
 <p>
-AsyncTask是Android提供的一个封装类, 可以实现后台线程与UI线程的交互. <br  />
-本文是该类的源码的阅读笔记, 至于AsyncTask的用法, 可以去查阅相关的资料.
+<i>update: 2017-02-27, comprehend more</i>
 </p>
 
 <p>
-AsyncTask的源码实现主要是封装了 <b>Handler</b> 和 <b>Thread</b> 两个功能. 
-下面是详细的代码实现. 该类是一个抽象类.
+AsyncTask是Android提供的一个封装类, 可以实现后台线程与UI线程的交互. <br  />
 </p>
 
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">thread相关</h2>
+<h2 id="orgheadline1">注释文档中提到的注意点</h2>
 <div class="outline-text-2" id="text-orgheadline1">
-<p>
-AsyncTask的源码中定义了如下与"thread"相关的变量或函数.
-</p>
+<ol class="org-ol">
+<li>适用于执行短时间的任务(例如几秒钟), 长时间的任务使用Java的Executor框架.
+注: 如果时间过长,可能导致内存泄漏, 考虑一种场景, 旋转
+导致Activity被重建, 但之前的activity仍然有AsyncTask在
+执行, 这会导致onPostExecute()函数更新UI时报错, 因为要
+更新的view可能已经不在window中了.</li>
+<li>必须继承实现, 至少要重写 doInBackground()函数.</li>
+<li>如果不实用其提供的泛型参数, 将其设置为Void.</li>
+<li>使用cancel(boolean)函数来随时终止一个Task.
+如果调用了这个函数, 那么onCancel()会被调用, 而不是
+onPostExecute(). 
+所以要尽量在doInBackground()里去调用isCancelled()
+来判断是否为终止.</li>
+<li>AsyncTask必须在UI线程中调用, 不能在其他线程中调用.
+即必须在UI线程中创建对象并调用execute()函数.</li>
+<li>不要手动去调用那几个函数.</li>
+<li>一个task只能被执行一次.</li>
+<li>"隐式"同步规则:
+<ul class="org-ul">
+<li>在构造函数或onPreExecute()中创建变量, 并在
+doInBackground()里访问不需要同步.</li>
+<li>在doInBackground()里设置变量, 在onProgressUpdate()和
+onPostExecute()里使用不需要同步.</li>
+</ul></li>
+<li>默认情况下, 所有的AsyncTask都是在一个线程里执行.
+如果想要并行执行AsyncTask, 可以调用 executeOnExecutor()函数.</li>
+</ol>
 </div>
-<div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2">sThreadFactory</h3>
-<div class="outline-text-3" id="text-orgheadline2">
-<p>
-该变量是一个实现了ThreadFacotry类的匿名类变量, 主要实现了
-newThread()函数, 该函数定义了创建线程的方法. 创建的线程
-接受一个Runnable对象. 这个线程就是doInBackground()函数
-所执行的线程. 
-</p>
-<div class="org-src-container">
+</div>
 
-<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">ThreadFactory</span> <span style="color: #DFAF8F;">sThreadFactory</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">ThreadFactory</span>() {
-    <span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">AtomicInteger</span> <span style="color: #DFAF8F;">mCount</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">AtomicInteger</span>(1);
-
-    <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">Thread</span> <span style="color: #93E0E3;">newThread</span>(<span style="color: #7CB8BB;">Runnable</span> <span style="color: #DFAF8F;">r</span>) {
-        <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Thread</span>(r, <span style="color: #CC9393;">"AsyncTask #"</span> + mCount.getAndIncrement());
-    }
-};
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3">sPoolWorkQueue</h3>
-<div class="outline-text-3" id="text-orgheadline3">
-<p>
-创建了一个"阻塞队列". 用于存放Runnable对象.
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">静态变量</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<ol class="org-ol">
+<li>核心线程数目: 最小2, 最大4, 如果有4个CPU的话, 是3, 这样是
+为了保证后台线程不会占用所有CPU.</li>
+<li>最大线程数目: CPU * 2 + 1</li>
+<li>线程存活时间: 30s</li>
+<li>ThreadFactory()</li>
+<li>工作队列池: 使用了LinkedBlockingQueue(128);</li>
+<li><p>
+THREAD_POOL_EXECUTOR: 基于上面的参与生成了一个自定义的ExecutorService.
 </p>
-</div>
-</div>
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4">THREAD_POOL_EXECUTOR</h3>
-<div class="outline-text-3" id="text-orgheadline4">
-<p>
-该变量是一个ThreadPoolExecutor对象, 基于上面创建的两个
-变量 "sThreadFacotry" 和 "sPoolWorkQueue" 创建, 意思即
-这个executor执行的thread会从sThreadFactory中创建, 并且
-提交给这个executor的runnable对象在执行前, 都会存放到
-sPoolWorkQueue中. 
+<pre class="example">
+public static final Executor THREAD_POOL_EXECUTOR;
+
+static {
+    ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(
+            CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_SECONDS, TimeUnit.SECONDS,
+            sPoolWorkQueue, sThreadFactory);
+    threadPoolExecutor.allowCoreThreadTimeOut(true);
+    THREAD_POOL_EXECUTOR = threadPoolExecutor;
+}
+</pre></li>
+<li><p>
+顺序executor, SERIAL_EXECUTOR. 
+当使用这个Executor来执行任务的时候, 
 </p>
-<div class="org-src-container">
+<ul class="org-ul">
+<li>创建一个新任务来包装这个传入的任务, 这个新任务在执行这个被包装任务
+的同时, 会在finally去执行 scheduleNext()函数. 即去执行下一个任务.
+ArrayDeque里.</li>
+<li>execute()和scheduleNext()是同步函数, 所以可以保证一次只处理</li>
+</ul>
+<pre class="example">
+public static final Executor SERIAL_EXECUTOR = new SerialExecutor();
 
-<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">Executor</span> <span style="color: #DFAF8F;">THREAD_POOL_EXECUTOR</span>
-         = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">ThreadPoolExecutor</span>(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE,
-                 <span style="color: #BFEBBF;">TimeUnit</span>.SECONDS, sPoolWorkQueue, sThreadFactory);
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-orgheadline5" class="outline-3">
-<h3 id="orgheadline5">SERIAL_EXECUTOR</h3>
-<div class="outline-text-3" id="text-orgheadline5">
-<p>
-该变量是一个SerialExecutor对象, 后者是一个自定义的
-Executor子类, 该类实现了"顺序"执行任务的功能, 即同一时刻
-只能提交并执行一个runnable. 该对象是AsyncTask默认的执行
-executor. 
-</p>
+ private static class SerialExecutor implements Executor {
+     final ArrayDeque&lt;Runnable&gt; mTasks = new ArrayDeque&lt;Runnable&gt;();
+     Runnable mActive;
 
-<p>
-该类通过<a href="#orgheadline4">THREAD_POOL_EXECUTOR</a> 来执行实际的"线程"功能.见代码:
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">SerialExecutor</span> <span style="color: #F0DFAF; font-weight: bold;">implements</span> <span style="color: #7CB8BB;">Executor</span> {
-     <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">ArrayDeque</span>&lt;<span style="color: #7CB8BB;">Runnable</span>&gt; <span style="color: #DFAF8F;">mTasks</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">ArrayDeque</span>&lt;<span style="color: #7CB8BB;">Runnable</span>&gt;();
-     <span style="color: #7CB8BB;">Runnable</span> <span style="color: #DFAF8F;">mActive</span>;
-
-     <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">synchronized</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">execute</span>(<span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">Runnable</span> <span style="color: #DFAF8F;">r</span>) {
-         mTasks.offer(<span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Runnable</span>() {
-             <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">run</span>() {
-                 <span style="color: #F0DFAF; font-weight: bold;">try</span> {
+     public synchronized void execute(final Runnable r) {
+         mTasks.offer(new Runnable() {
+             public void run() {
+                 try {
                      r.run();
-                 } <span style="color: #F0DFAF; font-weight: bold;">finally</span> {
+                 } finally {
                      scheduleNext();
                  }
              }
          });
-         <span style="color: #F0DFAF; font-weight: bold;">if</span> (mActive == <span style="color: #BFEBBF;">null</span>) {
+         if (mActive == null) {
              scheduleNext();
          }
      }
 
-     <span style="color: #F0DFAF; font-weight: bold;">protected</span> <span style="color: #F0DFAF; font-weight: bold;">synchronized</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">scheduleNext</span>() {
-         <span style="color: #F0DFAF; font-weight: bold;">if</span> ((mActive = mTasks.poll()) != <span style="color: #BFEBBF;">null</span>) {
+     protected synchronized void scheduleNext() {
+         if ((mActive = mTasks.poll()) != null) {
              THREAD_POOL_EXECUTOR.execute(mActive);
          }
      }
  }
-</pre>
+</pre></li>
+</ol>
 </div>
 </div>
-</div>
-<div id="outline-container-orgheadline6" class="outline-3">
-<h3 id="orgheadline6">sWorker和mFuture</h3>
-<div class="outline-text-3" id="text-orgheadline6">
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">构造函数</h2>
+<div class="outline-text-2" id="text-orgheadline3">
 <p>
-这两个变量是在AsyncTask的构造函数中创建的. 
+构造函数里初始化了两个final变量, mWorker/mFuture, 
 </p>
+<ol class="org-ol">
+<li><p>
+mWorker是一个WorkerRunnable()的对象, 其继承子Callable.
+在call()函数里执行一些操作.
+</p>
+<ul class="org-ul">
+<li>将mTaskInvoked设置为true. 标志已经启动.</li>
+<li>将thread的权限设置为background</li>
+<li>执行doInBackground()函数.</li>
+<li>返回postResult()函数结果</li>
+</ul>
+<pre class="example">
+   mWorker = new WorkerRunnable&lt;Params, Result&gt;() {
+    public Result call() throws Exception {
+        mTaskInvoked.set(true);
 
-<p>
-mWorker是一个Callable类, 它的call()函数主要就是执行 <b>doInBackground()</b>
-这个函数, 然后将结果通过handler传递给UI线程.
-</p>
-
-<p>
-mFuture是一个FutureTask变量.它封装了mWorker, 这样可以支持任务的取消.
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-orgheadline7" class="outline-2">
-<h2 id="orgheadline7">handler相关</h2>
-<div class="outline-text-2" id="text-orgheadline7">
-<p>
-AsyncTask内部定义了一个私有类 InternalHandler, 该类使用了
-UI线程的looper. 所以该Handler对Message的处理都是在UI线程中进行的.
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #F0DFAF; font-weight: bold;">static</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">InternalHandler</span> <span style="color: #F0DFAF; font-weight: bold;">extends</span> <span style="color: #7CB8BB;">Handler</span> {
-    <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #93E0E3;">InternalHandler</span>() {
-        <span style="color: #F0DFAF; font-weight: bold;">super</span>(Looper.getMainLooper());
+        Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
+        //noinspection unchecked
+        Result result = doInBackground(mParams);
+        Binder.flushPendingCommands();
+        return postResult(result);
     }
+};
+</pre>
 
-    <span style="color: #BFEBBF;">@SuppressWarnings</span>({<span style="color: #CC9393;">"unchecked"</span>, <span style="color: #CC9393;">"RawUseOfParameterizedType"</span>})
-    <span style="color: #BFEBBF;">@Override</span>
-    <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">handleMessage</span>(<span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">msg</span>) {
-        <span style="color: #7CB8BB;">AsyncTaskResult</span>&lt;?&gt; <span style="color: #DFAF8F;">result</span> = (<span style="color: #7CB8BB;">AsyncTaskResult</span>&lt;?&gt;) msg.obj;
-        <span style="color: #F0DFAF; font-weight: bold;">switch</span> (msg.what) {
-            <span style="color: #F0DFAF; font-weight: bold;">case</span> MESSAGE_POST_RESULT:
-                <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">There is only one result</span>
-                result.mTask.finish(result.mData[0]);
-                <span style="color: #F0DFAF; font-weight: bold;">break</span>;
-            <span style="color: #F0DFAF; font-weight: bold;">case</span> MESSAGE_POST_PROGRESS:
-                result.mTask.onProgressUpdate(result.mData);
-                <span style="color: #F0DFAF; font-weight: bold;">break</span>;
-        }
+<p>
+postResult()函数通过内部的Handler来发送消息(即结果), 
+该handler绑定了MainLooper, 所以会在ui线程里处理.
+</p>
+<pre class="example">
+private Result postResult(Result result) {
+    @SuppressWarnings("unchecked")
+    Message message = getHandler().obtainMessage(MESSAGE_POST_RESULT,
+            new AsyncTaskResult&lt;Result&gt;(this, result));
+    message.sendToTarget();
+    return result;
+}
+</pre></li>
+<li><p>
+mFuture是一个FutureTask的实例. 并重写了done(). 在里面
+执行一些操作.
+</p>
+<pre class="example">
+mFuture = new FutureTask&lt;Result&gt;(mWorker) {
+     @Override
+     protected void done() {
+         try {
+             postResultIfNotInvoked(get());
+         } catch (InterruptedException e) {
+             android.util.Log.w(LOG_TAG, e);
+         } catch (ExecutionException e) {
+             throw new RuntimeException("An error occurred while executing doInBackground()",
+                     e.getCause());
+         } catch (CancellationException e) {
+             postResultIfNotInvoked(null);
+         }
+     }
+ };
+</pre>
+
+<p>
+postResultIfNotInvoked()函数会判断wasTaskInvoked, 如果值为false,
+false, 就会调用postResult()传递"未完成的结果(可能是null)".
+</p>
+<pre class="example">
+private void postResultIfNotInvoked(Result result) {
+    final boolean wasTaskInvoked = mTaskInvoked.get();
+    if (!wasTaskInvoked) {
+        postResult(result);
     }
 }
-</pre>
+</pre></li>
+</ol>
 </div>
 </div>
-</div>
-<div id="outline-container-orgheadline10" class="outline-2">
-<h2 id="orgheadline10">流程</h2>
-<div class="outline-text-2" id="text-orgheadline10">
-</div><div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8">execute()函数过程</h3>
-<div class="outline-text-3" id="text-orgheadline8">
-<p>
-使用AsyncTask时, 一般通过调用 execute(var) 函数执行任务, 该函数
-调用了executeOnExecutor()函数, 默认使用 sDefaultEExecutor即
-SERIAL_EXECUTOR来执行任务. 下面是后者的实现:
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">执行函数</h2>
+<div class="outline-text-2" id="text-orgheadline4">
+<ol class="org-ol">
+<li><p>
+任务的执行调用execute()函数, 在里面调用了 executeOnExecutor()函数.
+该函数是final类型, 所以不可覆盖.
 </p>
-<div class="org-src-container">
-
-<pre class="src src-java"><span style="color: #BFEBBF;">@MainThread</span>
-<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">AsyncTask</span>&lt;<span style="color: #7CB8BB;">Params</span>, <span style="color: #7CB8BB;">Progress</span>, <span style="color: #7CB8BB;">Result</span>&gt; <span style="color: #93E0E3;">executeOnExecutor</span>(<span style="color: #7CB8BB;">Executor</span> <span style="color: #DFAF8F;">exec</span>,
-        <span style="color: #7CB8BB;">Params</span>... <span style="color: #DFAF8F;">params</span>) {
-    <span style="color: #F0DFAF; font-weight: bold;">if</span> (mStatus != <span style="color: #BFEBBF;">Status</span>.PENDING) {
-        <span style="color: #F0DFAF; font-weight: bold;">switch</span> (mStatus) {
-            <span style="color: #F0DFAF; font-weight: bold;">case</span> RUNNING:
-                <span style="color: #F0DFAF; font-weight: bold;">throw</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">IllegalStateException</span>(<span style="color: #CC9393;">"Cannot execute task:"</span>
-                        + <span style="color: #CC9393;">" the task is already running."</span>);
-            <span style="color: #F0DFAF; font-weight: bold;">case</span> FINISHED:
-                <span style="color: #F0DFAF; font-weight: bold;">throw</span> <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">IllegalStateException</span>(<span style="color: #CC9393;">"Cannot execute task:"</span>
-                        + <span style="color: #CC9393;">" the task has already been executed "</span>
-                        + <span style="color: #CC9393;">"(a task can be executed only once)"</span>);
+<pre class="example">
+public final AsyncTask&lt;Params, Progress, Result&gt; execute(Params... params) {
+    return executeOnExecutor(sDefaultExecutor, params);
+}
+</pre></li>
+<li><p>
+executeOnExecutor()函数做真正的执行动作. 该函数接受两个参数, 
+</p>
+<ul class="org-ul">
+<li>将该task的status设置为RUNNING.</li>
+<li>调用onPreExecute()函数.该函数必须执行在UI线程.</li>
+<li>将worker的参数设置为传入的参数</li>
+<li>使用传入的executor执行FutureTask.
+<ul class="org-ul">
+<li>因为默认调用execute()传入的executor是SERIAL_EXECUTOR.
+这个变量是类的公共变量, 所以所有的task实例都是顺序在这个
+executor里执行.</li>
+<li>如果直接调用这个函数, 可以传入该类里自定义的
+THREAD_POOL_EXECUTOR, 这样就可以实现多个task同时执行.</li>
+</ul></li>
+</ul>
+<pre class="example">
+@MainThread
+public final AsyncTask&lt;Params, Progress, Result&gt; executeOnExecutor(Executor exec,
+        Params... params) {
+    if (mStatus != Status.PENDING) {
+        switch (mStatus) {
+            case RUNNING:
+                throw new IllegalStateException("Cannot execute task:"
+                        + " the task is already running.");
+            case FINISHED:
+                throw new IllegalStateException("Cannot execute task:"
+                        + " the task has already been executed "
+                        + "(a task can be executed only once)");
         }
     }
 
-    mStatus = <span style="color: #BFEBBF;">Status</span>.RUNNING;
+    mStatus = Status.RUNNING;
 
     onPreExecute();
 
     mWorker.mParams = params;
     exec.execute(mFuture);
 
-    <span style="color: #F0DFAF; font-weight: bold;">return</span> <span style="color: #F0DFAF; font-weight: bold;">this</span>;
+    return this;
 }
-</pre>
+</pre></li>
+</ol>
 </div>
-
-<p>
-该函数首先判断任务状态. 然后调用 onPreExecute(), 这是在UI线程调用的.
-然后是调用exec.execute(mFuture). 从前面的内容可以知道, 这行代码就会
-在线程中调用doInBackground()函数. 等doInBackground执行完成后, 会调用postResult()
-提交结果. postResult()通过handler将结果传递给UI线程执行.  
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">Result</span> <span style="color: #93E0E3;">postResult</span>(<span style="color: #7CB8BB;">Result</span> <span style="color: #DFAF8F;">result</span>) {
-    <span style="color: #BFEBBF;">@SuppressWarnings</span>(<span style="color: #CC9393;">"unchecked"</span>)
-    <span style="color: #7CB8BB;">Message</span> <span style="color: #DFAF8F;">message</span> = getHandler().obtainMessage(MESSAGE_POST_RESULT,
-            <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">AsyncTaskResult</span>&lt;<span style="color: #7CB8BB;">Result</span>&gt;(<span style="color: #F0DFAF; font-weight: bold;">this</span>, result));
-    message.sendToTarget();
-    <span style="color: #F0DFAF; font-weight: bold;">return</span> result;
-}
-</pre>
 </div>
-
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">函数调用位置</h2>
+<div class="outline-text-2" id="text-orgheadline5">
 <p>
-前面handler的内容可知, handler最后会调用到finish()函数, 该函数会调用到
-onPostExecute().
+通过前面三部分可以梳理出AsyncTask的各个函数的调用位置:
 </p>
-<div class="org-src-container">
+<ol class="org-ol">
+<li>onPreExecute()在executeOnExecutor()中执行.</li>
+<li>doInBackground()在mWorker(一个Runnalb中)执行, 当这个runnable
+被提交给Executor,就会在线程中执行.</li>
+<li>onProgressUpdate(). 如果要告知用户进度, 需要显示在doInBackground()
+中调用publishProgress()函数. 该函数会首先检查任务有没有被cancel.
+如果没有的话,  会向内部的handler发送MESSAGE_POST_PROGRESS的消息.</li>
+<li>onPostExecute()/onCancelled(), 会给handler发送 MESSAGE_POST_RESULT消息, 并把结果
+传递给handler. 然后在里面调用AsyncTask的finish()函数.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">内部Handler</h2>
+<div class="outline-text-2" id="text-orgheadline6">
+<ol class="org-ol">
+<li>内部Handler创建的时候传入了MainLooper()作为参数, 所以可以
+保证onPostExecute()/onProgressUpdate()函数执行在UI线程上.</li>
+<li><p>
+自定义了两个消息:
+</p>
+<ul class="org-ul">
+<li>MESSAGE_POST_RESULT, 用于处理结果.
+该消息会把结果放入Message的obj中传递进来, 
+所以可以处理该doInBG的执行结果.
+finish()函数会判断任务是否被cancel,如果没有的话, 执行
+onPostExecute(), 否则执行onCancelled().</li>
 
-<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">finish</span>(<span style="color: #7CB8BB;">Result</span> <span style="color: #DFAF8F;">result</span>) {
-    <span style="color: #F0DFAF; font-weight: bold;">if</span> (isCancelled()) {
-        onCancelled(result);
-    } <span style="color: #F0DFAF; font-weight: bold;">else</span> {
-        onPostExecute(result);
+<li>MESSAGE_POST_PROGRESS, 用于更新进度.
+直接调用onProgressUpdate()函数.</li>
+</ul>
+<pre class="example">
+private static class InternalHandler extends Handler {
+    public InternalHandler() {
+        super(Looper.getMainLooper());
     }
-    mStatus = <span style="color: #BFEBBF;">Status</span>.FINISHED;
-}
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-orgheadline9" class="outline-3">
-<h3 id="orgheadline9">发布进度</h3>
-<div class="outline-text-3" id="text-orgheadline9">
-<p>
-可以通过publishProgress函数发布当前进度.该函数会通过handler向UI线程推送消息.
-</p>
-<div class="org-src-container">
 
-<pre class="src src-java"><span style="color: #BFEBBF;">@WorkerThread</span>
-<span style="color: #F0DFAF; font-weight: bold;">protected</span> <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">publishProgress</span>(<span style="color: #7CB8BB;">Progress</span>... <span style="color: #DFAF8F;">values</span>) {
-    <span style="color: #F0DFAF; font-weight: bold;">if</span> (<span style="color: #F0DFAF; font-weight: bold;">!</span>isCancelled()) {
-        getHandler().obtainMessage(MESSAGE_POST_PROGRESS,
-                <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">AsyncTaskResult</span>&lt;<span style="color: #7CB8BB;">Progress</span>&gt;(<span style="color: #F0DFAF; font-weight: bold;">this</span>, values)).sendToTarget();
+    @SuppressWarnings({"unchecked", "RawUseOfParameterizedType"})
+    @Override
+    public void handleMessage(Message msg) {
+        AsyncTaskResult&lt;?&gt; result = (AsyncTaskResult&lt;?&gt;) msg.obj;
+        switch (msg.what) {
+            case MESSAGE_POST_RESULT:
+                // There is only one result
+                result.mTask.finish(result.mData[0]);
+                break;
+            case MESSAGE_POST_PROGRESS:
+                result.mTask.onProgressUpdate(result.mData);
+                break;
+        }
     }
 }
-</pre>
+</pre></li>
+</ol>
 </div>
-
+</div>
+<div id="outline-container-orgheadline7" class="outline-2">
+<h2 id="orgheadline7">取消任务</h2>
+<div class="outline-text-2" id="text-orgheadline7">
+<ol class="org-ol">
+<li>调用AsyncTask的cancel()接口. 该函数会将标志符 mCancelled 
+设置为true. 并尝试调用mFuture的cancel()函数来停止任务执行.
+该接口可以保证onPostExecute()永远不会被调用到.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-2">
+<h2 id="orgheadline8">同步</h2>
+<div class="outline-text-2" id="text-orgheadline8">
+<ol class="org-ol">
+<li>SerialExecutor的两个函数进行同步.
+可以保证任务的添加顺序, 以及顺序执行所有AsyncTask.</li>
+<li>静态函数getHandler()同步, 保证内部handler只被初始化一次.</li>
+<li>AsyncTask的mCancelled和mTaskInvoked
+使用的AtomicBoolean. 保证状态的更新是
+线程安全的.</li>
+<li>AsyncTask可以在其他线程里进行创建.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9">实验</h2>
+<div class="outline-text-2" id="text-orgheadline9">
 <p>
-该消息的处理会调用到onProgressUpdate()函数.
+在android-24的版本上, 
+AsyncTask可以其他线程中创建, onPreExecute()
+也会在该线程执行. 但是onPostExecute()跟onProgressUpdate()
+会在ui执行.
 </p>
-</div>
 </div>
 </div>
 </div>
