@@ -6,7 +6,7 @@
 <!-- 2017-03-02 Thu 11:02 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
-<title>twitter消息一览</title>
+<title></title>
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Luis Xu" />
 <link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
@@ -84,93 +84,158 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
-<h1 class="title">twitter消息一览</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline1"><span class="todo nilTODO">TODO</span> 3. 开源测试工具Test Butler</a></li>
-<li><a href="#orgheadline2"><span class="todo nilTODO">TODO</span> 4. 3x3</a></li>
-<li><a href="#orgheadline3"><span class="todo nilTODO">TODO</span> 3. Droidcon NYC 2016</a></li>
-<li><a href="#orgheadline4">4. IntelliJ plugin</a></li>
-<li><a href="#orgheadline5">5. AI和Java</a></li>
-<li><a href="#orgheadline6"><span class="todo nilTODO">TODO</span> 6. StateListAnimator</a></li>
-<li><a href="#orgheadline7"><span class="todo nilTODO">TODO</span> 7. 360AnDev</a></li>
+<li><a href="#orgheadline6">org中使用代码</a>
+<ul>
+<li><a href="#orgheadline1">添加代码</a></li>
+<li><a href="#orgheadline2">编辑代码</a></li>
+<li><a href="#orgheadline3">导出代码</a></li>
+<li><a href="#orgheadline4">提取代码</a></li>
+<li><a href="#orgheadline5">运行代码</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline7">test</a></li>
 </ul>
 </div>
 </div>
-<p>
-最近略忙, 好久没上twitter. 在上面关注了几个Android大咖, 便于及时了解最新的一些
-技术. 今晚把最近一段时间的推文略读了一下. 顺手做一个简单摘要, 博自己一乐.
-(标题前面展示TODO表示文章还需要阅读, 并阅读完成后补充相关内容)
-</p>
-
-<div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1"><span class="todo TODO">TODO</span> 3. 开源测试工具Test Butler</h2>
-<div class="outline-text-2" id="text-orgheadline1">
-<p>
-<a href="https://engineering.linkedin.com/blog/2016/08/introducing-and-open-sourcing-test-butler--reliable-android-test">https://engineering.linkedin.com/blog/2016/08/introducing-and-open-sourcing-test-butler--reliable-android-test</a>
-</p>
-
-<p>
-这篇文章是linkin团队的文章, 介绍他们开源的一个测试工具Test Butler.
-</p>
-</div>
-</div>
-<div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2"><span class="todo TODO">TODO</span> 4. 3x3</h2>
-<div class="outline-text-2" id="text-orgheadline2">
-<p>
-<a href="https://engineering.linkedin.com/blog/2016/02/3x3--speeding-up-mobile-releases">https://engineering.linkedin.com/blog/2016/02/3x3--speeding-up-mobile-releases</a>
-同样是一篇linkin用来提升android发布流程的技术文章.
-</p>
-</div>
-</div>
-<div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="orgheadline3"><span class="todo TODO">TODO</span> 3. Droidcon NYC 2016</h2>
-<div class="outline-text-2" id="text-orgheadline3">
-<p>
-时间 September 29-30
-要开始, 应该会有很多不错的presentation. 持续关注.
-</p>
-</div>
-</div>
-<div id="outline-container-orgheadline4" class="outline-2">
-<h2 id="orgheadline4">4. IntelliJ plugin</h2>
-<div class="outline-text-2" id="text-orgheadline4">
-<p>
-一个介绍IntelliJ插件的视频.
-</p>
-</div>
-</div>
-<div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5">5. AI和Java</h2>
-<div class="outline-text-2" id="text-orgheadline5">
-<p>
-视频地址: <a href="http://nighthacking.com/artificial-intelligence-and-java/">http://nighthacking.com/artificial-intelligence-and-java/</a>
-</p>
-
-<p>
-一个介绍人工智能和Java的视频.
-</p>
-</div>
-</div>
 <div id="outline-container-orgheadline6" class="outline-2">
-<h2 id="orgheadline6"><span class="todo TODO">TODO</span> 6. StateListAnimator</h2>
+<h2 id="orgheadline6">org中使用代码</h2>
 <div class="outline-text-2" id="text-orgheadline6">
+</div><div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1">添加代码</h3>
+<div class="outline-text-3" id="text-orgheadline1">
 <p>
-<a href="https://blog.stylingandroid.com/statelistanimator/">https://blog.stylingandroid.com/statelistanimator/</a>
-一个开源控件.
+orgmode中支持添加代码, 运行代码并获取结果. 代码格式为
 </p>
+<p class="verse">
+#+NAME: &lt;name&gt;<br  />
+#+BEGIN_SRC &lt;language&gt; &lt;switches&gt; &lt;header arguments&gt;<br  />
+&#xa0;&lt;body&gt;<br  />
+#+END_SRC<br  />
+</p>
+
+<p>
+<code>#+NAME</code> 代表当前代码, 可以在其他地方引用. 也可以使用 <code>src_&lt;language&gt;{body}</code> 
+的方式.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">编辑代码</h3>
+<div class="outline-text-3" id="text-orgheadline2">
+<p>
+可以直接在org文件中编辑代码, 也可以使用快捷键"C-c '"打开另一个buffer来
+编辑文件,编辑完成后用"C-x C-s"保存.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">导出代码</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<p>
+orgmode支持以下方式的代码导出
+</p>
+<ol class="org-ol">
+<li>只导出代码, 默认形式.</li>
+<li>导出代码和结果.</li>
+<li>只导出结果.</li>
+<li>都不导出</li>
+</ol>
+
+<p>
+可以通过设置header argument的":export"属性来实现上述的特性, 该属性的
+值可以为:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">code</td>
+<td class="org-left">代码</td>
+</tr>
+
+<tr>
+<td class="org-left">results</td>
+<td class="org-left">结果</td>
+</tr>
+
+<tr>
+<td class="org-left">both</td>
+<td class="org-left">都</td>
+</tr>
+
+<tr>
+<td class="org-left">none</td>
+<td class="org-left">都不</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">提取代码</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
+orgmode支持将org文件中的代码块提取到代码原文件中, 
+使用快捷键 "C-c C-v t" 或命令"org-babel-tangle"可以
+实现该功能, 该命令默认在当前目录创建一个源码文件, 文件
+名与org文件名相同, 后缀为该类型语言的后缀. 
+</p>
+
+<p>
+该功能默认是关闭的, 可以通过设置 header argument的":tangle"
+属性来打开, 将其设置为"yes"即可打开. 
+也可以将其设置为文件名,这样可以将代码导出到该文件,
+使用命令"org-babel-tangle-file"或"C-c C-v f"也可以.
+</p>
+<p class="verse">
+:PROPERTIES:<br  />
+:header-args: :exports results :tangle yes<br  />
+:END:<br  />
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">运行代码</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+<p>
+C-c C-c
+</p>
+</div>
 </div>
 </div>
 <div id="outline-container-orgheadline7" class="outline-2">
-<h2 id="orgheadline7"><span class="todo TODO">TODO</span> 7. 360AnDev</h2>
+<h2 id="orgheadline7">test</h2>
 <div class="outline-text-2" id="text-orgheadline7">
-<p>
-<a href="https://github.com/AndroidStudyGroup/conferences/wiki/360AnDev2016">https://github.com/AndroidStudyGroup/conferences/wiki/360AnDev2016</a>
-一些不错的android资源列表
-</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(print <span style="color: #CC9393;">"S"</span>)
+</pre>
+</div>
+
+<pre class="example">
+S
+</pre>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp" id="orgsrcblock1">(+ 1 3)
+</pre>
+</div>
+
+<pre class="example">
+4
+</pre>
 </div>
 </div>
 </div>

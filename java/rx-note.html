@@ -1,0 +1,643 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2017-03-02 Thu 11:02 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>RxJava 笔记</title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Luis Xu" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+<h1 class="title">RxJava 笔记</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">简介</a></li>
+<li><a href="#orgheadline2">Observable</a>
+<ul>
+<li><a href="#orgheadline3">基本介绍</a></li>
+<li><a href="#orgheadline4">支持的操作符</a></li>
+<li><a href="#orgheadline34">操作符</a>
+<ul>
+<li><a href="#orgheadline15">创建类操作符</a></li>
+<li><a href="#orgheadline22">转化类操作符</a></li>
+<li><a href="#orgheadline33">过滤类操作符</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline35">Subscribe</a>
+<ul>
+<li><a href="#orgheadline36">AsyncSubject</a></li>
+<li><a href="#orgheadline37">BehaviorSubject</a></li>
+<li><a href="#orgheadline38">PublishSubject</a></li>
+<li><a href="#orgheadline39">ReplaySubject</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline41">RxJava 在 Android 中应用</a>
+<ul>
+<li><a href="#orgheadline40">RxBus</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div class="figure">
+<p><img src="../img/zmantra.jpg" alt="zmantra.jpg" />
+</p>
+</div>
+
+<p>
+本文主要学习RxJava笔记.
+</p>
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">简介</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+  ReactiveX 是将"异步"和"事件驱动编程"结合的一个库, 结合的手段是通过
+"可观察流"(observable sequences).
+</p>
+
+<p>
+Rx 基于"观察者模式", 支持流式的数据和事件以及在其上的各种操作.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">Observable</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<p>
+这张图介绍了 Observable 的形式:<br  />
+<img src="../img/observable.png" alt="observable.png" />
+</p>
+</div>
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">基本介绍</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<p>
+可以把 Observable 看作是 Iterable 的"push"版本. 对于 Iterable,
+消费者通过 iterator 来获取数据. 而 Observable 是采用的"观察者模式",
+所以数据生成之后生产者直接 push 给消费者.  这种操作的一个灵活性是
+数据的到达即可以是同步的又可以是异步的.
+</p>
+
+<ol class="org-ol">
+<li>Observable 支持像操作数组一样操作异步数据.</li>
+<li><p>
+可以发射单个/多个/无限的事件流.下面是 Observable 和 Iterable 的
+对比.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">event</th>
+<th scope="col" class="org-left">Iterable</th>
+<th scope="col" class="org-left">Observable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">retrieve data</td>
+<td class="org-left">T next()</td>
+<td class="org-left">onNext(T)</td>
+</tr>
+
+<tr>
+<td class="org-left">error</td>
+<td class="org-left">throws</td>
+<td class="org-left">onError(Exception)</td>
+</tr>
+
+<tr>
+<td class="org-left">complete</td>
+<td class="org-left">!hasNext()</td>
+<td class="org-left">onCompleted()</td>
+</tr>
+</tbody>
+</table></li>
+<li>客户端代码要一直把与 Observable 操作当作异步操作.</li>
+<li>callback 虽然和使用, 但是在内嵌多个 callback 的场景中变得
+很<a href="https://gist.github.com/4677544">笨重</a>.</li>
+<li>可以分为"热"和"冷"两种, 热方式会立刻发射生成的数据.
+而冷方式会等有 subscriber 注册之后才发射.</li>
+</ol>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">支持的操作符</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<ol class="org-ol">
+<li>创建. 包括 Create, Defer, Empty/Never/Throw, From, Interval, Just, Range, Repeat, Start, and Timer</li>
+<li>转化. 包括 Buffer, FlatMap, GroupBy, Map, Scan, and Window.</li>
+<li>过滤. 包括 Debounce, Distinct, ElementAt, Filter, First, IgnoreElements, Last, Sample, Skip, SkipLast, Take, and TakeLast.</li>
+<li>合并. 包括 And/Then/When, CombineLatest, Join, Merge, StartWith, Switch, and Zip.</li>
+<li>条件. 包括 All, Amb, Contains, DefaultIfEmpty, SequenceEqual, SkipUntil, SkipWhile, TakeUntil, and TakeWhile</li>
+<li>计算. 包括 Average, Concat, Count, Max, Min, Reduce, and Sum.</li>
+<li>连接. 包括Connect, Publish, RefCount, and Replay.</li>
+<li>工具类. 包括Delay, Do, Materialize/Dematerialize, ObserveOn, Serialize, Subscribe, SubscribeOn, TimeInterval, Timeout, Timestamp, and Using.</li>
+</ol>
+
+<p>
+这些操作符有的会返回 Observable序列, 所以可以将这些操作性连在一起
+做序列化操作.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline34" class="outline-3">
+<h3 id="orgheadline34">操作符</h3>
+<div class="outline-text-3" id="text-orgheadline34">
+</div><div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15">创建类操作符</h4>
+<div class="outline-text-4" id="text-orgheadline15">
+</div><ul class="org-ul"><li><a id="orgheadline5"></a>Create<br  /><div class="outline-text-5" id="text-orgheadline5">
+<p>
+ 从头开始创建一个 Observable, 该函数的参数必须能够
+接受一个 Observer 作为参数.这样通过该函数创建的 Observable
+才能注册 Observer.
+</p>
+
+<p>
+在 Java 中,create()函数接受一个 OnSubscribe 对象.
+</p>
+<pre class="example">
+Observable.create(new Observable.OnSubscribe&lt;Integer&gt;() {
+    @Override
+    public void call(Subscriber&lt;? super Integer&gt; observer) {
+        try {
+            if (!observer.isUnsubscribed()) {
+                for (int i = 1; i &lt; 5; i++) {
+                    observer.onNext(i);
+                }
+                observer.onCompleted();
+            }
+        } catch (Exception e) {
+            observer.onError(e);
+        }
+    }
+ } ).subscribe(new Subscriber&lt;Integer&gt;() {
+        @Override
+        public void onNext(Integer item) {
+            System.out.println("Next: " + item);
+        }
+
+        @Override
+        public void onError(Throwable error) {
+            System.err.println("Error: " + error.getMessage());
+        }
+
+        @Override
+        public void onCompleted() {
+            System.out.println("Sequence complete.");
+        }
+    });
+</pre>
+</div></li>
+<li><a id="orgheadline6"></a>Defer<br  /><div class="outline-text-5" id="text-orgheadline6">
+<p>
+ 当有observer注册的时候才创建 Observable. 例如下面的例子,
+ 虽然只创建了一个 defer() 返回值对象, 但是call()函数会调用两次.
+说明每次注册一个新的观察者时, 都会生成一个新的 Observable 对象.
+</p>
+<pre class="example">
+Observable&lt;String&gt; observable = Observable.defer(new Func0&lt;Observable&lt;String&gt;&gt;() {
+        @Override
+        public Observable&lt;String&gt; call() {
+            System.out.println("create observable id = " + cont++);
+            return Observable.just(value);
+        }
+    });
+observable.subscribe(glbSubscriber);
+observable.subscribe(glbSubscriber);
+</pre>
+</div></li>
+<li><a id="orgheadline7"></a>Empty/Never/Throw<br  /><div class="outline-text-5" id="text-orgheadline7">
+<p>
+empty()创建一个 Observable, 注册之后立刻调用 onComplete()
+never()创建一个 Observable, 注册之后永远都不调用
+throw()(java叫 error())创建一个 Observable, 注册之后立刻调用 onError()
+</p>
+</div></li>
+<li><a id="orgheadline8"></a>From<br  /><div class="outline-text-5" id="text-orgheadline8">
+<p>
+将一系列其他类型(Iterable, array&#x2026;)转化为 Observable, 一个一个发射出.
+</p>
+
+<p>
+RxJava 支持的类型包括: Iterable, Array, Callable, Future
+</p>
+<pre class="example">
+Observable.from(names).subscribe(new Action1&lt;String&gt;() {
+    @Override
+    public void call(String s) {
+        System.out.println("hi:" + s);
+    }
+});
+</pre>
+</div></li>
+<li><a id="orgheadline9"></a>Interval<br  /><div class="outline-text-5" id="text-orgheadline9">
+<p>
+ 间隔性的发射数据.  一直下去,不停止.<br  />
+RxJava提供了多个重载版本.
+</p>
+</div></li>
+<li><a id="orgheadline10"></a>Just<br  /><div class="outline-text-5" id="text-orgheadline10">
+<p>
+ 接受一个参数,并原封不动的发射出去, 这与<a href="#orgheadline8">From</a>不同, 后者
+会把 array 分解然后一个个的发射. 
+</p>
+
+<p>
+RxJava 不支持参数为 array.
+</p>
+</div></li>
+<li><a id="orgheadline11"></a>Range<br  /><div class="outline-text-5" id="text-orgheadline11">
+<p>
+发射一段范围内的整数. 接受两个参数:起始值和个数.
+</p>
+</div></li>
+<li><a id="orgheadline12"></a>Repeat<br  /><div class="outline-text-5" id="text-orgheadline12">
+<p>
+创建一个 Observable, 重复性的发射数据.
+</p>
+
+<p>
+RxJava 的该操作符实现并不初始化一个 observable, 它需要
+在一个 Observable 对象内部调用.
+</p>
+<pre class="example">
+Observable.just("helo", "wold")
+        .repeat(3)
+        .subscribe(glbSubscriber);
+</pre>
+</div></li>
+<li><a id="orgheadline13"></a><span class="todo TODO">TODO</span> Start<br  /><div class="outline-text-5" id="text-orgheadline13">
+<p>
+接受一个函数, 然后发射函数的返回值.
+</p>
+
+<p>
+RxJava 中该操作符的实现放在了一个单独的模块 rxjava-async 中
+</p>
+</div></li>
+<li><a id="orgheadline14"></a>Timer<br  /><div class="outline-text-5" id="text-orgheadline14">
+<p>
+延迟反射数据.
+</p>
+</div></li></ul>
+</div>
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22">转化类操作符</h4>
+<div class="outline-text-4" id="text-orgheadline22">
+</div><ul class="org-ul"><li><a id="orgheadline16"></a>Buffer<br  /><div class="outline-text-5" id="text-orgheadline16">
+<p>
+收集到一定数量之后才发射全部收集到的数据.
+</p>
+
+<p>
+RxJava 把收集到的数据放到一个 List 中
+</p>
+</div></li>
+<li><a id="orgheadline17"></a><span class="todo TODO">TODO</span> FlatMap<br  /><div class="outline-text-5" id="text-orgheadline17">
+<p>
+flatMap()接受一个能够返回 Observable 的参数. 这样, 该参数会将
+flatMap()的调用者(原始 Observable)里面的值转化为一个个的 Observable,
+然后再把这些 Observable 合成一个 Observable.
+</p>
+</div></li>
+<li><a id="orgheadline18"></a>GroupBy<br  /><div class="outline-text-5" id="text-orgheadline18">
+<p>
+ 把一个 observable 分成根据条件几个 observable, 每个 observable 都有
+一个 key.
+</p>
+
+<p>
+RxJava 实现了该操作符, 会返回一个 GroupedObservable 类.
+</p>
+<pre class="example">
+public void groupBy() {
+    Integer[] integers = new Integer[]{4, 2, 16, 6, 1, 20, 5};
+    Observable.from(integers)
+            .groupBy(new Func1&lt;Integer, String&gt;() {
+                @Override
+                public String call(Integer integer) {
+                    if(integer % 4 == 0) {
+                        return "can";
+                    } else {
+                        return "can't";
+                    }
+                }
+            })
+            .subscribe(new Subscriber&lt;GroupedObservable&lt;String, Integer&gt;&gt;() {
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable e) {
+
+                }
+
+                @Override
+                public void onNext(GroupedObservable&lt;String, Integer&gt; objectIntegerGroupedObservable) {
+                    String key = objectIntegerGroupedObservable.getKey();
+                    if("can".equals(key)) {
+                        objectIntegerGroupedObservable.subscribe(glbIntSub);
+                    }else{
+                        objectIntegerGroupedObservable.subscribe(glbIntSub2);
+                    }
+                }
+            });
+}
+</pre>
+</div></li>
+<li><a id="orgheadline19"></a>Map<br  /><div class="outline-text-5" id="text-orgheadline19">
+<p>
+ 转化发射的值为另一个值发射. 该函数接受一个函数作为参数
+用来转化 item.
+</p>
+<pre class="example">
+Observable.just(2, 5, 8).map(new Func1&lt;Integer, String&gt;() {
+    @Override
+    public String call(Integer integer) {
+        return "map " + integer;
+    }
+}).subscribe(glbSubscriber);
+</pre>
+</div></li>
+<li><a id="orgheadline20"></a>Scan<br  /><div class="outline-text-5" id="text-orgheadline20">
+<p>
+ 该操作符接受一个函数, 该函数将源 Observable 发射的数据
+转化为另外的数据, 并基于该转化的数据和源 Observable 的下一个
+数据生成自己下一个数据.
+</p>
+<pre class="example">
+Observable.just(1, 9, 8, 8, 02, 06)
+.scan(new Func2&lt;Integer, Integer, Integer&gt;() {
+    @Override
+    public Integer call(Integer integer, Integer integer2) {
+        return integer * integer;
+    }
+}).subscribe(glbIntSub);
+</pre>
+</div></li>
+<li><a id="orgheadline21"></a><span class="todo TODO">TODO</span> Window<br  /><div class="outline-text-5" id="text-orgheadline21">
+<p>
+把发射的元素分成几块, 每块都通过 observable 发射.
+</p>
+
+<p>
+RxJava: 下面的代码有问题, 如果注册一个全局的 subscriber, 则只会输出第一个 window 的内容.
+ 第二块代码是输出正确的代码. <b>猜测应该是全局的 subscriber 调用了onComplete()导致.</b>
+</p>
+<pre class="example">
+        Observable.just(1, 9, 8, 3, 1, 6, 4)
+                .window(2)
+                .subscribe(new Subscriber&lt;Observable&lt;Integer&gt;&gt;() {
+                    @Override
+                    public void onCompleted() { System.out.println(this + " ends"); }
+
+                    @Override
+                    public void onError(Throwable e) { }
+
+                    @Override
+                    public void onNext(Observable&lt;Integer&gt; integerObservable) {
+                        System.out.println("onNext called " + integerObservable);
+                        integerObservable.subscribe(glbIntSub);
+                    }
+                });
+
+//修复版
+        Observable.just(1, 9, 8, 3, 1, 6, 4)
+                .window(4)
+                .subscribe(new Subscriber&lt;Observable&lt;Integer&gt;&gt;() {
+                    @Override
+                    public void onCompleted() { System.out.println(this + " ends"); }
+
+                    @Override
+                    public void onError(Throwable e) { }
+
+                    @Override
+                    public void onNext(Observable&lt;Integer&gt; integerObservable) {
+                        System.out.println("onNext called " + integerObservable);
+                        integerObservable.subscribe(new Subscriber&lt;Integer&gt;() {
+                            @Override
+                            public void onCompleted() {
+                                System.out.println();
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+
+                            }
+
+                            @Override
+                            public void onNext(Integer integer) {
+                                System.out.print(integer + ", ");
+                            }
+                        });
+                    }
+                });
+</pre>
+</div></li></ul>
+</div>
+<div id="outline-container-orgheadline33" class="outline-4">
+<h4 id="orgheadline33">过滤类操作符</h4>
+<div class="outline-text-4" id="text-orgheadline33">
+</div><ul class="org-ul"><li><a id="orgheadline23"></a><span class="todo TODO">TODO</span> Debounce<br  /><div class="outline-text-5" id="text-orgheadline23">
+<p>
+接受一个 timeout 值, 在 timeout 结束之前所产生的源 Observable
+ 的值都会被抛弃.
+</p>
+</div></li>
+<li><a id="orgheadline24"></a>Distinct<br  /><div class="outline-text-5" id="text-orgheadline24">
+<p>
+只发射没发射过的项目, 已经发射过的会被过滤掉.
+</p>
+</div></li>
+<li><a id="orgheadline25"></a>ElementAt<br  /><div class="outline-text-5" id="text-orgheadline25">
+<p>
+接受一个 index 值参数, 只发射第 index 个参数(下标从1开始).
+</p>
+</div></li>
+<li><a id="orgheadline26"></a>Filter<br  /><div class="outline-text-5" id="text-orgheadline26">
+<p>
+只发射通过 filter 函数的元素.
+</p>
+</div></li>
+<li><a id="orgheadline27"></a>First<br  /><div class="outline-text-5" id="text-orgheadline27">
+<p>
+只发射第一个元素.
+</p>
+</div></li>
+<li><a id="orgheadline28"></a>IgnoreElements<br  /><div class="outline-text-5" id="text-orgheadline28">
+<p>
+忽略所有元素
+</p>
+</div></li>
+<li><a id="orgheadline29"></a>Last<br  /><div class="outline-text-5" id="text-orgheadline29">
+<p>
+发射最后一个元素
+</p>
+</div></li>
+<li><a id="orgheadline30"></a><span class="todo TODO">TODO</span> Sample<br  /></li>
+<li><a id="orgheadline31"></a>Skip/SkipLast<br  /><div class="outline-text-5" id="text-orgheadline31">
+<p>
+跳过前/后 N 个元素.
+</p>
+</div></li>
+<li><a id="orgheadline32"></a>Take/TakeLast<br  /><div class="outline-text-5" id="text-orgheadline32">
+<p>
+只拿前/后 N 个元素.
+</p>
+</div></li></ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline35" class="outline-2">
+<h2 id="orgheadline35">Subscribe</h2>
+<div class="outline-text-2" id="text-orgheadline35">
+<p>
+Subscribe即是Observable 又是 Observer.
+</p>
+</div>
+<div id="outline-container-orgheadline36" class="outline-3">
+<h3 id="orgheadline36">AsyncSubject</h3>
+<div class="outline-text-3" id="text-orgheadline36">
+<p>
+当源 Observable 结束之后, 该 Subject 会将源 Observable
+的最后一个 item 发射出来. 即源 Observable 的结束会激活
+该 Subject 的发射/结束动作. 后续所有的 observer 都会得到
+同样的值.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline37" class="outline-3">
+<h3 id="orgheadline37">BehaviorSubject</h3>
+<div class="outline-text-3" id="text-orgheadline37">
+<p>
+ 当一个 Observer 注册到该 Subject 时,该 Subject 会
+开始发射最近刚发射过的 item,及后面生成的 item.
+即一个 Observer 得到从"它注册时间的上一个 item + 之后开始的序列".
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline38" class="outline-3">
+<h3 id="orgheadline38">PublishSubject</h3>
+<div class="outline-text-3" id="text-orgheadline38">
+<p>
+只发射注册时间之后的 item.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline39" class="outline-3">
+<h3 id="orgheadline39">ReplaySubject</h3>
+<div class="outline-text-3" id="text-orgheadline39">
+<p>
+每一个 Observer 都发射所有的 item.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline41" class="outline-2">
+<h2 id="orgheadline41">RxJava 在 Android 中应用</h2>
+<div class="outline-text-2" id="text-orgheadline41">
+</div><div id="outline-container-orgheadline40" class="outline-3">
+<h3 id="orgheadline40">RxBus</h3>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="postamble">Created At <span class="timestamp-wrapper"><span class="timestamp">&lt;2016-04-18 Mon 22:15&gt;</span></span> by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
+</div>
+</body>
+</html>

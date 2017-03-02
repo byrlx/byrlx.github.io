@@ -1,0 +1,3094 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2017-03-02 Thu 11:02 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>OrgMode 手册阅读笔记</title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Luis Xu" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+<h1 class="title">OrgMode 手册阅读笔记</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">Orgmode手册1:文档结构</a>
+<ul>
+<li><a href="#orgheadline2">大纲模式(outline mode)</a></li>
+<li><a href="#orgheadline3">创建标题</a></li>
+<li><a href="#orgheadline4">标题显示</a></li>
+<li><a href="#orgheadline5">标题间移动</a></li>
+<li><a href="#orgheadline6">改变标题级别</a></li>
+<li><a href="#orgheadline7">操作标题内容</a></li>
+<li><a href="#orgheadline13">其他高级操作</a>
+<ul>
+<li><a href="#orgheadline8">初始化"可见性"</a></li>
+<li><a href="#orgheadline10">稀疏树显示</a></li>
+<li><a href="#orgheadline11">列表</a></li>
+<li><a href="#orgheadline12">脚注</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline14">Orgmode手册2:表格</a>
+<ul>
+<li><a href="#orgheadline15">创建表格</a></li>
+<li><a href="#orgheadline18">表格宽度和对齐</a>
+<ul>
+<li><a href="#orgheadline16">设置列宽度</a></li>
+<li><a href="#orgheadline17">设置左右对齐</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline19">引用表中数据</a></li>
+<li><a href="#orgheadline20">表格处理计算</a>
+<ul>
+<li><a href="#orgheadline21">附加模式.</a></li>
+<li><a href="#orgheadline22">lisp代码处理表格.</a></li>
+<li><a href="#orgheadline23">时间计算.</a></li>
+<li><a href="#orgheadline24">直接在某一格中输入公式.</a></li>
+<li><a href="#orgheadline25">查找功能</a></li>
+<li><a href="#orgheadline26">调试公式</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline29">其他特性</a>
+<ul>
+<li><a href="#orgheadline27">列组</a></li>
+<li><a href="#orgheadline28">Orgtbl 模式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline30">Orgmode手册3:链接</a>
+<ul>
+<li><a href="#orgheadline31">链接格式</a></li>
+<li><a href="#orgheadline32">内部链接</a></li>
+<li><a href="#orgheadline33">外表链接</a></li>
+<li><a href="#orgheadline34">短链接</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline35">Orgmode手册4:任务功能</a>
+<ul>
+<li><a href="#orgheadline36">创建TODO项目</a></li>
+<li><a href="#orgheadline37">拓展关键字</a>
+<ul>
+<li><a href="#orgheadline38">设置关键字</a></li>
+<li><a href="#orgheadline39">设置多组关键字</a></li>
+<li><a href="#orgheadline40">使用type.</a></li>
+<li><a href="#orgheadline41">在当前文件设置关键字</a></li>
+<li><a href="#orgheadline42">关键字主题</a></li>
+<li><a href="#orgheadline43">设置依赖</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline44">时间戳</a>
+<ul>
+<li><a href="#orgheadline45">设置完成时间</a></li>
+<li><a href="#orgheadline46">记录状态变化</a></li>
+<li><a href="#orgheadline47">追踪行为</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline48">优先级</a></li>
+<li><a href="#orgheadline49">显示任务完成比</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline50">Orgmode手册5:"捕获"</a>
+<ul>
+<li><a href="#orgheadline51">设置capture</a></li>
+<li><a href="#orgheadline52">客制化Capture模板</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline53">Orgmode手册6:富文本标记(导出前准备)</a>
+<ul>
+<li><a href="#orgheadline60">结构化标记元素</a>
+<ul>
+<li><a href="#orgheadline54">标题.</a></li>
+<li><a href="#orgheadline55">修改导出层级.</a></li>
+<li><a href="#orgheadline56">目录.</a></li>
+<li><a href="#orgheadline57">换行, 引用</a></li>
+<li><a href="#orgheadline58">修饰符</a></li>
+<li><a href="#orgheadline59">注释</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline61">"字面"内容</a></li>
+<li><a href="#orgheadline62">引用其他文件</a></li>
+<li><a href="#orgheadline63">宏</a></li>
+<li><a href="#orgheadline64">LaTex</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline65">Orgmode手册7:运行代码</a>
+<ul>
+<li><a href="#orgheadline66">添加代码</a></li>
+<li><a href="#orgheadline67">编辑代码</a></li>
+<li><a href="#orgheadline68">运行代码</a></li>
+<li><a href="#orgheadline69">给代码添加参数</a></li>
+<li><a href="#orgheadline70">导出代码</a></li>
+<li><a href="#orgheadline71">提取代码</a></li>
+<li><a href="#orgheadline72">Babel库</a></li>
+<li><a href="#orgheadline73">header参数</a>
+<ul>
+<li><a href="#orgheadline75">全局header参数</a></li>
+<li><a href="#orgheadline76">文件级header参数</a></li>
+<li><a href="#orgheadline77">标题header参数</a></li>
+<li><a href="#orgheadline78">代码块设置header参数</a></li>
+<li><a href="#orgheadline79">调用代码块时使用header参数</a></li>
+<li><a href="#orgheadline80">支持的header参数</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline74">支持的语言</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline91">Tricks</a>
+<ul>
+<li><a href="#orgheadline81">使用 orgmode + beamer 写幻灯片</a>
+<ul>
+<li><a href="#orgheadline82">安装MacTex</a></li>
+<li><a href="#orgheadline83"><span class="todo nilTODO">TODO</span> 支持中文</a></li>
+<li><a href="#orgheadline84">语法</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline90">OrgMode常用表格处理公式</a>
+<ul>
+<li><a href="#orgheadline85">单一表项的使用</a></li>
+<li><a href="#orgheadline86">范围的使用</a></li>
+<li><a href="#orgheadline87">使用其他表项或其他文件中的表</a></li>
+<li><a href="#orgheadline88">常用公式</a></li>
+<li><a href="#orgheadline89">让第一列自动显示行号的几个函数</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+<a href="http://orgmode.org/manual/">Org Manual</a>的 阅读笔记, 及一些积累的使用技巧
+</p>
+
+<p class="verse">
+[BG]: We’ve got a lot more books coming out in the pipeline. The one which is my favourite is the Emacs Org-Mode Reference Manual. Honestly, it’s the greatest Emacs mode in 20 years.<br  />
+<br  />
+[CW]: Would you say Org-Mode is one of the more exciting projects in the Free Software world at the moment?<br  />
+<br  />
+[BG]: Definitely. Maybe it’s even the most exciting. Certainly it’s transformed the way that I organise my work, and I think it has for a lot of other people as well, so it’s software that can revolutionise your life, not just perform a function.<br  />
+<br  />
+&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#xa0;&#x2013; Brian Gough vs Chris Woolfrey<br  />
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Orgmode手册1:文档结构</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+对内容做了一些注解, 方便查阅. 
+</p>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">大纲模式(outline mode)</h3>
+<div class="outline-text-3" id="text-orgheadline2">
+<p>
+Org mode是建立在大纲视图(outline mode)之上的. 
+大纲将笔记按照层级结构进行组织, 这种结构有两个好处:
+</p>
+<ol class="org-ol">
+<li>实现对文档的概括性浏览(只看大纲).</li>
+<li>只显示当前正在工作的部分,非工作部分可以隐藏.</li>
+</ol>
+
+<p>
+大纲模式在Org mode中具体实现方式为标题, 标题的写法很简单, 
+在这一行的最开始加上1到多个星号即表示标题. 
+"*"的数量表示这是个N级标题, N级标题为N-1级标题的子标题.
+下图为一个标题的示例:
+</p>
+
+
+<div class="figure">
+<p><img src="../../../../public/img/org-outline.png" alt="org-outline.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">创建标题</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<p>
+前面介绍过, 创建标题很简单, 一行的最前面写N个"*"即可,
+同时org mode提供了一些快捷键来实现标题操作. 
+标题中"树(tree"即为该标题和其所有子标题. 
+表格中"割断"的意思是如果你在当前标题上使用快捷键来创建新标题,
+有些快捷键可能会将该标题一分为二, 后半部分即为新标题的内容.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">功能</th>
+<th scope="col" class="org-left">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">M-RET</td>
+<td class="org-left">创建同级标题</td>
+<td class="org-left">可能会"割断"当前标题内容</td>
+</tr>
+
+<tr>
+<td class="org-left">C-u C-u M-RET</td>
+<td class="org-left">在当前树的最后创建同级标题</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-RET</td>
+<td class="org-left">当前标题后面创建同级标题</td>
+<td class="org-left">不会"割断"</td>
+</tr>
+
+<tr>
+<td class="org-left">M-S-RET</td>
+<td class="org-left">创建TODO标题</td>
+<td class="org-left">同M-RET</td>
+</tr>
+
+<tr>
+<td class="org-left">C-S-RET</td>
+<td class="org-left">创建TODO标题</td>
+<td class="org-left">C-RET</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">标题显示</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
+前面说过, 大纲模式的一个好处就是可以折叠/显示标题, 这样可以方便你整体浏览大纲内容, 
+或关注于当前的工作内容, 例如前面的例子折叠后变为下图, 这样就可以只关注
+打开标题的内容.
+</p>
+
+
+<div class="figure">
+<p><img src="../../../../public/img/org-outline2.png" alt="org-outline2.png" />
+</p>
+</div>
+
+<p>
+这里是标题显示标题操作的一些快捷键
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">功能</th>
+<th scope="col" class="org-left">对应命令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">TAB</td>
+<td class="org-left">循环打开关闭当前标题</td>
+<td class="org-left">org-cycle</td>
+</tr>
+
+<tr>
+<td class="org-left">S-TAB/C-u TAB</td>
+<td class="org-left">循环打开关闭所有标题</td>
+<td class="org-left">org-global-cycle</td>
+</tr>
+
+<tr>
+<td class="org-left">C-u C-u TAB</td>
+<td class="org-left">恢复到最初视图</td>
+<td class="org-left">org-set-startup-visibility</td>
+</tr>
+
+<tr>
+<td class="org-left">C-u C-u C-u TAB</td>
+<td class="org-left">显示所有</td>
+<td class="org-left">show-all</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-r</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">org-reveal</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-k</td>
+<td class="org-left">显示当前标题的所有子树标题</td>
+<td class="org-left">show-branches</td>
+</tr>
+
+<tr>
+<td class="org-left">(C-u N) C-c TAB</td>
+<td class="org-left">显示当前标题的(N层)子树</td>
+<td class="org-left">show-children</td>
+</tr>
+
+<tr>
+<td class="org-left">(C-u N) C-c C-x b</td>
+<td class="org-left">在新buffer显示(从第N层开始的)子树</td>
+<td class="org-left">org-tree-to-indirect-buffer</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x v</td>
+<td class="org-left">复制当前区域内容</td>
+<td class="org-left">org-copy-visible</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">标题间移动</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+<p>
+org mode也提供了很多快捷键用来进行标题间的移动, 这样可以很方便的实现
+章节的跳动.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">功能</th>
+<th scope="col" class="org-left">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C-c C-n</td>
+<td class="org-left">移动到下个可见标题</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-p</td>
+<td class="org-left">移动到上个可见标题</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-f</td>
+<td class="org-left">移动到上个同级标题</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-b</td>
+<td class="org-left">移动到下个同级标题</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-u</td>
+<td class="org-left">移动到上级标题</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-j</td>
+<td class="org-left">跳到指定位置</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c &amp;</td>
+<td class="org-left">跳回之前位置</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">改变标题级别</h3>
+<div class="outline-text-3" id="text-orgheadline6">
+<p>
+万能快捷键, 减少打字.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">功能</th>
+<th scope="col" class="org-left">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">TAB</td>
+<td class="org-left">改变空标题的level</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">M-left/M-right</td>
+<td class="org-left">升级/降级</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">M-S-left/right</td>
+<td class="org-left">所有子树升级/降级</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">M-S-up/down</td>
+<td class="org-left">上移/下移</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">操作标题内容</h3>
+<div class="outline-text-3" id="text-orgheadline7">
+<p>
+下面的快捷键可以很方便的对标题下的内容进行操作, 勤加练习.
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">功能</th>
+<th scope="col" class="org-left">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">M-h</td>
+<td class="org-left">标记当前内容</td>
+<td class="org-left">连击会标记更多</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c @</td>
+<td class="org-left">标记当前标题及内容</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x C-w</td>
+<td class="org-left">剪切当前子树</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x M-w</td>
+<td class="org-left">复制当前子树</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-y</td>
+<td class="org-left">粘贴</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x c</td>
+<td class="org-left">复制多次</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c ^</td>
+<td class="org-left">排序标题</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-x n s</td>
+<td class="org-left">让buffer只显示当前子树</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-x n w</td>
+<td class="org-left">恢复buffer显示</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c *</td>
+<td class="org-left">添加/去掉星星</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">其他高级操作</h3>
+<div class="outline-text-3" id="text-orgheadline13">
+</div><div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8">初始化"可见性"</h4>
+<div class="outline-text-4" id="text-orgheadline8">
+<p>
+Emacs打开org文件默认只显示顶层标题, 可以通过 "#+STARTUP" 选项来配置
+第一次打开要显示的内容. #+STARTUP的参数包括
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">overview</td>
+<td class="org-left">只显示顶层标题</td>
+</tr>
+
+<tr>
+<td class="org-left">content</td>
+<td class="org-left">显示所有标题</td>
+</tr>
+
+<tr>
+<td class="org-left">showall</td>
+<td class="org-left">显示所有内容</td>
+</tr>
+
+<tr>
+<td class="org-left">showeverything</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul class="org-ul"><li><a id="orgheadline9"></a>编辑"不可见区域"报错<br  /><div class="outline-text-6" id="text-orgheadline9">
+<p>
+有时候会不小心编辑到"不可见区域", 编辑器默认不会报错, 所以如果想组织这个
+行为, 可以在配置文件中设置org-catch-invisible-edits的值为非nil.例如下面
+的代码, 这样就可以阻止编辑非可见区域.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq-default</span> org-catch-invisible-edits 'error)
+</pre>
+</div>
+
+<p>
+org-catch-invisible-edits的更多参数可以参考 C-h v org-catch-invisible-edits 
+</p>
+</div></li></ul>
+</div>
+<div id="outline-container-orgheadline10" class="outline-4">
+<h4 id="orgheadline10">稀疏树显示</h4>
+<div class="outline-text-4" id="text-orgheadline10">
+<p>
+Org mode的另一个功能就可以只展现你想要的内容, 称之为"稀疏树"展示.
+使用快捷键"C-c /"可以调出稀疏树功能, 它会询问你想要显示的内容, 
+如下图所示.
+</p>
+
+
+<div class="figure">
+<p><img src="../../../../public/img/org-outline3.png" alt="org-outline3.png" />
+</p>
+</div>
+
+<p>
+选择 '/' 或 "r" 会显示正则表达式搜索, 输入搜索内容即可以稀疏树方式展示结果, 如果
+结果只在标题, 则显示标题, 如果在内容则显示内容, 搜索关键字会高亮. 按 "C-c C-c"会
+取消高亮. 如果 C-u N之后输入C-c / r, 之前的N此搜索都会显示.
+快捷键 "M-g n/p"用于在搜索结果之间跳转. 命令 "ps-print-buffer-with-faces"用于
+打印机打印搜索结果.
+</p>
+
+<p>
+稀疏树是org mode的很强大的搜索展示功能.后面的文章还会有更多介绍.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11">列表</h4>
+<div class="outline-text-4" id="text-orgheadline11">
+<p>
+org mode可以显示列表, 以下列字符开头的文本都为列表" - + 1. 1) *",
+<b>标题的大部分快捷键都可以用于列表</b>, 其他的快捷键包括:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">C-c -</td>
+<td class="org-left">改变列表展示方式</td>
+</tr>
+
+<tr>
+<td class="org-left">S-left/right</td>
+<td class="org-left">同上</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12">脚注</h4>
+<div class="outline-text-4" id="text-orgheadline12">
+<p>
+org mode支持脚注功能, 脚注通常用 <code>[fn:数字]</code> 表示, 然后在其他地方写上
+脚注说明<sup><a id="fnr.1" class="footref" href="#fn.1">1</a></sup>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">The Org homepage[fn:1] now looks a lot better than it used to.
+...
+[fn:1] The link is: http://orgmode.org
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-2">
+<h2 id="orgheadline14">Orgmode手册2:表格</h2>
+<div class="outline-text-2" id="text-orgheadline14">
+<p>
+Org mode提供了强大到"令人发指"的表格处理功能, 与excel不同, 
+纯文本下编辑表格是另外一种美好的体验.
+</p>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15">创建表格</h3>
+<div class="outline-text-3" id="text-orgheadline15">
+<p>
+在org中任何以"|"字符开头的内容都会认为是
+表格的一部分. 在表格当前行按TAB或C-c C-c会格式化表格.
+按RET键会自动创建 下一行. 
+同时任何以"|-"开头的行都被认为是表格分隔符.
+</p>
+
+<p>
+快捷键 <b>C-c |</b> 可以创建表格或将选中区域转化为表格, 会询问你创建的表格大小.
+如果要转化的区域都含有TAB字符, 会将TAB作为分隔符. 如果为逗号, 会认为是逗号.
+否则为空白字符.可以通过前缀强制选择"分隔符":
+</p>
+<ul class="org-ul">
+<li>C-u 强制认为是CSV格式(逗号分割), 对于经常处理csv格式的人很有用.</li>
+<li>C-u C-u 强制TAB</li>
+</ul>
+
+<p>
+下表是另外一些操作表格的快捷键. 
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C-c C-c</td>
+<td class="org-left">对齐表格</td>
+</tr>
+
+<tr>
+<td class="org-left">TAB</td>
+<td class="org-left">对齐表格, 移到下一格</td>
+</tr>
+
+<tr>
+<td class="org-left">S-TAB</td>
+<td class="org-left">对齐表格, 移到上一格</td>
+</tr>
+
+<tr>
+<td class="org-left">RET</td>
+<td class="org-left">对齐表格, 移到下一行</td>
+</tr>
+
+<tr>
+<td class="org-left">M-a/e</td>
+<td class="org-left">移到这一格开始/结尾</td>
+</tr>
+
+<tr>
+<td class="org-left">M-left/right/up/down</td>
+<td class="org-left">左/右/上/下移动该行</td>
+</tr>
+
+<tr>
+<td class="org-left">M-S-left/up/</td>
+<td class="org-left">删除当前列/行</td>
+</tr>
+
+<tr>
+<td class="org-left">M-S-right/down</td>
+<td class="org-left">添加新列/行</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c -/C-c RET</td>
+<td class="org-left">添加新分割行</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c ^</td>
+<td class="org-left">排序</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x M-w/C-w/C-y</td>
+<td class="org-left">粘贴/剪切/复制当前区域</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c +</td>
+<td class="org-left">计算当前列的和</td>
+</tr>
+
+<tr>
+<td class="org-left">S-RET</td>
+<td class="org-left">复制</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c `</td>
+<td class="org-left">新窗口编辑当前区域.</td>
+</tr>
+
+<tr>
+<td class="org-left">M-x org-table-import</td>
+<td class="org-left">导入文件作为表格</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c</td>
+<td class="org-left">将选中区域表示为表格</td>
+</tr>
+
+<tr>
+<td class="org-left">M-x org-table-export</td>
+<td class="org-left">到处表格</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-3">
+<h3 id="orgheadline18">表格宽度和对齐</h3>
+<div class="outline-text-3" id="text-orgheadline18">
+</div><div id="outline-container-orgheadline16" class="outline-4">
+<h4 id="orgheadline16">设置列宽度</h4>
+<div class="outline-text-4" id="text-orgheadline16">
+<p>
+如果某一列的内容太长, 看上去会比较不美观, 可以通过设置列的宽度来隐藏
+一部分内容. 
+</p>
+
+<p>
+要设置列宽度, 在这一列的任何的一个空白单元格(没有的话可以创建一个空白行)内
+加入 <b>&lt;N&gt;</b>, N就是你要设置的宽度.然后按"C-c C-c"即可改变宽度. 
+如果该列某一行的宽度大于N, 那么该区域内容会被"压缩", 如果还想查看完整内容, 把
+鼠标放到上面即可, 如果要编辑该内容, 在该表格框内按 <b>C-c `</b>. 
+下图是一个示例:
+</p>
+
+
+<div class="figure">
+<p><img src="../../../../public/img/org-table2.jpg" alt="org-table2.jpg" />
+</p>
+</div>
+
+<p>
+当第一次打开文件时, 即使该文件的表格设置了"压缩", 也会看到"压缩"并未发生, 超过宽度的内容
+仍然会在表格中显示, 如果想要打开即显示压缩, 可以在文档中加入 <b>#+STARTUP:align</b> 来打开这个功能. 
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline17" class="outline-4">
+<h4 id="orgheadline17">设置左右对齐</h4>
+<div class="outline-text-4" id="text-orgheadline17">
+<p>
+跟设置宽度一样, 在某一空白区域添加 &lt;r&gt; 或 &lt;l&gt;. 宽度和对齐也可以结合使用:&lt;r10&gt;.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline19" class="outline-3">
+<h3 id="orgheadline19">引用表中数据</h3>
+<div class="outline-text-3" id="text-orgheadline19">
+<p>
+如果要在公式或其他地方使用表格中的数据, 必须要有一种方法可以表示表格中的
+一个或一块区域. Org中区域可以通过名称/坐标/相对地址等方式引用. 可以在
+单元格上面使用快捷键"C-c ?"来查看该单元格的坐标. 或使用 "C-c }"来显示一块区域.
+</p>
+<ol class="org-ol">
+<li><p>
+引用表格的几种方法
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">格式</th>
+<th scope="col" class="org-left">含义</th>
+<th scope="col" class="org-left">补充</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">letter/number</td>
+<td class="org-left">某一格</td>
+<td class="org-left">B3表示第三行第二列</td>
+</tr>
+
+<tr>
+<td class="org-left">@N</td>
+<td class="org-left">某一行</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">$N</td>
+<td class="org-left">某一列</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">@M$N</td>
+<td class="org-left">某一格</td>
+<td class="org-left">@3$2 第三行第二列</td>
+</tr>
+
+<tr>
+<td class="org-left">$+/-N</td>
+<td class="org-left">当前列的相对列</td>
+<td class="org-left">同样适用于行</td>
+</tr>
+
+<tr>
+<td class="org-left">$&lt; $&gt;</td>
+<td class="org-left">第一列和最后一列</td>
+<td class="org-left">$&lt;&lt;&lt;倒数第三列, 适用于行</td>
+</tr>
+
+<tr>
+<td class="org-left">@I</td>
+<td class="org-left">high line</td>
+<td class="org-left">例如本例第二行</td>
+</tr>
+
+<tr>
+<td class="org-left">@0 $0</td>
+<td class="org-left">当前行/列</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table></li>
+<li>使用".."来表示一个区域, 例如 $1..$3表示第一列到第三列</li>
+<li>使用 @# $# 来表示当前行/列的值.</li>
+<li>命名. org table支持命名方式, 可以通过 "org-table-formula-constants"来设置一个
+全局的名字, 或通过 "#+CONSTANTS"单独为一个文件设置名称变量. 也可以在表格中
+使用emacs的properties功能来使用property变量.</li>
+<li>远程引用. 可以通过远程引用的方式引用其他文件或该文件其他表格的内容.
+远程引用的语法为: remote(NAME-OR-ID, REF). 第一个参数可以是本文件中
+用 #+NAME 来命名的表格, 或其他文件中的一个entry ID. REF是当前表格的一个区域.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="orgheadline20">表格处理计算</h3>
+<div class="outline-text-3" id="text-orgheadline20">
+<p>
+文章开始说过, org mode提供了各种表格计算功能, 下面就看一下具体的操作,
+</p>
+
+<p>
+表格计算可以在表格底部用"#+TBLFM:"关键字, 后面接计算公式, 目前
+表格支持 "Calc" 和 lisp计算公式. 如下图表格, 公式
+"#+TBLFM: $5=$1+$2+$3+$4" 用于计算前四列的和, 并将结果写入第五列.
+</p>
+
+
+<div class="figure">
+<p><img src="../../../../public/img/org-table.png" alt="org-table.png" />
+</p>
+</div>
+
+<p>
+注: Calc中"/"的优先级低于"*". 所以公式 <b>$4=$1/$2*$3</b> 实际为 
+<b>$4=$1/($2*$3)</b>.
+</p>
+</div>
+<div id="outline-container-orgheadline21" class="outline-4">
+<h4 id="orgheadline21">附加模式.</h4>
+<div class="outline-text-4" id="text-orgheadline21">
+<p>
+附件模式可以用于计算特定格式的内容, 或者格式化数据.
+org支持公式后面添加任意数量的附加模式, 公式和
+附加模式之间用";"隔开. 目前支持的附加模式包括:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">表示</th>
+<th scope="col" class="org-left">意义</th>
+<th scope="col" class="org-left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">pN</td>
+<td class="org-left">计算精度</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">nN,sN,eN,fN</td>
+<td class="org-left">普通/科学/工程/固定表示</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">D/R</td>
+<td class="org-left">度/弧度模式</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">F/S</td>
+<td class="org-left">小数模式</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">T/t</td>
+<td class="org-left">时间计算模式</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">E</td>
+<td class="org-left">控制怎样表示空白格</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">N</td>
+<td class="org-left">把所有表格表示为数字, 非数字0代替</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">L</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+下面是一些实例程序
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">$1+$2                Sum of first and second field
+$1+$2<span style="color: #5F7F5F;">;</span><span style="color: #7F9F7F;">%.2f           &#20445;&#30041;&#23567;&#25968;&#28857;&#20004;&#20301;</span>
+exp($2)+exp($1)      &#25968;&#23398;&#20844;&#24335;
+tan($1)<span style="color: #5F7F5F;">;</span><span style="color: #7F9F7F;">Dp3s1        &#35745;&#31639;&#24230;&#25968;, &#31934;&#24230;&#20026;3, &#23637;&#31034;&#20026;&#31185;&#23398;&#35745;&#25968;</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22">lisp代码处理表格.</h4>
+<div class="outline-text-4" id="text-orgheadline22">
+<p>
+org支持用lisp代码处理表格. 以 '( 开头的表达式会被解析为lisp代码,
+默认情况下, 表格的内容会被引用为字符串, 如果需要将其处理为数字,
+需要将其转化为N模式(后面加";N"). 也可以用使用双引号将其表示为字符串.
+"范围(..)"会被解析为空格分开的域. 例如前面表格相加的公司用lisp表示为
+<b>$5='(+ $1 $2 $3 $4)</b>. 下面是一些例子:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">'(concat (substring $1 1 2) (substring $1 0 1) (substring $1 2))
+   &#20132;&#20114;&#31532;&#19968;&#21015;&#34920;&#26684;&#20869;&#23481;&#30340;&#21069;&#20004;&#20010;&#23383;&#31526;
+'(+ $1 $2)<span style="color: #5F7F5F;">;</span><span style="color: #7F9F7F;">N   Add columns 1 and 2, equivalent to Calc's `</span><span style="color: #7F9F7F;">$1+$2</span><span style="color: #7F9F7F;">'.</span>
+'(apply '+ '($1..$4))<span style="color: #5F7F5F;">;</span><span style="color: #7F9F7F;">N   &#21478;&#22806;&#19968;&#31181;&#34920;&#26684;&#30456;&#21152;&#26041;&#27861;</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline23" class="outline-4">
+<h4 id="orgheadline23">时间计算.</h4>
+<div class="outline-text-4" id="text-orgheadline23">
+<p>
+前面讲过表格支持时间计算.表格支持的时间格式为 HH:MM[:SS], 
+其中SS是可选, 如果公式后面接";T", 计算结果会展示为 HH:MM:SS.
+如果为";t", 计算结果为小时的小数表示. 下面的例子展示了这一点:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">|  Task 1 |   Task 2 |    Total |
+|---------+----------+----------|
+|    2:12 |     1:47 | 03:59:00 |
+| 3:02:20 | -2:07:00 |     0.92 |
+#+TBLFM: @2$3=$1+$2<span style="color: #5F7F5F;">;</span><span style="color: #7F9F7F;">T::@3$3=$1+$2;t</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline24" class="outline-4">
+<h4 id="orgheadline24">直接在某一格中输入公式.</h4>
+<div class="outline-text-4" id="text-orgheadline24">
+<p>
+可以直接在域中输入公式. 在域中输入":="并后面接公式. 也可以
+在当前域中输入 "C-u C-c ="命令在提示框中输入公式.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline25" class="outline-4">
+<h4 id="orgheadline25">查找功能</h4>
+<div class="outline-text-4" id="text-orgheadline25">
+<p>
+orgmode提供了三个查找函数用于在表中进行查找:
+</p>
+<ul class="org-ul">
+<li>(org-lookup-first VAL S-LIST R-LIST &amp;optional PREDICATE)
+在S-LIST中查找第一个 (PREDICATE VAL S)值为t的S. 并返回R-LIST与S位置相同的
+值. PREDICATE的默认值为 equal, 如果R-LIST为nil, 则返回S.</li>
+<li>(org-lookup-first VAL S-LIST R-LIST &amp;optional PREDICATE)
+与上一个函数意义相同, 不过是先查找最后一个.</li>
+<li>(org-lookup-first VAL S-LIST R-LIST &amp;optional PREDICATE)
+相似函数. 不过返回的是一个列表.</li>
+</ul>
+
+<p>
+下面是一个示例, 更多示例看这篇文章: <a href="http://orgmode.org/worg/org-tutorials/org-lookups.html">http://orgmode.org/worg/org-tutorials/org-lookups.html</a>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp"> #+TBLNAME: rates
+| currency        | abbreviation | euros |
+|-----------------+--------------+-------|
+| euro            | eur          |     1 |
+| Norwegian krone | nok          |  0.14 |
+| Swedish krona   | sek          |  0.12 |
+| US dollar       | usd          |  0.77 |
+
+#+TBLNAME: cost
+|  date | expense          |  sum | currency |   rate |  euros |   |
+|-------+------------------+------+----------+--------+--------+---|
+|  1.3. | flights          |  324 | eur      |      1 |    324 |   |
+|  4.6. | books and maps   |  243 | usd      |   0.77 | 187.11 |   |
+| 30.7. | rental car       | 8300 | sek      |   0.12 |   996. |   |
+|  2.7. | hotel            | 1150 | sek      |   0.12 |   138. |   |
+|  2.7. | lunch            |  190 | sek      |   0.12 |   22.8 |   |
+|  3.7. | fishing licenses | 1400 | nok      |   0.14 |   196. |   |
+|  3.7. | gasoline         |  340 |          | #ERROR | #ERROR |   |
+ #+TBLFM: $5='(org-lookup-first $4 '(remote(rates,@2$2..@&gt;$2)) '(remote(rates,@2$3..@&gt;$3)))<span style="color: #DCDCCC; font-weight: bold;">::$6=$5*$3</span>
+&#20989;&#25968;&#35299;&#37322;&#31532;&#19968;&#20010;&#20989;&#25968;&#26597;&#25214;cost&#34920;&#30340;&#31532;&#22235;&#21015;&#21644;rates&#34920;&#30340;&#31532;&#20108;&#21015;&#30456;&#21516;&#30340;&#20540;, &#24182;&#23558;&#26597;&#25214;&#32467;&#26524;&#23545;&#24212;&#30340;
+rates&#34920;&#30340;&#31532;&#19977;&#21015;&#22635;&#20805;&#21040;cost&#34920;&#30340;&#31532;&#20116;&#21015;, &#28982;&#21518;&#35745;&#31639;&#31532;&#20845;&#21015;&#30340;&#20540;.
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline26" class="outline-4">
+<h4 id="orgheadline26">调试公式</h4>
+<div class="outline-text-4" id="text-orgheadline26">
+<p>
+org mode提供了下列用于调试公式的快捷键:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C-c = / C-u C-c =</td>
+<td class="org-left">在当前格写入公式</td>
+</tr>
+
+<tr>
+<td class="org-left">C-u C-u C-c =</td>
+<td class="org-left">重新插入公式</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c ?</td>
+<td class="org-left">当前格信息</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c }</td>
+<td class="org-left">表信息</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c {</td>
+<td class="org-left">打开/关闭调试</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c '</td>
+<td class="org-left">在buffer中编辑所有公式</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline29" class="outline-3">
+<h3 id="orgheadline29">其他特性</h3>
+<div class="outline-text-3" id="text-orgheadline29">
+</div><div id="outline-container-orgheadline27" class="outline-4">
+<h4 id="orgheadline27">列组</h4>
+<div class="outline-text-4" id="text-orgheadline27">
+<p>
+Org导出表格时, 默认是以行为单位, 也可以按列为单位来处理数据.
+这需要添加一个特殊行: 该行的第一个区域只包含"/", 其他以"&lt;"表示的区域
+表示是一个组的开始, 以"&gt;"结束表示组的结束.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline28" class="outline-4">
+<h4 id="orgheadline28">Orgtbl 模式</h4>
+<div class="outline-text-4" id="text-orgheadline28">
+<p>
+如果想在其他的mode下使用org mode的table功能, 可以输入命令 "orgtbl-mode".
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline30" class="outline-2">
+<h2 id="orgheadline30">Orgmode手册3:链接</h2>
+<div class="outline-text-2" id="text-orgheadline30">
+<p>
+在Org mode里可以创建通过创建链接的方式引用其他的内容,
+目前Org 支持如下链接方式: 文件内部, 外部文件, Usenet文章, 邮件及其他.
+</p>
+</div>
+
+<div id="outline-container-orgheadline31" class="outline-3">
+<h3 id="orgheadline31">链接格式</h3>
+<div class="outline-text-3" id="text-orgheadline31">
+<p>
+Org的链接格式为:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">[[&#38142;&#25509;&#22320;&#22336;][&#25551;&#36848;]] &#25110; [[&#38142;&#25509;&#22320;&#22336;]]
+</pre>
+</div>
+<p>
+当最后一个"]"写完时, org会将该链接显示为(带下划线的"描述", 该显示格式对应face "org-link"),
+如果想要编辑链接, 可以在链接上使用快捷键 "C-c C-l", 在显示内容前后使用"delete"键
+会破坏链接的语法(也可以这样编辑链接). 
+</p>
+
+<p>
+下面是一些链接的快捷键
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C-c l</td>
+<td class="org-left">将当前位置存为一个link</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-l</td>
+<td class="org-left">编辑/插入链接</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-o</td>
+<td class="org-left">打开(跳转)</td>
+</tr>
+
+<tr>
+<td class="org-left">C-u C-c C-l</td>
+<td class="org-left">插入文件</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x C-v</td>
+<td class="org-left">开关图片显示</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c %</td>
+<td class="org-left">将当前位置放入mark ring</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c &amp;</td>
+<td class="org-left">返回mark ring</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x C-n</td>
+<td class="org-left">next link</td>
+</tr>
+
+<tr>
+<td class="org-left">C-c C-x C-p</td>
+<td class="org-left">上一个link</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgheadline32" class="outline-3">
+<h3 id="orgheadline32">内部链接</h3>
+<div class="outline-text-3" id="text-orgheadline32">
+<p>
+如果一个链接不是一该URL, org会将其看做内部链接, org寻找内部链接的方式为:
+</p>
+<ol class="org-ol">
+<li><p>
+跳转到被 "&lt;&lt;&gt;&gt;"定义的地方. 如下面的例子,在第一个链接上用C-c C-o 会
+跳转到test出现的地方. 
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">loc1: [[test]] 
+loc2  this is a &lt;&lt;test&gt;&gt;
+</pre>
+</div></li>
+<li>如果1)不存在, 会跳转到 "#+NAME" 命名和链接相同的地方.</li>
+<li>前两步都失败, 会尝试寻找精确匹配的 <b>标题</b>.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline33" class="outline-3">
+<h3 id="orgheadline33">外表链接</h3>
+<div class="outline-text-3" id="text-orgheadline33">
+<p>
+org mode支持的外部链接包括:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">|                             | &#25551;&#36848;                  |
+|-----------------------------+-----------------------|
+| http://web                  | &#32593;&#31449;                  |
+| doi:10.1000/182             | doi&#38142;&#25509;               |
+| file://path                 | &#25991;&#20214;&#30456;&#23545;/&#32477;&#23545;&#22320;&#22336;     |
+| file:/a@b:x/y.pdf           | &#36828;&#31243;&#25991;&#20214;&#22320;&#22336;          |
+| file:orgmode-learn.org::111 | &#36339;&#36716;&#21040;&#25991;&#20214;NNN&#34892;       |
+| file:org-file::key/*title   | &#25903;&#25345;org&#25991;&#20214;&#30340;&#26631;&#39064;&#25628;&#32034; |
+| file+sys:/path              | &#20351;&#29992;&#31995;&#32479;&#25171;&#24320;          |
+| docview:path::NNN           | &#20351;&#29992;docview&#27169;&#24335;&#25171;&#24320;   |
+| news:comp.emacs             | Usenet &#38142;&#25509;           |
+| mailto:a@b                  | mail                  |
+| gnus:group                  | gnus&#38142;&#25509;              |
+| irc:/irc.com/#emacs         | irc&#38142;&#25509;               |
+| shell:cmd                   | shell &#21629;&#20196;            |
+| elisp:cmd                   | elisp cmd             |
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline34" class="outline-3">
+<h3 id="orgheadline34">短链接</h3>
+<div class="outline-text-3" id="text-orgheadline34">
+<p>
+如果链接太长且在文件中经常使用, 可以将其设置为"链接关键字",
+可以用 "#+LINK"关键字来实现这个功能, 或者设置"org-link-abbrev-alist"变量:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+LINK: bugzilla  http://10.1.2.9/bugzilla/show_bug.cgi?id=
+#+LINK: google    http://www.google.com/search?q=%s
+&#25110;&#32773;
+(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-link-abbrev-alist
+  '((<span style="color: #CC9393;">"bugzilla"</span>  . <span style="color: #CC9393;">"http://10.1.2.9/bugzilla/show_bug.cgi?id="</span>)
+    (<span style="color: #CC9393;">"url-to-ja"</span> . <span style="color: #CC9393;">"http://translate.google.fr/translate?sl=en&amp;tl=ja&amp;u=%h"</span>)
+    (<span style="color: #CC9393;">"google"</span>    . <span style="color: #CC9393;">"http://www.google.com/search?q="</span>)
+    (<span style="color: #CC9393;">"gmap"</span>      . <span style="color: #CC9393;">"http://maps.google.com/maps?q=%s"</span>)
+    (<span style="color: #CC9393;">"omap"</span>      . <span style="color: #CC9393;">"http://nominatim.openstreetmap.org/search?q=%s&amp;polygon=1"</span>)
+    (<span style="color: #CC9393;">"ads"</span>       . <span style="color: #CC9393;">"http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?author=%s&amp;db_key=AST"</span>)))
+</pre>
+</div>
+
+<p>
+短链接的格式为, 如果链接中有"%s", 会被tag替代, "%h"则会将tag进行url编码.
+%(function)会调用函数并将结果添加. 什么都没有的话直接在尾部添加. 例如
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">[[bugzilla:129][description]] <span style="color: #5F7F5F;">;;  </span><span style="color: #7F9F7F;">http://10.1.2.9/bugzilla/show_bug.cgi?id=129</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline35" class="outline-2">
+<h2 id="orgheadline35">Orgmode手册4:任务功能</h2>
+<div class="outline-text-2" id="text-orgheadline35">
+<p>
+个人私以为, 任务功能是org mode最熠熠生辉的特性之一, 
+它完美的诠释了<a href="https://zh.wikipedia.org/wiki/GTD">GTD</a> 的理念, 如果你是一个需要时间管理, 工作离不开
+"任务清单"的人, org mode绝对是一个满足你需求的绝佳工具. 
+</p>
+
+<p>
+下面这张图可以很直观的展示org mode的TODO特性:
+</p>
+
+
+<div class="figure">
+<p><img src="../../../../public/img/orgmode-todo.png" alt="orgmode-todo.png" />
+</p>
+</div>
+
+<p>
+该图展示了一个工程的各个阶段, 通过这张图可以很直观的查看
+当前工程的运行情况和完成比, 当项目为完成时, 其状态为 <b>TODO</b>, 
+当其完成后, 将状态该为 <b>DONE</b>, 同时会自动修改父项目的状态, 如果
+所有的子项目都完成, 父项目会自动设为 <b>DONE</b>, 否则会展示一个完成比率.
+</p>
+
+<p>
+通过该图相信你已经了解了org mode的TODO的概念, 下面是具体的实现文档.
+</p>
+</div>
+
+<div id="outline-container-orgheadline36" class="outline-3">
+<h3 id="orgheadline36">创建TODO项目</h3>
+<div class="outline-text-3" id="text-orgheadline36">
+<p>
+在标题的星号后面加上 <b>TODO</b> 即可将该标题设置为一个TODO任务, 也可以使用
+快捷键来创建, 快捷键可以参考这篇文章 <a href="http://xuzhengchao.com/2015/12/12/org-mode-outline.html">org mode手册(1): 文档结构</a>
+</p>
+
+<p>
+如果任务完成后, 可以使用 "C-c C-t" 快捷键将其设为DONE.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline37" class="outline-3">
+<h3 id="orgheadline37">拓展关键字</h3>
+<div class="outline-text-3" id="text-orgheadline37">
+<p>
+在真实的使用场景中, 一个任务可能不仅仅只有TODO和DONE两个状态, 可能会有一些
+中间状态, 或者你觉得TODO和DONE不是符合你风格的两个关键字, 针对这种情况, org mode
+提供了一些功能来对TODO关键字进行扩展.
+</p>
+</div>
+<div id="outline-container-orgheadline38" class="outline-4">
+<h4 id="orgheadline38">设置关键字</h4>
+<div class="outline-text-4" id="text-orgheadline38">
+<p>
+通过在emacs配置文件中设置 <b>org-mode-keywords</b> 来自定义TODO关键字, 如下例, 
+这里设置了TODO/FEEDBACK/VERIFY和DONE/DELEGATED两组关键字,
+第一组关键字处于项目的"未完成"阶段, 第二组关键字处于项目的"完成"阶段, 
+通过 "|"来区分划分这两个阶段. 当使用"C-c C-t"时, 标题会轮番在这几个关键字
+之间修改.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-todo-keywords
+   '((sequence <span style="color: #CC9393;">"TODO"</span> <span style="color: #CC9393;">"FEEDBACK"</span> <span style="color: #CC9393;">"VERIFY"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"DONE"</span> <span style="color: #CC9393;">"DELEGATED"</span>)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline39" class="outline-4">
+<h4 id="orgheadline39">设置多组关键字</h4>
+<div class="outline-text-4" id="text-orgheadline39">
+<p>
+有时候你想将任务划分的更细, 例如状态未"TODO"的任务只能将状态改为"DONE",
+状态未"BUG"的任务只能改为"FIXED"(不能设成DONE), 那么可以通过 <b>sequence</b>
+关键字来实现这个功能, 如下例, 该例创建了三组关键字, 状态修改只能在本组的
+关键字之间变化, 而不能跨组变化.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-todo-keywords
+       '((sequence <span style="color: #CC9393;">"TODO(t)"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"DONE(d)"</span>)
+         (sequence <span style="color: #CC9393;">"REPORT"</span> <span style="color: #CC9393;">"BUG"</span> <span style="color: #CC9393;">"KNOWNCAUSE"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"FIXED"</span>)
+         (sequence <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"CANCELED"</span>)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline40" class="outline-4">
+<h4 id="orgheadline40">使用type.</h4>
+<div class="outline-text-4" id="text-orgheadline40">
+<p>
+该变量可以将TODO设置为不同的类型, 如下例, 这样可以实现将任务分配给不同的人,
+分配完成后, C-c C-t修改状态时不会在这三个type之间滚动.而是直接设为done
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-todo-keywords '((type <span style="color: #CC9393;">"Fred"</span> <span style="color: #CC9393;">"Sara"</span> <span style="color: #CC9393;">"Lucy"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"DONE"</span>)))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline41" class="outline-4">
+<h4 id="orgheadline41">在当前文件设置关键字</h4>
+<div class="outline-text-4" id="text-orgheadline41">
+<p>
+上面几节讲到都是在全局配置文件中配置关键字, 
+如果想只把配置限制在当前文件, 可以在文件开头配置相关关键字, 如下例:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+TODO: TODO FEEDBACK VERIFY | DONE CANCELED <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">&#25299;&#23637;&#20851;&#38190;&#23383;</span>
+
+#+TYP_TODO: Fred Sara Lucy Mike | DONE <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">&#35774;&#32622;type</span>
+
+<span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">&#35774;&#32622;&#22810;&#32452;</span>
+#+TODO: TODO | DONE
+#+TODO: REPORT BUG KNOWNCAUSE | FIXED
+#+TODO: | CANCELED
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline42" class="outline-4">
+<h4 id="orgheadline42">关键字主题</h4>
+<div class="outline-text-4" id="text-orgheadline42">
+<p>
+如果嫌弃官方的关键字颜色不好看, 可以通过设置"org-todo-keyword-faces"变量可以设置不同关键字的表现形式,例如:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-todo-keyword-faces
+      '((<span style="color: #CC9393;">"TODO"</span> . org-warning) (<span style="color: #CC9393;">"STARTED"</span> . <span style="color: #CC9393;">"yellow"</span>)
+        (<span style="color: #CC9393;">"CANCELED"</span> . (<span style="color: #DCDCCC; font-weight: bold;">:foreground</span> <span style="color: #CC9393;">"blue"</span> <span style="color: #DCDCCC; font-weight: bold;">:weight</span> bold))))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline43" class="outline-4">
+<h4 id="orgheadline43">设置依赖</h4>
+<div class="outline-text-4" id="text-orgheadline43">
+<p>
+有时候一个TODO可能依赖其他的TODO, 例如一个系列项目, 可能前面的项目完成
+之前, 后面的项目都不能将状态改成DONE, 或者子项目完成之前, 父项目不能将
+状态改成DONE.
+</p>
+<ol class="org-ol">
+<li><p>
+org-enforce-todo-dependencies.
+通过设置该变量, 可以设置在所有的子标题都完成之前, 父标题不能将状态设置为DONE.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-enforce-todo-dependencies t)
+</pre>
+</div></li>
+<li><p>
+按顺序修改状态.
+通过设置属性"ORDERED"来控制同级标题之前按顺序修改状态, 在前面的标题完成之前
+后面的标题不能将属性设为DONE.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">* Parent
+  <span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+  <span style="color: #DCDCCC; font-weight: bold;">:ORDERED:</span> t
+  <span style="color: #DCDCCC; font-weight: bold;">:END:</span>
+** TODO a
+** TODO b, needs to wait for (a)
+** TODO c, needs to wait for (a) and (b)
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline44" class="outline-3">
+<h3 id="orgheadline44">时间戳</h3>
+<div class="outline-text-3" id="text-orgheadline44">
+<p>
+对于时间管理来说, 时间戳是必不可少的东西, 可以通过为项目设置
+"排期(SCHEDULED)"或"最后期限(DEADLINE)"来更合理的规划工程. 
+更详细的日期功能会在下一篇文章讲述.
+</p>
+</div>
+<div id="outline-container-orgheadline45" class="outline-4">
+<h4 id="orgheadline45">设置完成时间</h4>
+<div class="outline-text-4" id="text-orgheadline45">
+<p>
+可以加入设置下面两个配置之一来自动在状态改成DONE的时候加入当前时间戳:
+其中第二个配置还会要求你写一段完成的note.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-log-done 'time)
+(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-log-done 'note)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline46" class="outline-4">
+<h4 id="orgheadline46">记录状态变化</h4>
+<div class="outline-text-4" id="text-orgheadline46">
+<p>
+下面的配置用于记录状态之间的变化, 可以通过设置带"附加属性"的keywords来实现
+这一个. 在keyword后面的括号中与状态记录相关字符为:
+</p>
+<ul class="org-ul">
+<li>"!" 表示记录时间</li>
+<li>"@" 表示带时间的note</li>
+<li>"/!" 当跳转到一个没有附加属性的状态时, 记录时间或note</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-todo-keywords
+  '((sequence <span style="color: #CC9393;">"TODO(t)"</span> <span style="color: #CC9393;">"WAIT(w@/!)"</span> <span style="color: #CC9393;">"|"</span> <span style="color: #CC9393;">"DONE(d!)"</span> <span style="color: #CC9393;">"CANCELED(c@)"</span>)))
+</pre>
+</div>
+
+<p>
+也可以使用PROPERTIES属性 "LOGGING" 来修改某个标题的TODO附加属性, 
+如果LOGGING为nil,表示没有附加记录. 也可以使用 "logrepeat" 或 
+"lognotedone" 使用默认属性, 例如下例, 这个配置会修改TODO只添加时间戳,
+WAIT需要note, 其他的属性使用STARTUP的默认值.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">* TODO Log each state with only a time
+  <span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+  <span style="color: #DCDCCC; font-weight: bold;">:LOGGING:</span> TODO(!) WAIT(@) logrepeat
+  <span style="color: #DCDCCC; font-weight: bold;">:END:</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline47" class="outline-4">
+<h4 id="orgheadline47">追踪行为</h4>
+<div class="outline-text-4" id="text-orgheadline47">
+<p>
+使用属性STYLE habit来设置持久性行为, 如下例, 表示至少4天或至多2天
+<b>刮一次胡子</b>.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">** TODO Shave
+ 'S CHEDULEd: &lt;2015-12-08 Tue .+2d/4d&gt;
+<span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+<span style="color: #DCDCCC; font-weight: bold;">:STYLE:</span>    habit
+<span style="color: #DCDCCC; font-weight: bold;">:END:</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline48" class="outline-3">
+<h3 id="orgheadline48">优先级</h3>
+<div class="outline-text-3" id="text-orgheadline48">
+<p>
+Org支持TODO项目的优先级, 默认支持的优先级有三个:A, B, C. A最高.
+如下所示, 无优先级表示的项目优先级是B.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">** TODO [#A]
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline49" class="outline-3">
+<h3 id="orgheadline49">显示任务完成比</h3>
+<div class="outline-text-3" id="text-orgheadline49">
+<p>
+可以在标题中加入 "<code>[/]</code>" 或 "<code>[%]</code>" 来显示子任务的完成数.
+默认只显示子标题, 如果要递归显示整个树, 需要设置
+"org-hierarchical-todo-statistics", 或者在PROPERTIES中设置
+"COOKIE_DATA", 如下所示;
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">* Parent capturing statistics [2/20]
+  <span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+  <span style="color: #DCDCCC; font-weight: bold;">:COOKIE_DATA:</span> todo recursive
+  <span style="color: #DCDCCC; font-weight: bold;">:END:</span>
+</pre>
+</div>
+
+<p>
+如果当子任务都完成时, 父任务自动标记为DONE, 可以在.emacs中加入
+如下代码:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">defun</span> <span style="color: #93E0E3;">org-summary-todo</span> (n-done n-not-done)
+  <span style="color: #9FC59F;">"Switch entry to DONE when all subentries are done, to TODO otherwise."</span>
+  (<span style="color: #F0DFAF; font-weight: bold;">let</span> (org-log-done org-log-states)   <span style="color: #5F7F5F;">; </span><span style="color: #7F9F7F;">turn off logging</span>
+    (org-todo (<span style="color: #F0DFAF; font-weight: bold;">if</span> (= n-not-done 0) <span style="color: #CC9393;">"DONE"</span> <span style="color: #CC9393;">"TODO"</span>))))
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline50" class="outline-2">
+<h2 id="orgheadline50">Orgmode手册5:"捕获"</h2>
+<div class="outline-text-2" id="text-orgheadline50">
+<p>
+想象一下到下面的场景: 你在敲着代码,听着歌,突然就来了一灵感, 或者突然QA就
+扔给你一个BUG, 你不想打断写代码的思路, 所以只能先把它记下了以后处理. 
+</p>
+
+<p>
+"先把它记下来"是个很好的议题, 怎么才能以最快的速度记下来? 
+</p>
+<ul class="org-ul">
+<li>随手记到纸上? 纸张没有提醒功能, 很可能一会就忘记了.</li>
+<li>记到提醒软件上. 可能要先离开IDE, 打开提醒软件, 写完再回来.  
+有时候提醒软件的归类功能还不好.</li>
+</ul>
+
+<p>
+So, 如果你凑巧用Emacs写代码, Emacs凑巧又装了Org mode, 那恭喜, 
+你天然就有了一个"快速且强大"的"捕获"软件: org capture. 
+这个功能最大的特性就是在尽量不打搅你现有工作的情况下记录其他的事情.
+</p>
+</div>
+
+<div id="outline-container-orgheadline51" class="outline-3">
+<h3 id="orgheadline51">设置capture</h3>
+<div class="outline-text-3" id="text-orgheadline51">
+<p>
+在emacs配置文件中加入如下代码, 
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-default-notes-file (concat org-directory <span style="color: #CC9393;">"/notes.org"</span>))
+(define-key global-map <span style="color: #CC9393;">"\C-cc"</span> 'org-capture)
+</pre>
+</div>
+<p>
+设置完成后, 你在emacs的任何地方, 按"C-c c"都会打开capture缓冲区, 里面会让你设置任务
+设置完成后, 按C-c C-c会自动保存到notes.org文件, 并回到之前的工作窗口.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline52" class="outline-3">
+<h3 id="orgheadline52">客制化Capture模板</h3>
+<div class="outline-text-3" id="text-orgheadline52">
+<p>
+org capture默认会将所有任务都放到notes.org这个文件, 这可能不满足你的
+需求, 比如你可能希望将工作和生活的笔记分开, 或者不同的工作笔记放到
+同一文件的不同标题下面, 可以通过配置capture模板的方法来完成这个功能.
+</p>
+
+<p>
+下面是一个capture模板的例子, 会基于这个例子介绍Capture模板的组成,
+在emacs配置中加入下面代码, 这样当使用快捷键(C-c c)进入到capture窗口时, 会显示"t"和"j"两个选项,
+</p>
+<ul class="org-ul">
+<li>按下t会打开buffer让你输入任务, C-c C-c则会将任务分配到gtd.org下的Tasks标题里.</li>
+<li>按下j会将任务分配到journal.org文件中.</li>
+</ul>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-capture-templates
+ '((<span style="color: #CC9393;">"t"</span> <span style="color: #CC9393;">"Todo"</span> entry (file+headline <span style="color: #CC9393;">"~/org/gtd.org"</span> <span style="color: #CC9393;">"Tasks"</span>)
+        <span style="color: #CC9393;">"* TODO %?\n  %i\n  %a"</span>)
+   (<span style="color: #CC9393;">"j"</span> <span style="color: #CC9393;">"Journal"</span> entry (file+datetree <span style="color: #CC9393;">"~/org/journal.org"</span>)
+        <span style="color: #CC9393;">"* %?\nEntered on %U\n  %i\n  %a"</span>)))
+</pre>
+</div>
+
+<p>
+caputre模板主要有下面几部分组成:
+</p>
+<ol class="org-ol">
+<li>KEYS. 
+选择模板的快捷键. 如"t"和"j". 只能为字符, 也可以为多个字符.
+实现二级目录.</li>
+<li>DESCRIPTION. 模板描述.</li>
+<li><p>
+目录类型. 目前支持的目录类型包括:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">entry</td>
+<td class="org-left">一个org mode节点, 会被放在指定标题下面(或成为一级标题), 目标文件是org文件</td>
+</tr>
+
+<tr>
+<td class="org-left">item</td>
+<td class="org-left">同上, 但是为list节点</td>
+</tr>
+
+<tr>
+<td class="org-left">checkbox</td>
+<td class="org-left">checkbox节点</td>
+</tr>
+
+<tr>
+<td class="org-left">table-line</td>
+<td class="org-left">表行</td>
+</tr>
+
+<tr>
+<td class="org-left">plain</td>
+<td class="org-left">文本文字</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>
+条目格式.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">%[FILE]     Insert the contents of the file given by FILE.
+%(SEXP)     Evaluate Elisp SEXP and replace with the result.
+                  For convenience, %:keyword (see below) placeholders
+                  within the expression will be expanded prior to this.
+                  The sexp must return a string.
+%&lt;...&gt;      The result of format-time-string on the ... format specification.
+%t          Timestamp, date only. (&#25554;&#20837;&#26085;&#26399;)
+%T          Timestamp, with date and time.(&#25554;&#20837;&#26085;&#26399;&#21644;&#26102;&#38388;)
+%u, %U      Like the above, but inactive timestamps.
+%i          Initial content, the region when capture is called while the
+            region is active. The entire text will be indented like `<span style="color: #BFEBBF;">%i</span>' itself.
+            (&#25554;&#20837;&#35843;&#29992;capture&#30340;&#28857;, &#19968;&#33324;&#20540;&#20320;&#24403;&#21069;&#30340;&#24037;&#20316;&#25991;&#20214;)
+%a          Annotation, normally the link created with `<span style="color: #BFEBBF;">org-store-link</span>'.
+%A          Like `<span style="color: #BFEBBF;">%a</span>', but prompt for the description part.
+%l          Like %a, but only insert the literal link.
+%c          Current kill ring head.
+%x          Content of the X clipboard.
+%k          Title of the currently clocked task.
+%K          Link to the currently clocked task.
+%n          User name (taken from `<span style="color: #BFEBBF;">user-full-name</span>').
+%f          File visited by current buffer when org-capture was called.
+%F          Full path of the file or directory visited by current buffer.
+%:keyword   Specific information for certain link types, see below.
+%^g         Prompt for tags, with completion on tags in target file.
+%^G         Prompt for tags, with completion all tags in all agenda files.
+%^t         Like `<span style="color: #BFEBBF;">%t</span>', but prompt for date.  Similarly `<span style="color: #BFEBBF;">%^T</span>', `<span style="color: #BFEBBF;">%^u</span>', `<span style="color: #BFEBBF;">%^U</span>'.
+            You may define a prompt like `<span style="color: #BFEBBF;">%^{Birthday}t</span>'.
+%^C         Interactive selection of which kill or clip to use.
+%^L         Like `<span style="color: #BFEBBF;">%^C</span>', but insert as link.
+%^{PROP}p   Prompt the user for a value for property PROP.
+%^{PROMPT}  prompt the user for a string and replace this sequence with it.
+            You may specify a default value and a completion table with
+            %^{prompt|default|completion2|completion3...}.
+            The arrow keys access a prompt-specific history.
+%\\n        Insert the text entered at the nth %^{PROMPT}, where `n' is
+            a number, starting from 1.
+%?          After completing the template, position cursor here.(&#36755;&#20837;&#23436;&#21518;,&#20809;&#26631;&#23450;&#20301;&#21040;&#36825;&#37324;)
+</pre>
+</div></li>
+<li>属性</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline53" class="outline-2">
+<h2 id="orgheadline53">Orgmode手册6:富文本标记(导出前准备)</h2>
+<div class="outline-text-2" id="text-orgheadline53">
+<p>
+org mode另一个牛X闪闪的功能就是导出功能, 
+可以将org文件导出为计算机领域主流的文件格式, 例如HTML/PDF/LaTex/Markdown等等, 
+为了支持这些文本丰富的格式要求, org mode定义了一系列的标记, <br  />
+这篇文章就先来看一下这些标记规则.
+</p>
+</div>
+<div id="outline-container-orgheadline60" class="outline-3">
+<h3 id="orgheadline60">结构化标记元素</h3>
+<div class="outline-text-3" id="text-orgheadline60">
+</div><div id="outline-container-orgheadline54" class="outline-4">
+<h4 id="orgheadline54">标题.</h4>
+<div class="outline-text-4" id="text-orgheadline54">
+<p>
+使用关键字 <b>#+TITLE</b> 来设置导出文本的标题, 如果没有设置, 会以文件名
+作为标题. 如果只是到处一个子树, 则使用子树的标题作为导出文本的标题.
+或者也可以在子树中设置属性 <b>EXPORT_TITLE</b>.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline55" class="outline-4">
+<h4 id="orgheadline55">修改导出层级.</h4>
+<div class="outline-text-4" id="text-orgheadline55">
+<p>
+org mode默认只导出三层标题, 举例来说, 导出为HTML时, 只会导出到H3, 而
+四层及以下的标题都生成为列表. 如果想要修改导出的层级, 可以设置全局变量
+<b>org-export-headline-levels</b>, 或者在文本内设置OPTIONS设置 <b>H</b> 配置: 
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp"></pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline56" class="outline-4">
+<h4 id="orgheadline56">目录.</h4>
+<div class="outline-text-4" id="text-orgheadline56">
+<p>
+org mode默认会导出目录, 将其放在第一个标题的前面,目录深度与标题层级相同,
+不过可以通过设置 <b>org-export-with-toc</b> 或修改OPTIONS的 <b>toc</b> 来修改目录
+深度或将其关闭. 例如
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp"></pre>
+</div>
+
+<p>
+如果想改变目录的导出位置, 先将默认导出关闭, 然后使用 <b>#+TOC: headlines N</b>
+配置到想插入的地方. 例如:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">...
+#+TOC: headlines 2        (insert TOC here, with two headline levels)
+</pre>
+</div>
+
+<p>
+同时, org mode还支持列表和表格的导出.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+TOC: listings           (build a list of listings)
+#+TOC: tables             (build a list of tables)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline57" class="outline-4">
+<h4 id="orgheadline57">换行, 引用</h4>
+<div class="outline-text-4" id="text-orgheadline57">
+<p>
+orgmode中,段落之间用空白行来分割,如果需要段落内换行, 在该行结尾使用 <b><br  />
+</b> 关键字.
+</p>
+
+<p>
+如果想在该段落部分内容保持换行, 可以使用 <code>#+BEGIN_VERSE</code> 关键字, 写诗的人肯定需要这个功能, 
+例如:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+BEGIN_VERSE
+      Great clouds overhead
+      Tiny black birds rise and fall
+      Snow covers Emacs
+
+          -- AlexSchroeder
+#+END_VERSE
+</pre>
+</div>
+
+<p>
+引用他人内容可以使用 <code>#+BEGIN_QUOTE</code>, 这样可以保持缩进
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+BEGIN_QUOTE
+     Everything should be made as simple as possible,
+     but not any simpler -- Albert Einstein
+#+END_QUOTE
+</pre>
+</div>
+
+<p>
+想要内容居中可以使用 <code>#+BEGIN_CENTER</code>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+BEGIN_CENTER
+Keep me in the center!!!!
+#+END_CENTER
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline58" class="outline-4">
+<h4 id="orgheadline58">修饰符</h4>
+<div class="outline-text-4" id="text-orgheadline58">
+<p>
+org mode提供了一些字符串的修饰符号, 这些修饰符都是成对出现, 
+用于修饰其包含的内容.<br  />
+包括以下几种:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">*&#31895;&#20307;*, /&#26012;&#20307;/, _&#19979;&#21010;&#32447;_, =&#21407;&#25991;=, ~&#20195;&#30721;~, +&#21024;&#38500;&#32447;+.
+</pre>
+</div>
+
+
+<p>
+如果一行只包含且包含5个以上 "-" 那么会被导出为横线.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline59" class="outline-4">
+<h4 id="orgheadline59">注释</h4>
+<div class="outline-text-4" id="text-orgheadline59">
+<p>
+注释可以用三中方式表示, 注释永远不会被导出.
+</p>
+<ul class="org-ul">
+<li>以零个或多个空格开始, 并跟着#号, 然后后面在接一个空格的行被认为是
+注释行, 该行永远不会被导出.</li>
+<li>以 <b>COMMENT</b> 开始的整个子树</li>
+<li>被 <code>#+BEGIN_COMMENT</code> 和 <code>#+END_COMMENT</code> 包裹的内容.</li>
+</ul>
+
+<p>
+下面是示例, 下面的内容不会被导出
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp"># &#27880;&#37322;
+
+* COMMENT &#27880;&#37322;&#23376;&#26641;
+** &#20108;&#32423;&#30446;&#24405;
+
+#+BEGIN_COMMENT
+ test
+#+END_COMMENT
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline61" class="outline-3">
+<h3 id="orgheadline61">"字面"内容</h3>
+<div class="outline-text-3" id="text-orgheadline61">
+<p>
+Orgmode提供了几种方式, 可以使位子内容不受org mode的处理, 即使文字中
+有org mode的特殊字符, 主要的方式包括:
+</p>
+<ul class="org-ul">
+<li><p>
+#+BEGIN_SRC elisp..#+END_SRC <br  />
+例如:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+BEGIN_SRC elisp 
+This is an example, *nothing works* 
+`#+END_SRC
+</pre>
+</div>
+<p>
+如果内容特别短, 也可以使用"空格:空格"字符串修饰
+</p></li>
+<li><p>
+#+BEGIN_SRC elisp..#+END_SRC <br  />
+如果示例是一段程序, 可以使用这对关键字, 例如
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp"><span class="linenr">1: </span>#+BEGIN_SRC elisp elisp
+<span class="linenr">2: </span>(+ 1 1)
+<span id="coderef-lxxtest" class="coderef-off"><span class="linenr">3: </span>(concat <span style="color: #CC9393;">"helo"</span> <span style="color: #CC9393;">"wold"</span>)</span>
+<span class="linenr">4: </span>#+END_SRC
+</pre>
+</div></li>
+</ul>
+
+<p>
+上面两种方式都可以添加一些配置:
+</p>
+<ul class="org-ul">
+<li>"-n/+n" 显示行号, "+n"会接着前面的block行号继续.</li>
+<li>(ref:name) 定义block内的引用.可以在block之外引用block里面的内容.
+例如可以使用<a href="#coderef-lxxtest"class="coderef" onmouseover="CodeHighlightOn(this, 'coderef-lxxtest');" onmouseout="CodeHighlightOff(this, 'coderef-lxxtest');">代码块链接</a>来引用代码内容.</li>
+<li>"-r", 在导出的文件中移除引用.</li>
+</ul>
+
+<p>
+可以使用快捷键 "C-c '"打开一个buffer编辑block中的内容.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline62" class="outline-3">
+<h3 id="orgheadline62">引用其他文件</h3>
+<div class="outline-text-3" id="text-orgheadline62">
+<p>
+使用 <b>#+INCLUDE:</b> 来在org文件中引用其他文件, 被引用文件的内容会被放在当前
+部分 如果被引用文件也有标题的话, 这些标题会被设置为当前章节的子标题. 
+如果你想修改这种设置, 修改被引用文件的标题级别, 可以通过设置 minlevel参数.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+INCLUDE: file <span style="color: #DCDCCC; font-weight: bold;">:minlevel</span> N
+</pre>
+</div>
+
+<p>
+也可以通过 <b>:lines</b> 来引用该文件的一部分, 例如:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+INCLUDE: file <span style="color: #DCDCCC; font-weight: bold;">:minlevel</span> N <span style="color: #DCDCCC; font-weight: bold;">:lines</span> <span style="color: #CC9393;">"5-10"</span> <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">5&#21040;10&#34892;</span>
+#+INCLUDE: file <span style="color: #DCDCCC; font-weight: bold;">:minlevel</span> N <span style="color: #DCDCCC; font-weight: bold;">:lines</span> <span style="color: #CC9393;">"5-"</span> <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">5&#21040;&#32467;&#23614;</span>
+#+INCLUDE: file <span style="color: #DCDCCC; font-weight: bold;">:minlevel</span> N <span style="color: #DCDCCC; font-weight: bold;">:lines</span> <span style="color: #CC9393;">"-10"</span> <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">1&#21040;9&#34892;</span>
+</pre>
+</div>
+
+<p>
+也可以通过在后面使用 <b>src language</b> 或 <b>example</b> 来将被引用内容转化为
+src或example结构. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline63" class="outline-3">
+<h3 id="orgheadline63">宏</h3>
+<div class="outline-text-3" id="text-orgheadline63">
+<div class="org-center">
+<p>
+MACRO is everywhere.
+</p>
+</div>
+
+<p>
+orgmode同样支持宏定义, 使用关键字 <b>#+MACRO name body</b> 来定义你自己的宏, 然后以
+<b>{% raw %}{{{}}}{% endraw %}</b> 的方式调用宏, 可以在宏定义中使用 "$N" 定义多个参数. 
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+MACRO: awesome Hi, $, you are an awesome guy.
+
+{% raw %}{{{awesome(Jake Wharton)}}}{% endraw %}
+</pre>
+</div>
+<p>
+系统也提供了一些预定义的宏, 同样可以调用, 例如 <code>{% raw %}{{{title}}}{% endraw %}</code> , <code>{% raw %}{{{author}}}{% endraw %}</code> ,
+<code>{% raw %}{{{time(FORMAT)}}}{% endraw %}</code> 等.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline64" class="outline-3">
+<h3 id="orgheadline64">LaTex</h3>
+<div class="outline-text-3" id="text-orgheadline64">
+<p>
+As i never use LaTex, I dont read this part. <br  />
+It will be catched up when I have some experience with LaTex someday.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline65" class="outline-2">
+<h2 id="orgheadline65">Orgmode手册7:运行代码</h2>
+<div class="outline-text-2" id="text-orgheadline65">
+<p>
+在org文件中可以运行代码, 这里并不是指类似VBA那样的宏, 
+而是指各种各种的代码, 例如C/Python/Java/Lisp/Elisp/Ruby&#x2026;等所有目前
+市面上的主流和非主流代码, 都可以在org mode中运行.
+还有比这更酷的事情吗? <br  />
+这个功能叫做org babel. Babel这个词取自圣经:
+</p>
+
+<p class="verse">
+据《圣经·旧约·创世记》第11章记载，当时人类联合起来希望兴建能通往天堂的高塔。<br  />
+为了阻止人类的计划，上帝让人类说不同的语言，使人类相互之间不能沟通，计划因此失败，人类自此各散东西。<br  />
+此故事试图为世上出现不同语言和种族提供解释。<br  />
+</p>
+
+<p>
+Org babel就是这个通天塔, 你可以同一个org文件中运行各种代码. <br  />
+下面就来具体看下org mode中运行代码这个"黑魔法"功能.
+</p>
+</div>
+
+<div id="outline-container-orgheadline66" class="outline-3">
+<h3 id="orgheadline66">添加代码</h3>
+<div class="outline-text-3" id="text-orgheadline66">
+<p>
+下面是一个简单的在org文件中运行代码的例子. 在orgmode的任意位置添加
+下面这段python代码. 
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+BEGIN_SRC python
+def x():
+     s = 1 + 1
+     return s
+
+return x()
+</pre>
+</div>
+<p>
+#+END_SRC
+添加完成后, 在代码块上使用快捷键"C-c C-c", 会看到代码块下面会显示如下的
+内容, 即这段代码的运行结果. 这就是一个简单的在orgmode中使用代码的例子, 
+是不是觉得很酷?
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+RESULTS:
+: 2
+</pre>
+</div>
+
+<p>
+上面的例子简单展示了在org mode中使用代码. 一般而言, 在org中插入的代码格式为
+</p>
+<ol class="org-ol">
+<li><p>
+代码块.
+可以使用 <code>#+NAME</code> 为当前代码块命名, 然后在其他地方引用. 
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+NAME: &lt;name&gt;
+#+BEGIN_SRC &lt;language&gt; &lt;switches&gt; &lt;header arguments&gt;
+ &lt;body&gt;
+</pre>
+</div></li>
+</ol>
+<p>
+#+END_SRC
+</p>
+<ol class="org-ol">
+<li><p>
+在行内使用代码, 格式为 <code>src_&lt;language&gt;{body}</code> 的方式. 如下例
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">hi src_elisp{(print <span style="color: #CC9393;">"jack"</span>)}
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline67" class="outline-3">
+<h3 id="orgheadline67">编辑代码</h3>
+<div class="outline-text-3" id="text-orgheadline67">
+<p>
+可以直接在org文件中编辑代码, 也可以使用快捷键"C-c '"打开另一个buffer来
+编辑文件, 该buffer默认使用了该代码语言的emacs mode模式, 这样会更容易
+对代码进行缩进补全等编辑. 编辑完成后用"C-x C-s"保存. 然后再次使用"C-c '"
+退出. 放弃编辑使用快捷键"C-c C-k".
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline68" class="outline-3">
+<h3 id="orgheadline68">运行代码</h3>
+<div class="outline-text-3" id="text-orgheadline68">
+<p>
+前面示例讲过可以通过在代码块上使用 "C-c C-c" 或 "C-c C-v e"来运行代码.这样
+会在代码块后面显示运行结果, 以"#+RESULTS:"开头. 如果想修改
+"RESULTS"为其他字符串, 可以设置"org-babel-results-keyword"变量.
+</p>
+
+<p>
+org mode同样支持在一处定义代码块, 然后在文件的其他地方进行引用, 这需要对代码块
+设置名称, 例如下面定义了一个名称为"helowold"的代码块.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+NAME: helowold
+#+BEGIN_SRC elisp
+(print <span style="color: #CC9393;">"helowold"</span>)
+</pre>
+</div>
+<p>
+#+END_SRC
+</p>
+
+<p>
+这样可以在文件的其他地方使用下面的方式调用该代码块:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+CALL: helowold()
+&#25110;&#32773;&#22312;&#19968;&#34892;&#20013;&#38388;&#20351;&#29992;
+call_helowold()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline69" class="outline-3">
+<h3 id="orgheadline69">给代码添加参数</h3>
+<div class="outline-text-3" id="text-orgheadline69">
+<p>
+可以在 <code>#+BEGIN_SRC</code> 后面接 ":var name=value"的方式来向给代码块设置参数,
+如下例:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+NAME: lxxxx
+#+BEGIN_SRC elisp <span style="color: #DCDCCC; font-weight: bold;">:var</span> n=5
+(+ 1 n)
+</pre>
+</div>
+<p>
+#+END_SRC
+</p>
+
+<p>
+在其他地方使用 <code>#+CALL</code> 调用代码时, 可以想其中传入参数替代默认参数, 例如
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+CALL: lxxxx(9)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline70" class="outline-3">
+<h3 id="orgheadline70">导出代码</h3>
+<div class="outline-text-3" id="text-orgheadline70">
+<p>
+在将org文件导出为HTML/PDF等格式时, 可以有选择行的导出代码块或结果,
+orgmode支持以下方式的代码导出
+</p>
+<ol class="org-ol">
+<li>只导出代码, 默认形式.</li>
+<li>导出代码和结果.</li>
+<li>只导出结果.</li>
+<li>都不导出</li>
+</ol>
+
+<p>
+可以通过设置header argument的":exports"属性来实现上述的特性, 该属性的
+值可以为:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">code</td>
+<td class="org-left">代码</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">results</td>
+<td class="org-left">结果</td>
+<td class="org-left">结果需要已经在文件中显示</td>
+</tr>
+
+<tr>
+<td class="org-left">both</td>
+<td class="org-left">都</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">none</td>
+<td class="org-left">都不</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+例如下面的代码:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+NAME: lxxxx
+#+BEGIN_SRC elisp <span style="color: #DCDCCC; font-weight: bold;">:var</span> n=5 <span style="color: #DCDCCC; font-weight: bold;">:exports</span> results
+(+ 1 n)
+</pre>
+</div>
+<p>
+#+END_SRC
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline71" class="outline-3">
+<h3 id="orgheadline71">提取代码</h3>
+<div class="outline-text-3" id="text-orgheadline71">
+<p>
+orgmode支持将org文件中的代码块提取到代码原文件中, 
+使用快捷键 "C-c C-v t" 或命令"org-babel-tangle"可以
+实现该功能, 该命令默认在当前目录创建一个源码文件, 文件
+名与org文件名相同, 后缀为该类型语言的后缀. 
+</p>
+
+<p>
+该功能默认是关闭的, 可以通过设置 header argument的":tangle"
+属性来打开, 将其设置为"yes"即可打开. 
+也可以将其设置为文件名,这样可以将代码导出到该文件,
+使用命令"org-babel-tangle-file"或"C-c C-v f"也可以.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">  <span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+  <span style="color: #DCDCCC; font-weight: bold;">:header-args:</span> <span style="color: #DCDCCC; font-weight: bold;">:exports</span> results <span style="color: #DCDCCC; font-weight: bold;">:tangle</span> yes
+  <span style="color: #DCDCCC; font-weight: bold;">:END:</span>
+&#25110;&#32773;
+#+BEGIN_SRC elisp <span style="color: #DCDCCC; font-weight: bold;">:tangle</span> yes/filename
+</pre>
+</div>
+<p>
+#+END_SRC
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline72" class="outline-3">
+<h3 id="orgheadline72">Babel库</h3>
+<div class="outline-text-3" id="text-orgheadline72">
+<p>
+orgmode的babel包含了一些可重用代码, 可以直接在当前org mode中使用.
+如果想将你的代码加入到babel库中,可以使用函数 "org-babel-lob-ingest".
+然后就可以调用里面的代码了.
+</p>
+
+<p>
+<b>注:</b> <br  />
+Emacs自带的org mode中默认并没有安装babel库, 如果想使用带babel库的orgmode,
+可以从orgmode的elpa中获取, 在配置文件中加入如下配置, 使用"eval-buffer"更新
+配置, 然后调用 "package-refresh-content", 接着安装 "org-plus-contrib"包.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">require</span> '<span style="color: #BFEBBF;">package</span>)
+(add-to-list 'package-archives '(<span style="color: #CC9393;">"org"</span> . <span style="color: #CC9393;">"http://orgmode.org/elpa/"</span>) t)
+</pre>
+</div>
+
+<p>
+安装完成后, 如果想使用那个包, 可以在配置文件中使用 <b>require</b> 引用:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">require</span> '<span style="color: #BFEBBF;">org-mac-iCal</span>)
+<span style="color: #5F7F5F;">;;</span><span style="color: #7F9F7F;">&#22312; org &#25991;&#20214;&#35843;&#29992;</span>
+#+CALL: org-mac-iCal()
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline73" class="outline-3">
+<h3 id="orgheadline73">header参数</h3>
+<div class="outline-text-3" id="text-orgheadline73">
+<p>
+可以通过header参数来配置代码块的一些功能, 本节会介绍一下
+各种header参数.
+</p>
+
+<p>
+orgmode可以设置各种范围的header参数, 下面会逐一介绍, 一般来说, 范围
+越大, 优先级越小, 即最小范围的header参数总是会覆盖大范围的header参数.
+</p>
+</div>
+<div id="outline-container-orgheadline75" class="outline-4">
+<h4 id="orgheadline75">全局header参数</h4>
+<div class="outline-text-4" id="text-orgheadline75">
+<p>
+可以通过设置"org-babel-default-header-args"变量来设置全局的header参数. 
+例如下面的例子将":noweb"设置为"yes". ":noweb"功能会在后面介绍.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">setq</span> org-babel-default-header-args
+       (cons '(<span style="color: #DCDCCC; font-weight: bold;">:noweb</span> . <span style="color: #CC9393;">"yes"</span>)
+             (assq-delete-all <span style="color: #DCDCCC; font-weight: bold;">:noweb</span> org-babel-default-header-args)))
+</pre>
+</div>
+<p>
+也可以通过设置 `org-babel-default-header-args:&lt;lang&gt;'为某个语言设置header参数.
+可以参考<a href="#orgheadline74">支持的语言</a>一节.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline76" class="outline-4">
+<h4 id="orgheadline76">文件级header参数</h4>
+<div class="outline-text-4" id="text-orgheadline76">
+<p>
+可以通过设置 <code>#+PROPERTY</code> 来设置文件级的header参数, 这个变量可以设置多次.
+例如下面的例子设置"R"语言的seesion为"R", 并设置result为silent.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+PROPERTY: header-args:R  <span style="color: #DCDCCC; font-weight: bold;">:session</span> *R*
+#+PROPERTY: header-args    <span style="color: #DCDCCC; font-weight: bold;">:results</span> silent
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline77" class="outline-4">
+<h4 id="orgheadline77">标题header参数</h4>
+<div class="outline-text-4" id="text-orgheadline77">
+<p>
+可以为标题及所有子树设置header参数, 例如
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">* outline header
+  <span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+  <span style="color: #DCDCCC; font-weight: bold;">:header-args:</span>    <span style="color: #DCDCCC; font-weight: bold;">:cache</span> yes
+  <span style="color: #DCDCCC; font-weight: bold;">:END:</span>
+</pre>
+</div>
+<p>
+也可以给具体语言设置header参数, 例如
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">* Heading
+  <span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+  <span style="color: #DCDCCC; font-weight: bold;">:header-args:clojure:</span>    <span style="color: #DCDCCC; font-weight: bold;">:session</span> *clojure-1*
+  <span style="color: #DCDCCC; font-weight: bold;">:header-args:R:</span>          <span style="color: #DCDCCC; font-weight: bold;">:session</span> *R*
+  <span style="color: #DCDCCC; font-weight: bold;">:END:</span>
+** Subheading
+  <span style="color: #DCDCCC; font-weight: bold;">:PROPERTIES:</span>
+  <span style="color: #DCDCCC; font-weight: bold;">:header-args:clojure:</span>    <span style="color: #DCDCCC; font-weight: bold;">:session</span> *clojure-2*
+  <span style="color: #DCDCCC; font-weight: bold;">:END:</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline78" class="outline-4">
+<h4 id="orgheadline78">代码块设置header参数</h4>
+<div class="outline-text-4" id="text-orgheadline78">
+<p>
+也可以给单独的代码块设置header参数.有两种方式:
+</p>
+<ol class="org-ol">
+<li><p>
+在 <code>#+BEGIN_SRC</code> 后面.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+NAME: factorial
+#+BEGIN_SRC haskell <span style="color: #DCDCCC; font-weight: bold;">:results</span> silent <span style="color: #DCDCCC; font-weight: bold;">:exports</span> code <span style="color: #DCDCCC; font-weight: bold;">:var</span> n=0
+fac 0 = 1
+fac n = n * fac (n-1)
+</pre>
+</div>
+<p>
+#+END_SRC
+</p></li>
+<li><p>
+使用 <code>#+HEADERS</code> 关键字
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+HEADERS: <span style="color: #DCDCCC; font-weight: bold;">:var</span> data1=1
+#+BEGIN_SRC emacs-lisp <span style="color: #DCDCCC; font-weight: bold;">:var</span> data2=2
+  (message <span style="color: #CC9393;">"data1:%S, data2:%S"</span> data1 data2)
+</pre>
+</div>
+<p>
+或者使用多岗
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp" id="orgsrcblock1"></pre>
+</div></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline79" class="outline-4">
+<h4 id="orgheadline79">调用代码块时使用header参数</h4>
+<div class="outline-text-4" id="text-orgheadline79">
+<p>
+有两种方式:
+</p>
+<ol class="org-ol">
+<li>=#+CALL: func() :exports results</li>
+<li>=#+CALL: func[:exports results]()</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline80" class="outline-4">
+<h4 id="orgheadline80">支持的header参数</h4>
+<div class="outline-text-4" id="text-orgheadline80">
+<p>
+未完成
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline74" class="outline-3">
+<h3 id="orgheadline74">支持的语言</h3>
+<div class="outline-text-3" id="text-orgheadline74">
+<p>
+下表是orgmode支持的语言和在org文件中的写法, 可以通过设置变量
+"org-babel-load-languages"设置默认支持的语言, 例如
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Language</th>
+<th scope="col" class="org-left">识别符</th>
+<th scope="col" class="org-left">Language</th>
+<th scope="col" class="org-left">识别符</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Asymptote</td>
+<td class="org-left">asymptote</td>
+<td class="org-left">Awk</td>
+<td class="org-left">awk</td>
+</tr>
+
+<tr>
+<td class="org-left">Emacs Calc</td>
+<td class="org-left">calc</td>
+<td class="org-left">C</td>
+<td class="org-left">C</td>
+</tr>
+
+<tr>
+<td class="org-left">C++</td>
+<td class="org-left">C++</td>
+<td class="org-left">Clojure</td>
+<td class="org-left">clojure</td>
+</tr>
+
+<tr>
+<td class="org-left">CSS</td>
+<td class="org-left">css</td>
+<td class="org-left">ditaa</td>
+<td class="org-left">ditaa</td>
+</tr>
+
+<tr>
+<td class="org-left">Graphviz</td>
+<td class="org-left">dot</td>
+<td class="org-left">Emacs Lisp</td>
+<td class="org-left">emacs-lisp</td>
+</tr>
+
+<tr>
+<td class="org-left">gnuplot</td>
+<td class="org-left">gnuplot</td>
+<td class="org-left">Haskell</td>
+<td class="org-left">haskell</td>
+</tr>
+
+<tr>
+<td class="org-left">Java</td>
+<td class="org-left">java</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Javascript</td>
+<td class="org-left">js</td>
+<td class="org-left">LaTeX</td>
+<td class="org-left">latex</td>
+</tr>
+
+<tr>
+<td class="org-left">Ledger</td>
+<td class="org-left">ledger</td>
+<td class="org-left">Lisp</td>
+<td class="org-left">lisp</td>
+</tr>
+
+<tr>
+<td class="org-left">Lilypond</td>
+<td class="org-left">lilypond</td>
+<td class="org-left">MATLAB</td>
+<td class="org-left">matlab</td>
+</tr>
+
+<tr>
+<td class="org-left">Mscgen</td>
+<td class="org-left">mscgen</td>
+<td class="org-left">Objective  Caml</td>
+<td class="org-left">ocaml</td>
+</tr>
+
+<tr>
+<td class="org-left">Octave</td>
+<td class="org-left">octave</td>
+<td class="org-left">Org mode</td>
+<td class="org-left">org</td>
+</tr>
+
+<tr>
+<td class="org-left">Oz</td>
+<td class="org-left">oz</td>
+<td class="org-left">Perl</td>
+<td class="org-left">perl</td>
+</tr>
+
+<tr>
+<td class="org-left">Plantuml</td>
+<td class="org-left">plantuml</td>
+<td class="org-left">Python</td>
+<td class="org-left">python</td>
+</tr>
+
+<tr>
+<td class="org-left">R</td>
+<td class="org-left">R</td>
+<td class="org-left">Ruby</td>
+<td class="org-left">ruby</td>
+</tr>
+
+<tr>
+<td class="org-left">Sass</td>
+<td class="org-left">sass</td>
+<td class="org-left">Scheme</td>
+<td class="org-left">scheme</td>
+</tr>
+
+<tr>
+<td class="org-left">GNU Screen</td>
+<td class="org-left">screen</td>
+<td class="org-left">shell</td>
+<td class="org-left">sh</td>
+</tr>
+
+<tr>
+<td class="org-left">SQL</td>
+<td class="org-left">sql</td>
+<td class="org-left">SQLite</td>
+<td class="org-left">sqlite</td>
+</tr>
+</tbody>
+</table>
+
+<div class="org-src-container">
+
+<pre class="src src-elisp">(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . nil)
+   (R . t)))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline91" class="outline-2">
+<h2 id="orgheadline91">Tricks</h2>
+<div class="outline-text-2" id="text-orgheadline91">
+</div><div id="outline-container-orgheadline81" class="outline-3">
+<h3 id="orgheadline81">使用 orgmode + beamer 写幻灯片</h3>
+<div class="outline-text-3" id="text-orgheadline81">
+<p>
+(on-going)
+</p>
+
+<p>
+之前的一次报告使用 orgmode 结合 <a href="https://github.com/yjwen/org-reveal">org-reveal</a> 写幻灯片, 写过还行,
+对于简单的报告可以使用这个方法. 但是总是感觉效果没达到自己的要求. 
+于是使用了比较复杂的 LaTex Beamer 结合 orgmode 写幻灯片. 
+</p>
+</div>
+
+<div id="outline-container-orgheadline82" class="outline-4">
+<h4 id="orgheadline82">安装MacTex</h4>
+<div class="outline-text-4" id="text-orgheadline82">
+<p>
+网上找了个<a href="http://orgmode.org/worg/exporters/beamer/tutorial.html">例子</a>, 写完后需要使用 <b>org-beamer-export-to-pdf</b> 命令导成为PDF文件,
+结果报错, 提示找不到 <b>pdflatex</b> 命令, 上网搜索发现是因为电脑没装LaTex, 
+真是个LaTex菜鸟啊 (= =!). 
+</p>
+
+<p>
+于是从网上下载了<a href="https://tug.org/mactex/">MacTex</a>, 很大, 有两个G, 安装上之后对里面的一些应用做了升级, 
+升级原因<a href="https://tug.org/mactex/mactex-download.html">这里</a> 提到了, 主要是EI Captian版本的兼容问题. 
+</p>
+
+<p>
+然后将 MacTex的命令目录加入到了PATH中. 就可以在OrgMode下使用beamer了.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">export PATH=<span style="color: #CC9393;">"/Library/TeX/texbin"</span><span style="color: #DCDCCC; font-weight: bold;">:$PATH</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline83" class="outline-4">
+<h4 id="orgheadline83"><span class="todo TODO">TODO</span> 支持中文</h4>
+<div class="outline-text-4" id="text-orgheadline83">
+<p>
+这个没时间查资料, 等有时间再配置. 
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline84" class="outline-4">
+<h4 id="orgheadline84">语法</h4>
+<div class="outline-text-4" id="text-orgheadline84">
+<p>
+对LaTex一无所知, 暂时使用网上的 <a href="http://orgmode.org/worg/sources/exporters/beamer/presentation.org">该模板</a> 略作修改. 
+</p>
+
+<p>
+(这部分内容边学习边补充)
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline90" class="outline-3">
+<h3 id="orgheadline90">OrgMode常用表格处理公式</h3>
+<div class="outline-text-3" id="text-orgheadline90">
+</div><div id="outline-container-orgheadline85" class="outline-4">
+<h4 id="orgheadline85">单一表项的使用</h4>
+<div class="outline-text-4" id="text-orgheadline85">
+<ol class="org-ol">
+<li>列使用 <b>$N</b> 表示, 或相对位置 <b>$-/+N</b>. $&lt; 第一行, $&gt; 最后一行. $0, 当前列.</li>
+<li>行使用 <b>@</b>.</li>
+<li><p>
+公式中使用相对位置. 该相对位置一般是指要求结果的表格的相对位置.
+例如下面的公式, 就是将 @2$4 这个表格的 "上一行左移3个" 位置的表格中的
+值加上4.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">#+TBLFM: @2$4=@-1$-3+4
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline86" class="outline-4">
+<h4 id="orgheadline86">范围的使用</h4>
+<div class="outline-text-4" id="text-orgheadline86">
+<p>
+使用两个 dot 即 <b>..</b> 来表示范围, 例如 
+</p>
+<ol class="org-ol">
+<li>$1..$3. 表示当前行的前三个元素.</li>
+<li>@2$1..@4$3, 表示一块6个表格的正方形区域</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline87" class="outline-4">
+<h4 id="orgheadline87">使用其他表项或其他文件中的表</h4>
+<div class="outline-text-4" id="text-orgheadline87">
+<ol class="org-ol">
+<li>使用remote(file, ref)</li>
+<li>其他表必须可以被引用, 例如可以用 "#+NAME" 修饰. file也可以是一个
+表格项, 该项的内容必须是另外一个表格的合法引用.</li>
+<li>ref是指远程表格的一个合法表项.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline88" class="outline-4">
+<h4 id="orgheadline88">常用公式</h4>
+<div class="outline-text-4" id="text-orgheadline88">
+<ol class="org-ol">
+<li>使用Lisp代码需要前面加上'</li>
+<li><p>
+两列相加: $X = $M + $N. 或者 Lisp代码 '(+ $M $N);N'
+也可以
+需要说明的是: 如果第一行是表头, (即第二行是 -&#x2014; ), 第一行不会相加.
+例如下面的例子. 但是行相加会作用在第一行上.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">   #+NAME: tbl1
+|  9 | 1 |  2 | 0 | 2 |
+|----+---+----+---+---|
+|  1 | 3 |  4 | 0 | 1 |
+| 10 | 3 | 13 | 0 | 3 |
+|  1 | 3 |  4 | 0 | 1 |
+|----+---+----+---+---|
+|  3 | 9 | 12 |   |   |
+#+TBLFM: $3=$1+$2
+</pre>
+</div></li>
+<li>多列相加: vsum($M..$N). 或者 '(apply '+ '($M..$N));N</li>
+<li><p>
+时间计算, 时间格式必须为 HH:MM[:SS], 后面接 <b>T</b> 则结果会同样
+显示为时间, 接 <b>t</b> 则会表示为小数, 例如
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">|         |        |      |          |
+|---------+--------+------+----------|
+|    1:00 |   2:23 | 3:33 | 06:56:00 |
+| 3:01:20 | 2:11:2 | -9:2 |    -3.83 |
+#+TBLFM: @2$4=$1+$2+$3<span style="color: #5F7F5F;">;</span><span style="color: #7F9F7F;">T::@3$4=$1+$2+$3;t</span>
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline89" class="outline-4">
+<h4 id="orgheadline89">让第一列自动显示行号的几个函数</h4>
+<div class="outline-text-4" id="text-orgheadline89">
+<p>
+效果如下:  
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">| N |   |
+|---+---|
+| 1 |   |
+| 2 |   |
+| 3 |   |
+| 4 |   |
+</pre>
+</div>
+<ol class="org-ol">
+<li><code>#+TBLFM: $1=@-1+1::@2$1=1</code>
+     注意: 
+<ul class="org-ul">
+<li>如果用这个函数, 第一在函数上运行 "C-c C-c", 结果会显示不正确, 
+必需再重复一次快捷键.</li>
+<li>可以在表格的任一域内使用 "C-u C-u C-c C-c" 来显示正确结果.</li>
+</ul></li>
+<li><code>#+TBLFM: @3$1..@&gt;$1=@-1+1::@2$1=1</code></li>
+<li><code>#+TBLFM: $1=@#-1</code></li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div id="footnotes">
+<h2 class="footnotes">Footnotes: </h2>
+<div id="text-footnotes">
+
+<div class="footdef"><sup><a id="fn.1" class="footnum" href="#fnr.1">1</a></sup> <div class="footpara"><p class="footpara">
+脚注示例.
+</p></div></div>
+
+
+</div>
+</div></div>
+<div id="postamble" class="status">
+<p class="postamble">Created At <span class="timestamp-wrapper"><span class="timestamp">&lt;2015-12-12 Sat 23:25&gt;</span></span> by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
+</div>
+</body>
+</html>

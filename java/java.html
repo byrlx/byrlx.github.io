@@ -6,7 +6,7 @@
 <!-- 2017-03-02 Thu 11:02 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
-<title>Emacs Little Tips</title>
+<title></title>
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Luis Xu" />
 <link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
@@ -84,28 +84,81 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
-<h1 class="title">Emacs Little Tips</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline1">Tips</a>
+<li><a href="#orgheadline1">注释</a></li>
+<li><a href="#orgheadline2">enum</a></li>
+<li><a href="#orgheadline3">abstract class VS interface</a></li>
+<li><a href="#orgheadline7">static inner class VS inner class</a>
 <ul>
-<li><a href="#orgheadline2">org mode 求一列的和: C-c +</a></li>
+<li><a href="#orgheadline4">why use inner class</a></li>
+<li><a href="#orgheadline5">static inner class</a></li>
+<li><a href="#orgheadline6">non-static inner class</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">Tips</h2>
+<h2 id="orgheadline1">注释&#xa0;&#xa0;&#xa0;<span class="tag"><span class="javadoc">javadoc</span></span></h2>
 <div class="outline-text-2" id="text-orgheadline1">
 <ol class="org-ol">
-<li>绑定快捷键 (global-set-key (kbd "&lt;f9&gt;") '函数名)</li>
+<li>引用函数.
+Use the {@link #getComponentAt(int, int) getComponentAt} method.</li>
 </ol>
 </div>
-<div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2">org mode 求一列的和: C-c +</h3>
+</div>
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">enum&#xa0;&#xa0;&#xa0;<span class="tag"><span class="enum">enum</span></span></h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<ol class="org-ol">
+<li>values(): 返回所有的实例数组</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">abstract class VS interface&#xa0;&#xa0;&#xa0;<span class="tag"><span class="interface">interface</span></span></h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<ol class="org-ol">
+<li>只能继承一个abstract 类, 可以实现多个interface.</li>
+<li>实现interface必须实现所有接口. 实现abstract类则不一定需要实现抽象接口(这个类是abstract).</li>
+<li>abstract类可以实现函数. interface不行.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-2">
+<h2 id="orgheadline7">static inner class VS inner class&#xa0;&#xa0;&#xa0;<span class="tag"><span class="inner">inner</span></span></h2>
+<div class="outline-text-2" id="text-orgheadline7">
+</div><div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">why use inner class</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<ol class="org-ol">
+<li>架构明晰. 使用一个内部类可以使代码可读性更好, 更方便维护.
+尤其是内部类不会在其他的context中使用.</li>
+<li>内部类可以访问外部类的private变量. 这也是一个便利性.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">static inner class</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+<ol class="org-ol">
+<li>不能访问外部类的 non-static 成员变量.</li>
+<li>可以访问外部类的 static 成员变量. 尤其是可以访问private的.</li>
+<li>可以在其他类中直接被使用, 用来创建对象.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">non-static inner class</h3>
+<div class="outline-text-3" id="text-orgheadline6">
+<ol class="org-ol">
+<li>可以访问所有outer class 的变量.</li>
+<li>不能直接用来创建实例. 必须在outer 类的一个实例里创建实例.</li>
+</ol>
+</div>
 </div>
 </div>
 </div>
