@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2017-03-02 Thu 11:03 -->
+<!-- 2017-03-04 Sat 14:28 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
-<title></title>
+<title>Android 大笔记</title>
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Luis Xu" />
 <link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
@@ -84,174 +84,1166 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
+<h1 class="title">Android 大笔记</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline1">通过反射获取toolbar的title view</a></li>
-<li><a href="#orgheadline3">AppBarLayout</a>
+<li><a href="#orgheadline1">MVVM 的一种实现</a>
 <ul>
-<li><a href="#orgheadline2">Behavior</a></li>
-<li><a href="#orgheadline4">ScrollingViewBehavior</a></li>
-<li><a href="#orgheadline5">ViewOffsetHelper</a></li>
+<li><a href="#orgheadline2">MVVM 的含义</a></li>
+<li><a href="#orgheadline3">主流的两种实现方式</a></li>
+<li><a href="#orgheadline4">常见代码:activity 做所有事情</a></li>
+<li><a href="#orgheadline8">使用 RxJava 改造</a>
+<ul>
+<li><a href="#orgheadline5">创建 Model</a></li>
+<li><a href="#orgheadline6">创建 ViewModel</a></li>
+<li><a href="#orgheadline7">改造后的 activity</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline6">umeng和okhttp报错: okio的duplicated file</a></li>
-<li><a href="#orgheadline35">RecyclerView</a>
-<ul>
-<li><a href="#orgheadline7">note</a></li>
-<li><a href="#orgheadline8">Adapter</a>
-<ul>
-<li><a href="#orgheadline9">note</a></li>
+<li><a href="#orgheadline9">好处</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline10">ViewHolder</a></li>
-<li><a href="#orgheadline11">AdapterDataObserver</a></li>
-<li><a href="#orgheadline12">AdapterDataObservable</a></li>
-<li><a href="#orgheadline13">LayoutManager</a>
+<li><a href="#orgheadline10">View笔记</a>
 <ul>
-<li><a href="#orgheadline14">setMeasuredDimensionFromChildren</a></li>
-<li><a href="#orgheadline15">mAutoMeasure</a></li>
-<li><a href="#orgheadline16">onLayoutChildren</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline17">ChildHelper</a></li>
-<li><a href="#orgheadline18">State</a></li>
-<li><a href="#orgheadline19">LinearLayoutManager</a></li>
-<li><a href="#orgheadline20">Recycler</a></li>
-<li><a href="#orgheadline21">RecycledViewPool</a></li>
-<li><a href="#orgheadline22">AdapterHelper</a></li>
-<li><a href="#orgheadline23">UpdateOp</a></li>
-<li><a href="#orgheadline24">OpRecorderer</a></li>
-<li><a href="#orgheadline25">RecyclerViewAccessibilityDelegate</a></li>
-<li><a href="#orgheadline26">DefaultItemAnimator</a></li>
-<li><a href="#orgheadline27">ItemAnimator</a></li>
-<li><a href="#orgheadline28">RV</a></li>
-<li><a href="#orgheadline29">ItemDecoration</a></li>
-<li><a href="#orgheadline33">Home页"卡片"源码学习笔记</a>
+<li><a href="#orgheadline16">基本知识</a>
 <ul>
-<li><a href="#orgheadline31">自定义控件TwoWayView</a></li>
-<li><a href="#orgheadline30">TwoWayLayoutManager</a></li>
-<li><a href="#orgheadline32">DividerItemDecoration</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline34">文章阅读笔记</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline40">View</a>
-<ul>
-<li><a href="#orgheadline36">view的坐标系</a></li>
-<li><a href="#orgheadline37">在竖直方向移动view</a></li>
-<li><a href="#orgheadline38">给当前window添加view:</a></li>
-<li><a href="#orgheadline39">设置view在不同状态下的UI展示</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline41">事件分发</a></li>
-<li><a href="#orgheadline42">数据库</a></li>
-<li><a href="#orgheadline43">ormlite库操作数据库</a></li>
-<li><a href="#orgheadline52">app 常用库</a>
-<ul>
-<li><a href="#orgheadline44">gson操作json字符串</a></li>
-<li><a href="#orgheadline45">okhttp进行网络操作</a></li>
-<li><a href="#orgheadline46">fresco网络图片加载</a></li>
-<li><a href="#orgheadline47">umeng进行统计分析和反馈</a></li>
-<li><a href="#orgheadline48">sharesdk进行统一分享</a></li>
-<li><a href="#orgheadline49">阿里聚安全进行加密</a></li>
-<li><a href="#orgheadline50">广点通和百度的广告进行广告投放</a></li>
-<li><a href="#orgheadline51">小米push和umengpush来推送消息</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline53">设置多进程</a></li>
-<li><a href="#orgheadline54">四种启动模式</a></li>
-<li><a href="#orgheadline55">让activity支持scheme</a></li>
-<li><a href="#orgheadline56">home页蒙版指导图</a></li>
-<li><a href="#orgheadline57">在别人的页面(例如系统页面)显示指导</a></li>
-<li><a href="#orgheadline58">设置应用可以获取通知权限保持应用不被杀死</a></li>
-<li><a href="#orgheadline59">通常可以放在Application类的动作</a></li>
-<li><a href="#orgheadline62">可替换库对比</a>
-<ul>
-<li><a href="#orgheadline60">recyclerView VS listView</a></li>
-<li><a href="#orgheadline61">startService VS bindService</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline65">thread with looper and handler</a>
-<ul>
-<li><a href="#orgheadline63">在其他线程中创建handler</a></li>
-<li><a href="#orgheadline64">在其他线程中使用UI线程的looper.</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline66">how to resolve ANR</a></li>
-<li><a href="#orgheadline68">touch事件传递机制</a>
-<ul>
-<li><a href="#orgheadline67">实验</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline69">使用 Resource 类来获取 resource 资源</a></li>
-<li><a href="#orgheadline70">辅助功能</a>
-<ul>
-<li><a href="#orgheadline71">开启步骤</a></li>
-<li><a href="#orgheadline72">自动控制逻辑</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline73">系统的"最近任务"中不现实activity</a></li>
-<li><a href="#orgheadline74">打开"最近任务"窗口</a></li>
-<li><a href="#orgheadline76">不同机型特殊配置</a>
-<ul>
-<li><a href="#orgheadline75">判断是否为小米及获取小米版本</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline77">获取当前正在运行的应用</a>
-<ul>
-<li><a href="#orgheadline78">getRunningAppProcess()</a></li>
-<li><a href="#orgheadline79">queryUsageStats()</a></li>
-<li><a href="#orgheadline80">getRunningTasks()</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline81">使用 native 程序保持进程不死</a></li>
-<li><a href="#orgheadline82">版本更新</a></li>
-<li><a href="#orgheadline83">与服务器数据传输的加密</a></li>
-<li><a href="#orgheadline84">通过 intentservice 来执行后台任务</a></li>
-<li><a href="#orgheadline86">JobScheduler</a>
-<ul>
-<li><a href="#orgheadline85">一般使用流程</a></li>
-</ul>
-</li>
-<li><a href="#orgheadline90">ch</a>
-<ul>
-<li><a href="#orgheadline87">常见的主页展示方式</a></li>
-<li><a href="#orgheadline88">锁屏上的滑动解锁 view</a>
-<ul>
-<li><a href="#orgheadline89">通过 view 学习的思考自定义 view 的实现</a></li>
+<li><a href="#orgheadline11">View的位置.</a></li>
+<li><a href="#orgheadline12">大小和边距</a></li>
+<li><a href="#orgheadline13">Layout</a></li>
+<li><a href="#orgheadline14">坐标系统</a></li>
+<li><a href="#orgheadline15">适配</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline95">Handler</a>
+<li><a href="#orgheadline17">使用开源项目Robolectric测试Android代码</a>
 <ul>
-<li><a href="#orgheadline91">消息分发流程 dispatchMessage()</a></li>
-<li><a href="#orgheadline92">Handler创建</a></li>
-<li><a href="#orgheadline93">通过Handler获取消息</a></li>
-<li><a href="#orgheadline94">会导致内存泄漏的原因?</a></li>
+<li><a href="#orgheadline18">项目介绍</a></li>
+<li><a href="#orgheadline21">简单的测试项目</a>
+<ul>
+<li><a href="#orgheadline19">加入到项目工程</a></li>
+<li><a href="#orgheadline20">编写简单测试代码</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline98">jni</a>
+<li><a href="#orgheadline24">Robolectric文档</a>
 <ul>
-<li><a href="#orgheadline96">jni里分配的内存会算到OOM内存上吗?</a></li>
-<li><a href="#orgheadline97">jni原理</a></li>
+<li><a href="#orgheadline22">模拟Activity的生命周期</a></li>
+<li><a href="#orgheadline23">用Intent 或 savedInstanceState启动/恢复 Activity</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline99">AsyncTask支持多任务提交吗?</a></li>
-<li><a href="#orgheadline100">如何设计网络框架?</a></li>
-<li><a href="#orgheadline101">前台service的好处?</a></li>
-<li><a href="#orgheadline102">ImageLoader如何同步</a></li>
-<li><a href="#orgheadline103">单例模式使用volatile</a></li>
-<li><a href="#orgheadline104">thread vs asynctask</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline25">performace patterns 笔记</a>
+<ul>
+<li><a href="#orgheadline26">Rendering Performance</a>
+<ul>
+<li><a href="#orgheadline27">a) 产生这个问题的一些主要原因:</a></li>
+<li><a href="#orgheadline28">b) 渲染性能分析的常用方法</a></li>
+<li><a href="#orgheadline29">c) 关于VSYNC</a></li>
+<li><a href="#orgheadline30">d) GPU 渲染分析</a></li>
+<li><a href="#orgheadline31">e) More about GPU</a></li>
+<li><a href="#orgheadline32">f) Invalidate/layout</a></li>
+<li><a href="#orgheadline33">g) Overdraw/Cliprect/Quickreject</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline34">Battery Performance</a>
+<ul>
+<li><a href="#orgheadline35">a) PowerManager.Wakelock</a></li>
+<li><a href="#orgheadline36">b) JobScheduler API</a></li>
+<li><a href="#orgheadline37">c) Battery HIstorian tool</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline38">通过反射获取toolbar的title view</a></li>
+<li><a href="#orgheadline40">AppBarLayout</a>
+<ul>
+<li><a href="#orgheadline39">Behavior</a></li>
+<li><a href="#orgheadline41">ScrollingViewBehavior</a></li>
+<li><a href="#orgheadline42">ViewOffsetHelper</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline43">umeng和okhttp报错: okio的duplicated file</a></li>
+<li><a href="#orgheadline72">RecyclerView</a>
+<ul>
+<li><a href="#orgheadline44">note</a></li>
+<li><a href="#orgheadline45">Adapter</a>
+<ul>
+<li><a href="#orgheadline46">note</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline47">ViewHolder</a></li>
+<li><a href="#orgheadline48">AdapterDataObserver</a></li>
+<li><a href="#orgheadline49">AdapterDataObservable</a></li>
+<li><a href="#orgheadline50">LayoutManager</a>
+<ul>
+<li><a href="#orgheadline51">setMeasuredDimensionFromChildren</a></li>
+<li><a href="#orgheadline52">mAutoMeasure</a></li>
+<li><a href="#orgheadline53">onLayoutChildren</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline54">ChildHelper</a></li>
+<li><a href="#orgheadline55">State</a></li>
+<li><a href="#orgheadline56">LinearLayoutManager</a></li>
+<li><a href="#orgheadline57">Recycler</a></li>
+<li><a href="#orgheadline58">RecycledViewPool</a></li>
+<li><a href="#orgheadline59">AdapterHelper</a></li>
+<li><a href="#orgheadline60">UpdateOp</a></li>
+<li><a href="#orgheadline61">OpRecorderer</a></li>
+<li><a href="#orgheadline62">RecyclerViewAccessibilityDelegate</a></li>
+<li><a href="#orgheadline63">DefaultItemAnimator</a></li>
+<li><a href="#orgheadline64">ItemAnimator</a></li>
+<li><a href="#orgheadline65">RV</a></li>
+<li><a href="#orgheadline66">ItemDecoration</a></li>
+<li><a href="#orgheadline70">Home页"卡片"源码学习笔记</a>
+<ul>
+<li><a href="#orgheadline68">自定义控件TwoWayView</a></li>
+<li><a href="#orgheadline67">TwoWayLayoutManager</a></li>
+<li><a href="#orgheadline69">DividerItemDecoration</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline71">文章阅读笔记</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline77">View</a>
+<ul>
+<li><a href="#orgheadline73">view的坐标系</a></li>
+<li><a href="#orgheadline74">在竖直方向移动view</a></li>
+<li><a href="#orgheadline75">给当前window添加view:</a></li>
+<li><a href="#orgheadline76">设置view在不同状态下的UI展示</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline78">事件分发</a></li>
+<li><a href="#orgheadline79">数据库</a></li>
+<li><a href="#orgheadline80">ormlite库操作数据库</a></li>
+<li><a href="#orgheadline89">app 常用库</a>
+<ul>
+<li><a href="#orgheadline81">gson操作json字符串</a></li>
+<li><a href="#orgheadline82">okhttp进行网络操作</a></li>
+<li><a href="#orgheadline83">fresco网络图片加载</a></li>
+<li><a href="#orgheadline84">umeng进行统计分析和反馈</a></li>
+<li><a href="#orgheadline85">sharesdk进行统一分享</a></li>
+<li><a href="#orgheadline86">阿里聚安全进行加密</a></li>
+<li><a href="#orgheadline87">广点通和百度的广告进行广告投放</a></li>
+<li><a href="#orgheadline88">小米push和umengpush来推送消息</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline90">设置多进程</a></li>
+<li><a href="#orgheadline91">四种启动模式</a></li>
+<li><a href="#orgheadline92">让activity支持scheme</a></li>
+<li><a href="#orgheadline93">home页蒙版指导图</a></li>
+<li><a href="#orgheadline94">在别人的页面(例如系统页面)显示指导</a></li>
+<li><a href="#orgheadline95">设置应用可以获取通知权限保持应用不被杀死</a></li>
+<li><a href="#orgheadline96">通常可以放在Application类的动作</a></li>
+<li><a href="#orgheadline99">可替换库对比</a>
+<ul>
+<li><a href="#orgheadline97">recyclerView VS listView</a></li>
+<li><a href="#orgheadline98">startService VS bindService</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline102">thread with looper and handler</a>
+<ul>
+<li><a href="#orgheadline100">在其他线程中创建handler</a></li>
+<li><a href="#orgheadline101">在其他线程中使用UI线程的looper.</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline103">how to resolve ANR</a></li>
+<li><a href="#orgheadline105">touch事件传递机制</a>
+<ul>
+<li><a href="#orgheadline104">实验</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline106">使用 Resource 类来获取 resource 资源</a></li>
+<li><a href="#orgheadline107">辅助功能</a>
+<ul>
+<li><a href="#orgheadline108">开启步骤</a></li>
+<li><a href="#orgheadline109">自动控制逻辑</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline110">系统的"最近任务"中不现实activity</a></li>
+<li><a href="#orgheadline111">打开"最近任务"窗口</a></li>
+<li><a href="#orgheadline113">不同机型特殊配置</a>
+<ul>
+<li><a href="#orgheadline112">判断是否为小米及获取小米版本</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline114">获取当前正在运行的应用</a>
+<ul>
+<li><a href="#orgheadline115">getRunningAppProcess()</a></li>
+<li><a href="#orgheadline116">queryUsageStats()</a></li>
+<li><a href="#orgheadline117">getRunningTasks()</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline118">使用 native 程序保持进程不死</a></li>
+<li><a href="#orgheadline119">版本更新</a></li>
+<li><a href="#orgheadline120">与服务器数据传输的加密</a></li>
+<li><a href="#orgheadline121">通过 intentservice 来执行后台任务</a></li>
+<li><a href="#orgheadline123">JobScheduler</a>
+<ul>
+<li><a href="#orgheadline122">一般使用流程</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline127">ch</a>
+<ul>
+<li><a href="#orgheadline124">常见的主页展示方式</a></li>
+<li><a href="#orgheadline125">锁屏上的滑动解锁 view</a>
+<ul>
+<li><a href="#orgheadline126">通过 view 学习的思考自定义 view 的实现</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline132">Handler</a>
+<ul>
+<li><a href="#orgheadline128">消息分发流程 dispatchMessage()</a></li>
+<li><a href="#orgheadline129">Handler创建</a></li>
+<li><a href="#orgheadline130">通过Handler获取消息</a></li>
+<li><a href="#orgheadline131">会导致内存泄漏的原因?</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline135">jni</a>
+<ul>
+<li><a href="#orgheadline133">jni里分配的内存会算到OOM内存上吗?</a></li>
+<li><a href="#orgheadline134">jni原理</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline136">AsyncTask支持多任务提交吗?</a></li>
+<li><a href="#orgheadline137">如何设计网络框架?</a></li>
+<li><a href="#orgheadline138">前台service的好处?</a></li>
+<li><a href="#orgheadline139">ImageLoader如何同步</a></li>
+<li><a href="#orgheadline140">单例模式使用volatile</a></li>
+<li><a href="#orgheadline141">thread vs asynctask</a></li>
 </ul>
 </div>
 </div>
+<p>
+<i>Android开发学习的琐碎笔记, 自用.</i>
+</p>
+
 <div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">通过反射获取toolbar的title view&#xa0;&#xa0;&#xa0;<span class="tag"><span class="view">view</span></span></h2>
+<h2 id="orgheadline1">MVVM 的一种实现</h2>
 <div class="outline-text-2" id="text-orgheadline1">
+<p>
+原文 <a href="https://medium.com/@Miqubel/refactoring-to-mvvm-40ebafff43de#.3pd0ag4sb">https://medium.com/@Miqubel/refactoring-to-mvvm-40ebafff43de#.3pd0ag4sb</a>
+</p>
+</div>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">MVVM 的含义</h3>
+<div class="outline-text-3" id="text-orgheadline2">
+<ol class="org-ol">
+<li>M: model, 负责提供数据以及跟后台服务交互.</li>
+<li>VM: 中间件. 负责将 model 提供的数据进行转化, 方便 view 使用.并将 view
+的请求发送给 model.</li>
+<li>V: 实现用户接口并包含一个 VM.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">主流的两种实现方式</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<ol class="org-ol">
+<li>RxJava Observables.</li>
+<li>Android Data Binding.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">常见代码:activity 做所有事情</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
+下述代码中, activity 同时负责数据的请求和 UI 的更新.这样做的弊端:
+</p>
+<ol class="org-ol">
+<li>MainActivity 知道的太多, 例如数据的获取方式.</li>
+<li>测试代码不好写.</li>
+</ol>
+<pre class="example">
+public class MainActivity extends AppCompatActivity {
+
+    EditText editText;
+    ImageButton imageButton;
+    BooksAdapter adapter;
+    ListView listView;
+    TextView textNoDataFound;
+    GoogleBooksService service;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Configure Retrofit
+        Retrofit retrofit = new Retrofit.Builder()
+                // Base URL can change for endpoints (dev, staging, live..)
+                .baseUrl("https://www.googleapis.com")
+                // Takes care of converting the JSON response into java objects
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        // Create the Google Book API Service
+        service = retrofit.create(GoogleBooksService.class);
+
+
+        editText = (EditText) findViewById(R.id.editText);
+        imageButton = (ImageButton) findViewById(R.id.imageButton);
+        textNoDataFound = (TextView) findViewById(R.id.text_no_data_found);
+
+        adapter = new BooksAdapter(this, -1);
+
+        listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(adapter);
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performSearch();
+            }
+        });
+    }
+
+    private void performSearch() {
+        String formatUserInput = getUserInput().trim().replaceAll("\\s+", "+");
+        // Just call the method on the GoogleBooksService
+        service.search("search+" + formatUserInput)
+                // enqueue runs the request on a separate thread
+                .enqueue(new Callback&lt;BookSearchResult&gt;() {
+
+                    // We receive a Response with the content we expect already parsed
+                    @Override
+                    public void onResponse(Call&lt;BookSearchResult&gt; call, Response&lt;BookSearchResult&gt; books) {
+                        updateUi(books.body().getBooks());
+                    }
+
+                    // In case of error, this method gets called
+                    @Override
+                    public void onFailure(Call&lt;BookSearchResult&gt; call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
+    }
+
+    private void updateUi(List&lt;Book&gt; books) {
+        if (books.isEmpty()) {
+            // if no books found, show a message
+            textNoDataFound.setVisibility(View.VISIBLE);
+        } else {
+            textNoDataFound.setVisibility(View.GONE);
+        }
+        adapter.clear();
+        adapter.addAll(books);
+    }
+
+    private String getUserInput() {
+        return editText.getText().toString();
+    }
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">使用 RxJava 改造</h3>
+<div class="outline-text-3" id="text-orgheadline8">
+</div><div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5">创建 Model</h4>
+<div class="outline-text-4" id="text-orgheadline5">
+<p>
+顶层的 model 使用接口实现, 接口定义了 model 的行为和返回的结果. 然后提供一个
+实现类. 实现类中使用 Retrofit 的 Observable 取代了 Callable.  返回的 Observable
+ 已经配置为在线程中执行请求.
+</p>
+<pre class="example">
+public interface BooksInteractor {
+    Observable&lt;BookSearchResult&gt; search(String search);
+}
+
+public class BooksInteractorImpl implements BooksInteractor {
+    private GoogleBooksService service;
+
+    public BooksInteractorImpl() {
+        // Configure Retrofit
+        Retrofit retrofit = new Retrofit.Builder()
+                // Base URL can change for endpoints (dev, staging, live..)
+                .baseUrl("https://www.googleapis.com")
+                // Takes care of converting the JSON response into java objects
+                .addConverterFactory(GsonConverterFactory.create())
+                // Retrofit Call to RxJava Observable
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+        // Create the Google Book API Service
+        service = retrofit.create(GoogleBooksService.class);
+    }
+
+    @Override
+    public Observable&lt;BookSearchResult&gt; search(String search) {
+        return service.search("search+" + search).subscribeOn(Schedulers.io());
+    }
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-4">
+<h4 id="orgheadline6">创建 ViewModel</h4>
+<div class="outline-text-4" id="text-orgheadline6">
+<p>
+ViewModel 的功能比较简单, 配置执行的线程.
+ 如下例设置了返回的搜索结果在 scheduler 中被执行.
+</p>
+<pre class="example">
+public class BooksViewModel {
+
+    private BooksInteractor interactor;
+    private Scheduler scheduler;
+
+    public BooksViewModel(BooksInteractor interactor, Scheduler scheduler) {
+        this.interactor = interactor;
+        this.scheduler = scheduler;
+    }
+
+    public Observable&lt;BookSearchResult&gt; search(String search) {
+        return interactor.search(search).observeOn(scheduler);
+    }
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7">改造后的 activity</h4>
+<div class="outline-text-4" id="text-orgheadline7">
+<pre class="example">
+public class MainActivity extends AppCompatActivity {
+
+    EditText editText;
+    ImageButton imageButton;
+    BooksAdapter adapter;
+    ListView listView;
+    TextView textNoDataFound;
+
+    private CompositeSubscription subscriptions = new CompositeSubscription();
+    private BooksViewModel booksViewModel;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        booksViewModel = new BooksViewModel(new BooksInteractorImpl(), 
+                                            AndroidSchedulers.mainThread());
+
+        editText = (EditText) findViewById(R.id.editText);
+        imageButton = (ImageButton) findViewById(R.id.imageButton);
+        textNoDataFound = (TextView) findViewById(R.id.text_no_data_found);
+
+        adapter = new BooksAdapter(this, -1);
+
+        listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(adapter);
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                performSearch();
+            }
+        });
+    }
+  
+    @Override
+    protected void onDestroy() {
+        subscriptions.unsubscribe();
+        super.onDestroy();
+    }
+
+    private void performSearch() {
+        String formatUserInput = getUserInput().trim().replaceAll("\\s+", "+");
+        subscription = booksViewModel.search(formatUserInput)
+                .subscribe(new Observer&lt;BookSearchResult&gt;() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onNext(BookSearchResult bookSearchResult) {
+                        updateUi(bookSearchResult.getBooks());
+                    }
+                });
+    }
+
+    private void updateUi(List&lt;Book&gt; books) {
+        if (books.isEmpty()) {
+            // if no books found, show a message
+            textNoDataFound.setVisibility(View.VISIBLE);
+        } else {
+            textNoDataFound.setVisibility(View.GONE);
+        }
+        adapter.clear();
+        adapter.addAll(books);
+    }
+
+    private String getUserInput() {
+        return editText.getText().toString();
+    }
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">好处</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+<ol class="org-ol">
+<li><p>
+方便写测试用例.
+</p>
+<pre class="example">
+   public class BooksInteractorMock implements BooksInteractor {
+    @Override
+    public Observable&lt;BookSearchResult&gt; search(String search) {
+        return Observable.just(getMockedBookSearchResult());
+    }
+
+    private BookSearchResult getMockedBookSearchResult() {
+        BookSearchResult bookSearchResult = new BookSearchResult();
+//        bookSearchResult.setBooks(myListOfBooks);
+        return bookSearchResult;
+    }
+}
+</pre></li>
+<li>ViewModel 不需要知道 View 的存在(对比 Presenter).</li>
+<li>可以包含多个 ViewModel.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10">View笔记</h2>
+<div class="outline-text-2" id="text-orgheadline10">
+<p>
+View是Android 中的用户交互组件,一个 view 就代表屏幕上的一块区域, 你可以在这块区域上画图,
+点击, 移动等各种操作.
+</p>
+
+<p>
+View 的一个子类为 ViewGroup,viewgroud 是一种"布局"的概念, 它本身对用户是不可见的, 开发者
+可以在通过 viewgroup 定义各种 view(按钮,图片)的布局, viewgroup 本身可以嵌套 viewgroup.
+</p>
+
+<p>
+View 在应用中通过"tree"的方式进行管理维护.创建 view 有两种方式:1是在代码中动态添加; 2是通过
+定义一个 xml 文件来添加.通常的 Android 开发都是使用第二种方式.
+</p>
+
+<p>
+<i><b><b><b><b>下面的内容基于源码和文档</b></b></b></b></i>
+</p>
+</div>
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16">基本知识</h3>
+<div class="outline-text-3" id="text-orgheadline16">
+</div><div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11">View的位置.</h4>
+<div class="outline-text-4" id="text-orgheadline11">
+<ol class="org-ol">
+<li>View是一个矩形的物体, 通过"左上角的坐标"和"宽/高"来描述一个view.
+描述这些属性的单位是像素(pixel).</li>
+<li>通过getLeft()和getTop()可以获取一个view的左上角的"X/Y"坐标, 这个坐标是相对于
+该view的parent而言的. 例如,调用getLeft()得到20, 说明该view位于其父view右边20像素处.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline12" class="outline-4">
+<h4 id="orgheadline12">大小和边距</h4>
+<div class="outline-text-4" id="text-orgheadline12">
+<ol class="org-ol">
+<li>每个view都有两组"宽/高"属性
+<ul class="org-ul">
+<li>一组称为measured width/height, 这个属性定义了view"想"在parent中的大小.</li>
+<li>一组称为width/height, 这view画在屏幕上的实际大小.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline13" class="outline-4">
+<h4 id="orgheadline13">Layout</h4>
+<div class="outline-text-4" id="text-orgheadline13">
+<p>
+Layout包含两个过程:measure和layout.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14">坐标系统</h4>
+<div class="outline-text-4" id="text-orgheadline14">
+<p>
+背景知识: 一个View的父view范围有可能在当前屏幕之外.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-java">---------------------------------
+|parent          | screen     |        |
+|view            |  --------  |        |
+|        |  |      |  |        |
+|        |  |      |  |        |
+|        |  |view  |  |        |
+|        |  |      |  |        |
+|        |  |      |  |        |
+|        |  --------  |        |
+|        |            |        |
+---------------------------------
+</pre>
+</div>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">getLeft()</td>
+<td class="org-left">左边界与 <b>父视图</b> 左边界距离</td>
+</tr>
+
+<tr>
+<td class="org-left">getRight()</td>
+<td class="org-left">右边界与 <b>父视图</b> 左边界距离</td>
+</tr>
+
+<tr>
+<td class="org-left">getTop()/getBottom()</td>
+<td class="org-left">上/下边界与 <b>父视图</b> 上边界距离</td>
+</tr>
+
+<tr>
+<td class="org-left">getHeight()/getWidth()</td>
+<td class="org-left"><b>自身</b> 宽/高</td>
+</tr>
+
+<tr>
+<td class="org-left">getX()/getY()</td>
+<td class="org-left">事件点距离 <b>自身</b> 左/上边界的距离</td>
+</tr>
+
+<tr>
+<td class="org-left">getRawX()/getRawY()</td>
+<td class="org-left">事件点距离 <b>屏幕</b> 左/上边界的距离</td>
+</tr>
+
+<tr>
+<td class="org-left">getScrollX()/getScrollY()</td>
+<td class="org-left">view相对于 <b>屏幕</b> 左上角的滚动距离(可正可负)</td>
+</tr>
+
+<tr>
+<td class="org-left">getLocationInWindow()</td>
+<td class="org-left">获取在 <b>窗口</b> 内的坐标</td>
+</tr>
+
+<tr>
+<td class="org-left">getLocationInScreen</td>
+<td class="org-left">在 <b>屏幕</b> 中的位置.</td>
+</tr>
+
+<tr>
+<td class="org-left">scrollTo(x,y)</td>
+<td class="org-left">将 <b>屏幕</b> 移动到 <b>父视图</b> 的 (x,y)处</td>
+</tr>
+
+<tr>
+<td class="org-left">getScrollX()/getScrollY()</td>
+<td class="org-left"><b>屏幕</b> 边缘到 <b>父视图</b> 边缘的位置</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15">适配</h4>
+<div class="outline-text-4" id="text-orgheadline15">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">分辨率</td>
+<td class="org-left">px, 横纵向上的像素点数, 如1920x1080</td>
+</tr>
+
+<tr>
+<td class="org-left">像素密度(density)</td>
+<td class="org-left">dpi, 每英寸上的像素点数, 等于"对角线像素/尺寸"</td>
+</tr>
+
+<tr>
+<td class="org-left">dp</td>
+<td class="org-left">逻辑密度计算单位, px=(dpi/160) * dp</td>
+</tr>
+
+<tr>
+<td class="org-left">mdpi</td>
+<td class="org-left">120dpi-160dpi</td>
+</tr>
+
+<tr>
+<td class="org-left">hdpi</td>
+<td class="org-left">160-240</td>
+</tr>
+
+<tr>
+<td class="org-left">xhdpi</td>
+<td class="org-left">240-320</td>
+</tr>
+
+<tr>
+<td class="org-left">xxhdpi</td>
+<td class="org-left">320-480</td>
+</tr>
+
+<tr>
+<td class="org-left">getResource().getDisplayMetrics()</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">metrics.heightPixels</td>
+<td class="org-left">屏幕高 px</td>
+</tr>
+
+<tr>
+<td class="org-left">metrics.widthPixels</td>
+<td class="org-left">屏幕宽 px</td>
+</tr>
+
+<tr>
+<td class="org-left">metrics.densityDpi</td>
+<td class="org-left">密度(dpi)</td>
+</tr>
+
+<tr>
+<td class="org-left">metrics.density</td>
+<td class="org-left">densityDpi/160 = dpi/160</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline17" class="outline-2">
+<h2 id="orgheadline17">使用开源项目Robolectric测试Android代码</h2>
+<div class="outline-text-2" id="text-orgheadline17">
+<p>
+该项目官网 <a href="http://robolectric.org/">http://robolectric.org/</a>. github地址: <a href="https://github.com/robolectric/robolectric">https://github.com/robolectric/robolectric</a>.
+</p>
+
+<p>
+该文章基于Robolectric3.0
+</p>
+</div>
+
+<div id="outline-container-orgheadline18" class="outline-3">
+<h3 id="orgheadline18">项目介绍</h3>
+<div class="outline-text-3" id="text-orgheadline18">
+<p>
+Robolectric是一个开源的单元测试框架, 它可以实现直接在JVM里跑Android相关的测试(Activity/Service),
+避免Android自家出品的 <b>古老</b> 的必须要在虚拟机上跑的测试. (注: 目前来看, Android的后续版本对测试的支持越来越好&#x2026;..)
+</p>
+
+<p>
+官网上给出了Robolectric的几点特性:
+</p>
+<ol class="org-ol">
+<li>模拟SDK, 资源和native方法:
+总的来说, robolectric可以模拟虚拟机环境, 使你可以在
+JVM就可以实现大部分测试.</li>
+<li>摆脱虚拟机的束缚.
+省去编译/打包/安装流程, 加快测试和重构速度.</li>
+<li>不需要Mocking框架</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline21" class="outline-3">
+<h3 id="orgheadline21">简单的测试项目</h3>
+<div class="outline-text-3" id="text-orgheadline21">
+</div><div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19">加入到项目工程</h4>
+<div class="outline-text-4" id="text-orgheadline19">
+<p>
+添加robolectric的依赖, 由于要使用Junit和assert相关的函数,
+所以把他们的依赖也一起加上.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-xml">testCompile 'junit:junit:4.12'
+testCompile "org.assertj:assertj-core:1.7.0"
+testCompile 'org.robolectric:robolectric:3.0'
+</pre>
+</div>
+
+<p>
+加入完成后, 把Build Variants的 "Test Artifact" 设置为 <b>Unit Tests</b>.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20">编写简单测试代码</h4>
+<div class="outline-text-4" id="text-orgheadline20">
+<p>
+在src目录下创建test目录, 然后在test目录下创建与main相同的package目录. 
+创建TestMainActivity.class类, 来测试MainActivity.
+在类名的前面加入以下两个注解:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #BFEBBF;">@RunWith</span>(RobolectricGradleTestRunner.<span style="color: #F0DFAF; font-weight: bold;">class</span>)
+<span style="color: #BFEBBF;">@Config</span>(constants = BuildConfig.<span style="color: #F0DFAF; font-weight: bold;">class</span>)
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">TestMainActivity</span> {
+</pre>
+</div>
+<p>
+第二个注解必须要将constants设置为编译系统生成的BuildConfig文件.
+</p>
+
+<p>
+可以在类里面有 @Test 注解编写测试方法.例如:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #BFEBBF;">@RunWith</span>(RobolectricGradleTestRunner.<span style="color: #F0DFAF; font-weight: bold;">class</span>)
+<span style="color: #BFEBBF;">@Config</span>(constants = BuildConfig.<span style="color: #F0DFAF; font-weight: bold;">class</span>)
+<span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">TestMainActivity</span> {
+    <span style="color: #BFEBBF;">@Test</span>
+    <span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #7CB8BB;">void</span> <span style="color: #93E0E3;">init</span>(){
+        <span style="color: #7CB8BB;">ActivityController</span> <span style="color: #DFAF8F;">controller</span> = Robolectric.buildActivity(MainActivity.<span style="color: #F0DFAF; font-weight: bold;">class</span>).create().start();
+        <span style="color: #7CB8BB;">MainActivity</span> <span style="color: #DFAF8F;">activity</span> = (<span style="color: #7CB8BB;">MainActivity</span>)controller.get();
+
+        controller.resume();
+
+        <span style="color: #7CB8BB;">FloatingActionButton</span> <span style="color: #DFAF8F;">button</span> = (<span style="color: #7CB8BB;">FloatingActionButton</span>)activity.findViewById(R.id.fab);
+        button.performClick();
+
+        assertTrue(button.getVisibility() == <span style="color: #BFEBBF;">View</span>.GONE);
+    }
+}
+</pre>
+</div>
+
+<p>
+最后可以右键该类点击运行或通过gradle命令来实现跑测试.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline24" class="outline-3">
+<h3 id="orgheadline24">Robolectric文档</h3>
+<div class="outline-text-3" id="text-orgheadline24">
+</div><div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22">模拟Activity的生命周期</h4>
+<div class="outline-text-4" id="text-orgheadline22">
+<p>
+通过ActivityController这个API可以实现对Activity生命周期
+的控制. 通过以下API可以获取一个ActivityController实例化.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">ActivityController</span> <span style="color: #DFAF8F;">controller</span> = Robolectric.buildActivity(MyAwesomeActivity.<span style="color: #F0DFAF; font-weight: bold;">class</span>).create().start();
+</pre>
+</div>
+
+<p>
+controller创建出来之后, 就可以调用start(), pause(), stop()
+或者destroy()等函数来模仿Activity流程, 例如下面的代码就是
+一个完整的activity流程:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #7CB8BB;">Activity</span> <span style="color: #DFAF8F;">activity</span> = Robolectric.buildActivity(MyAwesomeActivity.<span style="color: #F0DFAF; font-weight: bold;">class</span>).create().start().resume().visible().get();
+</pre>
+</div>
+
+<p>
+注: visible()函数用来模拟activity attach到一个窗口的过程, 如果需要使用activity中
+view相关的函数, 必须要先调用visible().
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline23" class="outline-4">
+<h4 id="orgheadline23">用Intent 或 savedInstanceState启动/恢复 Activity</h4>
+<div class="outline-text-4" id="text-orgheadline23">
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #5F7F5F;">//</span><span style="color: #7F9F7F;">intent</span>
+<span style="color: #7CB8BB;">Intent</span> <span style="color: #DFAF8F;">intent</span> = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Intent</span>(<span style="color: #BFEBBF;">Intent</span>.ACTION_VIEW);
+<span style="color: #7CB8BB;">Activity</span> <span style="color: #DFAF8F;">activity</span> = Robolectric.buildActivity(MyAwesomeActivity.<span style="color: #F0DFAF; font-weight: bold;">class</span>).withIntent(intent).create().get();
+
+/bundle
+Bundle savedInstanceState = <span style="color: #F0DFAF; font-weight: bold;">new</span> <span style="color: #7CB8BB;">Bundle</span>();
+<span style="color: #7CB8BB;">Activity</span> <span style="color: #DFAF8F;">activity</span> = Robolectric.buildActivity(MyAwesomeActivity.<span style="color: #F0DFAF; font-weight: bold;">class</span>)
+    .create()
+    .restoreInstanceState(savedInstanceState)
+    .get();
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline25" class="outline-2">
+<h2 id="orgheadline25">performace patterns 笔记</h2>
+<div class="outline-text-2" id="text-orgheadline25">
+<p>
+视频地址为 <a href="https://www.youtube.com/playlist?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE"><a href="https://www.youtube.com/playlist?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE">https://www.youtube.com/playlist?list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE</a></a>.
+</p>
+</div>
+
+<div id="outline-container-orgheadline26" class="outline-3">
+<h3 id="orgheadline26"><a href="https://www.youtube.com/watch?v=HXQhu6qfTVU&amp;list=PLWz5rJ2EKKc9CBxr3BVjPTPoDPLdPIFCE">Rendering Performance</a></h3>
+<div class="outline-text-3" id="text-orgheadline26">
+<p>
+该视频主要讨论 UI 的流畅度问题,如果用户在使用 App 发现有卡顿或不流畅的现象,这一般都是
+<b>渲染</b> 问题.
+</p>
+
+<p>
+Android 系统一般每16ms 重绘一下应用界面,所以一秒能画60帧. 这意味着你所有的 UI逻辑最好都在16ms
+ 内完成,如果你的应用需要更新 UI,但是新的界面的生成时间超过了16ms,那么当系统在下一次需要去
+重绘画面的时候, 就找不到新的界面,就不会做任何动作, 这就是 <b>掉帧</b> 现象. 对于用户来说,他看到当前
+界面的停留时间就是32ms,而不是16ms. 对于 <b>动画</b> 效果来说,用户很容易就可以看到这种延迟问题,
+尤其当用户需要用应用进行交互时(e.g 拖动画面或输入), 这是很不好的用户体验.
+</p>
+</div>
+
+<div id="outline-container-orgheadline27" class="outline-4">
+<h4 id="orgheadline27">a) 产生这个问题的一些主要原因:</h4>
+<div class="outline-text-4" id="text-orgheadline27">
+<ol class="org-ol">
+<li>重绘 view 花费太多 CPU 周期,尤其是重绘一个结构复杂的 view.</li>
+<li><p>
+<b>OverDraw</b>. 对于重叠的 layout, 对用户来说, 被 <b>遮挡</b> 住的对象是不可见的. 所以如果将整个层次都
+绘制完成后才呈现给用户, 会浪费很多的时间在用户看不到的像素上.
+</p>
+
+<p>
+打开 <b>Show GPU Overdraw</b>, 就可以观察应用的 overdraw 现象, Android 系统透过不同的颜色表示 overdraw 程度,
+一般某一像素被重绘的次数越多,该像素的颜色越重. 
+</p>
+
+<p>
+一个常见的产生 overdraw 的情景就是大量使用 background,例如整个 activity 有一个 background,然后
+里面的 view 控件也有自己的 background.
+</p></li>
+<li>动画太多.使用大量的 CPU 和 GPU 资源.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline28" class="outline-4">
+<h4 id="orgheadline28">b) 渲染性能分析的常用方法</h4>
+<div class="outline-text-4" id="text-orgheadline28">
+<ol class="org-ol">
+<li>使用 HIerarchy Viewer 分析 layout 结构,如果 layout 结构过于复杂,重绘时间会过长.</li>
+<li>使用手机上的 <b>Developer Option</b> 中带的一些 debug 选项来查看应用是否有 <b>overdraw</b> 的问题.
+包括: Profile GPU Rendering/Show GPU Overdraw/GPU View Updates.</li>
+<li>使用 traceview 分析绘制过程的 cpu 使用情况.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline29" class="outline-4">
+<h4 id="orgheadline29">c) 关于VSYNC</h4>
+<div class="outline-text-4" id="text-orgheadline29">
+<p>
+刷新率: 屏幕每秒更新的次数, 用 HZ 表示; 帧率: GPU 每秒生成帧的数量, fps.
+</p>
+
+<p>
+显示一个画面的一般流程:
+GPU 获取数据,绘制,硬件将绘制好数据显示到屏幕上.如果这种协作不一致,会产生视觉上的问题.
+</p>
+
+<p>
+例如:显卡使用同一片内存来绘制帧,因此新的帧会覆盖旧帧.这种覆盖是 <b>一行一行</b> 覆盖的.
+所以, 可能出现这种情况, 当屏幕需要显示时, 它不知道当前的内存中的内容(有可能这时候覆盖
+正在进行中, 或者当前的帧还没画完).
+</p>
+
+<p>
+对这个问题的解法是使用 <b>双</b> 内存,当 GPU 画完一帧后,将其从当前 buffer(backbuffer)移动
+到 frame buffer.然后再使用 back buffer 画下一帧.当屏幕需要更新, 就从 frame buffer 中
+取数据, 这能保证不影响 GPU 的绘制过程. 
+</p>
+
+<p>
+VSYNC 就是协调这种 copy 过程的机制. 理想情况下,帧率一般大于刷新率,这样当一次屏幕更新完成
+后, 可以通过VSYNC 机制告诉 GPU 下一次刷新过程. 相反, 如果刷新率大于帧率, 当屏幕需要刷新时,
+有可能在 frame buffer 中取到的还是上一次的数据. 所以如果系统的帧率间歇性的出现问题(小于刷新率),
+用户就会感到 <b>卡顿</b> 现象发生.
+</p>
+
+<p>
+对于应用程序而言,出现这种间歇性问题的原因,有可能就是生成的数据过慢, 导致 GPU 饥饿.
+没有时间在下一次屏幕刷新前做完成绘制.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline30" class="outline-4">
+<h4 id="orgheadline30">d) GPU 渲染分析</h4>
+<div class="outline-text-4" id="text-orgheadline30">
+<p>
+打开 <b>开发者选项</b> 的 <b>GPU 呈现模式分析</b>, 选择在屏幕上显示. 选好后, 会在屏幕上显示一些颜色
+条.  这些颜色条显示了三部分的渲染效果:1, 最底层代表导航栏; 2, 最上层代表通知栏; 3, 中间
+代表当前活动的应用程序. 我们只关注第三部分.
+</p>
+
+<p>
+当这个功能开启后, 会从左到右的显示颜色条,每个竖条都代表一个被渲染的帧,竖条越高, 代表渲染时间
+越长.还可以看到屏幕上有一条绿线, 该线表示16ms.所以如果想要达到60帧/s 的效果,必须保证每个竖条
+都在绿线以下.
+</p>
+
+<p>
+每个竖条都有大约3种颜色组成:
+</p>
+<ul class="org-ul">
+<li>蓝色表示绘画时间; 在一个 view 被渲染之前,首先要被转化成 GPU 可以处理的格式,这种转换可能知识
+简单的几个绘图命令,也可能是很复杂的Canvas 数据.一旦转换完成,结果就会被系统当成存储为
+<b>display list</b>. 蓝色条即表示转换和 cache 该帧的所有 view 花费的时间. 时间长的原因可能是
+需要绘制的 view 过多, 或者某个 view 的onDraw()逻辑太复杂.</li>
+<li>红条代表执行时间. 即 Android 的2D 渲染器执行上一步的 <b>display list</b> 的过程.Android 系统
+通过与 OpenGL ES API 交互来将 display list绘制到屏幕,该过程首先将数据传给 GPU,然后在将
+像素绘制到屏幕上. 当 view 约复杂(自定义 view),可能就需要更复杂的 OpenGL 绘图命令.重绘更多
+的 view 同样会导致该问题.</li>
+<li>橙色代表处理时间.也可表示 CPU 的等待时间.如果该条过长,说明 GPU 的工作太多.
+<i>About Execute: if Execute takes a long time, it means you are running ahead of the graphics pipeline. Android can have up to 3 buffers in flight and if you need another one the application will block until one of these bufferes is freed up. This can happen for two reasons. The first one is that your application is quick to draw on the Dalvik side but its display lists take a long time to execute on the GPU. The second reason is that your application took a long time to execute the first few frames; once the pipeline is full it will not catch up until the animation is done. This is something we'd like to improve in a future version of Android.</i></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgheadline31" class="outline-4">
+<h4 id="orgheadline31">e) More about GPU</h4>
+<div class="outline-text-4" id="text-orgheadline31">
+<p>
+将对程序所描述的内容转化为最后屏幕上的像素的过程用到了 <b>光栅化</b> 这项技术. 对该技术的解释为 
+"<i>把物体的数学描述以及与物体相关的颜色信息转换为屏幕上用于对应位置的像素及用于填充像素的颜色，
+这个过程称为光栅化，这是一个将离散信号转换为模拟信号的过程。</i>"
+</p>
+
+<p>
+光栅化是一项很耗时的技术,所以该项动作专门交给 GPU 处理. CPU 首先将这些数据(图形/纹理&#x2026;)
+传输给 GPU(通过 displaylist 这个数据结构),然后GPU 将其绘制到屏幕上.
+这个过程是通过 OpenGL ES 完成的. 但是CPU 将组件转化为纹理的过程以及将转化后的数据传给
+GPU 的过程都是非常耗时的操作.
+</p>
+
+<p>
+为了优化这项操作, OpenGL ES 提供了 API 可以一次将数据传给 GPU,当需要重绘同一物体时,只需
+告诉 GPU 就好了.所以要尽可能的将最多的数据提供给 GPU 并尽量不去修改.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline32" class="outline-4">
+<h4 id="orgheadline32">f) Invalidate/layout</h4>
+<div class="outline-text-4" id="text-orgheadline32">
+<p>
+上节说过 CPU 通过 displaylist 将数据传给 GPU,如果一个 view 的位置发生改变,可能只需重新
+执行一次这个 displaylist 就可以.但是在另一种情况下,view 的改变会导致 displaylist 不合法,
+需要重新创建一个 displaylist.
+</p>
+
+<p>
+当一个 view 的 size 改变时,会触发 measure 流程,该流程会遍历 view 树,询问每个 view 的新 size. 
+当位置改变,会触发 layout 流程,对每个 view 生成新的位置.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline33" class="outline-4">
+<h4 id="orgheadline33">g) Overdraw/Cliprect/Quickreject</h4>
+<div class="outline-text-4" id="text-orgheadline33">
+<p>
+Android 目前在尽量避免 overdraw 现象.但是对于自定义 view,android 系统的优化程序通常无法触及
+(重写onDraw()函数). 但是可以通过下述方法给优化程序一些提示:
+</p>
+
+<ul class="org-ul">
+<li>Canvas.cliprect(): 该函数可以让你定义 boundaries.所以只有 boundaries 区域内的内容会被绘制.
+屏幕上的其他区域会被忽略.在底层实现上,也只有该区域内的数据会传输给 GPU.</li>
+<li>quickreject: 规划不用 draw 的区域.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline34" class="outline-3">
+<h3 id="orgheadline34">Battery Performance</h3>
+<div class="outline-text-3" id="text-orgheadline34">
+<p>
+普渡大学对常用的应用/游戏做了一项耗电研究, 研究发现, 在这些应用消耗的电量中,
+只有大约25%~30%用于应用的核心功能.剩下的75%左右都被网络传输/广告等功能消耗掉.
+可以看到应用通过消耗大量的电池来实现利益.
+</p>
+</div>
+
+<div id="outline-container-orgheadline35" class="outline-4">
+<h4 id="orgheadline35">a) PowerManager.Wakelock</h4>
+<div class="outline-text-4" id="text-orgheadline35">
+<p>
+该函数可以保持 CPU 一直运行,并不会使屏幕进入休眠状态.但是要注释锁的时机, 不然可能
+导致屏幕一直不休眠.
+</p>
+
+<p>
+或者使用接受 timeout 参数的 wakelock.acquire API.这会强制释放 Wakelock.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline36" class="outline-4">
+<h4 id="orgheadline36">b) JobScheduler API</h4>
+<div class="outline-text-4" id="text-orgheadline36">
+<p>
+该 api 可以将工作安排到指定条件执行(WIFI/batching&#x2026;)
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline37" class="outline-4">
+<h4 id="orgheadline37">c) Battery HIstorian tool</h4>
+<div class="outline-text-4" id="text-orgheadline37">
+<p>
+L 版发布, 可以查看唤醒 CPU 的频率,"凶手"和持续时间.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline38" class="outline-2">
+<h2 id="orgheadline38">通过反射获取toolbar的title view&#xa0;&#xa0;&#xa0;<span class="tag"><span class="view">view</span></span></h2>
+<div class="outline-text-2" id="text-orgheadline38">
 <pre class="example">
   private TextView getActionBarTextView() {
     TextView titleTextView = null;
@@ -268,11 +1260,11 @@ for the JavaScript code in this tag.
 </pre>
 </div>
 </div>
-<div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="orgheadline3">AppBarLayout&#xa0;&#xa0;&#xa0;<span class="tag"><span class="coordinatorlayout">coordinatorlayout</span></span></h2>
-<div class="outline-text-2" id="text-orgheadline3">
+<div id="outline-container-orgheadline40" class="outline-2">
+<h2 id="orgheadline40">AppBarLayout&#xa0;&#xa0;&#xa0;<span class="tag"><span class="coordinatorlayout">coordinatorlayout</span></span></h2>
+<div class="outline-text-2" id="text-orgheadline40">
 <ol class="org-ol">
-<li>该类的默认behavior是<a href="#orgheadline2">Behavior</a>, 是用标注修饰的.</li>
+<li>该类的默认behavior是<a href="#orgheadline39">Behavior</a>, 是用标注修饰的.</li>
 <li>定义了OnOffsetChangedListener接口. 可以将该view
 offset的变化传递给子view.</li>
 <li>getTotalScrollRange()
@@ -295,9 +1287,9 @@ scroll flag的子view同时设置了SCROLL_FLAG_EXIT_UNTIL_COLLAPSED,
 <li>在layout阶段会检查子view是否设置了interpolator.</li>
 </ol>
 </div>
-<div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2">Behavior</h3>
-<div class="outline-text-3" id="text-orgheadline2">
+<div id="outline-container-orgheadline39" class="outline-3">
+<h3 id="orgheadline39">Behavior</h3>
+<div class="outline-text-3" id="text-orgheadline39">
 <ol class="org-ol">
 <li>scroll()函数
 <ol class="org-ol">
@@ -357,9 +1349,9 @@ onNestedFling()函数, 该函数有一个参数consumed, 代表这次fling
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline4" class="outline-3">
-<h3 id="orgheadline4">ScrollingViewBehavior</h3>
-<div class="outline-text-3" id="text-orgheadline4">
+<div id="outline-container-orgheadline41" class="outline-3">
+<h3 id="orgheadline41">ScrollingViewBehavior</h3>
+<div class="outline-text-3" id="text-orgheadline41">
 <ol class="org-ol">
 <li>updateOffset()函数, 该函数会获取依赖view的behavior,
 如果依赖view是appbar, 那么会调用appbar(及behavior)的相关
@@ -368,9 +1360,9 @@ onNestedFling()函数, 该函数有一个参数consumed, 代表这次fling
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline5" class="outline-3">
-<h3 id="orgheadline5">ViewOffsetHelper</h3>
-<div class="outline-text-3" id="text-orgheadline5">
+<div id="outline-container-orgheadline42" class="outline-3">
+<h3 id="orgheadline42">ViewOffsetHelper</h3>
+<div class="outline-text-3" id="text-orgheadline42">
 <ul class="org-ul">
 <li>getTopAndBottomOffset</li>
 </ul>
@@ -378,9 +1370,9 @@ onNestedFling()函数, 该函数有一个参数consumed, 代表这次fling
 </div>
 </div>
 
-<div id="outline-container-orgheadline6" class="outline-2">
-<h2 id="orgheadline6">umeng和okhttp报错: okio的duplicated file</h2>
-<div class="outline-text-2" id="text-orgheadline6">
+<div id="outline-container-orgheadline43" class="outline-2">
+<h2 id="orgheadline43">umeng和okhttp报错: okio的duplicated file</h2>
+<div class="outline-text-2" id="text-orgheadline43">
 <pre class="example">
 packagingOptions {
     exclude 'META-INF/maven/com.squareup.okio/okio/pom.xml'
@@ -389,12 +1381,12 @@ packagingOptions {
 </pre>
 </div>
 </div>
-<div id="outline-container-orgheadline35" class="outline-2">
-<h2 id="orgheadline35">RecyclerView&#xa0;&#xa0;&#xa0;<span class="tag"><span class="recyclerview">recyclerview</span></span></h2>
-<div class="outline-text-2" id="text-orgheadline35">
-</div><div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="orgheadline7">note</h3>
-<div class="outline-text-3" id="text-orgheadline7">
+<div id="outline-container-orgheadline72" class="outline-2">
+<h2 id="orgheadline72">RecyclerView&#xa0;&#xa0;&#xa0;<span class="tag"><span class="recyclerview">recyclerview</span></span></h2>
+<div class="outline-text-2" id="text-orgheadline72">
+</div><div id="outline-container-orgheadline44" class="outline-3">
+<h3 id="orgheadline44">note</h3>
+<div class="outline-text-3" id="text-orgheadline44">
 <ol class="org-ol">
 <li>Scrap</li>
 <li>Recycle</li>
@@ -405,9 +1397,9 @@ packagingOptions {
 </div>
 </div>
 
-<div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8">Adapter</h3>
-<div class="outline-text-3" id="text-orgheadline8">
+<div id="outline-container-orgheadline45" class="outline-3">
+<h3 id="orgheadline45">Adapter</h3>
+<div class="outline-text-3" id="text-orgheadline45">
 <ol class="org-ol">
 <li>onCreateViewHolder() 
 创建一个VH. 客户端实现.</li>
@@ -422,18 +1414,18 @@ packagingOptions {
 <li>adapter数据改变函数.</li>
 </ol>
 </div>
-<div id="outline-container-orgheadline9" class="outline-4">
-<h4 id="orgheadline9">note</h4>
-<div class="outline-text-4" id="text-orgheadline9">
+<div id="outline-container-orgheadline46" class="outline-4">
+<h4 id="orgheadline46">note</h4>
+<div class="outline-text-4" id="text-orgheadline46">
 <ol class="org-ol">
 <li>把stableIds设为true显示效果跟false不一样.</li>
 </ol>
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline10" class="outline-3">
-<h3 id="orgheadline10">ViewHolder</h3>
-<div class="outline-text-3" id="text-orgheadline10">
+<div id="outline-container-orgheadline47" class="outline-3">
+<h3 id="orgheadline47">ViewHolder</h3>
+<div class="outline-text-3" id="text-orgheadline47">
 <p>
 该类用来存放view及其相关属性.
 </p>
@@ -443,9 +1435,9 @@ packagingOptions {
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline11" class="outline-3">
-<h3 id="orgheadline11">AdapterDataObserver</h3>
-<div class="outline-text-3" id="text-orgheadline11">
+<div id="outline-container-orgheadline48" class="outline-3">
+<h3 id="orgheadline48">AdapterDataObserver</h3>
+<div class="outline-text-3" id="text-orgheadline48">
 <p>
 用来监测Adapter的数据变化, 提供的API:
 </p>
@@ -458,29 +1450,29 @@ packagingOptions {
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline12" class="outline-3">
-<h3 id="orgheadline12">AdapterDataObservable</h3>
-<div class="outline-text-3" id="text-orgheadline12">
+<div id="outline-container-orgheadline49" class="outline-3">
+<h3 id="orgheadline49">AdapterDataObservable</h3>
+<div class="outline-text-3" id="text-orgheadline49">
 <p>
 该类继承自Observable&lt;T&gt;, 所以天然自带一个arraylist, 
 该arraylist的元素类型为 AdapterDataObserver. 
 该类提供了一些api, 在api的实现上, 基本都是迭代调用
-arraylsit里的<a href="#orgheadline11">AdapterDataObserver</a>的对应api. 
+arraylsit里的<a href="#orgheadline48">AdapterDataObserver</a>的对应api. 
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline13" class="outline-3">
-<h3 id="orgheadline13">LayoutManager</h3>
-<div class="outline-text-3" id="text-orgheadline13">
+<div id="outline-container-orgheadline50" class="outline-3">
+<h3 id="orgheadline50">LayoutManager</h3>
+<div class="outline-text-3" id="text-orgheadline50">
 <ol class="org-ol">
 <li>该类用于测量和放置RV里的子View.</li>
 <li>可以在RV的xml中设置一个layoutmanager.</li>
 <li></li>
 </ol>
 </div>
-<div id="outline-container-orgheadline14" class="outline-4">
-<h4 id="orgheadline14">setMeasuredDimensionFromChildren</h4>
-<div class="outline-text-4" id="text-orgheadline14">
+<div id="outline-container-orgheadline51" class="outline-4">
+<h4 id="orgheadline51">setMeasuredDimensionFromChildren</h4>
+<div class="outline-text-4" id="text-orgheadline51">
 <p>
 该函数用于根据RV的子view来测量RV的边界. 会遍历
 所有的子view, 找到"最边上"的子view的"上下左右"边界.
@@ -496,9 +1488,9 @@ arraylsit里的<a href="#orgheadline11">AdapterDataObserver</a>的对应api.
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline15" class="outline-4">
-<h4 id="orgheadline15">mAutoMeasure</h4>
-<div class="outline-text-4" id="text-orgheadline15">
+<div id="outline-container-orgheadline52" class="outline-4">
+<h4 id="orgheadline52">mAutoMeasure</h4>
+<div class="outline-text-4" id="text-orgheadline52">
 <p>
 这个变量标志measure过程由谁完成.
 </p>
@@ -508,9 +1500,9 @@ arraylsit里的<a href="#orgheadline11">AdapterDataObserver</a>的对应api.
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline16" class="outline-4">
-<h4 id="orgheadline16">onLayoutChildren</h4>
-<div class="outline-text-4" id="text-orgheadline16">
+<div id="outline-container-orgheadline53" class="outline-4">
+<h4 id="orgheadline53">onLayoutChildren</h4>
+<div class="outline-text-4" id="text-orgheadline53">
 <p>
 代码注释笔记:
 </p>
@@ -524,9 +1516,9 @@ arraylsit里的<a href="#orgheadline11">AdapterDataObserver</a>的对应api.
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline17" class="outline-3">
-<h3 id="orgheadline17">ChildHelper</h3>
-<div class="outline-text-3" id="text-orgheadline17">
+<div id="outline-container-orgheadline54" class="outline-3">
+<h3 id="orgheadline54">ChildHelper</h3>
+<div class="outline-text-3" id="text-orgheadline54">
 <ol class="org-ol">
 <li>该类用于管理子view, 它使用一个bitmap来表示目前的
 view, bitmap的长度表示子view的数量. 如果某个bit被
@@ -541,7 +1533,7 @@ view, bitmap的长度表示子view的数量. 如果某个bit被
 <li>清空mHiddenViews列表. 并对每个要清除的view调用
 callback的onLeftHiddenState()函数. 这里的callback是
 在RV里实现的. 他的onLeftHiddenState()接口实现为调用
-<a href="#orgheadline10">ViewHolder</a>的onLeftHiddenState()函数.</li>
+<a href="#orgheadline47">ViewHolder</a>的onLeftHiddenState()函数.</li>
 <li>调用callback的removeAllViews()函数. 在RV中, 这个
 函数被定义为.
 <ol class="org-ol">
@@ -552,9 +1544,9 @@ callback的onLeftHiddenState()函数. 这里的callback是
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline18" class="outline-3">
-<h3 id="orgheadline18">State</h3>
-<div class="outline-text-3" id="text-orgheadline18">
+<div id="outline-container-orgheadline55" class="outline-3">
+<h3 id="orgheadline55">State</h3>
+<div class="outline-text-3" id="text-orgheadline55">
 <p>
 记录RV的一些信息, 例如
 </p>
@@ -564,12 +1556,12 @@ callback的onLeftHiddenState()函数. 这里的callback是
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline19" class="outline-3">
-<h3 id="orgheadline19">LinearLayoutManager</h3>
+<div id="outline-container-orgheadline56" class="outline-3">
+<h3 id="orgheadline56">LinearLayoutManager</h3>
 </div>
-<div id="outline-container-orgheadline20" class="outline-3">
-<h3 id="orgheadline20">Recycler</h3>
-<div class="outline-text-3" id="text-orgheadline20">
+<div id="outline-container-orgheadline57" class="outline-3">
+<h3 id="orgheadline57">Recycler</h3>
+<div class="outline-text-3" id="text-orgheadline57">
 <ol class="org-ol">
 <li>"scrapped" view值被标记了的view. 可能会被移除或复用.</li>
 <li>Recycler包含两层缓存, "缓存"view和RVP, 如果缓存满的话
@@ -582,34 +1574,34 @@ callback的onLeftHiddenState()函数. 这里的callback是
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline21" class="outline-3">
-<h3 id="orgheadline21">RecycledViewPool</h3>
-<div class="outline-text-3" id="text-orgheadline21">
+<div id="outline-container-orgheadline58" class="outline-3">
+<h3 id="orgheadline58">RecycledViewPool</h3>
+<div class="outline-text-3" id="text-orgheadline58">
 <ol class="org-ol">
 <li>提供了在多个RV之间共享view的功能.</li>
 <li>如果不为RV设置一个Pool, RV会自己创建一个.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline22" class="outline-3">
-<h3 id="orgheadline22">AdapterHelper</h3>
-<div class="outline-text-3" id="text-orgheadline22">
+<div id="outline-container-orgheadline59" class="outline-3">
+<h3 id="orgheadline59">AdapterHelper</h3>
+<div class="outline-text-3" id="text-orgheadline59">
 <ol class="org-ol">
 <li></li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline23" class="outline-3">
-<h3 id="orgheadline23">UpdateOp</h3>
-<div class="outline-text-3" id="text-orgheadline23">
+<div id="outline-container-orgheadline60" class="outline-3">
+<h3 id="orgheadline60">UpdateOp</h3>
+<div class="outline-text-3" id="text-orgheadline60">
 <p>
 一直操作的命令类.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline24" class="outline-3">
-<h3 id="orgheadline24">OpRecorderer</h3>
-<div class="outline-text-3" id="text-orgheadline24">
+<div id="outline-container-orgheadline61" class="outline-3">
+<h3 id="orgheadline61">OpRecorderer</h3>
+<div class="outline-text-3" id="text-orgheadline61">
 <ol class="org-ol">
 <li>reorderOps
 操作重排序.
@@ -628,18 +1620,18 @@ REMOVE命令. 之前的REMOVE命令可以少remove一个元素.
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline25" class="outline-3">
-<h3 id="orgheadline25">RecyclerViewAccessibilityDelegate</h3>
+<div id="outline-container-orgheadline62" class="outline-3">
+<h3 id="orgheadline62">RecyclerViewAccessibilityDelegate</h3>
 </div>
-<div id="outline-container-orgheadline26" class="outline-3">
-<h3 id="orgheadline26">DefaultItemAnimator</h3>
+<div id="outline-container-orgheadline63" class="outline-3">
+<h3 id="orgheadline63">DefaultItemAnimator</h3>
 </div>
-<div id="outline-container-orgheadline27" class="outline-3">
-<h3 id="orgheadline27">ItemAnimator</h3>
+<div id="outline-container-orgheadline64" class="outline-3">
+<h3 id="orgheadline64">ItemAnimator</h3>
 </div>
-<div id="outline-container-orgheadline28" class="outline-3">
-<h3 id="orgheadline28">RV</h3>
-<div class="outline-text-3" id="text-orgheadline28">
+<div id="outline-container-orgheadline65" class="outline-3">
+<h3 id="orgheadline65">RV</h3>
+<div class="outline-text-3" id="text-orgheadline65">
 <ol class="org-ol">
 <li>mTouchSlop表示多长的距离就可以认为是scroll.</li>
 <li>mMinFlingVelocity和mMax&#x2026;是滑动的最大/最小速度.</li>
@@ -652,12 +1644,12 @@ REMOVE命令. 之前的REMOVE命令可以少remove一个元素.
 最大/最小速度.</li>
 <li>设置mItemAnimator的listener为mItemAnimatorListener.
 <ol class="org-ol">
-<li>mItemAnimator被初始化为<a href="#orgheadline26">DefaultItemAnimator</a>对象.
+<li>mItemAnimator被初始化为<a href="#orgheadline63">DefaultItemAnimator</a>对象.
 DefaultItemAnimator继承自SimpleItemAnimator, 后者继承自
-<a href="#orgheadline27">ItemAnimator</a>.</li>
+<a href="#orgheadline64">ItemAnimator</a>.</li>
 </ol></li>
-<li>初始化AdapterManager, 生成一个新的<a href="#orgheadline22">AdapterHelper</a>类.</li>
-<li>初始化ChildHelper, 生成一个新的<a href="#orgheadline17">ChildHelper</a>对象.</li>
+<li>初始化AdapterManager, 生成一个新的<a href="#orgheadline59">AdapterHelper</a>类.</li>
+<li>初始化ChildHelper, 生成一个新的<a href="#orgheadline54">ChildHelper</a>对象.</li>
 <li>获取AccessibilityMananger.</li>
 <li>如果在xml里设置了layoutManager, 则创建LayoutManager.</li>
 <li>创建一个NestedScrollingChildHelper实例.</li>
@@ -747,25 +1739,25 @@ RV的子view可以重写这个函数.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline29" class="outline-3">
-<h3 id="orgheadline29">ItemDecoration</h3>
+<div id="outline-container-orgheadline66" class="outline-3">
+<h3 id="orgheadline66">ItemDecoration</h3>
 </div>
-<div id="outline-container-orgheadline33" class="outline-3">
-<h3 id="orgheadline33">Home页"卡片"源码学习笔记</h3>
-<div class="outline-text-3" id="text-orgheadline33">
-</div><div id="outline-container-orgheadline31" class="outline-4">
-<h4 id="orgheadline31">自定义控件TwoWayView</h4>
-<div class="outline-text-4" id="text-orgheadline31">
+<div id="outline-container-orgheadline70" class="outline-3">
+<h3 id="orgheadline70">Home页"卡片"源码学习笔记</h3>
+<div class="outline-text-3" id="text-orgheadline70">
+</div><div id="outline-container-orgheadline68" class="outline-4">
+<h4 id="orgheadline68">自定义控件TwoWayView</h4>
+<div class="outline-text-4" id="text-orgheadline68">
 <ol class="org-ol">
 <li>继承自RecyclerView.</li>
-<li>构造函数默认使用了<a href="#orgheadline28">RV</a>的构造函数.</li>
-<li>重写setLayoutManager()函数, 必须为<a href="#orgheadline30">TwoWayLayoutManager</a>的子类.</li>
+<li>构造函数默认使用了<a href="#orgheadline65">RV</a>的构造函数.</li>
+<li>重写setLayoutManager()函数, 必须为<a href="#orgheadline67">TwoWayLayoutManager</a>的子类.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline30" class="outline-4">
-<h4 id="orgheadline30">TwoWayLayoutManager</h4>
-<div class="outline-text-4" id="text-orgheadline30">
+<div id="outline-container-orgheadline67" class="outline-4">
+<h4 id="orgheadline67">TwoWayLayoutManager</h4>
+<div class="outline-text-4" id="text-orgheadline67">
 <ol class="org-ol">
 <li>继承自LayoutManager.</li>
 <li>可以设置orientation, 即横还是竖.</li>
@@ -795,11 +1787,11 @@ LayoutManager提供了一系列的API来获取RV的参数.
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline32" class="outline-4">
-<h4 id="orgheadline32">DividerItemDecoration</h4>
-<div class="outline-text-4" id="text-orgheadline32">
+<div id="outline-container-orgheadline69" class="outline-4">
+<h4 id="orgheadline69">DividerItemDecoration</h4>
+<div class="outline-text-4" id="text-orgheadline69">
 <p>
-该类继承自<a href="#orgheadline29">ItemDecoration</a>, 用于修饰每个view. 
+该类继承自<a href="#orgheadline66">ItemDecoration</a>, 用于修饰每个view. 
 支持水平和竖直方向的分割drawable设置.
 </p>
 <ol class="org-ol">
@@ -811,9 +1803,9 @@ LayoutManager提供了一系列的API来获取RV的参数.
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline34" class="outline-3">
-<h3 id="orgheadline34">文章阅读笔记</h3>
-<div class="outline-text-3" id="text-orgheadline34">
+<div id="outline-container-orgheadline71" class="outline-3">
+<h3 id="orgheadline71">文章阅读笔记</h3>
+<div class="outline-text-3" id="text-orgheadline71">
 <ol class="org-ol">
 <li><a href="http://www.birbit.com/recyclerview-animations-part-1-how-animations-work/">RV动画详解</a>
 <ol class="org-ol">
@@ -852,12 +1844,12 @@ getViewForPosition()返回正确的</li>
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline40" class="outline-2">
-<h2 id="orgheadline40">View</h2>
-<div class="outline-text-2" id="text-orgheadline40">
-</div><div id="outline-container-orgheadline36" class="outline-3">
-<h3 id="orgheadline36">view的坐标系</h3>
-<div class="outline-text-3" id="text-orgheadline36">
+<div id="outline-container-orgheadline77" class="outline-2">
+<h2 id="orgheadline77">View</h2>
+<div class="outline-text-2" id="text-orgheadline77">
+</div><div id="outline-container-orgheadline73" class="outline-3">
+<h3 id="orgheadline73">view的坐标系</h3>
+<div class="outline-text-3" id="text-orgheadline73">
 <ol class="org-ol">
 <li>left, right, top, bottom</li>
 <li>x, y, translationX, translationY.
@@ -868,25 +1860,25 @@ scrollX &gt; 0, view的内容在其位置的左边. &lt; 0, view的内容在其�
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline37" class="outline-3">
-<h3 id="orgheadline37">在竖直方向移动view&#xa0;&#xa0;&#xa0;<span class="tag"><span class="view">view</span></span></h3>
-<div class="outline-text-3" id="text-orgheadline37">
+<div id="outline-container-orgheadline74" class="outline-3">
+<h3 id="orgheadline74">在竖直方向移动view&#xa0;&#xa0;&#xa0;<span class="tag"><span class="view">view</span></span></h3>
+<div class="outline-text-3" id="text-orgheadline74">
 <p>
 offsetTopAndBottom(offset),offset&gt;0, 向下移动. 否则向上移动.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline38" class="outline-3">
-<h3 id="orgheadline38">给当前window添加view:&#xa0;&#xa0;&#xa0;<span class="tag"><span class="view">view</span></span></h3>
-<div class="outline-text-3" id="text-orgheadline38">
+<div id="outline-container-orgheadline75" class="outline-3">
+<h3 id="orgheadline75">给当前window添加view:&#xa0;&#xa0;&#xa0;<span class="tag"><span class="view">view</span></span></h3>
+<div class="outline-text-3" id="text-orgheadline75">
 <p>
 getWindow().getDecorView().addView(); 会添加到最上层.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline39" class="outline-3">
-<h3 id="orgheadline39">设置view在不同状态下的UI展示&#xa0;&#xa0;&#xa0;<span class="tag"><span class="view">view</span></span></h3>
-<div class="outline-text-3" id="text-orgheadline39">
+<div id="outline-container-orgheadline76" class="outline-3">
+<h3 id="orgheadline76">设置view在不同状态下的UI展示&#xa0;&#xa0;&#xa0;<span class="tag"><span class="view">view</span></span></h3>
+<div class="outline-text-3" id="text-orgheadline76">
 <p>
   例如设置在点击或可用状态下的背景图片，背景颜色等。
 通过设置一个xml文件来实现，使用 <b>selector</b> 标签来设置
@@ -913,9 +1905,9 @@ getWindow().getDecorView().addView(); 会添加到最上层.
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline41" class="outline-2">
-<h2 id="orgheadline41">事件分发</h2>
-<div class="outline-text-2" id="text-orgheadline41">
+<div id="outline-container-orgheadline78" class="outline-2">
+<h2 id="orgheadline78">事件分发</h2>
+<div class="outline-text-2" id="text-orgheadline78">
 <ol class="org-ol">
 <li>当一个事件过来时, view 的 dispatchTouchEvent(ev)函数会
 调用, 该函数做以下判断:
@@ -945,9 +1937,9 @@ onTouchEvent(ev). 否则, 调用子view的dispatchTouchEvent(ev).
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline42" class="outline-2">
-<h2 id="orgheadline42">数据库&#xa0;&#xa0;&#xa0;<span class="tag"><span class="sqlite">sqlite</span></span></h2>
-<div class="outline-text-2" id="text-orgheadline42">
+<div id="outline-container-orgheadline79" class="outline-2">
+<h2 id="orgheadline79">数据库&#xa0;&#xa0;&#xa0;<span class="tag"><span class="sqlite">sqlite</span></span></h2>
+<div class="outline-text-2" id="text-orgheadline79">
 <ol class="org-ol">
 <li>在 android 中使用 SQLiteOpenHelper 实现数据库的创建和版本管理.</li>
 <li>数据库升级需要将升级版本号传递给 SQLiteHelper,  这样会触发对该类的
@@ -955,9 +1947,9 @@ onUpgrade()函数的调用</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline43" class="outline-2">
-<h2 id="orgheadline43">ormlite库操作数据库&#xa0;&#xa0;&#xa0;<span class="tag"><span class="sqlite">sqlite</span></span></h2>
-<div class="outline-text-2" id="text-orgheadline43">
+<div id="outline-container-orgheadline80" class="outline-2">
+<h2 id="orgheadline80">ormlite库操作数据库&#xa0;&#xa0;&#xa0;<span class="tag"><span class="sqlite">sqlite</span></span></h2>
+<div class="outline-text-2" id="text-orgheadline80">
 <p>
 ormlite 对比 android 自带数据库 api 的好处是可以基于类创建一个表, 及表中数据和类的映射.
 </p>
@@ -976,37 +1968,37 @@ ormlite 对比 android 自带数据库 api 的好处是可以基于类创建一�
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline52" class="outline-2">
-<h2 id="orgheadline52">app 常用库</h2>
-<div class="outline-text-2" id="text-orgheadline52">
-</div><div id="outline-container-orgheadline44" class="outline-3">
-<h3 id="orgheadline44">gson操作json字符串</h3>
+<div id="outline-container-orgheadline89" class="outline-2">
+<h2 id="orgheadline89">app 常用库</h2>
+<div class="outline-text-2" id="text-orgheadline89">
+</div><div id="outline-container-orgheadline81" class="outline-3">
+<h3 id="orgheadline81">gson操作json字符串</h3>
 </div>
-<div id="outline-container-orgheadline45" class="outline-3">
-<h3 id="orgheadline45">okhttp进行网络操作</h3>
+<div id="outline-container-orgheadline82" class="outline-3">
+<h3 id="orgheadline82">okhttp进行网络操作</h3>
 </div>
-<div id="outline-container-orgheadline46" class="outline-3">
-<h3 id="orgheadline46">fresco网络图片加载</h3>
+<div id="outline-container-orgheadline83" class="outline-3">
+<h3 id="orgheadline83">fresco网络图片加载</h3>
 </div>
-<div id="outline-container-orgheadline47" class="outline-3">
-<h3 id="orgheadline47">umeng进行统计分析和反馈</h3>
+<div id="outline-container-orgheadline84" class="outline-3">
+<h3 id="orgheadline84">umeng进行统计分析和反馈</h3>
 </div>
-<div id="outline-container-orgheadline48" class="outline-3">
-<h3 id="orgheadline48">sharesdk进行统一分享</h3>
+<div id="outline-container-orgheadline85" class="outline-3">
+<h3 id="orgheadline85">sharesdk进行统一分享</h3>
 </div>
-<div id="outline-container-orgheadline49" class="outline-3">
-<h3 id="orgheadline49">阿里聚安全进行加密</h3>
+<div id="outline-container-orgheadline86" class="outline-3">
+<h3 id="orgheadline86">阿里聚安全进行加密</h3>
 </div>
-<div id="outline-container-orgheadline50" class="outline-3">
-<h3 id="orgheadline50">广点通和百度的广告进行广告投放</h3>
+<div id="outline-container-orgheadline87" class="outline-3">
+<h3 id="orgheadline87">广点通和百度的广告进行广告投放</h3>
 </div>
-<div id="outline-container-orgheadline51" class="outline-3">
-<h3 id="orgheadline51">小米push和umengpush来推送消息</h3>
+<div id="outline-container-orgheadline88" class="outline-3">
+<h3 id="orgheadline88">小米push和umengpush来推送消息</h3>
 </div>
 </div>
-<div id="outline-container-orgheadline53" class="outline-2">
-<h2 id="orgheadline53">设置多进程</h2>
-<div class="outline-text-2" id="text-orgheadline53">
+<div id="outline-container-orgheadline90" class="outline-2">
+<h2 id="orgheadline90">设置多进程</h2>
+<div class="outline-text-2" id="text-orgheadline90">
 <ol class="org-ol">
 <li>方法: 设置 taskAffinity</li>
 <li>保持锁屏占用的资源变少. 避免被系统应用杀死.</li>
@@ -1014,9 +2006,9 @@ ormlite 对比 android 自带数据库 api 的好处是可以基于类创建一�
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline54" class="outline-2">
-<h2 id="orgheadline54">四种启动模式</h2>
-<div class="outline-text-2" id="text-orgheadline54">
+<div id="outline-container-orgheadline91" class="outline-2">
+<h2 id="orgheadline91">四种启动模式</h2>
+<div class="outline-text-2" id="text-orgheadline91">
 <ol class="org-ol">
 <li>standard: 标准模式, 建立一个新的栈放入task中, 什么都不判断.</li>
 <li>singleTop: 如果当前页面已经是栈顶, 则不新建, 否则新建.</li>
@@ -1025,9 +2017,9 @@ ormlite 对比 android 自带数据库 api 的好处是可以基于类创建一�
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline55" class="outline-2">
-<h2 id="orgheadline55">让activity支持scheme</h2>
-<div class="outline-text-2" id="text-orgheadline55">
+<div id="outline-container-orgheadline92" class="outline-2">
+<h2 id="orgheadline92">让activity支持scheme</h2>
+<div class="outline-text-2" id="text-orgheadline92">
 <p>
 通过在activity节点中设置 intent-filter 节点. 里面的内容
 </p>
@@ -1039,9 +2031,9 @@ ormlite 对比 android 自带数据库 api 的好处是可以基于类创建一�
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline56" class="outline-2">
-<h2 id="orgheadline56">home页蒙版指导图</h2>
-<div class="outline-text-2" id="text-orgheadline56">
+<div id="outline-container-orgheadline93" class="outline-2">
+<h2 id="orgheadline93">home页蒙版指导图</h2>
+<div class="outline-text-2" id="text-orgheadline93">
 <ol class="org-ol">
 <li>通过在MainFragment里添加了一个MainFragmentManager.</li>
 <li>在mainfragmet的oncreate里调用该manager的showGuide()函数.</li>
@@ -1050,9 +2042,9 @@ ormlite 对比 android 自带数据库 api 的好处是可以基于类创建一�
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline57" class="outline-2">
-<h2 id="orgheadline57">在别人的页面(例如系统页面)显示指导</h2>
-<div class="outline-text-2" id="text-orgheadline57">
+<div id="outline-container-orgheadline94" class="outline-2">
+<h2 id="orgheadline94">在别人的页面(例如系统页面)显示指导</h2>
+<div class="outline-text-2" id="text-orgheadline94">
 <p>
 可以有两种方法:
 </p>
@@ -1063,12 +2055,12 @@ activity 的背景可以设置为透明, 这样方便看到下面的内容.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline58" class="outline-2">
-<h2 id="orgheadline58">设置应用可以获取通知权限保持应用不被杀死</h2>
+<div id="outline-container-orgheadline95" class="outline-2">
+<h2 id="orgheadline95">设置应用可以获取通知权限保持应用不被杀死</h2>
 </div>
-<div id="outline-container-orgheadline59" class="outline-2">
-<h2 id="orgheadline59">通常可以放在Application类的动作</h2>
-<div class="outline-text-2" id="text-orgheadline59">
+<div id="outline-container-orgheadline96" class="outline-2">
+<h2 id="orgheadline96">通常可以放在Application类的动作</h2>
+<div class="outline-text-2" id="text-orgheadline96">
 <ol class="org-ol">
 <li>设置自定义异常捕获类.</li>
 <li>统计, 注册, 反馈, 更新.</li>
@@ -1076,12 +2068,12 @@ activity 的背景可以设置为透明, 这样方便看到下面的内容.</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline62" class="outline-2">
-<h2 id="orgheadline62">可替换库对比</h2>
-<div class="outline-text-2" id="text-orgheadline62">
-</div><div id="outline-container-orgheadline60" class="outline-3">
-<h3 id="orgheadline60">recyclerView VS listView</h3>
-<div class="outline-text-3" id="text-orgheadline60">
+<div id="outline-container-orgheadline99" class="outline-2">
+<h2 id="orgheadline99">可替换库对比</h2>
+<div class="outline-text-2" id="text-orgheadline99">
+</div><div id="outline-container-orgheadline97" class="outline-3">
+<h3 id="orgheadline97">recyclerView VS listView</h3>
+<div class="outline-text-3" id="text-orgheadline97">
 <p>
 使用RecyclerView的一些好处:
 </p>
@@ -1107,9 +2099,9 @@ ListView默认只支持竖直方向(可以通过重写代码实现水平方向, 
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline61" class="outline-3">
-<h3 id="orgheadline61">startService VS bindService&#xa0;&#xa0;&#xa0;<span class="tag"><span class="service">service</span></span></h3>
-<div class="outline-text-3" id="text-orgheadline61">
+<div id="outline-container-orgheadline98" class="outline-3">
+<h3 id="orgheadline98">startService VS bindService&#xa0;&#xa0;&#xa0;<span class="tag"><span class="service">service</span></span></h3>
+<div class="outline-text-3" id="text-orgheadline98">
 <p>
 <a href="http://codetheory.in/understanding-android-started-bound-services/">http://codetheory.in/understanding-android-started-bound-services/</a>
 </p>
@@ -1121,12 +2113,12 @@ ListView默认只支持竖直方向(可以通过重写代码实现水平方向, 
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline65" class="outline-2">
-<h2 id="orgheadline65">thread with looper and handler&#xa0;&#xa0;&#xa0;<span class="tag"><span class="handler">handler</span></span></h2>
-<div class="outline-text-2" id="text-orgheadline65">
-</div><div id="outline-container-orgheadline63" class="outline-3">
-<h3 id="orgheadline63">在其他线程中创建handler</h3>
-<div class="outline-text-3" id="text-orgheadline63">
+<div id="outline-container-orgheadline102" class="outline-2">
+<h2 id="orgheadline102">thread with looper and handler&#xa0;&#xa0;&#xa0;<span class="tag"><span class="handler">handler</span></span></h2>
+<div class="outline-text-2" id="text-orgheadline102">
+</div><div id="outline-container-orgheadline100" class="outline-3">
+<h3 id="orgheadline100">在其他线程中创建handler</h3>
+<div class="outline-text-3" id="text-orgheadline100">
 <ol class="org-ol">
 <li>使用Looper.prepare()给该thread创建一个looper "线程变量"</li>
 <li>创建一个handler.</li>
@@ -1134,9 +2126,9 @@ ListView默认只支持竖直方向(可以通过重写代码实现水平方向, 
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline64" class="outline-3">
-<h3 id="orgheadline64">在其他线程中使用UI线程的looper.</h3>
-<div class="outline-text-3" id="text-orgheadline64">
+<div id="outline-container-orgheadline101" class="outline-3">
+<h3 id="orgheadline101">在其他线程中使用UI线程的looper.</h3>
+<div class="outline-text-3" id="text-orgheadline101">
 <ol class="org-ol">
 <li>通过Looper.getMainLooper()获取UI线程的looper.
 然后使用该Looper创建一个handler.</li>
@@ -1150,9 +2142,9 @@ ListView默认只支持竖直方向(可以通过重写代码实现水平方向, 
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline66" class="outline-2">
-<h2 id="orgheadline66">how to resolve ANR</h2>
-<div class="outline-text-2" id="text-orgheadline66">
+<div id="outline-container-orgheadline103" class="outline-2">
+<h2 id="orgheadline103">how to resolve ANR</h2>
+<div class="outline-text-2" id="text-orgheadline103">
 <p>
 <a href="http://www.programering.com/a/MTMyEDMwATI.html">http://www.programering.com/a/MTMyEDMwATI.html</a>
 </p>
@@ -1164,12 +2156,12 @@ ListView默认只支持竖直方向(可以通过重写代码实现水平方向, 
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline68" class="outline-2">
-<h2 id="orgheadline68">touch事件传递机制</h2>
-<div class="outline-text-2" id="text-orgheadline68">
-</div><div id="outline-container-orgheadline67" class="outline-3">
-<h3 id="orgheadline67">实验</h3>
-<div class="outline-text-3" id="text-orgheadline67">
+<div id="outline-container-orgheadline105" class="outline-2">
+<h2 id="orgheadline105">touch事件传递机制</h2>
+<div class="outline-text-2" id="text-orgheadline105">
+</div><div id="outline-container-orgheadline104" class="outline-3">
+<h3 id="orgheadline104">实验</h3>
+<div class="outline-text-3" id="text-orgheadline104">
 <p>
 自定义一个relativelayout和view, layout结构是两个relativelayout A/B, 里面放一个view C.
 </p>
@@ -1204,26 +2196,26 @@ A的onInterceptTouchEvent()只有在DOWN时被调用. 后续ACTION不会调用.
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline69" class="outline-2">
-<h2 id="orgheadline69">使用 Resource 类来获取 resource 资源</h2>
-<div class="outline-text-2" id="text-orgheadline69">
+<div id="outline-container-orgheadline106" class="outline-2">
+<h2 id="orgheadline106">使用 Resource 类来获取 resource 资源</h2>
+<div class="outline-text-2" id="text-orgheadline106">
 <p>
 context 的 getResource 会返回一个 Resource 类, 使用该类可以获取定义的资源文件,
 例如 String,Drawable,Integer 等等.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline70" class="outline-2">
-<h2 id="orgheadline70">辅助功能</h2>
-<div class="outline-text-2" id="text-orgheadline70">
+<div id="outline-container-orgheadline107" class="outline-2">
+<h2 id="orgheadline107">辅助功能</h2>
+<div class="outline-text-2" id="text-orgheadline107">
 <p>
 通过开启辅助功能权限(也称作无障碍)可以模拟用户的点击,滚动等一切行为,
 同时可以监控屏幕的变化, 实现一些"自动化"操作. 比如设置自动设置一些权限.
 </p>
 </div>
-<div id="outline-container-orgheadline71" class="outline-3">
-<h3 id="orgheadline71">开启步骤</h3>
-<div class="outline-text-3" id="text-orgheadline71">
+<div id="outline-container-orgheadline108" class="outline-3">
+<h3 id="orgheadline108">开启步骤</h3>
+<div class="outline-text-3" id="text-orgheadline108">
 <ol class="org-ol">
 <li>实现一个类继承自AccessibilityService类.</li>
 <li>在AndroidManifest.xml里注册这个service, 并需要做如下配置
@@ -1251,9 +2243,9 @@ Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
 </pre>
 </div>
 </div>
-<div id="outline-container-orgheadline72" class="outline-3">
-<h3 id="orgheadline72">自动控制逻辑</h3>
-<div class="outline-text-3" id="text-orgheadline72">
+<div id="outline-container-orgheadline109" class="outline-3">
+<h3 id="orgheadline109">自动控制逻辑</h3>
+<div class="outline-text-3" id="text-orgheadline109">
 <ol class="org-ol">
 <li>当用户在上一步中把权限开启后, 自定义的Service的onServiceConnected()函数
 会被调用. 可以在这一步里进行配置. 或者如上一步所述在xml里配置.
@@ -1264,18 +2256,18 @@ Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline73" class="outline-2">
-<h2 id="orgheadline73">系统的"最近任务"中不现实activity</h2>
-<div class="outline-text-2" id="text-orgheadline73">
+<div id="outline-container-orgheadline110" class="outline-2">
+<h2 id="orgheadline110">系统的"最近任务"中不现实activity</h2>
+<div class="outline-text-2" id="text-orgheadline110">
 <p>
 可以在Actvivity的配置中加入 <code>excludeFromRecents</code>, 
 或者Intent中设置相应的FLAG.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline74" class="outline-2">
-<h2 id="orgheadline74">打开"最近任务"窗口</h2>
-<div class="outline-text-2" id="text-orgheadline74">
+<div id="outline-container-orgheadline111" class="outline-2">
+<h2 id="orgheadline111">打开"最近任务"窗口</h2>
+<div class="outline-text-2" id="text-orgheadline111">
 <pre class="example">
 private static void openRecentApps() {
     try {
@@ -1294,12 +2286,12 @@ private static void openRecentApps() {
 </pre>
 </div>
 </div>
-<div id="outline-container-orgheadline76" class="outline-2">
-<h2 id="orgheadline76">不同机型特殊配置</h2>
-<div class="outline-text-2" id="text-orgheadline76">
-</div><div id="outline-container-orgheadline75" class="outline-3">
-<h3 id="orgheadline75">判断是否为小米及获取小米版本</h3>
-<div class="outline-text-3" id="text-orgheadline75">
+<div id="outline-container-orgheadline113" class="outline-2">
+<h2 id="orgheadline113">不同机型特殊配置</h2>
+<div class="outline-text-2" id="text-orgheadline113">
+</div><div id="outline-container-orgheadline112" class="outline-3">
+<h3 id="orgheadline112">判断是否为小米及获取小米版本</h3>
+<div class="outline-text-3" id="text-orgheadline112">
 <p>
 通过反射 <code>android.os.SystemProperties</code> 这个类, 调用其
 get()函数, 来获取属性"ro.miui.ui.version.name"的值.
@@ -1335,18 +2327,18 @@ get()函数, 来获取属性"ro.miui.ui.version.name"的值.
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline77" class="outline-2">
-<h2 id="orgheadline77">获取当前正在运行的应用&#xa0;&#xa0;&#xa0;<span class="tag"><span class="system">system</span></span></h2>
-<div class="outline-text-2" id="text-orgheadline77">
+<div id="outline-container-orgheadline114" class="outline-2">
+<h2 id="orgheadline114">获取当前正在运行的应用&#xa0;&#xa0;&#xa0;<span class="tag"><span class="system">system</span></span></h2>
+<div class="outline-text-2" id="text-orgheadline114">
 <p>
 CH在实现中从三个地方取数据, 因为使用的API都说系统级的api,
 在官方文档中明确支出这些api获取的数据是不可靠的, 
 所以多试几个以保证正确率.
 </p>
 </div>
-<div id="outline-container-orgheadline78" class="outline-3">
-<h3 id="orgheadline78">getRunningAppProcess()</h3>
-<div class="outline-text-3" id="text-orgheadline78">
+<div id="outline-container-orgheadline115" class="outline-3">
+<h3 id="orgheadline115">getRunningAppProcess()</h3>
+<div class="outline-text-3" id="text-orgheadline115">
 <p>
 调用了ActivityManager的getRunningAppProcess()函数.获取
 RunningAppProcessInfo的一个list.
@@ -1359,9 +2351,9 @@ RunningAppProcessInfo的一个list.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline79" class="outline-3">
-<h3 id="orgheadline79">queryUsageStats()&#xa0;&#xa0;&#xa0;<span class="tag"><span class="stat">stat</span></span></h3>
-<div class="outline-text-3" id="text-orgheadline79">
+<div id="outline-container-orgheadline116" class="outline-3">
+<h3 id="orgheadline116">queryUsageStats()&#xa0;&#xa0;&#xa0;<span class="tag"><span class="stat">stat</span></span></h3>
+<div class="outline-text-3" id="text-orgheadline116">
 <p>
 调用了UsageStatManager的queryUsageStats()函数,
 该函数返回UsageStats的一个list. UsageStatManager需要在权限中
@@ -1376,9 +2368,9 @@ RunningAppProcessInfo的一个list.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline80" class="outline-3">
-<h3 id="orgheadline80">getRunningTasks()</h3>
-<div class="outline-text-3" id="text-orgheadline80">
+<div id="outline-container-orgheadline117" class="outline-3">
+<h3 id="orgheadline117">getRunningTasks()</h3>
+<div class="outline-text-3" id="text-orgheadline117">
 <p>
 调用了 ActivityManager 的 getRunningTasks() 函数, 该函数返回正在运行
 的 Task, 该函数 L 版本之后被抛弃.
@@ -1386,9 +2378,9 @@ RunningAppProcessInfo的一个list.
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline81" class="outline-2">
-<h2 id="orgheadline81">使用 native 程序保持进程不死</h2>
-<div class="outline-text-2" id="text-orgheadline81">
+<div id="outline-container-orgheadline118" class="outline-2">
+<h2 id="orgheadline118">使用 native 程序保持进程不死</h2>
+<div class="outline-text-2" id="text-orgheadline118">
 <p>
  CH 的思路是 app 开启的时候通过 jni 来启动一个 native 程序
 每次 app 启动的时候,都会去检查这个程序进程是否还在, 如果不在就启动一下. 
@@ -1400,9 +2392,9 @@ RunningAppProcessInfo的一个list.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline82" class="outline-2">
-<h2 id="orgheadline82">版本更新</h2>
-<div class="outline-text-2" id="text-orgheadline82">
+<div id="outline-container-orgheadline119" class="outline-2">
+<h2 id="orgheadline119">版本更新</h2>
+<div class="outline-text-2" id="text-orgheadline119">
 <p>
 一般的版本更新分为两种情况:
 </p>
@@ -1431,9 +2423,9 @@ apk包下载中的一些知识:
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline83" class="outline-2">
-<h2 id="orgheadline83">与服务器数据传输的加密</h2>
-<div class="outline-text-2" id="text-orgheadline83">
+<div id="outline-container-orgheadline120" class="outline-2">
+<h2 id="orgheadline120">与服务器数据传输的加密</h2>
+<div class="outline-text-2" id="text-orgheadline120">
 <p>
 主要使用了两个东西, u-key 和 us.
 </p>
@@ -1450,9 +2442,9 @@ jni 获取.</li>
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline84" class="outline-2">
-<h2 id="orgheadline84">通过 intentservice 来执行后台任务&#xa0;&#xa0;&#xa0;<span class="tag"><span class="intentservice">intentservice</span></span></h2>
-<div class="outline-text-2" id="text-orgheadline84">
+<div id="outline-container-orgheadline121" class="outline-2">
+<h2 id="orgheadline121">通过 intentservice 来执行后台任务&#xa0;&#xa0;&#xa0;<span class="tag"><span class="intentservice">intentservice</span></span></h2>
+<div class="outline-text-2" id="text-orgheadline121">
 <p>
 intentService 通过执行一个后台线程来处理接受到的 intent.所以可以让一些繁重的工作通过
  intentService 来处理. 但是 intentService 只启动一个线程, 对于接受到的 intent 都是
@@ -1464,12 +2456,12 @@ intentService 通过执行一个后台线程来处理接受到的 intent.所以�
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline86" class="outline-2">
-<h2 id="orgheadline86">JobScheduler</h2>
-<div class="outline-text-2" id="text-orgheadline86">
-</div><div id="outline-container-orgheadline85" class="outline-3">
-<h3 id="orgheadline85">一般使用流程</h3>
-<div class="outline-text-3" id="text-orgheadline85">
+<div id="outline-container-orgheadline123" class="outline-2">
+<h2 id="orgheadline123">JobScheduler</h2>
+<div class="outline-text-2" id="text-orgheadline123">
+</div><div id="outline-container-orgheadline122" class="outline-3">
+<h3 id="orgheadline122">一般使用流程</h3>
+<div class="outline-text-3" id="text-orgheadline122">
 <ol class="org-ol">
 <li>创建一个自定义JobService</li>
 <li>使用JobInfo的builder基于上面的JobService创建一个JobInfo.</li>
@@ -1478,12 +2470,12 @@ intentService 通过执行一个后台线程来处理接受到的 intent.所以�
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline90" class="outline-2">
-<h2 id="orgheadline90">ch</h2>
-<div class="outline-text-2" id="text-orgheadline90">
-</div><div id="outline-container-orgheadline87" class="outline-3">
-<h3 id="orgheadline87">常见的主页展示方式</h3>
-<div class="outline-text-3" id="text-orgheadline87">
+<div id="outline-container-orgheadline127" class="outline-2">
+<h2 id="orgheadline127">ch</h2>
+<div class="outline-text-2" id="text-orgheadline127">
+</div><div id="outline-container-orgheadline124" class="outline-3">
+<h3 id="orgheadline124">常见的主页展示方式</h3>
+<div class="outline-text-3" id="text-orgheadline124">
 <p>
 目前国内主流的主页展示方式是下面一个 tab 栏, 然后
 点击每个 tab 项展示不同的页面.
@@ -1494,9 +2486,9 @@ CH 的实现使用了 TabLayout 和 FragmentPageAdapter.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline88" class="outline-3">
-<h3 id="orgheadline88">锁屏上的滑动解锁 view</h3>
-<div class="outline-text-3" id="text-orgheadline88">
+<div id="outline-container-orgheadline125" class="outline-3">
+<h3 id="orgheadline125">锁屏上的滑动解锁 view</h3>
+<div class="outline-text-3" id="text-orgheadline125">
 <ol class="org-ol">
 <li>整个的这块区域就是一个 view, 图标都是通过画布画上去的.</li>
 <li>构造函数来获取要绘制的 drawable</li>
@@ -1505,9 +2497,9 @@ CH 的实现使用了 TabLayout 和 FragmentPageAdapter.
 <li>onDraw 中将各个 drawable 画到画布上.</li>
 </ol>
 </div>
-<div id="outline-container-orgheadline89" class="outline-4">
-<h4 id="orgheadline89">通过 view 学习的思考自定义 view 的实现</h4>
-<div class="outline-text-4" id="text-orgheadline89">
+<div id="outline-container-orgheadline126" class="outline-4">
+<h4 id="orgheadline126">通过 view 学习的思考自定义 view 的实现</h4>
+<div class="outline-text-4" id="text-orgheadline126">
 <ol class="org-ol">
 <li>要确定好这个 view 的原型图和动画效果. 
 控件要怎么布局, 控件支持的动画和控件之间的动画交互.</li>
@@ -1524,12 +2516,12 @@ View 的封装对象(该对象本身不是 view, 但通过该对象的变化来�
 </div>
 </div>
 
-<div id="outline-container-orgheadline95" class="outline-2">
-<h2 id="orgheadline95">Handler</h2>
-<div class="outline-text-2" id="text-orgheadline95">
-</div><div id="outline-container-orgheadline91" class="outline-3">
-<h3 id="orgheadline91">消息分发流程 dispatchMessage()</h3>
-<div class="outline-text-3" id="text-orgheadline91">
+<div id="outline-container-orgheadline132" class="outline-2">
+<h2 id="orgheadline132">Handler</h2>
+<div class="outline-text-2" id="text-orgheadline132">
+</div><div id="outline-container-orgheadline128" class="outline-3">
+<h3 id="orgheadline128">消息分发流程 dispatchMessage()</h3>
+<div class="outline-text-3" id="text-orgheadline128">
 <ol class="org-ol">
 <li>如果消息本身是一个runnable,调用run()函数</li>
 <li>否则如果该handler有callback,调用callback的handleMessage()函数</li>
@@ -1537,59 +2529,59 @@ View 的封装对象(该对象本身不是 view, 但通过该对象的变化来�
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline92" class="outline-3">
-<h3 id="orgheadline92">Handler创建</h3>
-<div class="outline-text-3" id="text-orgheadline92">
+<div id="outline-container-orgheadline129" class="outline-3">
+<h3 id="orgheadline129">Handler创建</h3>
+<div class="outline-text-3" id="text-orgheadline129">
 <p>
 handler必须创建在一个带有Looper的线程上, 默认UI线程有Looper. 如果不显示指定,
 handler会绑定创建它线程的Looper. 没有Looper则报错.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline93" class="outline-3">
-<h3 id="orgheadline93">通过Handler获取消息</h3>
-<div class="outline-text-3" id="text-orgheadline93">
+<div id="outline-container-orgheadline130" class="outline-3">
+<h3 id="orgheadline130">通过Handler获取消息</h3>
+<div class="outline-text-3" id="text-orgheadline130">
 <p>
 所有的obtain()函数都会从系统全局的消息池中获取一个消息, 并且将该消息的Handler绑定到当前
 Handler中.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline94" class="outline-3">
-<h3 id="orgheadline94">会导致内存泄漏的原因?</h3>
+<div id="outline-container-orgheadline131" class="outline-3">
+<h3 id="orgheadline131">会导致内存泄漏的原因?</h3>
 </div>
 </div>
-<div id="outline-container-orgheadline98" class="outline-2">
-<h2 id="orgheadline98">jni</h2>
-<div class="outline-text-2" id="text-orgheadline98">
-</div><div id="outline-container-orgheadline96" class="outline-3">
-<h3 id="orgheadline96">jni里分配的内存会算到OOM内存上吗?</h3>
+<div id="outline-container-orgheadline135" class="outline-2">
+<h2 id="orgheadline135">jni</h2>
+<div class="outline-text-2" id="text-orgheadline135">
+</div><div id="outline-container-orgheadline133" class="outline-3">
+<h3 id="orgheadline133">jni里分配的内存会算到OOM内存上吗?</h3>
 </div>
-<div id="outline-container-orgheadline97" class="outline-3">
-<h3 id="orgheadline97">jni原理</h3>
+<div id="outline-container-orgheadline134" class="outline-3">
+<h3 id="orgheadline134">jni原理</h3>
 </div>
 </div>
-<div id="outline-container-orgheadline99" class="outline-2">
-<h2 id="orgheadline99">AsyncTask支持多任务提交吗?</h2>
+<div id="outline-container-orgheadline136" class="outline-2">
+<h2 id="orgheadline136">AsyncTask支持多任务提交吗?</h2>
 </div>
-<div id="outline-container-orgheadline100" class="outline-2">
-<h2 id="orgheadline100">如何设计网络框架?</h2>
+<div id="outline-container-orgheadline137" class="outline-2">
+<h2 id="orgheadline137">如何设计网络框架?</h2>
 </div>
-<div id="outline-container-orgheadline101" class="outline-2">
-<h2 id="orgheadline101">前台service的好处?</h2>
+<div id="outline-container-orgheadline138" class="outline-2">
+<h2 id="orgheadline138">前台service的好处?</h2>
 </div>
-<div id="outline-container-orgheadline102" class="outline-2">
-<h2 id="orgheadline102">ImageLoader如何同步</h2>
+<div id="outline-container-orgheadline139" class="outline-2">
+<h2 id="orgheadline139">ImageLoader如何同步</h2>
 </div>
-<div id="outline-container-orgheadline103" class="outline-2">
-<h2 id="orgheadline103">单例模式使用volatile</h2>
+<div id="outline-container-orgheadline140" class="outline-2">
+<h2 id="orgheadline140">单例模式使用volatile</h2>
 </div>
-<div id="outline-container-orgheadline104" class="outline-2">
-<h2 id="orgheadline104">thread vs asynctask</h2>
+<div id="outline-container-orgheadline141" class="outline-2">
+<h2 id="orgheadline141">thread vs asynctask</h2>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="postamble">Created At  by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
+<p class="postamble">Created At <span class="timestamp-wrapper"><span class="timestamp">&lt;2016-10-31 Mon 23:25&gt;</span></span> by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
 </div>
 </body>
 </html>

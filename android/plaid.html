@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2017-03-02 Thu 11:02 -->
+<!-- 2017-03-04 Sat 14:28 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
-<title></title>
+<title>Plaid源码阅读笔记</title>
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Luis Xu" />
 <link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
@@ -84,26 +84,50 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
+<h1 class="title">Plaid源码阅读笔记</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline4">style</a>
+<li><a href="#orgheadline1">如何写一个compile阶段注解</a>
 <ul>
-<li><a href="#orgheadline1">定义应用的整体style</a></li>
-<li><a href="#orgheadline2">页面的style</a></li>
-<li><a href="#orgheadline3">View的常用属性</a></li>
+<li><a href="#orgheadline2">注解定义</a></li>
+<li><a href="#orgheadline3">注解解析</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline11">Home</a>
+<li><a href="#orgheadline10">工程架构</a>
 <ul>
-<li><a href="#orgheadline5">布局设置</a></li>
-<li><a href="#orgheadline6">设置actionbar</a></li>
-<li><a href="#orgheadline7">抽屉控件</a></li>
-<li><a href="#orgheadline8">数据加载和UI逻辑</a>
+<li><a href="#orgheadline4">settings.gradle</a></li>
+<li><a href="#orgheadline5">gradle.properties</a></li>
+<li><a href="#orgheadline7">checkstyle.xml</a></li>
+<li><a href="#orgheadline6">顶层build.gradle</a></li>
+<li><a href="#orgheadline8">module层build.gradle</a></li>
+<li><a href="#orgheadline9">自动上传到maven</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline12">注解处理过程用到的系统api</a>
 <ul>
-<li><a href="#orgheadline9">基本组件</a></li>
-<li><a href="#orgheadline10">逻辑</a></li>
+<li><a href="#orgheadline11">Element</a></li>
+<li><a href="#orgheadline14">TypeElement</a></li>
+<li><a href="#orgheadline13">ElementKind</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline18">style</a>
+<ul>
+<li><a href="#orgheadline15">定义应用的整体style</a></li>
+<li><a href="#orgheadline16">页面的style</a></li>
+<li><a href="#orgheadline17">View的常用属性</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline25">Home</a>
+<ul>
+<li><a href="#orgheadline19">布局设置</a></li>
+<li><a href="#orgheadline20">设置actionbar</a></li>
+<li><a href="#orgheadline21">抽屉控件</a></li>
+<li><a href="#orgheadline22">数据加载和UI逻辑</a>
+<ul>
+<li><a href="#orgheadline23">基本组件</a></li>
+<li><a href="#orgheadline24">逻辑</a></li>
 </ul>
 </li>
 </ul>
@@ -111,12 +135,488 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgheadline4" class="outline-2">
-<h2 id="orgheadline4">style</h2>
-<div class="outline-text-2" id="text-orgheadline4">
-</div><div id="outline-container-orgheadline1" class="outline-3">
-<h3 id="orgheadline1">定义应用的整体style</h3>
-<div class="outline-text-3" id="text-orgheadline1">
+<p>
+源码地址:<a href="https://github.com/nickbutcher/plaid">https://github.com/nickbutcher/plaid</a> 
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">如何写一个compile阶段注解</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+主要包含两部分:
+</p>
+</div>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">注解定义</h3>
+<div class="outline-text-3" id="text-orgheadline2">
+<ol class="org-ol">
+<li>定义要提供的注解, Retention为"CLASS".</li>
+<li><p>
+编译打包该部分代码, 并在项目中引用
+(通过jar或gradle), 并在代码中使用注解.
+</p>
+<pre class="example">
+compile 'com.jakewharton:butterknife:8.0.1'
+</pre></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">注解解析</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<ol class="org-ol">
+<li>定义注解解析类, 该类继承自Processor(一般是继承自
+AbstractProcessor). 在process()函数中获取被注解的
+修饰的代码变量.</li>
+<li><p>
+打包, 并在"META-INF"目录下建立"services"目录,
+在目录下创建文件 "javax.annotation.processing.Processor", 
+文件中写入你定义的注解处理器的全包名.
+</p>
+<pre class="example">
+//cat javax.annotation.processing.Processor
+butterknife.compiler.ButterKnifeProcessor
+</pre></li>
+<li>引用jar包, 有两种方法:
+<ul class="org-ul">
+<li><p>
+gradle插件&lt;2.2之前, 使用 "com.neenbedankt.gradle.plugins:android-apt:1.8"
+在gradle文件中加入如下代码
+</p>
+<pre class="example">
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+    }
+}
+dependencies {
+...
+    apt 'com.jakewharton:butterknife-compiler:8.0.1'
+}
+</pre></li>
+<li><p>
+2.2之后, 使用"annotationProcessor"
+</p>
+<pre class="example">
+dependencies{
+  annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
+}
+</pre></li>
+</ul></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10">工程架构</h2>
+<div class="outline-text-2" id="text-orgheadline10">
+</div><div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">settings.gradle</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
+配置要包含的module,还可以定义rootProject.name
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">gradle.properties</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+<p>
+该文件可以定义一些配置, 可以在所有的gradle脚本中使用.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">checkstyle.xml</h3>
+<div class="outline-text-3" id="text-orgheadline7">
+<p>
+自定义的代码风格检查.
+BK在<a href="#orgheadline6">顶层build.gradle</a>的subprojects中定义了对
+checkstyle.xml配置的使用, 把其与"check"任务hook
+起来. 对java文件进行检查. 
+</p>
+<pre class="example">
+if (!project.name.equals('butterknife-gradle-plugin')) {
+  apply plugin: 'checkstyle'
+
+  task checkstyle(type: Checkstyle) {
+    configFile rootProject.file('checkstyle.xml')
+    source 'src/main/java'
+    ignoreFailures false
+    showViolations true
+    include '**/*.java'
+
+    classpath = files()
+  }
+
+  afterEvaluate {
+    if (project.tasks.findByName('check')) {
+      check.dependsOn('checkstyle')
+    }
+  }
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">顶层build.gradle</h3>
+<div class="outline-text-3" id="text-orgheadline6">
+<p>
+做一些公共属性的配置,常见的包括
+</p>
+<ol class="org-ol">
+<li><p>
+各工程共享的一些配置, 例如maven地址
+插件等等. 一般使用"allprojects"或"subprojects".
+然后在里面配置属性. 
+</p>
+<pre class="example">
+   allprojects {
+    repositories {
+        mavenCentral()
+        maven {
+            credentials {
+                username localMavenUserName
+                password localMavenPasswd
+            }
+            url "${localMavenAddr}releases"
+        }
+
+        flatDir {
+            dirs 'libs'
+        }
+    }
+    dependencies {
+      classpath 'com.android.tools.build:gradle:2.2.2'
+      classpath 'gradle.plugin.com.kageiit:lintrules:1.1.2'
+    }
+}
+</pre></li>
+<li><p>
+配置项目中用到的依赖的别名.
+这样做的好处是集中了依赖的管理.
+</p>
+<pre class="example">
+ext {
+  minSdkVersion = 9
+  targetSdkVersion = 25
+  compileSdkVersion = 25
+}
+def androidToolsVersion = '25.2.0'
+ext.deps = [
+    // Android
+    android: 'com.google.android:android:4.1.1.4',
+    supportCompat: "com.android.support:support-compat:$supportLibraryVersion",
+</pre></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">module层build.gradle</h3>
+<div class="outline-text-3" id="text-orgheadline8">
+<p>
+定义本模块的各种配置.
+笔记:
+</p>
+<ol class="org-ol">
+<li>BK的BG中.
+<ul class="org-ul">
+<li><p>
+dependencies中针对androidTest和test细分依赖.
+</p>
+<pre class="example">
+androidTestCompile deps.supportTestRunner
+testCompile deps.junit
+</pre></li>
+<li>dependecies中使用"linRules"依赖lintProject.</li>
+<li>使用"apply from"引用自定义gradle脚本.</li>
+<li><p>
+使用了开源插件"com.kageiit.lintrules", 
+这样可以在dependency中使用自定义的lint模块.
+</p>
+<pre class="example">
+lintRules project(':butterknife-lint')
+</pre></li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">自动上传到maven</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+<p>
+一个单独的gradle文件, 在所有的需要上传的build.gradle中引用. 
+单独project的独立配置放到其module下的 gradle.properties 中.
+</p>
+<pre class="example">
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+version = VERSION_NAME
+group = GROUP
+
+def isReleaseBuild() {
+  return VERSION_NAME.contains("SNAPSHOT") == false
+}
+
+def getReleaseRepositoryUrl() {
+  return hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL
+      : "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+}
+
+def getSnapshotRepositoryUrl() {
+  return hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL
+      : "https://oss.sonatype.org/content/repositories/snapshots/"
+}
+
+def getRepositoryUsername() {
+  return hasProperty('SONATYPE_NEXUS_USERNAME') ? SONATYPE_NEXUS_USERNAME : ""
+}
+
+def getRepositoryPassword() {
+  return hasProperty('SONATYPE_NEXUS_PASSWORD') ? SONATYPE_NEXUS_PASSWORD : ""
+}
+
+afterEvaluate { project -&gt;
+  uploadArchives {
+    repositories {
+      mavenDeployer {
+        beforeDeployment { MavenDeployment deployment -&gt; signing.signPom(deployment) }
+
+        pom.groupId = GROUP
+        pom.artifactId = POM_ARTIFACT_ID
+        pom.version = VERSION_NAME
+
+        repository(url: getReleaseRepositoryUrl()) {
+          authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+        }
+        snapshotRepository(url: getSnapshotRepositoryUrl()) {
+          authentication(userName: getRepositoryUsername(), password: getRepositoryPassword())
+        }
+
+        pom.project {
+          name POM_NAME
+          packaging POM_PACKAGING
+          description POM_DESCRIPTION
+          url POM_URL
+
+          scm {
+            url POM_SCM_URL
+            connection POM_SCM_CONNECTION
+            developerConnection POM_SCM_DEV_CONNECTION
+          }
+
+          licenses {
+            license {
+              name POM_LICENCE_NAME
+              url POM_LICENCE_URL
+              distribution POM_LICENCE_DIST
+            }
+          }
+
+          developers {
+            developer {
+              id POM_DEVELOPER_ID
+              name POM_DEVELOPER_NAME
+            }
+          }
+        }
+      }
+    }
+  }
+
+  signing {
+    required { isReleaseBuild() &amp;&amp; gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+  }
+
+  if (project.getPlugins().hasPlugin('com.android.application') ||
+      project.getPlugins().hasPlugin('com.android.library')) {
+    task install(type: Upload, dependsOn: assemble) {
+      repositories.mavenInstaller {
+        configuration = configurations.archives
+
+        pom.groupId = GROUP
+        pom.artifactId = POM_ARTIFACT_ID
+        pom.version = VERSION_NAME
+
+        pom.project {
+          name POM_NAME
+          packaging POM_PACKAGING
+          description POM_DESCRIPTION
+          url POM_URL
+
+          scm {
+            url POM_SCM_URL
+            connection POM_SCM_CONNECTION
+            developerConnection POM_SCM_DEV_CONNECTION
+          }
+
+          licenses {
+            license {
+              name POM_LICENCE_NAME
+              url POM_LICENCE_URL
+              distribution POM_LICENCE_DIST
+            }
+          }
+
+          developers {
+            developer {
+              id POM_DEVELOPER_ID
+              name POM_DEVELOPER_NAME
+            }
+          }
+        }
+      }
+    }
+
+    task androidJavadocs(type: Javadoc) {
+      source = android.sourceSets.main.java.source
+      classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    }
+
+    task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
+      classifier = 'javadoc'
+      from androidJavadocs.destinationDir
+    }
+
+    task androidSourcesJar(type: Jar) {
+      classifier = 'sources'
+      from android.sourceSets.main.java.source
+    }
+  } else {
+    install {
+      repositories.mavenInstaller {
+        pom.groupId = GROUP
+        pom.artifactId = POM_ARTIFACT_ID
+        pom.version = VERSION_NAME
+
+        pom.project {
+          name POM_NAME
+          packaging POM_PACKAGING
+          description POM_DESCRIPTION
+          url POM_URL
+
+          scm {
+            url POM_SCM_URL
+            connection POM_SCM_CONNECTION
+            developerConnection POM_SCM_DEV_CONNECTION
+          }
+
+          licenses {
+            license {
+              name POM_LICENCE_NAME
+              url POM_LICENCE_URL
+              distribution POM_LICENCE_DIST
+            }
+          }
+
+          developers {
+            developer {
+              id POM_DEVELOPER_ID
+              name POM_DEVELOPER_NAME
+            }
+          }
+        }
+      }
+    }
+
+    task sourcesJar(type: Jar, dependsOn:classes) {
+      classifier = 'sources'
+      from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn:javadoc) {
+      classifier = 'javadoc'
+      from javadoc.destinationDir
+    }
+  }
+
+  if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+      tasks.withType(Javadoc) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+      }
+    }
+  }
+
+  artifacts {
+    if (project.getPlugins().hasPlugin('com.android.application') ||
+        project.getPlugins().hasPlugin('com.android.library')) {
+      archives androidSourcesJar
+      archives androidJavadocsJar
+    } else {
+      archives sourcesJar
+      archives javadocJar
+    }
+  }
+}
+</pre>
+<pre class="example">
+POM_NAME=Butterknife Gradle Plugin
+POM_ARTIFACT_ID=butterknife-gradle-plugin
+POM_PACKAGING=jar
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline12" class="outline-2">
+<h2 id="orgheadline12">注解处理过程用到的系统api</h2>
+<div class="outline-text-2" id="text-orgheadline12">
+<ol class="org-ol">
+<li>注解处理的入口函数是 "boolean process(Set&lt;? extends TypeElement&gt; annotations, RoundEnvironment roundEnv);". 
+RoundEnviroment中包含了注解处理的信息. 
+通过调用其 <code>getElementsAnnotatedWith(Class&lt;? extends Annotation&gt; a)</code> 接口, 
+可以获取被参数注解修饰的所有元素. 该函数返回 <a href="#orgheadline11">Element</a> 类.</li>
+</ol>
+</div>
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11">Element</h3>
+<div class="outline-text-3" id="text-orgheadline11">
+<p>
+Element代表了一个程序元素, 例如"包/类/方法"等.
+其几个主要接口:
+</p>
+<ol class="org-ol">
+<li><code>TypeMirror asType()</code>
+   返回这个Element的类型, 例如基本类型/类/接口等.</li>
+<li><code>ElementKind getKind();</code>
+   返回元素的<a href="#orgheadline13">ElementKind</a></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14">TypeElement</h3>
+<div class="outline-text-3" id="text-orgheadline14">
+<p>
+代表一个类或一个接口
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">ElementKind</h3>
+<div class="outline-text-3" id="text-orgheadline13">
+<p>
+详细的对Element做了分类, 包括:
+PACKAGE/ENUM/CLASS/ANNOTATION_TYPE/INTERFACE/ENUM_CONSTANT/FIELD/PARAMETER/LOCAL_VARIABLE/EXCEPTION_PARAMETER/METHOD/CONSTRUCTOR/STATIC_INIT/INSTANCE_INIT/TYPE_PARAMETER/OTHER/RESOURCE_VARIABLE.
+其中,
+</p>
+<ol class="org-ol">
+<li>CLASS和ENUM被认为是class.</li>
+<li>INTERFACE和ANNOTATION_TYPE被认为是interface.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline18" class="outline-2">
+<h2 id="orgheadline18">style</h2>
+<div class="outline-text-2" id="text-orgheadline18">
+</div><div id="outline-container-orgheadline15" class="outline-3">
+<h3 id="orgheadline15">定义应用的整体style</h3>
+<div class="outline-text-3" id="text-orgheadline15">
 <p>
 并在AndroidMainifest.xml的"application"中使用, 常用字段
 </p>
@@ -130,11 +630,11 @@ and text fields</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline2" class="outline-3">
-<h3 id="orgheadline2">页面的style</h3>
-<div class="outline-text-3" id="text-orgheadline2">
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16">页面的style</h3>
+<div class="outline-text-3" id="text-orgheadline16">
 <p>
-除了<a href="#orgheadline1">定义应用的整体style</a>的属性外, 常用属性还包括:
+除了<a href="#orgheadline15">定义应用的整体style</a>的属性外, 常用属性还包括:
 </p>
 <ol class="org-ol">
 <li>windowDrawsSystemBarBackgrounds: 状态栏是否覆盖在页面上,
@@ -148,9 +648,9 @@ and text fields</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3">View的常用属性</h3>
-<div class="outline-text-3" id="text-orgheadline3">
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17">View的常用属性</h3>
+<div class="outline-text-3" id="text-orgheadline17">
 <ol class="org-ol">
 <li>clipToPadding: 属性定义了是否允许ViewGroup在padding中绘制,
 该值默认为true, 即不允许. 
@@ -164,12 +664,12 @@ android:paddingTop="70dip" android:paddingBottom="70dip"
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline11" class="outline-2">
-<h2 id="orgheadline11">Home</h2>
-<div class="outline-text-2" id="text-orgheadline11">
-</div><div id="outline-container-orgheadline5" class="outline-3">
-<h3 id="orgheadline5">布局设置</h3>
-<div class="outline-text-3" id="text-orgheadline5">
+<div id="outline-container-orgheadline25" class="outline-2">
+<h2 id="orgheadline25">Home</h2>
+<div class="outline-text-2" id="text-orgheadline25">
+</div><div id="outline-container-orgheadline19" class="outline-3">
+<h3 id="orgheadline19">布局设置</h3>
+<div class="outline-text-3" id="text-orgheadline19">
 <p>
 <b>这个布局设置方法常见于FrameLayout中.</b>
 </p>
@@ -238,9 +738,9 @@ ViewStub占位
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline6" class="outline-3">
-<h3 id="orgheadline6">设置actionbar</h3>
-<div class="outline-text-3" id="text-orgheadline6">
+<div id="outline-container-orgheadline20" class="outline-3">
+<h3 id="orgheadline20">设置actionbar</h3>
+<div class="outline-text-3" id="text-orgheadline20">
 <p>
 在布局文件中定义Toolbar控件, 然后onCreate中
 调用setActionBar()来设置这个控件为Actionbar.
@@ -335,25 +835,25 @@ onCreateOptionsMenu()函数中去加载menu.
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline7" class="outline-3">
-<h3 id="orgheadline7">抽屉控件</h3>
-<div class="outline-text-3" id="text-orgheadline7">
+<div id="outline-container-orgheadline21" class="outline-3">
+<h3 id="orgheadline21">抽屉控件</h3>
+<div class="outline-text-3" id="text-orgheadline21">
 <p>
 通过对控件设置"layout_gravity"设置该控件为
 DrawerLayout的抽屉组件.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8">数据加载和UI逻辑</h3>
-<div class="outline-text-3" id="text-orgheadline8">
+<div id="outline-container-orgheadline22" class="outline-3">
+<h3 id="orgheadline22">数据加载和UI逻辑</h3>
+<div class="outline-text-3" id="text-orgheadline22">
 <p>
 主要是展示数据加载(更新)过程的UI效果.
 </p>
 </div>
-<div id="outline-container-orgheadline9" class="outline-4">
-<h4 id="orgheadline9">基本组件</h4>
-<div class="outline-text-4" id="text-orgheadline9">
+<div id="outline-container-orgheadline23" class="outline-4">
+<h4 id="orgheadline23">基本组件</h4>
+<div class="outline-text-4" id="text-orgheadline23">
 <ol class="org-ol">
 <li>DataManager用于加载数据.</li>
 <li>RecyclerView用于展示数据.</li>
@@ -377,9 +877,9 @@ DrawerLayout的抽屉组件.
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline10" class="outline-4">
-<h4 id="orgheadline10">逻辑</h4>
-<div class="outline-text-4" id="text-orgheadline10">
+<div id="outline-container-orgheadline24" class="outline-4">
+<h4 id="orgheadline24">逻辑</h4>
+<div class="outline-text-4" id="text-orgheadline24">
 <ol class="org-ol">
 <li>onCreate()阶段第一次加载数据.</li>
 <li>onCreate()的末尾调用checkEmptyState()函数.
@@ -408,7 +908,7 @@ Z轴设置为0.</li>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="postamble">Created At  by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
+<p class="postamble">Created At <span class="timestamp-wrapper"><span class="timestamp">&lt;2017-01-01 Sun 23:25&gt;</span></span> by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
 </div>
 </body>
 </html>
