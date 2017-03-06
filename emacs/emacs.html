@@ -1,0 +1,981 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2017-03-06 Mon 10:34 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>Emacs大笔记</title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Luis Xu" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+<h1 class="title">Emacs大笔记</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline14">打造开发环境</a>
+<ul>
+<li><a href="#orgheadline6">Elisp开发环境</a>
+<ul>
+<li><a href="#orgheadline2">使用写代码</a></li>
+<li><a href="#orgheadline3">运行代码</a></li>
+<li><a href="#orgheadline5">调试代码</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline12">Clojure开发环境</a>
+<ul>
+<li><a href="#orgheadline7">安装相关包</a></li>
+<li><a href="#orgheadline8">emacs配置</a></li>
+<li><a href="#orgheadline11">示例程序</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline1">paredit</a>
+<ul>
+<li><a href="#orgheadline13">常用函数/快捷键</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline15">Magit文档笔记</a>
+<ul>
+<li><a href="#orgheadline16">version 2.6.1</a>
+<ul>
+<li><a href="#orgheadline17">sections</a></li>
+<li><a href="#orgheadline19">status buffer</a></li>
+<li><a href="#orgheadline20">stage相关操作</a></li>
+<li><a href="#orgheadline21">提交commit</a></li>
+<li><a href="#orgheadline22">回滚提交</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orgheadline29">Gnus使用</a>
+<ul>
+<li><a href="#orgheadline23">读取Gmail邮件</a>
+<ul>
+<li><a href="#orgheadline24">offlineimap配置</a></li>
+<li><a href="#orgheadline25">配置</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline26">订阅RSS</a>
+<ul>
+<li><a href="#orgheadline27">订阅atom文件</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline28">gnus 快捷键</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+<i>Emacs使用过程的笔记</i>
+</p>
+
+<div id="outline-container-orgheadline14" class="outline-2">
+<h2 id="orgheadline14">打造开发环境</h2>
+<div class="outline-text-2" id="text-orgheadline14">
+</div><div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">Elisp开发环境</h3>
+<div class="outline-text-3" id="text-orgheadline6">
+</div><div id="outline-container-orgheadline2" class="outline-4">
+<h4 id="orgheadline2">使用<a href="#orgheadline1">paredit</a>写代码</h4>
+</div>
+<div id="outline-container-orgheadline3" class="outline-4">
+<h4 id="orgheadline3">运行代码</h4>
+<div class="outline-text-4" id="text-orgheadline3">
+<ol class="org-ol">
+<li>在*scratch*里可以使用 "C-x C-e"运行表达式.</li>
+<li>使用 "C-M-x" 运行函数.</li>
+<li>可以在buffer中使用eval-buffer使当前代码生效, 然后在eshell或ielm中调用.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5">调试代码</h4>
+<div class="outline-text-4" id="text-orgheadline5">
+</div><ul class="org-ul"><li><a id="orgheadline4"></a>Edebug<br  /><div class="outline-text-5" id="text-orgheadline4">
+<p>
+Edebug是Emacs自带的代码级的调试器. 可以在想要调试的代码上使用
+"C-u C-M-x", 就会进入调试模式, 此时运行程序, 就会在函数头停留.
+</p>
+
+<p>
+使用快捷键n可以一步一步的调试. 
+</p>
+</div></li></ul>
+</div>
+</div>
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12">Clojure开发环境</h3>
+<div class="outline-text-3" id="text-orgheadline12">
+</div><div id="outline-container-orgheadline7" class="outline-4">
+<h4 id="orgheadline7">安装相关包</h4>
+<div class="outline-text-4" id="text-orgheadline7">
+<ol class="org-ol">
+<li>cider. Cider是clojure的emacs开发环境, 通过包管理工具安装cider.</li>
+<li>clojure-mode.</li>
+<li>ac-cider. Clojure mode的自动补全插件.</li>
+<li>Leiningen.  非Emacs插件, shell程序.</li>
+<li>projectile</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-4">
+<h4 id="orgheadline8">emacs配置</h4>
+<div class="outline-text-4" id="text-orgheadline8">
+<ol class="org-ol">
+<li><p>
+在clojure mode下使用paredit.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(add-hook 'clojure-mode-hook 'paredit-mode)
+</pre>
+</div></li>
+<li><p>
+配置lein, 使用cider, 在.lein/profiles.clj中加入如下
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">{:repl {:plugins [[cider/cider-nrepl <span style="color: #CC9393;">"0.10.1"</span>]]}}
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11">示例程序</h4>
+<div class="outline-text-4" id="text-orgheadline11">
+</div><ul class="org-ul"><li><a id="orgheadline9"></a>使用lein new name命令创建一个名称为name的工程.<br  /></li>
+<li><a id="orgheadline10"></a>在emacs中运行 cider-jack-in进入nREPL<br  /></li></ul>
+</div>
+</div>
+<div id="outline-container-orgheadline1" class="outline-3">
+<h3 id="orgheadline1">paredit</h3>
+<div class="outline-text-3" id="text-orgheadline1">
+<p>
+该插件用于括号/引号的自动补全.
+如果担心evil mode破坏括号的完整, 编写时先暂停掉evil mode 
+</p>
+</div>
+<div id="outline-container-orgheadline13" class="outline-4">
+<h4 id="orgheadline13">常用函数/快捷键</h4>
+<div class="outline-text-4" id="text-orgheadline13">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">快捷键</th>
+<th scope="col" class="org-left">函数</th>
+<th scope="col" class="org-left">功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">(</td>
+<td class="org-left">paredit-open-round</td>
+<td class="org-left">生成对括号</td>
+</tr>
+
+<tr>
+<td class="org-left">[</td>
+<td class="org-left">paredit-open-sqaure</td>
+<td class="org-left">生成中括号对</td>
+</tr>
+
+<tr>
+<td class="org-left">{</td>
+<td class="org-left">paredit-open-curly</td>
+<td class="org-left">生成大括号对</td>
+</tr>
+
+<tr>
+<td class="org-left">)/]/}</td>
+<td class="org-left">paredit-close-[round/squre/curly]</td>
+<td class="org-left">跳转到对应的结尾</td>
+</tr>
+
+<tr>
+<td class="org-left">"</td>
+<td class="org-left">paredit-doublequote</td>
+<td class="org-left">生成双引号对</td>
+</tr>
+
+<tr>
+<td class="org-left">M-(</td>
+<td class="org-left">paredit-wrap-round</td>
+<td class="org-left">将当前内容括起来</td>
+</tr>
+
+<tr>
+<td class="org-left">M-"</td>
+<td class="org-left">paredit-meta-doublequote</td>
+<td class="org-left">将当前内容用引号括起来</td>
+</tr>
+
+<tr>
+<td class="org-left">C-d</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">删除后面一个字符</td>
+</tr>
+
+<tr>
+<td class="org-left">M-d</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">删除后面的word</td>
+</tr>
+
+<tr>
+<td class="org-left">DEL</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">删除前面的字符</td>
+</tr>
+
+<tr>
+<td class="org-left">M-DEL</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">删除前面的word</td>
+</tr>
+
+<tr>
+<td class="org-left">C-k</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">删除到结尾</td>
+</tr>
+
+<tr>
+<td class="org-left">C-)</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">把当前右括号尾部的内容放到括号内</td>
+</tr>
+
+<tr>
+<td class="org-left">C-(</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">把当前左括号尾部的内容放入括号</td>
+</tr>
+
+<tr>
+<td class="org-left">C-}/{</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">把当前左右括号的内容挤出括号</td>
+</tr>
+
+<tr>
+<td class="org-left">C-M-f/b</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">跳跃式前进/后退</td>
+</tr>
+
+<tr>
+<td class="org-left">C-M-d/p</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">降级前进/后退</td>
+</tr>
+
+<tr>
+<td class="org-left">C-M-u/n</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">升级前进/后退</td>
+</tr>
+
+<tr>
+<td class="org-left">M-&lt;up&gt;/&lt;down&gt;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">升级/降级括号</td>
+</tr>
+
+<tr>
+<td class="org-left">M-s</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">去除引号</td>
+</tr>
+
+<tr>
+<td class="org-left">M-S/J</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">分割/合并</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline15" class="outline-2">
+<h2 id="orgheadline15">Magit文档笔记</h2>
+<div class="outline-text-2" id="text-orgheadline15">
+<p>
+项目官网: <a href="https://magit.vc/">https://magit.vc/</a>
+</p>
+</div>
+<div id="outline-container-orgheadline16" class="outline-3">
+<h3 id="orgheadline16">version 2.6.1</h3>
+<div class="outline-text-3" id="text-orgheadline16">
+<p>
+Elpa升级magit到2.x版本之后, 发现快捷键变化太大, 所以重新读了2.6.1版本的文档.
+在Emacs中使用"C-h i"之后选择 magit 即可打开文档.
+</p>
+
+<p>
+下面的内容基于该版本的文档:
+</p>
+</div>
+<div id="outline-container-orgheadline17" class="outline-4">
+<h4 id="orgheadline17">sections</h4>
+<div class="outline-text-4" id="text-orgheadline17">
+<p>
+所有的Magit buffer都是通过 sections 的形式组织的, 每个section还可以包含子section.在一个magit buffer中, 这些
+sections可以独立的被显示和隐藏.当一个section被隐藏的时候,只会显示该section的
+第一行.
+</p>
+
+<p>
+section操作的快捷键:
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Short Keys</th>
+<th scope="col" class="org-left">Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">p</td>
+<td class="org-left">移动到上一个section</td>
+</tr>
+
+<tr>
+<td class="org-left">n</td>
+<td class="org-left">移动到下一个section</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">C-TAB</td>
+<td class="org-left">循环隐藏/显示当前section的子section</td>
+</tr>
+
+<tr>
+<td class="org-left">TAB</td>
+<td class="org-left">快速显示/隐藏当前 section</td>
+</tr>
+
+<tr>
+<td class="org-left">S-TAB</td>
+<td class="org-left">快速显示/隐藏所有 section</td>
+</tr>
+
+<tr>
+<td class="org-left">1/2/3/4</td>
+<td class="org-left">显示 &lt;=N 的section, 例如按2,会显示 <b>当前</b> level 1和 level 2的section,隐藏level 3, level 4 的section</td>
+</tr>
+
+<tr>
+<td class="org-left">M-1/2/3/4</td>
+<td class="org-left">同上, 但是显示所有相关section</td>
+</tr>
+
+<tr>
+<td class="org-left">M-h</td>
+<td class="org-left">隐藏(有些buffer功能跟2相同, 有些不一定)</td>
+</tr>
+
+<tr>
+<td class="org-left">M-H</td>
+<td class="org-left">隐藏 <b>所有</b> (同上)</td>
+</tr>
+
+<tr>
+<td class="org-left">M-s</td>
+<td class="org-left">显示(有些buffer功能跟4相同, 有些不一定)</td>
+</tr>
+
+<tr>
+<td class="org-left">M-S</td>
+<td class="org-left">显示所有(同上)</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<ul class="org-ul"><li><a id="orgheadline18"></a>其他快捷键/配置<br  /><div class="outline-text-6" id="text-orgheadline18">
+<p>
+注: <i>当快捷键操作于section头部时, 会影响所有的文件.</i>
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Buffer</th>
+<th scope="col" class="org-left">Short Keys</th>
+<th scope="col" class="org-left">Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Status</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">magit-repo-dirs</td>
+<td class="org-left">可以在.emacs文件中配置此变量, 设置调用magit-status命令打开的git库</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">g</td>
+<td class="org-left">refresh buffer</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">s/S</td>
+<td class="org-left">把文件加入到stage area/只把所有changes加入到stage area</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">C-u S</td>
+<td class="org-left">把所有文件加入到stage area</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">i</td>
+<td class="org-left">添加该文件到 .gitignore</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">C-u i</td>
+<td class="org-left">手写添加到 .gitignore的文件名</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">k</td>
+<td class="org-left">discard</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">u/U</td>
+<td class="org-left">unstage file/all file</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">c c + C-c C-c</td>
+<td class="org-left">提交</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">C-c C-k</td>
+<td class="org-left">放弃提交</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">l l</td>
+<td class="org-left">show history</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">l r l</td>
+<td class="org-left">显示范围</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">t t</td>
+<td class="org-left">create tag</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">x/X</td>
+<td class="org-left">重置head/重置head(清空working area和stage area)</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">z + z/a/A</td>
+<td class="org-left">创建/应用/弹出 stash</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">z -k z</td>
+<td class="org-left">创建stash,但是保留working area和stage area</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">b</td>
+<td class="org-left">branch related</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">w</td>
+<td class="org-left">显示所有branch和当前branch的关系</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">m</td>
+<td class="org-left">merge</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">R</td>
+<td class="org-left">Rebase</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">P</td>
+<td class="org-left">push</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">f</td>
+<td class="org-left">fetch</td>
+</tr>
+
+<tr>
+<td class="org-left">history</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">RET/SPC/DEL</td>
+<td class="org-left">show commit detail in new buffer(commit buffer)</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">a</td>
+<td class="org-left">将当前提交应用到当前branch, 需手动提交</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">A</td>
+<td class="org-left">&#x2026;自动提交</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">v</td>
+<td class="org-left">revert commit</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">.</td>
+<td class="org-left">mark a commit</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">=</td>
+<td class="org-left">show diff from current commit to marked</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">l h</td>
+<td class="org-left">reflog</td>
+</tr>
+
+<tr>
+<td class="org-left">commit</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">a</td>
+<td class="org-left">把当前section应用到当前branch</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">v</td>
+<td class="org-left">reverse the patch</td>
+</tr>
+
+<tr>
+<td class="org-left">diff</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">e</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div></li></ul>
+</div>
+<div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19">status buffer</h4>
+<div class="outline-text-4" id="text-orgheadline19">
+<p>
+通过"magit-status"创建会显示当前的status. 这是magit最主要的一个buffer.
+下面的操作都是在该buffer里的操作:
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20">stage相关操作</h4>
+<div class="outline-text-4" id="text-orgheadline20">
+<ol class="org-ol">
+<li>使用快捷键z, 会弹出选项框, 再按一次z会保存创建一个新的stage保存内容.</li>
+<li>使用快捷键z+p, 会弹出以stage内容.</li>
+<li>"z+Z", 会创建stage并将修改的内容仍然保持在工作区.</li>
+<li>stage多个文件, 使用 C-SPC 结合 n/p 快捷键选择多个文件, 然后按s.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline21" class="outline-4">
+<h4 id="orgheadline21">提交commit</h4>
+<div class="outline-text-4" id="text-orgheadline21">
+<ol class="org-ol">
+<li>使用 c-c 快捷键.</li>
+<li>P快捷键调出push buffer.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline22" class="outline-4">
+<h4 id="orgheadline22">回滚提交</h4>
+<div class="outline-text-4" id="text-orgheadline22">
+<ol class="org-ol">
+<li>使用l-l快捷键显示提交记录. 通过 n 将光标移动到想回滚到的
+提交上, 然后使用 'C-u x' 命令.</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline29" class="outline-2">
+<h2 id="orgheadline29">Gnus使用</h2>
+<div class="outline-text-2" id="text-orgheadline29">
+</div><div id="outline-container-orgheadline23" class="outline-3">
+<h3 id="orgheadline23">读取Gmail邮件</h3>
+<div class="outline-text-3" id="text-orgheadline23">
+<p>
+主要架构: offlineimap同步邮件, gnus读邮件
+</p>
+</div>
+<div id="outline-container-orgheadline24" class="outline-4">
+<h4 id="orgheadline24">offlineimap配置</h4>
+<div class="outline-text-4" id="text-orgheadline24">
+<ol class="org-ol">
+<li>mac安装:  brew install offlineimap</li>
+<li>配置 ~/.offlineimaprc</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-elisp">[general]
+ui = ttyui
+accounts = Gmail
+
+[Account Gmail]
+localrepository = Gmail-Local
+remoterepository = Gmail-Remote
+
+[Repository Gmail-Local]
+type = Maildir
+localfolders = ~/lx/Gmail
+
+[Repository Gmail-Remote]
+type = Gmail
+remoteuser = &#37038;&#31665;
+remotepass = &#23494;&#30721;
+realdelete = no
+maxconnections = 3
+# &#19979;&#38754;&#36825;&#34892;&#20351;&#29992;&#19982;OS X&#31995;&#32479;
+sslcacertfile = /usr/local/etc/openssl/cert.pem
+</pre>
+</div>
+<ol class="org-ol">
+<li>同步命令: offlineimap -o
+第一次运行这个命令有可能会报错, 显示 "Gmail SMTP debug: error “please log in via your web browser" 这样的内容,
+可以去<a href="https://www.google.com/settings/security/lesssecureapps">https://www.google.com/settings/security/lesssecureapps</a> 打开enable on这个选项, 就可以了.
+第一次同步可能很长时间, 尤其是对国人来说. 耐心等候啦.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline25" class="outline-4">
+<h4 id="orgheadline25">配置</h4>
+<div class="outline-text-4" id="text-orgheadline25">
+<div class="org-src-container">
+
+<pre class="src src-elisp">  <span style="color: #5F7F5F;">;; </span><span style="color: #7F9F7F;">Gnus&#37197;&#32622;</span>
+(<span style="color: #F0DFAF; font-weight: bold;">setq</span> gnus-select-method
+   '(nnmaildir <span style="color: #CC9393;">"Gmail"</span> (directory <span style="color: #CC9393;">"~/lx/Gmail"</span>)))
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline26" class="outline-3">
+<h3 id="orgheadline26">订阅RSS</h3>
+<div class="outline-text-3" id="text-orgheadline26">
+<p>
+在Gnus页面可以使用快捷键"G R"来订阅RSS.通过"u"取消订阅.
+</p>
+</div>
+<div id="outline-container-orgheadline27" class="outline-4">
+<h4 id="orgheadline27">订阅atom文件</h4>
+<div class="outline-text-4" id="text-orgheadline27">
+<p>
+gnus对于atom类型的RSS支持不好, 可以通过在以下方式解决
+</p>
+<ol class="org-ol">
+<li>Install xsltproc (Debian: apt-get install xsltproc)</li>
+<li>Get the file atom2rss.xsl from <a href="http://atom.geekhood.net/">http://atom.geekhood.net/</a> and save it.</li>
+<li><p>
+Put the following code into your .gnus:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-elisp">(<span style="color: #F0DFAF; font-weight: bold;">require</span> '<span style="color: #BFEBBF;">mm-url</span>)
+(<span style="color: #F0DFAF; font-weight: bold;">defadvice</span> <span style="color: #93E0E3;">mm-url-insert</span> 
+   (after DE-convert-atom-to-rss () )  
+   <span style="color: #9FC59F;">"Converts atom to RSS by calling xsltproc."</span>  
+   (<span style="color: #F0DFAF; font-weight: bold;">when</span> 
+      (re-search-forward
+         <span style="color: #CC9393;">"xmlns=\"http://www.w3.org/.*/Atom\""</span> 
+          nil t)
+      (goto-char (point-min))    
+      (message <span style="color: #CC9393;">"Converting Atom to RSS... "</span>)    
+      (call-process-region 
+         (point-min) 
+         (point-max) 
+         <span style="color: #CC9393;">"xsltproc"</span> 
+         t t nil 
+         (expand-file-name 
+            <span style="color: #CC9393;">"~/.emacs.d/atom2rss.xsl"</span>) <span style="color: #CC9393;">"-"</span>)    
+      (goto-char (point-min))    
+      (message 
+         <span style="color: #CC9393;">"Converting Atom to RSS... done"</span>)))
+(ad-activate 'mm-url-insert)
+</pre>
+</div></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline28" class="outline-3">
+<h3 id="orgheadline28">gnus 快捷键</h3>
+<div class="outline-text-3" id="text-orgheadline28">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">C-u N ret</td>
+<td class="org-left">在目录上使用,显示目录(N封)所有邮件</td>
+</tr>
+
+<tr>
+<td class="org-left">c</td>
+<td class="org-left">标记未读为已读</td>
+</tr>
+
+<tr>
+<td class="org-left">C</td>
+<td class="org-left">标记所有为已读</td>
+</tr>
+
+<tr>
+<td class="org-left">l</td>
+<td class="org-left">只显示有未读邮件的group</td>
+</tr>
+
+<tr>
+<td class="org-left">L</td>
+<td class="org-left">显示所有group</td>
+</tr>
+
+<tr>
+<td class="org-left">B DEL</td>
+<td class="org-left">永久删除</td>
+</tr>
+
+<tr>
+<td class="org-left">B m</td>
+<td class="org-left">移动邮件</td>
+</tr>
+
+<tr>
+<td class="org-left">E</td>
+<td class="org-left">设置邮件为Expirable</td>
+</tr>
+
+<tr>
+<td class="org-left">u</td>
+<td class="org-left">标记重要邮件</td>
+</tr>
+
+<tr>
+<td class="org-left">u放到link上</td>
+<td class="org-left">复制链接地址</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="postamble">Created At <span class="timestamp-wrapper"><span class="timestamp">&lt;2016-01-15 Fri 23:25&gt;</span></span> by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
+</div>
+</body>
+</html>
