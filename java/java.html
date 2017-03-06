@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2017-03-06 Mon 22:29 -->
+<!-- 2017-03-06 Mon 23:12 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Java大笔记</title>
@@ -91,17 +91,25 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orgheadline1">注释</a></li>
 <li><a href="#orgheadline2">enum</a></li>
-<li><a href="#orgheadline3">abstract class VS interface</a></li>
-<li><a href="#orgheadline7">static inner class VS inner class</a>
+<li><a href="#orgheadline3">抽象类和接口</a></li>
+<li><a href="#orgheadline7">内部类</a>
 <ul>
 <li><a href="#orgheadline4">why use inner class</a></li>
 <li><a href="#orgheadline5">static inner class</a></li>
 <li><a href="#orgheadline6">non-static inner class</a></li>
 </ul>
 </li>
+<li><a href="#orgheadline8">初始化流程</a></li>
+<li><a href="#orgheadline9">权限</a></li>
+<li><a href="#orgheadline10">final的特性</a></li>
+<li><a href="#orgheadline11">匿名类</a></li>
+<li><a href="#orgheadline12">面向迭代器编程</a></li>
 </ul>
 </div>
 </div>
+<p>
+<i>日常积累的java经验及读书笔记, 琐碎, 自用</i>
+</p>
 
 <div id="outline-container-orgheadline1" class="outline-2">
 <h2 id="orgheadline1">注释&#xa0;&#xa0;&#xa0;<span class="tag"><span class="javadoc">javadoc</span></span></h2>
@@ -121,7 +129,7 @@ Use the {@link #getComponentAt(int, int) getComponentAt} method.</li>
 </div>
 </div>
 <div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="orgheadline3">abstract class VS interface&#xa0;&#xa0;&#xa0;<span class="tag"><span class="interface">interface</span></span></h2>
+<h2 id="orgheadline3">抽象类和接口</h2>
 <div class="outline-text-2" id="text-orgheadline3">
 <ol class="org-ol">
 <li>只能继承一个abstract 类, 可以实现多个interface.</li>
@@ -131,7 +139,7 @@ Use the {@link #getComponentAt(int, int) getComponentAt} method.</li>
 </div>
 </div>
 <div id="outline-container-orgheadline7" class="outline-2">
-<h2 id="orgheadline7">static inner class VS inner class&#xa0;&#xa0;&#xa0;<span class="tag"><span class="inner">inner</span></span></h2>
+<h2 id="orgheadline7">内部类</h2>
 <div class="outline-text-2" id="text-orgheadline7">
 </div><div id="outline-container-orgheadline4" class="outline-3">
 <h3 id="orgheadline4">why use inner class</h3>
@@ -140,6 +148,7 @@ Use the {@link #getComponentAt(int, int) getComponentAt} method.</li>
 <li>架构明晰. 使用一个内部类可以使代码可读性更好, 更方便维护.
 尤其是内部类不会在其他的context中使用.</li>
 <li>内部类可以访问外部类的private变量. 这也是一个便利性.</li>
+<li>内部类就相当于一个闭包.</li>
 </ol>
 </div>
 </div>
@@ -159,9 +168,59 @@ Use the {@link #getComponentAt(int, int) getComponentAt} method.</li>
 <ol class="org-ol">
 <li>可以访问所有outer class 的变量.</li>
 <li>不能直接用来创建实例. 必须在outer 类的一个实例里创建实例.</li>
+<li>编译器自动为该类创建一个指向外部类的引用.</li>
 </ol>
 </div>
 </div>
+</div>
+<div id="outline-container-orgheadline8" class="outline-2">
+<h2 id="orgheadline8">初始化流程</h2>
+<div class="outline-text-2" id="text-orgheadline8">
+<ol class="org-ol">
+<li>类在第一次被使用时, classLoader()会加载该类的class文件.
+初始化所有静态成员, 然后调用构造函数.</li>
+<li>初始化流程: 根基类-&gt;子类-&gt;子类.</li>
+<li>初始化流程: static成员的定义顺序.</li>
+<li>在构造函数中调用其他成员函数可能会有风险. 如果子类覆盖了父类函数,
+则父类构造函数中调用函数会调用到子类的.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-2">
+<h2 id="orgheadline9">权限</h2>
+<div class="outline-text-2" id="text-orgheadline9">
+<ol class="org-ol">
+<li>私有构造函数的类无法被继承.</li>
+<li>子类跟父类不同包, 则无法访问包权限的成员.</li>
+<li>package的public static 成员可以被外界访问.</li>
+<li>无默认构造函数的类, 其子类必须显示调用其构造函数.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10">final的特性</h2>
+<div class="outline-text-2" id="text-orgheadline10">
+<ol class="org-ol">
+<li>修饰基本类型,不可更改.</li>
+<li>修饰引用, 引用的地址不可更改, 引用对象内容可以更改.</li>
+<li>和static共用, 占据的内存不可改变.</li>
+<li>修饰参数则无法修改参数.</li>
+<li>修饰方法, 无法被子类覆盖.</li>
+<li>修饰类, 无法继承.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline11" class="outline-2">
+<h2 id="orgheadline11">匿名类</h2>
+<div class="outline-text-2" id="text-orgheadline11">
+<ol class="org-ol">
+<li>匿名类可以使用带参数的方法使用带参构造器.</li>
+<li>匿名类可以通过初始化代码块来实现"构造函数"的功能.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline12" class="outline-2">
+<h2 id="orgheadline12">面向迭代器编程</h2>
 </div>
 </div>
 <div id="postamble" class="status">
