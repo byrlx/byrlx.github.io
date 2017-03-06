@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2017-03-06 Mon 10:41 -->
+<!-- 2017-03-06 Mon 10:40 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
-<title>Luis's Blog</title>
+<title></title>
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Luis Xu" />
 <link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
@@ -84,54 +84,62 @@ for the JavaScript code in this tag.
 </script>
 </div>
 <div id="content">
-<h1 class="title">Luis's Blog</h1>
-<ul class="org-ul">
-<li>android
-<ul class="org-ul">
-<li><a href="android/gradle.html">Android Gradle Plugin User Guide 文档翻译</a></li>
-<li><a href="android/log-system.html">Android Log 系统</a></li>
-<li><a href="android/android.html">Android 大笔记</a></li>
-<li><a href="android/message.html">Android 消息机制源码笔记</a></li>
-<li><a href="android/async-task.html">AsyncTask源码阅读笔记</a></li>
-<li><a href="android/butterknife.html">ButterKnife源码阅读笔记</a></li>
-<li><a href="android/plaid.html">Plaid源码阅读笔记</a></li>
-<li><a href="android/android-annotation.html">【翻译】 10步教你在Android中写"注解"处理程序</a></li>
-<li><a href="android/open-libraries.html">【翻译】当我开始Android开发时，希望能早点认识的一些开源库</a></li>
-<li><a href="android/bitmap-implementation.html">一个bitmap的实现代码</a></li>
-</ul></li>
-<li>emacs
-<ul class="org-ul">
-<li><a href="emacs/elisp.html">Elisp 大笔记</a></li>
-<li><a href="emacs/emacs.html">Emacs大笔记</a></li>
-<li><a href="emacs/orgmode.html">OrgMode 手册阅读笔记</a></li>
-</ul></li>
-<li>java
-<ul class="org-ul">
-<li><a href="java/arraylist-linkedlist-note.html">ArrayList, LinkedList源码笔记</a></li>
-<li><a href="java/java.html">java</a></li>
-<li><a href="java/okio.html">Okio 源码学习</a></li>
-<li><a href="java/retrofit.html">Retrofit之项目介绍</a></li>
-<li><a href="java/rx-note.html">RxJava 笔记</a></li>
-<li><a href="java/rbtree.html">红黑树</a></li>
-</ul></li>
-<li>reading
-<ul class="org-ul">
-<li><a href="reading/scala.html">scala</a></li>
-<li><a href="reading/sicp.html">SICP 阅读笔记</a></li>
-<li><a href="reading/paul-graham-lisp-notes.html">The Roots of Lisp阅读笔记</a></li>
-</ul></li>
-<li>新桑渡
-<ul class="org-ul">
-<li><a href="新桑渡/tech.html">tech</a></li>
-<li><a href="新桑渡/wutaishan.html">五台山</a></li>
-<li><a href="新桑渡/second-marathon.html">第二次北京马拉松</a></li>
-<li><a href="新桑渡/food.html">豆渣食谱</a></li>
-<li><a href="新桑渡/running.html">跑步日志</a></li>
-<li><a href="新桑渡/What-do-I-learn-from-the-project.html">项目总结</a></li>
-</ul></li>
-<li><a href="Use-Emacs-Org-Mode-Write-Github-Post.html">使用OrgMode撰写博客</a></li>
-<li><a href="about.html">关于这个博客</a></li>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">常用linux命令</a></li>
+<li><a href="#orgheadline2">ack</a></li>
 </ul>
+</div>
+</div>
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">常用linux命令</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<ol class="org-ol">
+<li><p>
+查找并删除
+</p>
+<pre class="example">
+find . -name "*.orig"  -exec rm -r "{}" \;
+</pre></li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">ack</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<p>
+ack(ubuntu上叫ack-grep) 是一款搜索工具，就像作者说的那样，*"a tool like grep, optimized for programmers"*，它尤其适用于
+代码库大且层次比较多的地方。作者用perl5实现了ack的全部代码。
+</p>
+
+<p>
+之所以称ack为“程序员的grep”，是因为ack在代码搜索方面做了很大的优化，默认情况下，ack只会在它“认识”的文件类型
+中做搜索。而ack认识的大部分文件类型即位代码文件。同时，也可以使用“&#x2013;type=X”或“&#x2013;X”指定在特定的代码文件中搜索。
+这些都可以在ack的文档中找到。
+</p>
+
+<p>
+例如：ack &#x2013;type=php keyword 只会在php类型的文件中做搜索（.php .phpt .php3 .php4 .php5 .phtml）。
+也可以这样写：ack &#x2013;php keyword。（记住c文件的话要写成cc）。当然也可以通过在类型面前加“no”指定不搜索
+该类型的文件。
+</p>
+
+<p>
+通过设定“-g”选项，可以只搜索文件，就是一个简单的find命令了。
+</p>
+
+<p>
+另外一个比较迷人的地方是会把搜索结果的keyword高亮，也可以通过这三个选项“&#x2013;color-filename=COLOR, &#x2013;color-match=COLOR, &#x2013;color-lineno=COLOR” 定制化自己的颜色主题。
+</p>
+
+<p>
+OK,常用的功能基本就是这些了，更多功能可以去[官方网站](<a href="http://beyondgrep.com/">http://beyondgrep.com/</a>)查看了。
+</p>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="postamble">Created At  by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
