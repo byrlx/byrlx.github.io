@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2017-03-06 Mon 23:12 -->
+<!-- 2017-03-07 Tue 14:36 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>Android 大笔记</title>
@@ -279,6 +279,13 @@ for the JavaScript code in this tag.
 </ul>
 </li>
 <li><a href="#orgheadline119">文章阅读笔记</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline124">APK结构</a>
+<ul>
+<li><a href="#orgheadline121">结构</a></li>
+<li><a href="#orgheadline122">dvm vs jvm</a></li>
+<li><a href="#orgheadline123">多渠道打包</a></li>
 </ul>
 </li>
 </ul>
@@ -610,6 +617,14 @@ A的onInterceptTouchEvent()只有在DOWN时被调用. 后续ACTION不会调用.
 <li>singleTask: 如果当前页面不是栈顶, 弹出所有.</li>
 <li>singleInstance: 给当前页面建立一个全新的task, 只有一个实例.</li>
 </ol>
+
+<p>
+用途:
+BrowserActivity uses singleTask. There is only one browser activity at a time and it doesn't become part tasks that send it intents to open web pages. While it might return to whatever most recently launched it when you hit back it is actually fixed at the bottom of its own task activity stack. It will share its task with activities that it launches like bookmarks.
+BrowserBookmarksPage uses singleTop. While there can be multiple instances of this activity, if there is already one at the top of the task's activity stack it will be reused and onNewIntent() will be called. This way you only have to hit back once to return to the browser if the bookmarks activity is started multiple times.
+AlarmClock uses standard. The user can launch multiple instances of this activity and these instances can be part of any task and anywhere in the activity stack. As a fairly simple application it doesn't really demand tight control of its activity.
+AlarmAlert uses singleInstance. Only one alert activity at a time and it is always its own task. Anything it launches (if anything) becomes part of its own new task.
+</p>
 </div>
 </div>
 
@@ -2375,6 +2390,48 @@ getViewForPosition()返回正确的</li>
 </ol></li>
 </ol>
 </div>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline124" class="outline-2">
+<h2 id="orgheadline124">APK结构</h2>
+<div class="outline-text-2" id="text-orgheadline124">
+</div><div id="outline-container-orgheadline121" class="outline-3">
+<h3 id="orgheadline121">结构</h3>
+<div class="outline-text-3" id="text-orgheadline121">
+<p>
+.dex文件, resources, assets, 证书, mainifest文件,
+lib目录
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline122" class="outline-3">
+<h3 id="orgheadline122">dvm vs jvm</h3>
+<div class="outline-text-3" id="text-orgheadline122">
+<ol class="org-ol">
+<li>DVM is the software that runs the applications on Android devices. It is open source.</li>
+<li>JVM is Stack based whereas DVM is Register based.
+Stack-based machines require more instructions(i.e. larger instruction set) than register-based machines for the same task. Whereas, each instruction in the register-based machines are larger.</li>
+
+<li>Mobile Devices have limited memory and power , low CPU speed as compared to Desktops. 
+So,  DVM is more efficient in terms of memory usage and performance.</li>
+<li>While running multiple instances of the DVM, DVM is supposed to be more efficient. In mobile phones, each application runs on its own sand box and thus each active application requires its own DVM instance.
+Single instance of JVM is shared with multiple applications.</li>
+<li>Java compiler complies Java source code into .class files. Then dx (dexer) tool, which is a part of the Android SDK,  processes the .class files into .DEX files that contains Dalvik bytecode.
+DVM runs .Dex file (Dalvik Executable File) whereas JVM runs .class files.
+With dx tool, all the classes of the application are packed into one file. Also, all the classes in the same DEX file share field, method etc if they are same and these classes are loaded by the same class loader instance.
+Thus dx tool eliminate all the redundant information that is present in the classes.</li>
+<li>JVM supports multiple operating systems. DVM only supports Android operating system.</li>
+<li>In case if DVM, executable is APK whereas in JVM, executable is JAR.</li>
+<li>In case of JVM, each class has its own constant pool. In the dex conversion,  all of the separate constant pools are collapsed into a single shared constant pool which is used by all classes in an application. Thus, storage space to store the shared constant pool is also conserved.</li>
+</ol>
+</div>
+</div>
+
+
+<div id="outline-container-orgheadline123" class="outline-3">
+<h3 id="orgheadline123"><a href="http://tech.meituan.com/mt-apk-packaging.html">多渠道打包</a></h3>
 </div>
 </div>
 </div>
