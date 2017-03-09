@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2017-03-09 Thu 23:44 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>【翻译】Android + TensorFlow机器学习示例</title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Luis Xu" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+<h1 class="title">【翻译】Android + TensorFlow机器学习示例</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">机器学习: 将TensorFlow整合到Android中</a></li>
+<li><a href="#orgheadline2">Android库编译过程</a></li>
+<li><a href="#orgheadline3">编译jar包和 .so 文件</a></li>
+</ul>
+</div>
+</div>
+<p>
+原文地址: <a href="https://blog.mindorks.com/android-tensorflow-machine-learning-example-ff0e9b2654cc#.yjxydsasw">https://blog.mindorks.com/android-tensorflow-machine-learning-example-ff0e9b2654cc#.yjxydsasw</a>
+</p>
+
+
+<div class="figure">
+<p><img src="../img/tensor.png" alt="tensor.png" />
+</p>
+</div>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">机器学习: 将TensorFlow整合到Android中</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+众所周知, 谷歌开源了一个名为 <a href="https://www.tensorflow.org/">TensorFlow</a> 的库, 可以在Android中使用,
+用来实现机器学习. TensorFlow是谷歌提供的的具有机器智能的开源库.
+</p>
+
+<p>
+我在网上找了很久都没找到一个可以简单编译Android版TensorFlow的方法或示例. 
+翻阅了很多资料之后, 我自己编译成功了. 所以我决定把过程写下来, 以节省他人的时间.
+</p>
+
+<p>
+本文主要面向熟悉机器学习以及知道如何为机器学习构建模型
+(例如本文示例中使用到了预训模型). 未来我打算写一系列关于机器学习的文章, 
+这样大家可以学习如何构建机器学习模型. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">Android库编译过程</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<p>
+有一些需要实现知道的要点:
+</p>
+<ol class="org-ol">
+<li>TensorFlow的核心代码是用C++写的.</li>
+<li>为了编译库, 需要使用JNI来调用C++函数, 例如loadModel, getPredictions等.</li>
+<li>所以需要一个 .so 文件以及jar文件. jar中包含了可以调用C++接口的API. 
+这样就可以直接通过Java api去做事情.</li>
+<li>必须有一个预训模型文件和标签文件用于分类.</li>
+</ol>
+
+<p>
+我们会构建如下的物体识别. 
+<a href="../img/tensor1">../img/tensor1</a>
+<a href="../img/tensor2">../img/tensor2</a>
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">编译jar包和 .so 文件</h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<ol class="org-ol">
+<li><p>
+下载tensorflow:
+</p>
+<pre class="example">
+git clone --recurse-submodules  https://github.com/tensorflow/tensorflow.git
+</pre>
+<p>
+<i>注:&#x2013;recurse-submodules 用于获取子模块</i>
+</p></li>
+<li>去 <a href="https://developer.android.com/ndk/downloads/older_releases.html#ndk-12b-downloads">这里</a> 下载NDK.</li>
+<li>下载Android SDK或使用 Android Studio的SDK(需要提供一个路径).</li>
+<li>安装<a href="https://bazel.build/versions/master/docs/install.html">Bazel</a>. 它是TensorFlow的编译系统.</li>
+<li><p>
+编辑TensorFlow代码库目录下的WORKSPACE文件. 该文件的内容大致如下:
+</p>
+<pre class="example">
+# Uncomment and update the paths in these entries to build the Android demo.
+#android_sdk_repository(
+#    name = "androidsdk",
+#    api_level = 23,
+#    build_tools_version = "25.0.1",
+#    # Replace with path to Android SDK on your system
+#    path = "&lt;PATH_TO_SDK&gt;",
+#)
+#
+#android_ndk_repository(
+#    name="androidndk",
+#    path="&lt;PATH_TO_NDK&gt;",
+#    api_level=14)
+</pre>
+<p>
+把你电脑中sdk和ndk的路径添加进去, 例如:
+</p>
+<pre class="example">
+android_sdk_repository(
+    name = "androidsdk",
+    api_level = 23,
+    build_tools_version = "25.0.1",
+    # Replace with path to Android SDK on your system
+    path = "/Users/amitshekhar/Library/Android/sdk/",
+)
+android_ndk_repository(
+    name="androidndk",
+    path="/Users/amitshekhar/Downloads/android-ndk-r13/",
+    api_level=14)
+</pre></li>
+<li><p>
+使用下面命令编译 .so 文件(cpu改成你手机的架构)
+</p>
+<pre class="example">
+bazel build -c opt //tensorflow/contrib/android:libtensorflow_inference.so \
+--crosstool_top=//external:android/crosstool \
+--host_crosstool_top=@bazel_tools//tools/cpp:toolchain \
+--cpu=armeabi-v7a
+</pre>
+<p>
+编译后的 .so 文件的位置: 
+</p>
+<pre class="example">
+bazel-bin/tensorflow/contrib/android/libtensorflow_inference.so
+</pre></li>
+<li><p>
+编译相应的jar包.
+</p>
+<pre class="example">
+bazel build //tensorflow/contrib/android:android_tensorflow_inference_java
+</pre>
+<p>
+编译后的jar包目录:
+</p>
+<pre class="example">
+bazel-bin/tensorflow/contrib/android/libandroid_tensorflow_inference_java.jar
+</pre></li>
+</ol>
+
+<p>
+OK, 目前位置, 我们已经有了 .so 文件和jar包, 可以在项目中使用他们了. 
+我在github上创建了一个可以运行的示例程序, 参见<a href="https://github.com/MindorksOpenSource/AndroidTensorFlowMachineLearningExample">这里</a>.
+</p>
+
+<p>
+但是, 我们仍然需要预训模型和标签文件. 这上面的示例中, 我使用了谷歌的
+预训模型, 该模型可以根据给出的图片识别出物体. 可以在<a href="https://storage.googleapis.com/download.tensorflow.org/models/inception5h.zip">这里</a> 下载模型.
+解压zip包, 我们即可获得imagenet_comp_graph_label_strings.txt(标签)和tensorflow_inception_graph.pb (预训模型).
+</p>
+
+<p>
+接下来, 创建一个android工程, 
+</p>
+<ol class="org-ol">
+<li>将上面两个文件放入assets目录.</li>
+<li><p>
+将编译好的jar包放入libs目录, 并添加依赖.
+</p>
+<pre class="example">
+compile files('libs/libandroid_tensorflow_inference_java.jar')
+</pre></li>
+<li>将 libtensorflow_inference.so 文件放入jniLibs/armeabi-v7a/目录.</li>
+</ol>
+
+<p>
+然后我们就可以调用TensorFlow的Java接口了. Java API通过类 <b>TensorFlowInferenceInterface</b>
+提供了所有需要的方法. 通过加载下载好的模型, 然后提供给他一个图片, 就可以
+做预测了.
+</p>
+
+<p>
+如果想看到完整的工作, 可以下载我的<a href="https://github.com/MindorksOpenSource/AndroidTensorFlowMachineLearningExample">工程</a>, 运行一下. 
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="postamble">Created At <span class="timestamp-wrapper"><span class="timestamp">&lt;2017-03-09 Thu&gt;</span></span> by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
+</div>
+</body>
+</html>
