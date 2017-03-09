@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2017-03-07 Tue 18:24 -->
+<!-- 2017-03-09 Thu 22:49 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>ArrayList, LinkedList源码笔记</title>
@@ -89,39 +89,709 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline2">Iterable</a></li>
-<li><a href="#orgheadline1">Iterator</a></li>
-<li><a href="#orgheadline3">Collection</a></li>
-<li><a href="#orgheadline4">List</a></li>
-<li><a href="#orgheadline5">ListIterator</a></li>
-<li><a href="#orgheadline6">AbstractCollection</a></li>
-<li><a href="#orgheadline7">AbstractList</a>
+<li><a href="#orgheadline1">标记接口</a>
 <ul>
-<li><a href="#orgheadline8">Itr</a></li>
-<li><a href="#orgheadline9">ListItr</a></li>
-<li><a href="#orgheadline10">SubList</a></li>
-<li><a href="#orgheadline11">RandomAccessSubList</a></li>
+<li><a href="#orgheadline2">Cloneable</a></li>
+<li><a href="#orgheadline3">Serializable</a></li>
+<li><a href="#orgheadline4">RandomAccess</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline12">ArrayList</a></li>
-<li><a href="#orgheadline13">AbstractSequentialList</a></li>
-<li><a href="#orgheadline14">Deque</a></li>
-<li><a href="#orgheadline15">LinkedList</a>
+<li><a href="#orgheadline26">ArrayList</a>
 <ul>
-<li><a href="#orgheadline16">Node</a></li>
+<li><a href="#orgheadline7">定义</a></li>
+<li><a href="#orgheadline8">主要成员</a></li>
+<li><a href="#orgheadline9">构造函数</a></li>
+<li><a href="#orgheadline10">添加数据</a>
+<ul>
+<li><a href="#orgheadline11">查看当前空间</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline17">SynchronizedList</a></li>
+<li><a href="#orgheadline12">查找数据</a></li>
+<li><a href="#orgheadline13">删除数据</a>
+<ul>
+<li><a href="#orgheadline14">按坐标删除</a></li>
+<li><a href="#orgheadline15">删除指定元素</a></li>
+<li><a href="#orgheadline16">清空所有</a></li>
+<li><a href="#orgheadline17">批量删除</a></li>
+<li><a href="#orgheadline18">保留交集</a></li>
+<li><a href="#orgheadline19">条件删除</a></li>
+<li><a href="#orgheadline20">批量修改</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline21">关于fail-fast</a></li>
+<li><a href="#orgheadline22">迭代器</a>
+<ul>
+<li><a href="#orgheadline23">Iterator实现: Itr</a></li>
+<li><a href="#orgheadline24">ListIterator实现: ListItr</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline25">子列表</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline28">Iterable</a></li>
+<li><a href="#orgheadline27">Iterator</a></li>
+<li><a href="#orgheadline29">Collection</a></li>
+<li><a href="#orgheadline6">List</a></li>
+<li><a href="#orgheadline30">ListIterator</a></li>
+<li><a href="#orgheadline31">AbstractCollection</a></li>
+<li><a href="#orgheadline5">AbstractList</a>
+<ul>
+<li><a href="#orgheadline32">Itr</a></li>
+<li><a href="#orgheadline33">ListItr</a></li>
+<li><a href="#orgheadline34">SubList</a></li>
+<li><a href="#orgheadline35">RandomAccessSubList</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline36">AbstractSequentialList</a></li>
+<li><a href="#orgheadline37">Deque</a></li>
+<li><a href="#orgheadline38">LinkedList</a>
+<ul>
+<li><a href="#orgheadline39">Node</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline40">SynchronizedList</a></li>
 </ul>
 </div>
 </div>
 <p>
-最近工作不忙, 抽空看了一下ArrayList和LinkedList的源码. 下面是一些主要知识点的笔记. 
+最近工作不忙, 抽空看了一下ArrayList和LinkedList的源码. 
+这两个类是List的具体实现类, 所以在它们之上还有许多的
+抽象接口和抽象类, 下面源码分析的笔记
 </p>
 
-<div id="outline-container-orgheadline2" class="outline-2">
-<h2 id="orgheadline2">Iterable</h2>
-<div class="outline-text-2" id="text-orgheadline2">
+<p>
+<i>代码基于JDK</i>
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">标记接口</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+在Java中有一类接口叫做"标记接口"(Marker Interface). 标记接口
+是没有任何方法的接口, 它仅仅标志实现它的类具有"某个特点", 而系统的
+其他应用可能会在对类做操作时先判断其是否具有这个特点(例如下面的Cloneable).
+</p>
+</div>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">Cloneable</h3>
+<div class="outline-text-3" id="text-orgheadline2">
+<p>
+标志该类可以继承. Object类的clone()函数会先判断该类是否具有该特性,
+如果没有则报错:
+</p>
+<pre class="example">
+protected Object clone() throws CloneNotSupportedException {
+    if (!(this instanceof Cloneable)) {
+        throw new CloneNotSupportedException("Class " + getClass().getName() +
+                                             " doesn't implement Cloneable");
+    }
+
+    return internalClone();
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">Serializable</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<p>
+标志该类可以被序列化和反序列化.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">RandomAccess</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<p>
+这个标记接口被List类使用,标志该List具备
+快速随机访问功能.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline26" class="outline-2">
+<h2 id="orgheadline26">ArrayList</h2>
+<div class="outline-text-2" id="text-orgheadline26">
+</div><div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">定义</h3>
+<div class="outline-text-3" id="text-orgheadline7">
+<p>
+ArrayList直接继承自<a href="#orgheadline5">AbstractList</a>, 并实现了以下接口:
+</p>
+<ol class="org-ol">
+<li><a href="#orgheadline6">List</a> : 说明ArrayList具备List接口的功能.</li>
+<li><a href="#orgheadline4">RandomAccess</a>: 说明ArrayList是支持快速访问的.</li>
+<li><a href="#orgheadline2">Cloneable</a>: 可以被clone.</li>
+<li><a href="#orgheadline3">Serializable</a>: 可以被序列化和反序列化.</li>
+</ol>
+<div class="org-src-container">
+
+<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">ArrayList</span>&lt;<span style="color: #7CB8BB;">E</span>&gt; <span style="color: #F0DFAF; font-weight: bold;">extends</span> <span style="color: #7CB8BB;">AbstractList</span>&lt;<span style="color: #7CB8BB;">E</span>&gt;
+        <span style="color: #F0DFAF; font-weight: bold;">implements</span> <span style="color: #7CB8BB;">List</span>&lt;<span style="color: #7CB8BB;">E</span>&gt;, <span style="color: #7CB8BB;">RandomAccess</span>, <span style="color: #7CB8BB;">Cloneable</span>, <span style="color: #BFEBBF;">java</span>.<span style="color: #BFEBBF;">io</span>.<span style="color: #7CB8BB;">Serializable</span>
+{
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">主要成员</h3>
+<div class="outline-text-3" id="text-orgheadline8">
+<ol class="org-ol">
+<li>ArrayList的底层数据存储就像它的名字一样, 使用了一个 Object[] 数组,
+因为ArrayList是支持泛型的, 所以在添加数据时,数据被转成了Object存储,
+在获取数据时,又将其转化成相应的类型.</li>
+<li>同时, AL还维护了一个size变量用来记录当前的数组大小.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">构造函数</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+<p>
+ArrayList支持三种类型的构造函数.
+</p>
+<ol class="org-ol">
+<li><p>
+默认构造函数. 默认构造函数只有一行代码,
+就是把存放数据的数组指向一个空数组
+DEFAULTCAPACITY_EMPTY_ELEMENTDATA.
+</p>
+<pre class="example">
+public ArrayList() {
+    this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
+}
+</pre>
+<p>
+另外AL里还定义了另外一个空数组EMPTY_ELEMENTDATA. 
+之所以要定义两个空数组, 是因为DEFAULTCAPACITY_EMPTY_ELEMENTDATA
+是与DEFAULT_CAPACITY来结合使用的, 该数组标志着第一次添加
+元素时elementData要扩容的大小. 可以看如下代码:
+</p>
+<pre class="example">
+private void ensureCapacityInternal(int minCapacity) {
+    if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+        minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);
+    }
+
+    ensureExplicitCapacity(minCapacity);
+}
+</pre>
+<p>
+当第一次添加元素时, minCapacity的值为1, 所以会将
+elementData扩容到DEFAULT_CAPACITY的大小.
+</p></li>
+<li><p>
+带size的构造函数.
+使用该构造函数可以指定数组的初始大小.会直接创建一个
+Object数组.
+</p>
+<pre class="example">
+public ArrayList(int initialCapacity) {
+    if (initialCapacity &gt; 0) {
+        this.elementData = new Object[initialCapacity];
+    } else if (initialCapacity == 0) {
+        this.elementData = EMPTY_ELEMENTDATA;
+    } else {
+        throw new IllegalArgumentException("Illegal Capacity: "+
+                                           initialCapacity);
+    }
+}
+</pre></li>
+<li><p>
+使用集合创建ArrayList,
+这个构造函数接受一个集合, 并使用该集合去初始化
+elementData. 因为AL是接受泛型参数, 所以集合参数的
+类型是该泛型的任意子类. 该函数的步骤
+</p>
+<ol class="org-ol">
+<li>调用集合的toArray()函数.</li>
+
+<li>赋值size值. 如果size大于0, 判断集合的class
+是否为Object[].class, 如果不是, 则调用Arrays
+的函数 copyOf() 将其转化成Object[]类型.</li>
+</ol>
+<pre class="example">
+public ArrayList(Collection&lt;? extends E&gt; c) {
+    elementData = c.toArray();
+    if ((size = elementData.length) != 0) {
+        // c.toArray might (incorrectly) not return Object[] (see 6260652)
+        if (elementData.getClass() != Object[].class)
+            elementData = Arrays.copyOf(elementData, size, Object[].class);
+    } else {
+        // replace with empty array.
+        this.elementData = EMPTY_ELEMENTDATA;
+    }
+}
+</pre></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">添加数据</h3>
+<div class="outline-text-3" id="text-orgheadline10">
+<p>
+ArrayList提供了两个添加数据的接口. add(E e)及
+add(int index, E element). 这两个函数的实现都分为
+两步:
+</p>
+<ol class="org-ol">
+<li>查看当前空间是否够用, 不够则扩容.</li>
+<li>插入数据. 第一个add()函数直接将数据放到指定位置.
+第二个则调用了系统的arraycopy()函数将整体元素后移,
+然后将元素放到指定位置.</li>
+</ol>
+<pre class="example">
+public boolean add(E e) {
+    ensureCapacityInternal(size + 1);  // Increments modCount!!
+    elementData[size++] = e;
+    return true;
+}
+
+public void add(int index, E element) {
+    rangeCheckForAdd(index);
+
+    ensureCapacityInternal(size + 1);  // Increments modCount!!
+    System.arraycopy(elementData, index, elementData, index + 1,
+                     size - index);
+    elementData[index] = element;
+    size++;
+}
+</pre>
+</div>
+<div id="outline-container-orgheadline11" class="outline-4">
+<h4 id="orgheadline11">查看当前空间</h4>
+<div class="outline-text-4" id="text-orgheadline11">
+<p>
+查看当前空间是通过调用ensureCapacityInternal()函数来实现的
+   需要传递给函数一个参数, 标志需要确保的最小size值.
+   该函数调用了ensureExplicitCapacity()来做扩容的工作(不一定必做).
+   如果需要扩容, 后者则会调用到了grow()函数做实际扩容, 该函数的步骤
+</p>
+<ul class="org-ul">
+<li>将当前容量增大1.5倍.</li>
+<li>如果增大后的容量还小于要求的容量, 
+则将其设为要求的容量.</li>
+<li>将增大后的容量与最大的阈值MAX_ARRAY_SIZE
+作比较, 如果比它大, 那么调用hugeCapacity()
+函数确定最后的容量大小:
+<ul class="org-ul">
+<li>如果要求的容量是负数, overflow, 报错.</li>
+<li>如果大于MAX_ARRAY_SIZE, 则新容量为
+Integer.MAX_VALUE. 否则为 MAX_ARRAY_SIZE.</li>
+</ul></li>
+<li>调用Arrays的copyOf()函数生成一个新容量大小的数组.</li>
+</ul>
+<p>
+代码如下:
+</p>
+<pre class="example">
+private void ensureCapacityInternal(int minCapacity) {
+    if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
+        minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);
+    }
+
+    ensureExplicitCapacity(minCapacity);
+}
+
+private void ensureExplicitCapacity(int minCapacity) {
+    modCount++;
+
+    // overflow-conscious code
+    if (minCapacity - elementData.length &gt; 0)
+        grow(minCapacity);
+}
+
+private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
+
+private void grow(int minCapacity) {
+    // overflow-conscious code
+    int oldCapacity = elementData.length;
+    int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1);
+    if (newCapacity - minCapacity &lt; 0)
+        newCapacity = minCapacity;
+    if (newCapacity - MAX_ARRAY_SIZE &gt; 0)
+        newCapacity = hugeCapacity(minCapacity);
+    // minCapacity is usually close to size, so this is a win:
+    elementData = Arrays.copyOf(elementData, newCapacity);
+}
+
+private static int hugeCapacity(int minCapacity) {
+    if (minCapacity &lt; 0) // overflow
+        throw new OutOfMemoryError();
+    return (minCapacity &gt; MAX_ARRAY_SIZE) ?
+        Integer.MAX_VALUE :
+        MAX_ARRAY_SIZE;
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12">查找数据</h3>
+<div class="outline-text-3" id="text-orgheadline12">
+<p>
+ArrayList支持基于下标查找数据, 并且该操作是O(1)
+操作. 不过会将返回的数据强制转化为泛型类型.
+</p>
+<pre class="example">
+public E get(int index) {
+    rangeCheck(index);
+
+    return elementData(index);
+}
+
+E elementData(int index) {
+    return (E) elementData[index];
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">删除数据</h3>
+<div class="outline-text-3" id="text-orgheadline13">
+<p>
+ArrayList提供了以下的删除API:
+remove(int), remove(Object), clear(),
+removeAll(Collection), removeIf(Predicate).
+</p>
+
+<p>
+<b>注:这些删除操作都会修改modCount的值, 该值用来判断List是否被多进程修改</b>
+</p>
+</div>
+<div id="outline-container-orgheadline14" class="outline-4">
+<h4 id="orgheadline14">按坐标删除</h4>
+<div class="outline-text-4" id="text-orgheadline14">
+<p>
+步骤:
+</p>
+<ol class="org-ol">
+<li>计算要移动的元素数: num = size - index - 1</li>
+<li>调用System.arraycopy()移动数组.</li>
+<li>将数组的最后一个元素置为null.</li>
+</ol>
+<pre class="example">
+public E remove(int index) {
+    rangeCheck(index);
+
+    modCount++;
+    E oldValue = elementData(index);
+
+    int numMoved = size - index - 1;
+    if (numMoved &gt; 0)
+        System.arraycopy(elementData, index+1, elementData, index,
+                         numMoved);
+    elementData[--size] = null; // clear to let GC do its work
+
+    return oldValue;
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline15" class="outline-4">
+<h4 id="orgheadline15">删除指定元素</h4>
+<div class="outline-text-4" id="text-orgheadline15">
+<p>
+该函数先知道元素位置, 然后在做数组移动
+和置null工作. 
+<b>注: 由于AL支持存放null元素, 所以删除的时候null和实际元素要区分对待</b>
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline16" class="outline-4">
+<h4 id="orgheadline16">清空所有</h4>
+<div class="outline-text-4" id="text-orgheadline16">
+<p>
+把所有元素置null就可以了.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline17" class="outline-4">
+<h4 id="orgheadline17">批量删除</h4>
+<div class="outline-text-4" id="text-orgheadline17">
+<p>
+(即删除交集)
+removeAll()函数接受一个集合参数, 然后调用
+batchRemove()做实际的删除工作.
+batchRemove()接受两个参数, 第一个就是上面的集合, 第二个
+参数是boolean类型, 标志集合中的元素是否保留, 如果该参数
+值为TRUE,则标志集合中的元素要保留, 否则删除. 
+</p>
+
+<p>
+removeAll()函数在调用该函数时传入的参数为false.
+batchRemove()会遍历当前所有元素, 然后判断是否在传入的集合中
+也包含, 同时更新当前数组. 
+</p>
+<pre class="example">
+public boolean removeAll(Collection&lt;?&gt; c) {
+     Objects.requireNonNull(c);
+     return batchRemove(c, false);
+ }
+
+ private boolean batchRemove(Collection&lt;?&gt; c, boolean complement) {
+     final Object[] elementData = this.elementData;
+     int r = 0, w = 0;
+     boolean modified = false;
+     try {
+         for (; r &lt; size; r++)
+             if (c.contains(elementData[r]) == complement)
+                 elementData[w++] = elementData[r];
+     } finally {
+         // Preserve behavioral compatibility with AbstractCollection,
+         // even if c.contains() throws.
+         if (r != size) {
+             System.arraycopy(elementData, r,
+                              elementData, w,
+                              size - r);
+             w += size - r;
+         }
+         if (w != size) {
+             // clear to let GC do its work
+             for (int i = w; i &lt; size; i++)
+                 elementData[i] = null;
+             modCount += size - w;
+             size = w;
+             modified = true;
+         }
+     }
+     return modified;
+ }
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline18" class="outline-4">
+<h4 id="orgheadline18">保留交集</h4>
+<div class="outline-text-4" id="text-orgheadline18">
+<p>
+retainAll()函数与removeAll()类似, 
+只不过retainAll()里传入的集合内容都会在
+数组里保存, 其余的删除.
+</p>
+<pre class="example">
+public boolean retainAll(Collection&lt;?&gt; c) {
+    Objects.requireNonNull(c);
+    return batchRemove(c, true);
+}
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19">条件删除</h4>
+<div class="outline-text-4" id="text-orgheadline19">
+<p>
+removeIf()是提供了条件删除的功能, 该函数接受一个
+Predicate的参数, predicate提供了判断条件, 如果
+AL里的元素满足条件, 则将其删除. 
+</p>
+<pre class="example">
+@Override
+public boolean removeIf(Predicate&lt;? super E&gt; filter) {
+    Objects.requireNonNull(filter);
+    // figure out which elements are to be removed
+    // any exception thrown from the filter predicate at this stage
+    // will leave the collection unmodified
+    int removeCount = 0;
+    final BitSet removeSet = new BitSet(size);
+    final int expectedModCount = modCount;
+    final int size = this.size;
+    for (int i=0; modCount == expectedModCount &amp;&amp; i &lt; size; i++) {
+        @SuppressWarnings("unchecked")
+        final E element = (E) elementData[i];
+        if (filter.test(element)) {
+            removeSet.set(i);
+            removeCount++;
+        }
+    }
+    if (modCount != expectedModCount) {
+        throw new ConcurrentModificationException();
+    }
+
+    // shift surviving elements left over the spaces left by removed elements
+    final boolean anyToRemove = removeCount &gt; 0;
+    if (anyToRemove) {
+        final int newSize = size - removeCount;
+        for (int i=0, j=0; (i &lt; size) &amp;&amp; (j &lt; newSize); i++, j++) {
+            i = removeSet.nextClearBit(i);
+            elementData[j] = elementData[i];
+        }
+        for (int k=newSize; k &lt; size; k++) {
+            elementData[k] = null;  // Let gc do its work
+        }
+        this.size = newSize;
+        if (modCount != expectedModCount) {
+            throw new ConcurrentModificationException();
+        }
+        modCount++;
+    }
+
+    return anyToRemove;
+}
+</pre>
+<p>
+removeIf()的实现使用了BitSet类, 该类提供了bitmap
+功能.主要步骤:
+</p>
+<ol class="org-ol">
+<li>遍历元素, 如果满足Predicate的test条件, 则设置
+removeSet的相应bit位.
+遍历过程中会一直检查modCount有没有被其他线程修改.
+如果修改则终止遍历并抛异常.</li>
+<li>再次遍历元素, 获取removeSet里被设为没被设为true的
+index,并存入elementData.</li>
+<li>将elmentData剩下的元素设为null以方便GC回收.</li>
+<li>修改modCount的值.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20">批量修改</h4>
+<div class="outline-text-4" id="text-orgheadline20">
+<p>
+replaceAll()函数提供了批量修改功能,
+该函数接受一个一元操作符的类 UnaryOperator 实例.
+然后将操作应用于所有元素.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline21" class="outline-3">
+<h3 id="orgheadline21">关于fail-fast</h3>
+<div class="outline-text-3" id="text-orgheadline21">
+<p>
+在需要遍历元素的过程中, 经常会在for()
+循环里判断modCount的值有没有变化, 如果
+有变化则立即停止循环并抛出并发异常.
+</p>
+
+<p>
+而modCount会变化的唯一可能是其他线程同时
+在操作这个ArrayList.
+</p>
+
+<p>
+注: 在add()类相关函数中没有发现modCount的操作.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline22" class="outline-3">
+<h3 id="orgheadline22">迭代器</h3>
+<div class="outline-text-3" id="text-orgheadline22">
+<p>
+ArrayList支持两种迭代器: iterator和listIterator.
+</p>
+</div>
+<div id="outline-container-orgheadline23" class="outline-4">
+<h4 id="orgheadline23">Iterator实现: Itr</h4>
+<div class="outline-text-4" id="text-orgheadline23">
+<p>
+通过iterator()函数可以获取AL的Iterator, 函数的实现中
+创建了一个AL自定义的内部类Itr. Itr继承自抽象类 Iterator.
+</p>
+
+<p>
+Itr内部定义了一个cursor变量, 以及一个expectedModCount,
+一个lastRet(用来保存上一次的位置).
+当创建一个新实例时, 会将其赋值为modCount. 看一下对Iterator
+所提供的API的实现.
+</p>
+<ol class="org-ol">
+<li>hasNext(): 将cursor当前值与size做比较, 如果不相等则表示还有
+元素.</li>
+<li>next(): 返回一个泛型的值. 函数实现步骤:
+<ol class="org-ol">
+<li>检查是否被其他线程修改. 如果是报同步异常.</li>
+<li>检查cursor的值是否超出了size, 如果是报异常.
+(是不是modCount未修改, 但元素已删除的时候会出现这种情况?).</li>
+<li>检查i的值是否超出了AL的数组长度, 如果是则抛同步异常.</li>
+<li>将cursor的值加1, 并返回之前cursor位置的元素.
+并讲之前值赋值给lastRet.</li>
+</ol></li>
+<li>remove(): 删除当前cursor指向的元素. 函数实现步骤:
+<ol class="org-ol">
+<li>判断lastRet是否小于0, 如果是, 说明还没调用next()就调用remove.
+抛非法状态异常.</li>
+<li>检查是否有其他线程修改.</li>
+<li><a href="#orgheadline14">调用remove()</a>删除lastRet当前指向的元素.
+将cursor的值更新为lastRet, 并把lastRet设为-1(从这儿可以看出不能连续调用两次remove()).
+更新expectedModCount. 如果这一步抛出边界异常, 则捕获并重新抛出同步异常.</li>
+</ol></li>
+</ol>
+<pre class="example">
+public boolean hasNext() {
+          return cursor != size;
+      }
+
+      @SuppressWarnings("unchecked")
+      public E next() {
+          checkForComodification();
+          int i = cursor;
+          if (i &gt;= size)
+              throw new NoSuchElementException();
+          Object[] elementData = ArrayList.this.elementData;
+          if (i &gt;= elementData.length)
+              throw new ConcurrentModificationException();
+          cursor = i + 1;
+          return (E) elementData[lastRet = i];
+      }
+
+      public void remove() {
+          if (lastRet &lt; 0)
+              throw new IllegalStateException();
+          checkForComodification();
+
+          try {
+              ArrayList.this.remove(lastRet);
+              cursor = lastRet;
+              lastRet = -1;
+              expectedModCount = modCount;
+          } catch (IndexOutOfBoundsException ex) {
+              throw new ConcurrentModificationException();
+          }
+      }
+</pre>
+</div>
+</div>
+<div id="outline-container-orgheadline24" class="outline-4">
+<h4 id="orgheadline24">ListIterator实现: ListItr</h4>
+<div class="outline-text-4" id="text-orgheadline24">
+<p>
+ListItr继承Itr并实现了ListIterator接口. 包括: previous(), hasPrevious(),
+nextIndex(), previousIndex()等.
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline25" class="outline-3">
+<h3 id="orgheadline25">子列表</h3>
+<div class="outline-text-3" id="text-orgheadline25">
+<p>
+ArrayList提供了接口subList()来获取该AL的一个子集. 这是通过创建
+一个新的SubList类实例来实现的.
+</p>
+<pre class="example">
+public List&lt;E&gt; subList(int fromIndex, int toIndex) {
+    subListRangeCheck(fromIndex, toIndex, size);
+    return new SubList(this, offset, fromIndex, toIndex);
+}
+</pre>
+
+<p>
+SubList类是ArrayList的一个子类, 它的底层数据存储仍然是ArrayList的elementData
+数组, 所以对SubList的修改也会反馈到ArrayList中.
+SubList重要维护了一个索引来记录它所包含的数据. 包括 offset, size等. 
+由于SubList也继承自AbstractList, 所以它也提供了List的所有增删查的行为,
+当都是在函数内部通过坐标索引计算后调用ArrayList相应的api实现.
+同时, SubList也提供Iterator接口.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgheadline28" class="outline-2">
+<h2 id="orgheadline28">Iterable</h2>
+<div class="outline-text-2" id="text-orgheadline28">
 <p>
 实现了Iterable的接口类, 可以使用 "for-loop" 形式的语法. 
 例如这里实现一个 Foo 类实现了 Iterable 接口. 那么可以使用
@@ -155,7 +825,7 @@ for the JavaScript code in this tag.
 <tbody>
 <tr>
 <td class="org-left">interator()</td>
-<td class="org-left">返回一个<a href="#orgheadline1">Iterator</a> 实例, 用于实现对Interable接口的"遍历".</td>
+<td class="org-left">返回一个<a href="#orgheadline27">Iterator</a> 实例, 用于实现对Interable接口的"遍历".</td>
 </tr>
 
 <tr>
@@ -167,9 +837,9 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-orgheadline1" class="outline-2">
-<h2 id="orgheadline1">Iterator</h2>
-<div class="outline-text-2" id="text-orgheadline1">
+<div id="outline-container-orgheadline27" class="outline-2">
+<h2 id="orgheadline27">Iterator</h2>
+<div class="outline-text-2" id="text-orgheadline27">
 <p>
 Iterator是集合的"迭代器", 提供了对集合进行遍历的方法. Iterator一般
 都是依附Iterable存在的. <br  />
@@ -208,18 +878,18 @@ Iterator提供的API:
 
 <tr>
 <td class="org-left">forEachRemaining(action)</td>
-<td class="org-left">对集合剩下的元素执行action动作. action的定义与<a href="#orgheadline2">Iterable</a>介绍的相同.</td>
+<td class="org-left">对集合剩下的元素执行action动作. action的定义与<a href="#orgheadline28">Iterable</a>介绍的相同.</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 
-<div id="outline-container-orgheadline3" class="outline-2">
-<h2 id="orgheadline3">Collection</h2>
-<div class="outline-text-2" id="text-orgheadline3">
+<div id="outline-container-orgheadline29" class="outline-2">
+<h2 id="orgheadline29">Collection</h2>
+<div class="outline-text-2" id="text-orgheadline29">
 <p>
-Collection是Java"集合"家族的顶层接口, 继承自<a href="#orgheadline2">Iterable</a>.
+Collection是Java"集合"家族的顶层接口, 继承自<a href="#orgheadline28">Iterable</a>.
 定义了集合的一些共同特性:
 </p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -285,13 +955,13 @@ Collection是Java"集合"家族的顶层接口, 继承自<a href="#orgheadline2"
 </table>
 </div>
 </div>
-<div id="outline-container-orgheadline4" class="outline-2">
-<h2 id="orgheadline4">List</h2>
-<div class="outline-text-2" id="text-orgheadline4">
+<div id="outline-container-orgheadline6" class="outline-2">
+<h2 id="orgheadline6">List</h2>
+<div class="outline-text-2" id="text-orgheadline6">
 <p>
 List是"队列"家族的抽象类, 队列是一种"有先后顺序"的集合, 队列中的元素
 有添加的先后顺序, 新元素都会添加到队列尾部.
-该类继承自<a href="#orgheadline3">Collection</a>, 除了<a href="#orgheadline3">Collection</a>的特性, 该类的其他主要特性包括:
+该类继承自<a href="#orgheadline29">Collection</a>, 除了<a href="#orgheadline29">Collection</a>的特性, 该类的其他主要特性包括:
 </p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -417,13 +1087,13 @@ array通过ListIterator存入队列.
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline5" class="outline-2">
-<h2 id="orgheadline5">ListIterator</h2>
-<div class="outline-text-2" id="text-orgheadline5">
+<div id="outline-container-orgheadline30" class="outline-2">
+<h2 id="orgheadline30">ListIterator</h2>
+<div class="outline-text-2" id="text-orgheadline30">
 <p>
-该类是<a href="#orgheadline4">List</a>类的一个Iterator实现, 继承自<a href="#orgheadline1">Iterator</a>接口, 
-其提供了遍历<a href="#orgheadline4">List</a>的接口, 同时对一些接口做了条件约束:
-即对<a href="#orgheadline4">List</a>的遍历只能按照"从前向后"或"从后向前"的顺序.<br  />
+该类是<a href="#orgheadline6">List</a>类的一个Iterator实现, 继承自<a href="#orgheadline27">Iterator</a>接口, 
+其提供了遍历<a href="#orgheadline6">List</a>的接口, 同时对一些接口做了条件约束:
+即对<a href="#orgheadline6">List</a>的遍历只能按照"从前向后"或"从后向前"的顺序.<br  />
 该类的主要API如下:
 </p>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
@@ -497,11 +1167,11 @@ PS:
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline6" class="outline-2">
-<h2 id="orgheadline6">AbstractCollection</h2>
-<div class="outline-text-2" id="text-orgheadline6">
+<div id="outline-container-orgheadline31" class="outline-2">
+<h2 id="orgheadline31">AbstractCollection</h2>
+<div class="outline-text-2" id="text-orgheadline31">
 <p>
-AbstractCollection是<a href="#orgheadline3">Collection</a>接口的一个实现, 对于
+AbstractCollection是<a href="#orgheadline29">Collection</a>接口的一个实现, 对于
 集合类型的一些"可能"的共同操作, 该类给出了一些API实现, 包括:
 </p>
 <ol class="org-ol">
@@ -589,11 +1259,11 @@ clear(): 反复调用iterator的hasNext(), next(), remove()函数删除所有元
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline7" class="outline-2">
-<h2 id="orgheadline7">AbstractList</h2>
-<div class="outline-text-2" id="text-orgheadline7">
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">AbstractList</h2>
+<div class="outline-text-2" id="text-orgheadline5">
 <p>
-该类是<a href="#orgheadline6">AbstractCollection</a>的一个子类并实现了<a href="#orgheadline4">List</a>接口, 该类实现了
+该类是<a href="#orgheadline31">AbstractCollection</a>的一个子类并实现了<a href="#orgheadline6">List</a>接口, 该类实现了
 List相关的一些共同操作. 包括:
 </p>
 <ol class="org-ol">
@@ -623,12 +1293,12 @@ indexOf(o):寻找元素位置. 该函数的实现使用了previousIndex()函数,
 </ol>
 </div>
 
-<div id="outline-container-orgheadline8" class="outline-3">
-<h3 id="orgheadline8">Itr</h3>
-<div class="outline-text-3" id="text-orgheadline8">
+<div id="outline-container-orgheadline32" class="outline-3">
+<h3 id="orgheadline32">Itr</h3>
+<div class="outline-text-3" id="text-orgheadline32">
 <p>
 该类是AbstractList的一个内部类, 在List的层级结构中, 是第一次具体实现
-一个Iterator. 可以看下该类是如何具体实现<a href="#orgheadline1">Iterator</a>的API的.
+一个Iterator. 可以看下该类是如何具体实现<a href="#orgheadline27">Iterator</a>的API的.
 </p>
 <ol class="org-ol">
 <li><p>
@@ -681,17 +1351,17 @@ expectedModcount的值与该值不相等了, 说明"集合"被其他线程修改
 </pre>
 </div></li>
 <li>remove():
-如果当前光标没有指向list区间, 则抛异常. 否则调用 <a href="#orgheadline7">AbstractList</a>的remove()函数.
+如果当前光标没有指向list区间, 则抛异常. 否则调用 <a href="#orgheadline5">AbstractList</a>的remove()函数.
 然后将缓存光标 lastRet 置位-1. 并重新赋值 expectedModcount(因为AbstractList的
 remove()函数可能会修改modCount的值).</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline9" class="outline-3">
-<h3 id="orgheadline9">ListItr</h3>
-<div class="outline-text-3" id="text-orgheadline9">
+<div id="outline-container-orgheadline33" class="outline-3">
+<h3 id="orgheadline33">ListItr</h3>
+<div class="outline-text-3" id="text-orgheadline33">
 <p>
-该类是<a href="#orgheadline8">Itr</a>的子类并实现了<a href="#orgheadline5">ListIterator</a>接口. 主要是实现了ListIterator"从后向前"的遍历方法.
+该类是<a href="#orgheadline32">Itr</a>的子类并实现了<a href="#orgheadline30">ListIterator</a>接口. 主要是实现了ListIterator"从后向前"的遍历方法.
 </p>
 <ol class="org-ol">
 <li>构造函数ListItr(index):
@@ -723,9 +1393,9 @@ next()是先返回当前光标的值, 移动光标. previous()是返回
 </ol>
 </div>
 </div>
-<div id="outline-container-orgheadline10" class="outline-3">
-<h3 id="orgheadline10">SubList</h3>
-<div class="outline-text-3" id="text-orgheadline10">
+<div id="outline-container-orgheadline34" class="outline-3">
+<h3 id="orgheadline34">SubList</h3>
+<div class="outline-text-3" id="text-orgheadline34">
 <p>
 该类是AbstractList的子类,是"子队列"概念的代码实现. 代表了某个
 队列的一部分. 在其实现中, 其内容存储在原列表的底层存储中. 该类
@@ -781,12 +1451,12 @@ next()是先返回当前光标的值, 移动光标. previous()是返回
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline11" class="outline-3">
-<h3 id="orgheadline11">RandomAccessSubList</h3>
-<div class="outline-text-3" id="text-orgheadline11">
+<div id="outline-container-orgheadline35" class="outline-3">
+<h3 id="orgheadline35">RandomAccessSubList</h3>
+<div class="outline-text-3" id="text-orgheadline35">
 <p>
-该类是<a href="#orgheadline10">SubList</a>的一个子类, 但是实现了RandomAccess接口(空接口),
-表明其具有RandomAccess的属性. 该类的所有操作几乎都是使用<a href="#orgheadline10">SubList</a>的操作. 
+该类是<a href="#orgheadline34">SubList</a>的一个子类, 但是实现了RandomAccess接口(空接口),
+表明其具有RandomAccess的属性. 该类的所有操作几乎都是使用<a href="#orgheadline34">SubList</a>的操作. 
 </p>
 
 <p>
@@ -805,91 +1475,11 @@ next()是先返回当前光标的值, 移动光标. previous()是返回
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline12" class="outline-2">
-<h2 id="orgheadline12">ArrayList</h2>
-<div class="outline-text-2" id="text-orgheadline12">
+<div id="outline-container-orgheadline36" class="outline-2">
+<h2 id="orgheadline36">AbstractSequentialList</h2>
+<div class="outline-text-2" id="text-orgheadline36">
 <p>
-介绍了这么多之后, 终于来到了ArrayList的实现, 该类直接继承
-自<a href="#orgheadline7">AbstractList</a>, 并实现了 <a href="#orgheadline4">List</a> 和 RandomAccess 接口.
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">public</span> <span style="color: #F0DFAF; font-weight: bold;">class</span> <span style="color: #7CB8BB;">ArrayList</span>&lt;<span style="color: #7CB8BB;">E</span>&gt; <span style="color: #F0DFAF; font-weight: bold;">extends</span> <span style="color: #7CB8BB;">AbstractList</span>&lt;<span style="color: #7CB8BB;">E</span>&gt;
-        <span style="color: #F0DFAF; font-weight: bold;">implements</span> <span style="color: #7CB8BB;">List</span>&lt;<span style="color: #7CB8BB;">E</span>&gt;, <span style="color: #7CB8BB;">RandomAccess</span>, <span style="color: #7CB8BB;">Cloneable</span>, <span style="color: #BFEBBF;">java</span>.<span style="color: #BFEBBF;">io</span>.<span style="color: #7CB8BB;">Serializable</span>
-{
-</pre>
-</div>
-
-<p>
-这里主要介绍其底层数据存储的实现及与LinkedList不同的API:
-</p>
-<ol class="org-ol">
-<li>ArrayList的元素都存放在底层Object数组elementData中.</li>
-<li>int变量size存放元素数量.</li>
-<li>get(index): 获取元素, 直接访问数组对应位置, O(1).</li>
-<li>set(index, e): 更新元素, 同上, O(1).</li>
-<li>add(index, e): index位置插入元素, 这里会做两步:
-<ul class="org-ul">
-<li>如果数组已满, 分配新数组, <b>这样会做一次整个数组的copy</b>.</li>
-<li>插入新元素, 此时会将index后的内容做整体移动.</li>
-</ul></li>
-<li>remove(index): 对index后的内容做整体前移动作.</li>
-<li><p>
-batchRemove(c, flag): 批量删除, flag是一个boolean变量, 
-其含义是: 如果为true, 保留c和该list的交集, 而删除其他元素.
-如果为false, 则删除交集.
-</p>
-<div class="org-src-container">
-
-<pre class="src src-java"><span style="color: #F0DFAF; font-weight: bold;">private</span> <span style="color: #7CB8BB;">boolean</span> <span style="color: #93E0E3;">batchRemove</span>(<span style="color: #7CB8BB;">Collection</span>&lt;?&gt; <span style="color: #DFAF8F;">c</span>, <span style="color: #7CB8BB;">boolean</span> <span style="color: #DFAF8F;">complement</span>) {
-    <span style="color: #F0DFAF; font-weight: bold;">final</span> <span style="color: #7CB8BB;">Object</span>[] <span style="color: #DFAF8F;">elementData</span> = <span style="color: #F0DFAF; font-weight: bold;">this</span>.elementData;
-    <span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">r</span> = 0, <span style="color: #DFAF8F;">w</span> = 0;
-    <span style="color: #7CB8BB;">boolean</span> <span style="color: #DFAF8F;">modified</span> = <span style="color: #BFEBBF;">false</span>;
-    <span style="color: #F0DFAF; font-weight: bold;">try</span> {
-        <span style="color: #F0DFAF; font-weight: bold;">for</span> (; r &lt; <span style="color: #7CB8BB;">size</span>; r++)
-            <span style="color: #F0DFAF; font-weight: bold;">if</span> (c.contains(elementData[r]) == complement)
-                elementData[w++] = elementData[r];
-    } <span style="color: #F0DFAF; font-weight: bold;">finally</span> {
-        <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">Preserve behavioral compatibility with AbstractCollection,</span>
-        <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">even if c.contains() throws.</span>
-        <span style="color: #F0DFAF; font-weight: bold;">if</span> (r != size) {
-            System.arraycopy(elementData, r,
-                             elementData, w,
-                             size - r);
-            w += size - r;
-        }
-        <span style="color: #F0DFAF; font-weight: bold;">if</span> (w != size) {
-            <span style="color: #5F7F5F;">// </span><span style="color: #7F9F7F;">clear to let GC do its work</span>
-            <span style="color: #F0DFAF; font-weight: bold;">for</span> (<span style="color: #7CB8BB;">int</span> <span style="color: #DFAF8F;">i</span> = w; i &lt; <span style="color: #7CB8BB;">size</span>; i++)
-                elementData[i] = <span style="color: #BFEBBF;">null</span>;
-            modCount += size - w;
-            size = w;
-            modified = <span style="color: #BFEBBF;">true</span>;
-        }
-    }
-    <span style="color: #F0DFAF; font-weight: bold;">return</span> modified;
-}
-</pre>
-</div></li>
-</ol>
-
-<p>
-所以对于ArrayList的所有的插入/删除动作, 都会涉及到底层数组的
-"移动", 这个移动最终是调用 <code>System.arraycopy()</code> 函数实现的.
-所以插入/删除的效率直接与该函数的实现有关. 
-</p>
-
-<p>
-ArryaList的其他实现, 例如 Iterator 和 ListIterator, 基本与
-<a href="#orgheadline7">AbstractList</a>大同小异.
-</p>
-</div>
-</div>
-<div id="outline-container-orgheadline13" class="outline-2">
-<h2 id="orgheadline13">AbstractSequentialList</h2>
-<div class="outline-text-2" id="text-orgheadline13">
-<p>
-在介绍LinkedList之前, 先看一下它的父类, 该类是<a href="#orgheadline7">AbstractList</a>的
+在介绍LinkedList之前, 先看一下它的父类, 该类是<a href="#orgheadline5">AbstractList</a>的
 子类, 但是它具有"顺序"的属性, 这是相对于ArrayList的RandomAccess属性而言. 
 官方文档中对该属性是这样解释的. 
 </p>
@@ -905,7 +1495,7 @@ ArryaList的其他实现, 例如 Iterator 和 ListIterator, 基本与
 
 <p>
 上面这段文字解释了在该类中通过index "插入/删除" 元素的实现方法.
-都是通过其ListIterator实现的. (想想在<a href="#orgheadline12">ArrayList</a>中,这些方法都是直接
+都是通过其ListIterator实现的. (想想在<a href="#orgheadline26">ArrayList</a>中,这些方法都是直接
 操作数组). 可以看下几个相关的API代码.
 </p>
 <div class="org-src-container">
@@ -936,30 +1526,30 @@ ListIterator实例.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline14" class="outline-2">
-<h2 id="orgheadline14">Deque</h2>
-<div class="outline-text-2" id="text-orgheadline14">
+<div id="outline-container-orgheadline37" class="outline-2">
+<h2 id="orgheadline37">Deque</h2>
+<div class="outline-text-2" id="text-orgheadline37">
 <p>
 双端队列, 支持头部和尾部的插入和删除动作. 
 Deque接口提供了这些操作的相应API.
 </p>
 </div>
 </div>
-<div id="outline-container-orgheadline15" class="outline-2">
-<h2 id="orgheadline15">LinkedList</h2>
-<div class="outline-text-2" id="text-orgheadline15">
+<div id="outline-container-orgheadline38" class="outline-2">
+<h2 id="orgheadline38">LinkedList</h2>
+<div class="outline-text-2" id="text-orgheadline38">
 <p>
-继承自<a href="#orgheadline13">AbstractSequentialList</a>, 并实现了 <a href="#orgheadline4">List</a> 和 <a href="#orgheadline14">Deque</a> 接口.
+继承自<a href="#orgheadline36">AbstractSequentialList</a>, 并实现了 <a href="#orgheadline6">List</a> 和 <a href="#orgheadline37">Deque</a> 接口.
 </p>
 
 <p>
-不过与<a href="#orgheadline13">AbstractSequentialList</a>不同的是, LinkedList的插入删除并
+不过与<a href="#orgheadline36">AbstractSequentialList</a>不同的是, LinkedList的插入删除并
 没有使用ListIterator, 而是直接操作链表. 下面是一些核心API:
 </p>
 <ol class="org-ol">
 <li><p>
 unlink(e): 删除元素, "几乎"所有删除API的底层实现. 
-与<a href="#orgheadline12">ArrayList</a>不同的是, 它没有设计到"一片内存"区域的移动, 所以
+与<a href="#orgheadline26">ArrayList</a>不同的是, 它没有设计到"一片内存"区域的移动, 所以
 效率上要比ArrayList高.
 </p>
 <div class="org-src-container">
@@ -1023,9 +1613,9 @@ node(index): 获取index位置的node, "几乎" 所有遍历类的底层实现.
 这三个函数基本就是LinkedList的核心原理. 
 </p>
 </div>
-<div id="outline-container-orgheadline16" class="outline-3">
-<h3 id="orgheadline16">Node</h3>
-<div class="outline-text-3" id="text-orgheadline16">
+<div id="outline-container-orgheadline39" class="outline-3">
+<h3 id="orgheadline39">Node</h3>
+<div class="outline-text-3" id="text-orgheadline39">
 <p>
 LinkedList是使用"链表"这种数据结构来存储数据, 所以其内部定义了一个
 Node类用来表示链表节点. Node类的实现很简单.
@@ -1048,13 +1638,13 @@ Node类用来表示链表节点. Node类的实现很简单.
 </div>
 </div>
 </div>
-<div id="outline-container-orgheadline17" class="outline-2">
-<h2 id="orgheadline17">SynchronizedList</h2>
-<div class="outline-text-2" id="text-orgheadline17">
+<div id="outline-container-orgheadline40" class="outline-2">
+<h2 id="orgheadline40">SynchronizedList</h2>
+<div class="outline-text-2" id="text-orgheadline40">
 <p>
 由于List类不是线程安全的. 多线程可以同时修改list的内容. 
 所以为了解决这个问题, Collections类提供了一个 
-<code>snchronizedList()</code> 函数用于将 <a href="#orgheadline4">List</a> 转化为一个 "同步" list.
+<code>snchronizedList()</code> 函数用于将 <a href="#orgheadline6">List</a> 转化为一个 "同步" list.
 其基本原理类似于adapter模式, 实现了一个新的list, 被提供了
 同步功能. 看下部分源码:
 </p>
