@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2017-03-14 Tue 22:51 -->
+<!-- 2017-03-16 Thu 00:39 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>【翻译】 Android Data Binding系列</title>
@@ -96,6 +96,12 @@ for the JavaScript code in this tag.
 <li><a href="#orgheadline4">使用ViewHolder模式</a></li>
 <li><a href="#orgheadline5">给变量赋值</a></li>
 <li><a href="#orgheadline6">Include Layouts</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline7">表达自己</a>
+<ul>
+<li><a href="#orgheadline8">NullPointerException</a></li>
+<li><a href="#orgheadline9">导入</a></li>
 </ul>
 </li>
 </ul>
@@ -508,6 +514,164 @@ user_name.xml
 因为设置了 *app:user="@{user}"*. 再次注意, 因为被包含的layout的view不需要被直接访问,
 (我甚至都没有设置id), 这里没有给include设置ID.
 </p>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-2">
+<h2 id="orgheadline7">表达自己</h2>
+<div class="outline-text-2" id="text-orgheadline7">
+<p>
+在前面提到, 通过Android Studio, 你可以在layout文件里给变量赋值.
+下面的例子把展示用户名的text的值设成如下表达式
+</p>
+<pre class="example">
+android:text="@{user.firstName}"
+</pre>
+
+<p>
+用户类被定义成传统Java对象(POJO):
+</p>
+<pre class="example">
+public class User {
+    public String firstName;
+    public String lastName;
+    public Bitmap image;
+}
+</pre>
+
+<p>
+你的大多数类都不是用public域(我认为), 而且为其提供访问函数.
+但是,layout文件中的表达式应该简短而且易于阅读, 所以我们不希望
+开发者不得不在表达式中添加类似getFirstName()或getLastName()
+这样的函数.表达式解析器会自动尝试为属性去寻找Java Bean的访问函数
+(getXxx()或isXxx()).当你的类有访问函数时,使用上面的(即变量名)
+表达式也会工作.
+</p>
+<pre class="example">
+public class User {
+    private String firstName;
+    private String lastName;
+    private Bitmap image;
+
+    public String getFirstName() { return firstName; }
+    public String getLastName() { return lastName; }
+    public Bitmap getImage() { return image; }
+}
+</pre>
+<p>
+如果解析器找不到类似于getXxx()的函数,那么它会寻找类似xxx()的函数.
+所以你可以使用user.hasFriend来访问函数hasFriend().
+</p>
+
+<p>
+Android Data Binding表达式语法同样支持类似Java的数组访问:
+</p>
+<pre class="example">
+android:text="@{user.friends[0].firstName}"
+</pre>
+<p>
+所以可以使用中括号作为get函数的简写.
+</p>
+
+<p>
+Data Binding同样支持几乎所有的java语言表达式,包括函数调用,
+三元操作符及数学操作. 但不要太疯狂:
+</p>
+<pre class="example">
+android:text='@{user.adult ? ((user.male ? "Mr. " : "Ms. ") + user.lastName) : (user.firstName instanceof String ? user.firstName : "kid") }'
+</pre>
+<p>
+上面的代码没人能读懂!而且使用硬编码字符串非常难维护.
+把复杂的表达式放到模块中.
+</p>
+
+<p>
+另外,Data Binding提供了"null-合并"操作符 <b>??</b> 来简化三元操作符.
+</p>
+<pre class="example">
+android:text=”@{user.firstName ?? user.userName}”
+</pre>
+<p>
+相当于:
+</p>
+<pre class="example">
+android:text=”@{user.firstName != null ? user.firstName : user.userName}”
+</pre>
+
+<p>
+binding表达式另一个更酷的事情就是可以使用资源:
+</p>
+<pre class="example">
+android:padding=”@{@dim/textPadding + @dim/headerPadding}
+</pre>
+<p>
+这可以节省很多不必要的单独值定义.你是不是经常会只想添加或去除尺寸?
+目前还不支持style.
+</p>
+
+<p>
+你同样可以使用字符串,数量和精度格式, 只要符合资源方法getString,
+getQuantitiString和getFraction的语法即可.
+直接想资源中传递参数即可.
+</p>
+<pre class="example">
+android:text=”@{@string/nameFormat(user.firstName, user.lastName)}”
+</pre>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">NullPointerException</h3>
+<div class="outline-text-3" id="text-orgheadline8">
+<p>
+Data Binding表达式一个很方便的地方就是执行时总是会检查null值.
+这意思着对于如下表达式:
+</p>
+<pre class="example">
+android:text=”@{user.firstName ?? user.userName}”
+</pre>
+<p>
+如果user是null,那么user.firstName和user.userName也会被解析成null.
+不会触发NullPointerException.
+</p>
+
+<p>
+但这并不意味着就不会产生NullPointerException.例如下面的表达式:
+</p>
+<pre class="example">
+android:text=”@{com.example.StringUtils.capitalize(user.firstName)}”
+
+public static String capitalize(String str) {
+    return Character.toUpperCase(str.charAt(0)) + str.substring(1);
+}
+</pre>
+<p>
+当传入的参数为null时,必然会产生NullPointerException.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">导入</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+<p>
+在上面的例子中, 表达式很长. 我们想导入类型使得表达式变短.
+可以通过在data块中导入:
+</p>
+<pre class="example">
+&lt;data&gt;
+    &lt;variable
+        name="user"
+        type="com.example.myapp.model.User"/&gt;
+    &lt;import
+        type="com.example.StringUtils"/&gt;
+&lt;/data&gt;
+</pre>
+<p>
+表达式则简化为:
+</p>
+<pre class="example">
+android:text=”@{StringUtils.capitalize(user.firstName)}”
+</pre>
 </div>
 </div>
 </div>
