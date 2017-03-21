@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2017-03-16 Thu 00:39 -->
+<!-- 2017-03-21 Tue 22:04 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title>【翻译】 Android Data Binding系列</title>
@@ -102,6 +102,14 @@ for the JavaScript code in this tag.
 <ul>
 <li><a href="#orgheadline8">NullPointerException</a></li>
 <li><a href="#orgheadline9">导入</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline10">事件监听</a>
+<ul>
+<li><a href="#orgheadline11">监听对象</a></li>
+<li><a href="#orgheadline12">函数引用</a></li>
+<li><a href="#orgheadline13">Lambda表达式</a></li>
+<li><a href="#orgheadline14">用哪一个?</a></li>
 </ul>
 </li>
 </ul>
@@ -672,6 +680,164 @@ public static String capitalize(String str) {
 <pre class="example">
 android:text=”@{StringUtils.capitalize(user.firstName)}”
 </pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline10" class="outline-2">
+<h2 id="orgheadline10">事件监听</h2>
+<div class="outline-text-2" id="text-orgheadline10">
+<p>
+在前面的系列中,我介绍了怎么消除程序中的findViewById,甚至在某些情况下可以
+消除view的ID. 但是我在这些文章中还没有明确提及怎么处理事件监听, 例如View的
+OnClickListener和TextView的TextWatcher.
+</p>
+
+<p>
+Android Data Binding提供了三种机制来在layout文件中设置事件监听器, 
+你可以选择最顺手的一种. 不像Android的标准的onClick属性, 这几种机制并没有
+使用反射, 所以无论选择那种性能都很好.
+</p>
+</div>
+
+<div id="outline-container-orgheadline11" class="outline-3">
+<h3 id="orgheadline11">监听对象</h3>
+<div class="outline-text-3" id="text-orgheadline11">
+<p>
+对于使用 <i>set*</i> 类方法(对应于 <i>add*</i> 类方法), 你可以直接在属性上绑定一个
+监听对象. 例如:
+</p>
+<pre class="example">
+&lt;View android:onClickListener="@{callbacks.clickListener}" .../&gt;
+</pre>
+
+<p>
+监听对象可以设置为公共域或者具有getter方法:
+</p>
+<pre class="example">
+public class Callbacks {
+    public View.OnClickListener clickListener;
+}
+</pre>
+<p>
+或者也可以把"Listener"去掉, 使用简写的方法:
+</p>
+<pre class="example">
+&lt;View android:onClick="@{listeners.clickListener}" .../&gt;
+</pre>
+
+<p>
+当程序已经在使用这些监听对象时, 可以使用绑定监听对象的方法.
+但在大多数情况下,你会使用另外两种方法.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12">函数引用</h3>
+<div class="outline-text-3" id="text-orgheadline12">
+<p>
+使用函数引用, 你可以独立的将方法绑定到监听器上. 
+无论是静态方法或是实例方法, 只要其跟listenr方法具有相同的参数和返回值,
+都可以使用. 例如:
+</p>
+<pre class="example">
+&lt;EditText
+    android:afterTextChanged="@{callbacks::nameChanged}" .../&gt;
+
+public class Callbacks {
+    public void nameChanged(Editable editable) {
+        //...
+    }
+}
+</pre>
+<p>
+虽然不推荐, 但是你仍然可以在绑定中做一些逻辑判断:
+</p>
+<pre class="example">
+&lt;EditText android:afterTextChanged=
+    "@{user.hasName?callbacks::nameChanged:callbacks::idChanged}"
+    .../&gt;
+</pre>
+<p>
+大多数情况下将逻辑放到被调函数中会更好. 尤其是当你需要向函数中传递额外信息时,
+(例如上面的user). 可以通过lambda表达式来这么做.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline13" class="outline-3">
+<h3 id="orgheadline13">Lambda表达式</h3>
+<div class="outline-text-3" id="text-orgheadline13">
+<p>
+使用Lambda表达式可以传入你想传入的参数. 例如:
+</p>
+<pre class="example">
+&lt;EditText
+ android:afterTextChanged="@{(e)-&gt;callbacks.textChanged(user, e)}"
+ ... /&gt;
+
+public class Callbacks {
+    public void textChanged(User user, Editable editable) {
+        if (user.hasName()) {
+            //...
+        } else {
+            //...
+        }
+    }
+}
+</pre>
+<p>
+如果不需要listener中参数, 也可以通过如下语法移除:
+</p>
+<pre class="example">
+&lt;EditText
+ android:afterTextChanged="@{()-&gt;callbacks.textChanged(user)}"
+ ... /&gt;
+</pre>
+<p>
+但是你不能只移除部分:要么使用所有,要么全不使用.
+</p>
+
+<p>
+函数引用和Lambda表达式求值时间也不相同. 函数引用的表达式求值发生在绑定阶段.
+Lambda表达式求值发生在事件发生时. 如果,举例来说, callbacks变量没有被设置,
+对于函数引用, 表达式求值为Null,所有不会给view设置任何listener. 对于Lambda
+表达式,总是会设置一个listener, 当事件发生时, 表达式就会被求值. 
+一般这不会有什么影响, 但是对于有返回值的事件监听函数, 会返回一个默认值.
+例如:
+</p>
+<pre class="example">
+&lt;View android:onLongClick=”@{()-&gt;callbacks.longClick()}” …/&gt;
+</pre>
+<p>
+如果callbacks是null,会返回false. 这是不对的,因为longClick事件被消耗掉了.
+所以你可以通过使用更长的表达式来返回正确的结果:
+</p>
+<pre class="example">
+&lt;View android:onLongClick=”@{()-&gt;callbacks == null ? true : callbacks.longClick()}” …/&gt;
+</pre>
+<p>
+你通常应该通过确保不会传入null表达式求值的方法来避免上述情况. Lambda
+表达式可以跟函数引用互换.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline14" class="outline-3">
+<h3 id="orgheadline14">用哪一个?</h3>
+<div class="outline-text-3" id="text-orgheadline14">
+<p>
+最灵活的机制是lambda表达式, 与事件监听函数相比, 它允许你传递不同的参数.
+</p>
+
+<p>
+大多数情况下, 你的回调会使用跟监听函数相同的参数. 这种情况下使用函数引用更简洁易读.
+</p>
+
+<p>
+如果你正在现有程序中想Android Data Binding转换, 你可能已经给view设置了一些监听对象.
+你可以将这些对象当作变量传给layout文件中相应的view属性.
+</p>
 </div>
 </div>
 </div>
