@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2017-03-22 Wed 23:48 -->
+<meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta  name="viewport" content="width=device-width, initial-scale=1" />
+<title>&lt;深入理解Java虚拟机&gt;阅读笔记</title>
+<meta  name="generator" content="Org-mode" />
+<meta  name="author" content="Luis Xu" />
+<link rel="stylesheet" title="Standard" href="/style/worg.css" type="text/css" />
+<link rel="alternate stylesheet" title="Zenburn" href="/style/worg-zenburn.css" type="text/css" />
+<link rel="alternate stylesheet" title="Classic" href="/style/worg-classic.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="/org-mode-unicorn.ico" type="image/x-icon" />
+<link rel="icon" href="/org-mode-unicorn.ico" type="image/ico" />
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="preamble" class="status">
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-7691209-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  document.addEventListener('DOMContentLoaded',function() {
+      document.getElementById("table-of-contents").onclick = function() {
+          var elem = document.getElementById("text-table-of-contents");
+          elem.style.display = elem.style.display == "block" ? "none" : "block";
+      }
+  });
+</script>
+</div>
+<div id="content">
+<h1 class="title">&lt;深入理解Java虚拟机&gt;阅读笔记</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgheadline1">第2章:Java内存区域与内存溢出异常</a>
+<ul>
+<li><a href="#orgheadline2">内存区域划分</a></li>
+<li><a href="#orgheadline3">HotSpot虚拟机</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline11">第3章:垃圾收集器与内存分配策略</a>
+<ul>
+<li><a href="#orgheadline4">判断对象是否要回收的方法</a></li>
+<li><a href="#orgheadline5">引用类型</a></li>
+<li><a href="#orgheadline6">GC的两步论</a></li>
+<li><a href="#orgheadline7">垃圾收集算法</a></li>
+<li><a href="#orgheadline8">HotSpot算法实现</a></li>
+<li><a href="#orgheadline9">HotSpot垃圾收集器</a></li>
+<li><a href="#orgheadline10">内存分配策略</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline13">附录</a>
+<ul>
+<li><a href="#orgheadline12">JVM参数</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+本文为周志明的<a href="https://www.amazon.cn/%E5%9B%BE%E4%B9%A6/dp/B00DA0E170/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1490191601&amp;sr=1-1&amp;keywords=%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3java%E8%99%9A%E6%8B%9F%E6%9C%BA">&lt;&lt;深入理解Java虚拟机&gt;&gt;</a>的读书笔记.
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">第2章:Java内存区域与内存溢出异常</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+本章主要讲了JVM的内存区域及可能出现的内存溢出问题. 
+</p>
+</div>
+<div id="outline-container-orgheadline2" class="outline-3">
+<h3 id="orgheadline2">内存区域划分</h3>
+<div class="outline-text-3" id="text-orgheadline2">
+<ol class="org-ol">
+<li>程序计数器.
+线程私有区域(即每个线程都有). 记录当前线程指向的字节码地址.
+如果执行的是Native方法,则为空.</li>
+<li>虚拟机栈(VM Stack).
+线程私有区域, 用于存储每个线程的函数执行过程中的栈帧.
+可以存放基本数据类型,对象引用和returnAddress类型.
+栈帧所需的空间大小在编译期间就是确定好的.</li>
+<li>本地方法栈.
+线程私有区域, 服务对Native方法的调用.</li>
+<li>堆.
+线程共享区域, 用于对象创建.</li>
+<li>方法区.
+线程共享区域. 存放被JVM加载的类信息,常量,静态变量等.</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-3">
+<h3 id="orgheadline3">HotSpot虚拟机</h3>
+<div class="outline-text-3" id="text-orgheadline3">
+<p>
+Sun JDK和OpenJDK上使用的虚拟机. 
+</p>
+<ol class="org-ol">
+<li>使用new创建普通对象.
+流程:
+<ol class="org-ol">
+<li>检查方法区的常量池中, 判断该类是否被加载,解析和初始化.
+没有则执行相应的类加载过程.</li>
+<li>从堆上分配一块内存给新实例.并初始化为零.</li>
+<li>更新对象头信息.</li>
+</ol></li>
+<li>对象组成.
+包括三部分: 对象头, 实例数据, 填充.
+<ol class="org-ol">
+<li>对象头: 由 "Mark World" 和 "类型指针" 组成.
+Mark World包含了大部分的运行时数据:哈希码,GC年龄,锁&#x2026;.
+类型指针主要指向类元数据.</li>
+</ol></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline11" class="outline-2">
+<h2 id="orgheadline11">第3章:垃圾收集器与内存分配策略</h2>
+<div class="outline-text-2" id="text-orgheadline11">
+</div><div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4">判断对象是否要回收的方法</h3>
+<div class="outline-text-3" id="text-orgheadline4">
+<ol class="org-ol">
+<li>引用技术算法.
+主要思想就是对象的引用计数如果不为0则不回收对象.
+可能出现的问题: 两个无用对象互相引用导致永远不会被回收.</li>
+<li>可达性分析算法.
+主要思想: 将一些对象设置为root,每次GC都从root作为起点向下搜索.
+如果有对象Root不可达,那么就可以被回收.
+可作为Root的有如下几种对象:
+<ul class="org-ul">
+<li>栈帧中引用的对象</li>
+<li>方法区静态成员变量引用的对象.</li>
+<li>方法区常量引用的对象.</li>
+<li>Native方法区中引用的对象.</li>
+</ul></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline5" class="outline-3">
+<h3 id="orgheadline5">引用类型</h3>
+<div class="outline-text-3" id="text-orgheadline5">
+<ol class="org-ol">
+<li>强引用. 被强引用的对象永远不会被回收.</li>
+<li>软引用. 在内存不足时会对这些对象进行回收.回收完还不够会抛溢出异常.</li>
+<li>弱引用. 下一次GC会被回收.</li>
+<li>虚引用.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline6" class="outline-3">
+<h3 id="orgheadline6">GC的两步论</h3>
+<div class="outline-text-3" id="text-orgheadline6">
+<p>
+GC过程中会检查被回收是否需要执行finalize()方法,
+如果需要则执行该对象的该方法.(当一个类覆写了该方法并且从未被调用过时,
+被调用,该方法只会被调用一次).
+所以可以在该方法中拯救自己不被回收.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline7" class="outline-3">
+<h3 id="orgheadline7">垃圾收集算法</h3>
+<div class="outline-text-3" id="text-orgheadline7">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">思想</th>
+<th scope="col" class="org-left">优点</th>
+<th scope="col" class="org-left">缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">标记-清除算法</td>
+<td class="org-left">先标记要回收对象, 然后统一回收</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">效率低,容易产生碎片</td>
+</tr>
+
+<tr>
+<td class="org-left">复制算法</td>
+<td class="org-left">将新生代按比例分为Eden和Survivor区域, 回收时将存活对象复制到S区域,然后一次性清理Eden</td>
+<td class="org-left">分配只移动指针,高效</td>
+<td class="org-left">内存利用率降低</td>
+</tr>
+
+<tr>
+<td class="org-left">标记-整理算法</td>
+<td class="org-left">将老年代内存先标记,然后整体移动到内存的一端,然后回收端外的区域</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+<p>
+注:HotSpot虚拟机的复制算法比例为8:1, 所以Eden占内存区域的80%, 两个Survivor分别占据10%. 并且需要老年代做内存担保, 然suivivor无法容纳eden时,直接复制到老年代.  
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline8" class="outline-3">
+<h3 id="orgheadline8">HotSpot算法实现</h3>
+<div class="outline-text-3" id="text-orgheadline8">
+<ol class="org-ol">
+<li>HS使用OopMap来存放那些地方存放内存引用.</li>
+<li>Safe point机制来主要告知线程要进行GC.使其执行到安全点等待GC.</li>
+<li>Safe Region机制保证不响应Safe point的线程(sleep或block)可以安全GC.</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-orgheadline9" class="outline-3">
+<h3 id="orgheadline9">HotSpot垃圾收集器</h3>
+<div class="outline-text-3" id="text-orgheadline9">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">思想</th>
+<th scope="col" class="org-left">优点</th>
+<th scope="col" class="org-left">缺点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Serial</td>
+<td class="org-left">单线程收集器,Stop The World</td>
+<td class="org-left">简单高效</td>
+<td class="org-left">停顿时间过长</td>
+</tr>
+
+<tr>
+<td class="org-left">ParNew</td>
+<td class="org-left">多线程收集器, STW</td>
+<td class="org-left">快</td>
+<td class="org-left">单线程效果不比Serial好</td>
+</tr>
+
+<tr>
+<td class="org-left">Parallel Scanvenge</td>
+<td class="org-left">关注吞吐量, 可以自动调整Eden大小. 使用复制算法</td>
+<td class="org-left">保证吞吐量</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Serial Old</td>
+<td class="org-left">Serial的老年代版本</td>
+<td class="org-left">标记-整理算法</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">Parallel   Old</td>
+<td class="org-left">Parallel Scanvenge的老年代版本</td>
+<td class="org-left">标记-整理算法</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">CMS</td>
+<td class="org-left">初始标记(STW)-&gt;并发标记-&gt;重新标记(STW)-&gt;并发清除</td>
+<td class="org-left">最短停顿时间, 标记-清除算法</td>
+<td class="org-left">CPU敏感, 失败产生Full GC, 碎片导致Full GC</td>
+</tr>
+
+<tr>
+<td class="org-left">G1</td>
+<td class="org-left">将堆划为region,然后按优先级分次收集.</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-orgheadline10" class="outline-3">
+<h3 id="orgheadline10">内存分配策略</h3>
+<div class="outline-text-3" id="text-orgheadline10">
+<ol class="org-ol">
+<li>对象优先在Eden上分配, 内存不足触发 Minor GC.</li>
+<li>大对象直接进入老年代.</li>
+<li>长期存活的对象进入老年代.
+对象在Eden出生时被赋予年龄, 随着年龄增大到一定值, 放入老年代.</li>
+<li>动态年龄判定.
+Survivor空间中相同年龄对象大小超过S区域的一半,放入老年代.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgheadline13" class="outline-2">
+<h2 id="orgheadline13">附录</h2>
+<div class="outline-text-2" id="text-orgheadline13">
+</div><div id="outline-container-orgheadline12" class="outline-3">
+<h3 id="orgheadline12">JVM参数</h3>
+<div class="outline-text-3" id="text-orgheadline12">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">&#xa0;</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">&#x00ad;XX:+HeapDumpOnOutOfMemoryError</td>
+<td class="org-left">内存溢出时dump当前内存堆</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x00ad;Xss</td>
+<td class="org-left">设置栈内存容量</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x00ad;XX:PermSize -XX:MaxPermSize</td>
+<td class="org-left">方法区大小</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x00ad;Xmx</td>
+<td class="org-left">堆最大值</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x00ad;XX:MaxDirectMemorySize</td>
+<td class="org-left">直接内存最大值</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x00ad;XX:ParallelGCThreads</td>
+<td class="org-left">参与垃圾回收的线程数</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x00ad;XX:MaxGCPauseMillis</td>
+<td class="org-left">最大垃圾收集停顿时间</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x00ad;XX:GCTimeRatio</td>
+<td class="org-left">吞吐量大小</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x00ad;XX:+PrintGCDetails</td>
+<td class="org-left">打印GC日志</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="postamble">Created At <span class="timestamp-wrapper"><span class="timestamp">&lt;2017-03-22 Wed&gt;</span></span> by Luis Xu. Email: <a href="mailto:xuzhengchaojob@gmail.com">xuzhengchaojob@gmail.com</a></p>
+</div>
+</body>
+</html>
